@@ -9,6 +9,8 @@ import { vol1 } from "./vol1";
 
 const csvRows: (CsvCell)[][] = [];
 
+let buyAt: Date = null;
+
 // wow both down and up
 // const from = new Date("2018-05-24T00:00:00.000Z");
 // const to = new Date("2018-05-25T00:00:00.000Z");
@@ -20,13 +22,18 @@ const csvRows: (CsvCell)[][] = [];
 
 // dump
 // const from = new Date("2018-06-10T00:00:00.000Z");
-// const from = new Date("2018-06-10T16:00:00.000Z"); // actually starts around 17:00
-// const to = new Date("2018-06-11T00:00:00.000Z");
+const from = new Date("2018-06-10T16:00:00.000Z"); // actually starts around 17:00
+const to = new Date("2018-06-11T00:00:00.000Z");
 
 // very gradual, first signs around 07:36
-const buyAt = new Date("2018-07-24T07:36:00.000Z");
-const from = new Date("2018-07-24T00:00:00.000Z");
-const to = new Date("2018-07-25T00:00:00.000Z");
+// const buyAt = new Date("2018-07-24T07:36:00.000Z");
+// const buyAt = new Date("2018-07-24T04:00:00.000Z");
+// const from = new Date("2018-07-24T00:00:00.000Z");
+// const to = new Date("2018-07-25T00:00:00.000Z");
+
+// const buyAt = new Date("2018-07-29T04:00:00.000Z");
+// const from = new Date("2018-07-25T00:00:00.000Z");
+// const to = new Date("2018-07-26T00:00:00.000Z");
 
 const MONTH_NAMES = [
   "Jan",
@@ -74,7 +81,8 @@ export const run = (): CoinList => {
     BCC: {
       name: "BCC",
       candles: getCoin(dbBinance, "candles_USDT_BCC", "BCC"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#4cca47"
     },
     EOS: {
       name: "EOS",
@@ -85,77 +93,92 @@ export const run = (): CoinList => {
     XLM: {
       name: "XLM",
       candles: getCoin(dbKraken, "candles_USD_XLM", "XLM"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#08B5E5"
     },
     LTC: {
       name: "LTC",
       candles: getCoin(dbKraken, "candles_USD_LTC", "LTC"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#838383"
     },
     ADA: {
       name: "ADA",
       candles: getCoin(dbBinance, "candles_USDT_ADA", "ADA"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#3CC8C8"
     },
     IOT: {
       name: "IOT",
       candles: getCoin(dbBitfinex, "candles_USD_IOT", "IOT"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#FFFFFF"
     },
     TRX: {
       name: "TRX",
       candles: getCoin(dbBitfinex, "candles_USD_TRX", "TRX"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#396a74"
     },
     XMR: {
       name: "XMR",
       candles: getCoin(dbKraken, "candles_USD_XMR", "XMR"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#FF6600"
     },
     NEO: {
       name: "NEO",
       candles: getCoin(dbBinance, "candles_USDT_NEO", "NEO"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#58BF00"
     },
     DASH: {
       name: "DASH",
       candles: getCoin(dbKraken, "candles_USD_DASH", "DASH"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#1c75bc"
     },
     ETC: {
       name: "ETC",
       candles: getCoin(dbKraken, "candles_USD_ETC", "ETC"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#669073"
     },
     BNB: {
       name: "BNB",
       candles: getCoin(dbBinance, "candles_USDT_BNB", "BNB"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#edba2d"
     },
     VEN: {
       name: "VEN",
       candles: getCoin(dbBitfinex, "candles_USD_VEN", "VEN"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#42AFB2"
     },
     ZEC: {
       name: "ZEC",
       candles: getCoin(dbPoloniex, "candles_USDT_ZEC", "ZEC"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#e5a93d"
     },
     QTUM: {
       name: "QTUM",
       candles: getCoin(dbBinance, "candles_USDT_QTUM", "QTUM"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#359BCE"
     },
     OMG: {
       name: "OMG",
       candles: getCoin(dbBitfinex, "candles_USD_OMG", "OMG"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#1A53F0"
     },
     ZRX: {
       name: "ZRX",
       candles: getCoin(dbBitfinex, "candles_USD_ZRX", "ZRX"),
-      buyAt: 0
+      buyAt: 0,
+      color: "black" // fix later
     }
   };
 

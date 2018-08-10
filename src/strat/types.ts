@@ -13,6 +13,9 @@ export interface CoinData {
   name: string;
   candles: Candle[];
   buyAt: number;
+  buyAtTs?: number;
+  buyAtIdx?: number;
+  buyAtProfit?: number;
   profitLast?: number;
   profitMax?: number;
   color?: string;

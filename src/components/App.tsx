@@ -8,6 +8,7 @@ import * as Database from "better-sqlite3";
 // import * as path from "path";
 import * as chartUtils from "./chartUtils";
 import { CoinList, CoinData } from "../strat/types";
+import { getLegend } from "./getLegend";
 
 interface State {
   isLoading: boolean;
@@ -34,20 +35,32 @@ export class App extends React.Component {
     // const min = 0.5;
     // const max = 1.05;
 
-    // const series = Object.keys(coins).map(k => {
-    const series = ["BTC", "ETH", "XRP", "EOS"].map(k => {
+    const series = Object.keys(coins).map(k => {
+      // const series = ["BTC", "ETH", "XRP", "BCC", "XLM", "TRX", "EOS"].map(k => {
+      // const series = ["BTC", "EOS"].map(k => {
       return {
         ...this.state.options.series[0],
         color: coins[k].color || "white",
-        data: coins[k].candles.map(x => x && [x.start * 1000, x.percentChange])
+        data: coins[k].candles.map(x => x && [x.start * 1000, x.percentChange]),
+        name: k
       };
     });
+
+    const seriesTrades = {
+      symbolSize: 5,
+      data: [[coins.BTC.buyAtTs * 1000, coins.BTC.buyAtProfit]],
+      color: "red",
+      type: "scatter"
+    };
+
+    const legend = getLegend(coins);
 
     this.setState({
       options: {
         ...this.state.options,
+        legend,
         yAxis: { ...this.state.options.yAxis, min, max },
-        series
+        series: [...series, seriesTrades]
       },
       isLoading: false,
       coins
@@ -87,7 +100,7 @@ export class App extends React.Component {
             const profitLast = this.state.coins[k].profitLast;
             const profitMax = this.state.coins[k].profitMax;
             return (
-              <div style={{ whiteSpace: "pre" }}>
+              <div key={name} style={{ whiteSpace: "pre" }}>
                 {this.pad(name, 8)} {this.pad(profitLast + "", 8)}{" "}
                 {this.pad(profitMax + "", 8)}
               </div>

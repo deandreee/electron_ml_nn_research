@@ -22,6 +22,9 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
       if (!hasBought) {
         for (let key in coins) {
           coins[key].buyAt = coins[key].candles[i].close;
+          coins[key].buyAtTs = coins[key].candles[i].start;
+          coins[key].buyAtIdx = i;
+          coins[key].buyAtProfit = coins[key].candles[i].percentChange;
         }
         // Object.keys(coins).forEach(x => coins[x].buyAt = coins[x].candles[i].close);
         hasBought = true;
@@ -32,6 +35,9 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
     if (buyAt && buyAt.toUTCString() === date) {
       for (let key in coins) {
         coins[key].buyAt = coins[key].candles[i].close;
+        coins[key].buyAtTs = coins[key].candles[i].start;
+        coins[key].buyAtIdx = i;
+        coins[key].buyAtProfit = coins[key].candles[i].percentChange;
       }
     }
   }
