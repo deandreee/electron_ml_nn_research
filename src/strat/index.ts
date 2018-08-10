@@ -1,10 +1,11 @@
 import * as Database from "better-sqlite3";
 import * as bluebird from "bluebird";
 import { makeid } from "./makeid";
-import * as fs from "fs";
+// import * as fs from "fs";
 // import * as csv from "csv";
 import { Candle, Cb, CoinData, Coins, CsvCell, CoinList } from "./types";
 // import { strat1 } from "./strat1";
+import { vol1 } from "./vol1";
 
 const csvRows: (CsvCell)[][] = [];
 
@@ -55,17 +56,20 @@ export const run = (): CoinList => {
     BTC: {
       name: "BTC",
       candles: getCoin(dbKraken, "candles_USD_XBT", "BTC"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#F7931A"
     },
     ETH: {
       name: "ETH",
       candles: getCoin(dbKraken, "candles_USD_ETH", "ETH"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#282828"
     },
     XRP: {
       name: "XRP",
       candles: getCoin(dbKraken, "candles_USD_XRP", "XRP"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#346AA9"
     },
     BCC: {
       name: "BCC",
@@ -75,7 +79,8 @@ export const run = (): CoinList => {
     EOS: {
       name: "EOS",
       candles: getCoin(dbKraken, "candles_USD_EOS", "EOS"),
-      buyAt: 0
+      buyAt: 0,
+      color: "#19191A"
     },
     XLM: {
       name: "XLM",
@@ -154,9 +159,9 @@ export const run = (): CoinList => {
     }
   };
 
-  return coins;
+  vol1(coins, buyAt);
 
-  // strat1(coins, buyAt);
+  return coins;
 
   //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
   //   await bluebird.fromCallback((cb: Cb) => fs.appendFile(fileName, str, cb));
@@ -222,6 +227,7 @@ const getCoinPercentDrop = (
       candle.close,
       candle.close / max
     ]);
+    rows[i].percentChange = Math.round((candle.close / max) * 1000) / 1000;
   }
   return rows;
 };
@@ -240,9 +246,9 @@ const query = (db: Database, table: string, from: Date, to: Date): Candle[] => {
   const toTs = to.getTime() / 1000;
   const rows = db
     .prepare(
-      `select * from ${table} where start >= :a and start <= :b order by start asc`
+      `select * from ${table} where start >= ? and start <= ? order by start asc`
     )
-    .get(fromTs, toTs);
+    .all(fromTs, toTs);
 
   return rows as Candle[];
 };

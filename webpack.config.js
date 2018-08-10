@@ -1,5 +1,8 @@
+// const webpack = require("webpack");
+
 module.exports = {
-  target: "electron-main",
+  target: "electron-renderer",
+  mode: "development",
   entry: "./src/index.tsx",
   output: {
     filename: "bundle.js",
@@ -29,7 +32,11 @@ module.exports = {
   // This is important because it allows us to avoid bundling all of our
   // dependencies, which allows browsers to cache those libraries between builds.
   externals: {
+    bindings: `require("bindings")`, // fixes warnings during build
     react: "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    "better-sqlite3": `require("better-sqlite3")`
   }
+
+  // plugins: [new webpack.ContextReplacementPlugin(/bindings$/, /^$/)]
 };

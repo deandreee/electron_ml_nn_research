@@ -15,8 +15,8 @@ export const options: EChartOption = {
   xAxis: { ...xAxis, axisLabel: { ...xAxis.axisLabel, formatter: null } },
 
   yAxis: {
-    min: 9500,
-    max: 11000,
+    min: 5000,
+    max: 10000,
     // nameTextStyle: { fontSize: 24, color: 'red' },
     axisLabel: {
       color: styles.colors.primary,

@@ -4,6 +4,7 @@ export interface Candle {
   start: number;
   close: number;
   volume: number;
+  percentChange: number;
 }
 
 export type CsvCell = string | number;
@@ -12,6 +13,9 @@ export interface CoinData {
   name: string;
   candles: Candle[];
   buyAt: number;
+  profitLast?: number;
+  profitMax?: number;
+  color?: string;
 }
 
 export enum Coins {
