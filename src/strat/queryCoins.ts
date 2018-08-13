@@ -132,9 +132,15 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
   return coins;
 };
 
-// const getCoin = (db: Database, tableName: string, coinName: string) => {
-//   return getCoinPercentDrop(db, tableName, coinName);
-// };
+const getCoin = (
+  db: Database,
+  tableName: string,
+  coinName: string,
+  from: Date,
+  to: Date
+) => {
+  return getCoinPercentDrop(db, tableName, coinName, from, to);
+};
 
 // const getCoinFull = (db: Database, tableName: string, coinName: string) => {
 //   const rows = query(db, tableName, from, to);
