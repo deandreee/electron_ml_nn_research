@@ -5,6 +5,8 @@ export interface Candle {
   close: number;
   volume: number;
   percentChange: number;
+  features?: number[];
+  label?: number;
 }
 
 export type CsvCell = string | number;

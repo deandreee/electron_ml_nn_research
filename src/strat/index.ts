@@ -1,14 +1,16 @@
 import * as Database from "better-sqlite3";
 import * as bluebird from "bluebird";
+import * as SVM from "svm";
+// const sxm = require("svm");
 import { makeid } from "./makeid";
 // import * as fs from "fs";
 // import * as csv from "csv";
 import { Candle, Cb, CoinData, Coins, CsvCell, CoinList } from "./types";
 // import { strat1 } from "./strat1";
 import { vol1 } from "./vol1";
+import * as ms from "ms";
 
 const csvRows: (CsvCell)[][] = [];
-
 let buyAt: Date = null;
 
 // wow both down and up
@@ -17,13 +19,13 @@ let buyAt: Date = null;
 // 15:47
 
 // pump weird small drops in a day, then shoots up straight up in 3m
-// const from = new Date("2018-06-02T00:00:00.000Z");
-// const to = new Date("2018-06-03T00:00:00.000Z");
+const from = new Date("2018-06-02T00:00:00.000Z");
+const to = new Date("2018-06-03T00:00:00.000Z");
 
 // dump
 // const from = new Date("2018-06-10T00:00:00.000Z");
-const from = new Date("2018-06-10T16:00:00.000Z"); // actually starts around 17:00
-const to = new Date("2018-06-11T00:00:00.000Z");
+// const from = new Date("2018-06-09T22:00:00.000Z"); // actually starts around 17:00
+// const to = new Date("2018-06-10T12:00:00.000Z");
 
 // very gradual, first signs around 07:36
 // const buyAt = new Date("2018-07-24T07:36:00.000Z");
@@ -34,6 +36,9 @@ const to = new Date("2018-06-11T00:00:00.000Z");
 // const buyAt = new Date("2018-07-29T04:00:00.000Z");
 // const from = new Date("2018-07-25T00:00:00.000Z");
 // const to = new Date("2018-07-26T00:00:00.000Z");
+
+const fromExtended = new Date(from.getTime() - ms("1h"));
+const toExtended = new Date(to.getTime() + ms("1h"));
 
 const MONTH_NAMES = [
   "Jan",
@@ -184,6 +189,14 @@ export const run = (): CoinList => {
 
   vol1(coins, buyAt);
 
+  const svm = new SVM.SVM();
+  const candlesActual = coins.BTC.candles.filter(
+    x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
+  );
+  const data = candlesActual.map(x => x.features);
+  const labels = candlesActual.map(x => x.label);
+  svm.train(data, labels);
+
   return coins;
 
   //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
@@ -265,8 +278,8 @@ const rescale = (value: number, min: number, max: number): number => {
 };
 
 const query = (db: Database, table: string, from: Date, to: Date): Candle[] => {
-  const fromTs = from.getTime() / 1000;
-  const toTs = to.getTime() / 1000;
+  const fromTs = fromExtended.getTime() / 1000;
+  const toTs = toExtended.getTime() / 1000;
   const rows = db
     .prepare(
       `select * from ${table} where start >= ? and start <= ? order by start asc`

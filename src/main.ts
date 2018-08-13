@@ -6,8 +6,8 @@ let mainWindow: Electron.BrowserWindow;
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: 1000,
+    width: 1700,
     frame: false
     // titleBarStyle: "hiddenInset"
   });
