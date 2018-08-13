@@ -63,5 +63,7 @@ export interface Portfolio {
 export type Advice = "short" | "long";
 
 export interface AdviceObj {
+  id: string;
+  date: Date;
   recommendation: Advice;
 }

@@ -1,10 +1,11 @@
 import { Advice, AdviceObj, Candle, Portfolio } from "../types";
 import { config } from "./config";
+import { PerformanceAnalyzer, Trade } from "./PerformanceAnalyzer";
 
 const calcConfig = config.paperTrader;
 const watchConfig = config.watch;
 
-class PaperTrader {
+export class PaperTrader {
   rawFee: number; // maker or taker
   fee: number; // 0.0025 => makes no sense
   currency: string;
@@ -16,8 +17,9 @@ class PaperTrader {
   trades: number;
   price: number; // current candle.close
   tradeId: string;
+  performanceAnalyzer: PerformanceAnalyzer;
 
-  constructor() {
+  constructor(candle: Candle) {
     if (calcConfig.feeUsing === "maker") {
       this.rawFee = calcConfig.feeMaker;
     } else {
@@ -34,7 +36,8 @@ class PaperTrader {
       currency: calcConfig.simulationBalance.currency
     };
 
-    this.balance = null;
+    this.price = candle.close;
+    this.balance = this.getBalance();
 
     if (this.portfolio.asset > 0) {
       this.exposed = true;
@@ -42,34 +45,14 @@ class PaperTrader {
 
     this.propogatedTrades = 0;
     this.trades = 0;
+
+    this.performanceAnalyzer = new PerformanceAnalyzer(
+      this.balance,
+      this.portfolio
+    );
   }
 
-  // TODO:
-  // PerformanceAnalyzer.prototype.processPortfolioChange = function(event) {
-  //   if(!this.start.portfolio) {
-  //     this.start.portfolio = event;
-  //   }
-  // }
-  relayPortfolioChange = () => {
-    // this.deferredEmit("portfolioChange", {
-    //   asset: this.portfolio.asset,
-    //   currency: this.portfolio.currency
-    // });
-  };
-
-  // TODO:
-  // 1 very real subscriber
-  // PerformanceAnalyzer.prototype.processPortfolioValueChange = function(event) {
-  // if(!this.start.balance) {
-  // this.start.balance = event.balance;
-  // }
-  relayPortfolioValueChange = () => {
-    // this.deferredEmit("portfolioValueChange", {
-    // balance: this.getBalance()
-    // });
-  };
-
-  extractFee = (amount: number) => {
+  private extractFee = (amount: number) => {
     amount *= 1e8;
     amount *= this.fee;
     amount = Math.floor(amount);
@@ -77,14 +60,10 @@ class PaperTrader {
     return amount;
   };
 
-  setStartBalance = () => {
-    this.balance = this.getBalance();
-  };
-
   // after every succesfull trend ride we hopefully end up
   // with more BTC than we started with, this function
   // calculates Gekko's profit in %.
-  updatePosition = (advice: AdviceObj) => {
+  private updatePosition = (advice: AdviceObj) => {
     let what = advice.recommendation;
 
     let cost;
@@ -123,11 +102,17 @@ class PaperTrader {
     return { cost, amount, effectivePrice };
   };
 
-  getBalance = () => {
+  private getBalance = () => {
     return this.portfolio.currency + this.price * this.portfolio.asset;
   };
 
-  processAdvice = (advice: AdviceObj) => {
+  // ask: my custom, just forward candle to PerformanceAnalyzer
+  processCandle = (candle: Candle) => {
+    this.performanceAnalyzer.processCandle(candle);
+  };
+
+  processAdvice = (advice: AdviceObj, candle: Candle) => {
+    this.price = candle.close;
     let action;
     if (advice.recommendation === "short") action = "sell";
     else if (advice.recommendation === "long") action = "buy";
@@ -138,23 +123,18 @@ class PaperTrader {
 
     const { cost, amount, effectivePrice } = this.updatePosition(advice);
 
-    this.relayPortfolioChange();
-    this.relayPortfolioValueChange();
-
-    // for tradeCompleted no real subscribers
-  };
-
-  processCandle = (candle: Candle) => {
-    this.price = candle.close;
-
-    if (!this.balance) {
-      this.setStartBalance();
-      this.relayPortfolioChange();
-      this.relayPortfolioValueChange();
-    }
-
-    if (this.exposed) {
-      this.relayPortfolioValueChange();
-    }
+    this.performanceAnalyzer.processTradeCompleted({
+      id: this.tradeId,
+      adviceId: advice.id,
+      action,
+      cost,
+      amount,
+      price: this.price,
+      portfolio: this.portfolio,
+      balance: this.getBalance(),
+      date: advice.date,
+      effectivePrice,
+      feePercent: this.rawFee
+    } as Trade);
   };
 }

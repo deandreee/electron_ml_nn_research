@@ -8,8 +8,6 @@ import * as ms from "ms";
 const perfConfig = config.performanceAnalyzer;
 const watchConfig = config.watch;
 
-const Logger = require("./logger");
-
 interface RoundTripAction {
   date: Date;
   price: number;
@@ -23,7 +21,7 @@ interface RoundTrip {
   entryPrice?: number;
   entryBalance?: number;
 
-  exitAt?: Date; // TODO: izmantojas vsp?
+  exitAt?: Date;
   exitPrice?: number;
   exitBalance?: number;
 
@@ -41,7 +39,7 @@ interface Start {
   portfolio?: Portfolio;
 }
 
-interface Trade {
+export interface Trade {
   action: "buy" | "sell";
   date: Date;
   price: number;
@@ -49,7 +47,7 @@ interface Trade {
   balance: number;
 }
 
-class PerformanceAnalyzer {
+export class PerformanceAnalyzer {
   dates: {
     start?: Date;
     end?: Date;
@@ -69,7 +67,16 @@ class PerformanceAnalyzer {
   openRoundTrip: boolean;
   price: number;
 
-  constructor() {
+  constructor(balance: number, portfolio: Portfolio) {
+    this.balance = balance;
+    this.portfolio = portfolio;
+
+    // this.start will be initial but this.balance/portfolio => current
+    this.start = {
+      balance,
+      portfolio
+    };
+
     this.dates = {
       start: null,
       end: null
@@ -91,23 +98,8 @@ class PerformanceAnalyzer {
       id: 0
     };
 
-    // this.portfolio = {}; // TODO
-    this.balance;
-
-    this.start = {};
     this.openRoundTrip = false;
   }
-
-  // TODO: remove
-  //   processPortfolioValueChange = (event) => {
-  //     if (!this.start.balance) {
-  //       this.start.balance = event.balance;
-  //     }
-  //     }
-  // processPortfolioChange = function(event) {
-  //     if (!this.start.portfolio) {
-  //       this.start.portfolio = event;
-  //     }
 
   processCandle = (candle: Candle) => {
     this.price = candle.close;
@@ -132,7 +124,7 @@ class PerformanceAnalyzer {
     // TODO: put somewhere for logging?
   };
 
-  registerRoundtripPart = (trade: Trade) => {
+  private registerRoundtripPart = (trade: Trade) => {
     if (this.trades === 1 && trade.action === "sell") {
       // this is not part of a valid roundtrip
       return;
@@ -162,7 +154,7 @@ class PerformanceAnalyzer {
     }
   };
 
-  handleCompletedRoundtrip = () => {
+  private handleCompletedRoundtrip = () => {
     let roundtrip: RoundTrip = {
       id: this.roundTrip.id,
 
@@ -198,7 +190,7 @@ class PerformanceAnalyzer {
     }
   };
 
-  calculateReportStatistics = () => {
+  private calculateReportStatistics = () => {
     if (!this.start.balance || !this.start.portfolio) {
       throw new Error(
         "Cannot calculate a profit report without having received portfolio data."
@@ -254,7 +246,7 @@ class PerformanceAnalyzer {
     return report;
   };
 
-  finalize = () => {
+  private finalize = () => {
     const report = this.calculateReportStatistics();
   };
 }

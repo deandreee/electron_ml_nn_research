@@ -1,15 +1,21 @@
-import { Candle, CoinList, CoinData } from "./types";
+import { Candle, CoinList, CoinData, AdviceObj } from "./types";
 import { getCoinPctChange, getPctChange } from "./utils";
+import { PaperTrader } from "./gekko/PaperTrader";
+import { makeid } from "./makeid";
 
 const lookBack = 2;
 
 export const vol1 = (coins: CoinList, buyAt?: Date) => {
   let hasBought = false;
 
+  const trader = new PaperTrader(coins.BTC.candles[60]);
+
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     if (i < 60 || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
     }
+
+    trader.processCandle(coins.BTC.candles[i]);
 
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i);
     coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
@@ -28,6 +34,15 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
       (change2m >= 1 || change10m >= 1 || change30m >= 2 || change60m >= 2)
     ) {
       // console.log(new Date(coins.BTC.candles[i].start * 1000), change10m);
+
+      trader.processAdvice(
+        {
+          id: makeid(6),
+          date: new Date(),
+          recommendation: "long"
+        } as AdviceObj,
+        coins.BTC.candles[i]
+      );
 
       if (!hasBought) {
         for (let key in coins) {
