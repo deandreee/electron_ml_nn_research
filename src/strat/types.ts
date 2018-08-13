@@ -54,3 +54,14 @@ export enum Coins {
 export type CoinList = { [key: string]: CoinData };
 
 type HashMap<K extends Coins, V> = { [k in K]: V };
+
+export interface Portfolio {
+  currency: number;
+  asset: number;
+}
+
+export type Advice = "short" | "long";
+
+export interface AdviceObj {
+  recommendation: Advice;
+}

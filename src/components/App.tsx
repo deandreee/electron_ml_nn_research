@@ -52,7 +52,9 @@ export class App extends React.Component {
       color: "red",
       data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
       name: "PctChange60m",
-      large: true
+      large: true,
+      xAxisIndex: 1,
+      yAxisIndex: 1
     };
 
     const seriesTrades = {
@@ -82,7 +84,25 @@ export class App extends React.Component {
       options: {
         ...this.state.options,
         legend,
-        yAxis: { ...this.state.options.yAxis, min, max },
+        yAxis: [
+          {
+            min,
+            max,
+            axisLabel: {
+              color: styles.colors.primary,
+              fontFamily: styles.fontFamily
+            }
+          },
+          {
+            scale: true,
+            gridIndex: 1,
+            splitNumber: 2,
+            axisLabel: { show: false },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: false }
+          }
+        ],
         series: [
           ...series,
           seriesTrades,

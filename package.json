@@ -38,9 +38,12 @@
     "bluebird": "^3.5.1",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
+    "lodash": "^4.17.10",
+    "moment": "^2.22.2",
     "ms": "^2.1.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "stats-lite": "^2.1.1",
     "svm": "^0.1.1"
   }
 }
