@@ -26,7 +26,7 @@ export class App extends React.Component {
   async componentWillMount() {
     // const dbBinance = new Database("./binance_0.1.db");
 
-    const coins = strat.run();
+    const { coins, labelsPredicted } = strat.run();
 
     let { min, max } = chartUtils.getMinMax(
       coins.EOS.candles.map(x => x && x.percentChange)
@@ -54,6 +54,20 @@ export class App extends React.Component {
       type: "scatter"
     };
 
+    const labelsFiltered = labelsPredicted
+      .map((x, i) => ({ x, i }))
+      .filter((x, i) => x.x === 1);
+
+    const seriesLabelsPredicted = {
+      symbolSize: 5,
+      data: labelsFiltered.map(x => [
+        coins.BTC.candles[x.i].start * 1000,
+        coins.BTC.candles[x.i].percentChange
+      ]),
+      color: "green",
+      type: "scatter"
+    };
+
     const legend = getLegend(coins);
 
     this.setState({
@@ -61,7 +75,7 @@ export class App extends React.Component {
         ...this.state.options,
         legend,
         yAxis: { ...this.state.options.yAxis, min, max },
-        series: [...series, seriesTrades]
+        series: [...series, seriesTrades, seriesLabelsPredicted]
       },
       isLoading: false,
       coins

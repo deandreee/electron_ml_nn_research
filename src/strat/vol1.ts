@@ -1,4 +1,5 @@
 import { Candle, CoinList, CoinData } from "./types";
+import { getCoinPctChange, getPctChange } from "./utils";
 
 const lookBack = 2;
 
@@ -11,21 +12,14 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
     }
 
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i);
-    coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 0.05 ? 1 : 0;
+    coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
 
     // 09:53 first real sign of pump
 
-    const change2m =
-      (coins.BTC.candles[i].close / coins.BTC.candles[i - 2].close - 1) * 100;
-
-    const change10m =
-      (coins.BTC.candles[i].close / coins.BTC.candles[i - 10].close - 1) * 100;
-
-    const change30m =
-      (coins.BTC.candles[i].close / coins.BTC.candles[i - 30].close - 1) * 100;
-
-    const change60m =
-      (coins.BTC.candles[i].close / coins.BTC.candles[i - 60].close - 1) * 100;
+    const change2m = getCoinPctChange(coins.BTC, i, i - 2);
+    const change10m = getCoinPctChange(coins.BTC, i, i - 10);
+    const change30m = getCoinPctChange(coins.BTC, i, i - 30);
+    const change60m = getCoinPctChange(coins.BTC, i, i - 60);
 
     // console.log(change10m);
     if (
@@ -82,8 +76,8 @@ export const calcProfit = (coin: CoinData) => {
   const maxClose = Math.max(...coin.candles.map(x => x.close));
   const lastClose = coin.candles[coin.candles.length - 1].close;
 
-  const resMax = (maxClose / coin.buyAt - 1) * 100;
-  const resLast = (lastClose / coin.buyAt - 1) * 100;
+  const resMax = getPctChange(maxClose, coin.buyAt);
+  const resLast = getPctChange(lastClose, coin.buyAt);
   //   console.log(
   //     `${coin.name} \t profit last \t`,
   //     Math.round(resLast * 100) / 100,
@@ -104,27 +98,21 @@ export const getFutureResult = (coin: CoinData, i: number) => {
   }
 
   const priceAfter60m = sum / pricesAfter55to65.length;
-  const percentChangeAfter60m =
-    (priceAfter60m / coin.candles[i].close - 1) * 100;
+  const percentChangeAfter60m = getPctChange(
+    priceAfter60m,
+    coin.candles[i].close
+  );
   return percentChangeAfter60m;
-};
-
-export const getChangeXm = (coin: CoinData, i: number, m: number): number => {
-  return (coin.candles[i].close / coin.candles[i - m].close - 1) * 100;
-};
-
-export const getVolumeXm = (coin: CoinData, i: number, m: number): number => {
-  return (coin.candles[i].close / coin.candles[i - m].close - 1) * 100;
 };
 
 export const getFeatures = (coin: CoinData, i: number) => {
   const candle = coin.candles[i];
   return [
-    getChangeXm(coin, i, 1),
-    getChangeXm(coin, i, 2),
-    getChangeXm(coin, i, 5),
-    getChangeXm(coin, i, 10),
-    getChangeXm(coin, i, 30),
-    getChangeXm(coin, i, 60)
+    getCoinPctChange(coin, i, i - 1),
+    getCoinPctChange(coin, i, i - 2),
+    getCoinPctChange(coin, i, i - 5),
+    getCoinPctChange(coin, i, i - 10),
+    getCoinPctChange(coin, i, i - 30),
+    getCoinPctChange(coin, i, i - 60)
   ];
 };

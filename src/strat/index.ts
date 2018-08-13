@@ -41,7 +41,12 @@ const to = new Date("2018-06-03T00:00:00.000Z");
 const fromExtended = new Date(from.getTime() - ms("1h"));
 const toExtended = new Date(to.getTime() + ms("1h"));
 
-export const run = (): CoinList => {
+interface Result {
+  coins: CoinList;
+  labelsPredicted: number[];
+}
+
+export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
   vol1(coins, buyAt);
 
@@ -53,7 +58,9 @@ export const run = (): CoinList => {
   const labels = candlesActual.map(x => x.label);
   svm.train(data, labels);
 
-  return coins;
+  const labelsPredicted = svm.predict(data);
+
+  return { coins, labelsPredicted };
 
   //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
   //   await bluebird.fromCallback((cb: Cb) => fs.appendFile(fileName, str, cb));
