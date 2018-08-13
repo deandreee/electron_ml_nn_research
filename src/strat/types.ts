@@ -5,6 +5,7 @@ export interface Candle {
   close: number;
   volume: number;
   percentChange: number;
+  pctChange60m: number;
   features?: number[];
   label?: number;
 }

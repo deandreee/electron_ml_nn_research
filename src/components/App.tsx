@@ -47,6 +47,14 @@ export class App extends React.Component {
       };
     });
 
+    const seriesPctChange60m = {
+      ...this.state.options.series[0],
+      color: "red",
+      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
+      name: "PctChange60m",
+      large: true
+    };
+
     const seriesTrades = {
       symbolSize: 5,
       data: [[coins.BTC.buyAtTs * 1000, coins.BTC.buyAtProfit]],
@@ -75,7 +83,12 @@ export class App extends React.Component {
         ...this.state.options,
         legend,
         yAxis: { ...this.state.options.yAxis, min, max },
-        series: [...series, seriesTrades, seriesLabelsPredicted]
+        series: [
+          ...series,
+          seriesTrades,
+          seriesLabelsPredicted,
+          seriesPctChange60m
+        ]
       },
       isLoading: false,
       coins

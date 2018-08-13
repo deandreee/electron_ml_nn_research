@@ -7,12 +7,13 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
   let hasBought = false;
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
-    if (i < 60 || i > coins.BTC.candles.length - 60) {
+    if (i < 60 || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
     }
 
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i);
     coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
+    coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 60, i);
 
     // 09:53 first real sign of pump
 
