@@ -18,6 +18,7 @@ export class PaperTrader {
   price: number; // current candle.close
   tradeId: string;
   performanceAnalyzer: PerformanceAnalyzer;
+  advice?: Advice; // current
 
   constructor(candle: Candle) {
     if (calcConfig.feeUsing === "maker") {
@@ -50,6 +51,8 @@ export class PaperTrader {
       this.balance,
       this.portfolio
     );
+
+    this.advice = null;
   }
 
   private extractFee = (amount: number) => {
@@ -113,6 +116,12 @@ export class PaperTrader {
 
   processAdvice = (advice: AdviceObj, candle: Candle) => {
     this.price = candle.close;
+
+    // ask: let`s check here I think this is the best place, can't find whre it happens in gekko, so many places to look
+    if (this.advice === advice.recommendation) {
+      return;
+    }
+
     let action;
     if (advice.recommendation === "short") action = "sell";
     else if (advice.recommendation === "long") action = "buy";
@@ -136,5 +145,7 @@ export class PaperTrader {
       effectivePrice,
       feePercent: this.rawFee
     } as Trade);
+
+    this.advice = advice.recommendation;
   };
 }
