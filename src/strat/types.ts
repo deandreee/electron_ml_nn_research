@@ -79,5 +79,24 @@ export interface Trade {
 }
 
 export interface Report {
-  trades: Trade[];
+  startTime: Date;
+  endTime: Date;
+  timespan: string;
+  market: number;
+
+  balance: number;
+  profit: number;
+  relativeProfit: number;
+
+  yearlyProfit: number;
+  relativeYearlyProfit: number;
+
+  startPrice: number;
+  endPrice: number;
+  trades: number;
+  startBalance: number;
+  exposure: number;
+  sharpe: number;
+  downside: number;
+  alpha: number;
 }

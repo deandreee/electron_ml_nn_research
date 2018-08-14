@@ -58,7 +58,7 @@ export class App extends React.Component {
     };
 
     const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
-      coins.EOS.trader.performanceAnalyzer.tradeHistory
+      coins.ETH.trader.performanceAnalyzer.tradeHistory
     );
 
     const seriesTradesSell = {
@@ -163,12 +163,25 @@ export class App extends React.Component {
           Profits:
           {Object.keys(this.state.coins).map(k => {
             const name = k;
-            const profitLast = this.state.coins[k].profitLast;
-            const profitMax = this.state.coins[k].profitMax;
+            const coin = this.state.coins[k];
+            const report = coin.trader.performanceAnalyzer.report;
+
+            const profit = Math.round(report.profit * 100) / 100;
+            const market = Math.round(report.market * 100) / 100;
+            const alpha = Math.round(report.alpha * 100) / 100;
+
             return (
               <div key={name} style={{ whiteSpace: "pre" }}>
-                {this.pad(name, 8)} {this.pad(profitLast + "", 8)}{" "}
-                {this.pad(profitMax + "", 8)}
+                <span style={{ fontStyle: "bold" }}>{this.pad(name, 8)}</span>
+                <span style={{ color: profit > 0 ? "green" : "red" }}>
+                  {this.pad(profit + "", 8)}{" "}
+                </span>
+                <span style={{ color: market > 0 ? "green" : "red" }}>
+                  {this.pad(market + "", 8)}{" "}
+                </span>
+                <span style={{ color: alpha > 0 ? "green" : "red" }}>
+                  {this.pad(alpha + "", 8)}{" "}
+                </span>
               </div>
             );
           })}

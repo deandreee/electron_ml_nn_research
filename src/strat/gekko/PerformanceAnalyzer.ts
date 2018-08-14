@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import * as statslite from "stats-lite";
 import { config } from "./config";
-import { Portfolio, Candle, Trade } from "../types";
+import { Portfolio, Candle, Trade, Report } from "../types";
 import * as ms from "ms";
 
 const perfConfig = config.performanceAnalyzer;
@@ -58,6 +58,7 @@ export class PerformanceAnalyzer {
   openRoundTrip: boolean;
   price: number;
   tradeHistory: Trade[];
+  report?: Report;
 
   constructor(balance: number, portfolio: Portfolio) {
     this.balance = balance;
@@ -215,7 +216,7 @@ export class PerformanceAnalyzer {
 
     const market = (this.endPrice * 100) / this.startPrice - 100;
 
-    const report = {
+    const report: Report = {
       startTime: this.dates.start, // .utc().format("YYYY-MM-DD HH:mm:ss"),
       endTime: this.dates.end, // .utc().format("YYYY-MM-DD HH:mm:ss"),
       timespan: timespan.humanize(),
@@ -239,5 +240,9 @@ export class PerformanceAnalyzer {
     };
 
     return report;
+  };
+
+  finalize = () => {
+    this.report = this.calculateReportStatistics();
   };
 }

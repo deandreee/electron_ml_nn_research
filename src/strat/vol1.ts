@@ -103,6 +103,10 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
   for (let key in coins) {
     calcProfit(coins[key]);
   }
+
+  for (let key in coins) {
+    coins[key].trader.performanceAnalyzer.finalize();
+  }
 };
 
 export const calcProfit = (coin: CoinData) => {
