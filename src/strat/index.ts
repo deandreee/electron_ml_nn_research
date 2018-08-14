@@ -22,15 +22,15 @@ let buyAt: Date = null;
 // very gradual, first signs around 07:36
 // const buyAt = new Date("2018-07-24T07:36:00.000Z");
 // const buyAt = new Date("2018-07-24T04:00:00.000Z");
-// const from = new Date("2018-07-24T00:00:00.000Z");
-// const to = new Date("2018-07-25T00:00:00.000Z");
+const from = new Date("2018-07-24T00:00:00.000Z");
+const to = new Date("2018-07-25T00:00:00.000Z");
 
 // const buyAt = new Date("2018-07-29T04:00:00.000Z");
 // const from = new Date("2018-07-25T00:00:00.000Z");
 // const to = new Date("2018-07-26T00:00:00.000Z");
 
-const from = new Date("2018-07-01T00:00:00.000Z");
-const to = new Date("2018-08-01T00:00:00.000Z");
+// const from = new Date("2018-07-01T00:00:00.000Z");
+// const to = new Date("2018-08-01T00:00:00.000Z");
 
 const fromExtended = new Date(from.getTime() - ms("1h"));
 const toExtended = new Date(to.getTime() + ms("1h"));

@@ -4,10 +4,9 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import { options } from "./options";
 import * as strat from "../strat";
-import * as chartUtils from "./chartUtils";
+// import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
-import { yAxis } from "./yAxis";
 
 interface State {
   isLoading: boolean;
@@ -27,9 +26,9 @@ export class App extends React.Component {
 
     const { coins, labelsPredicted } = strat.run();
 
-    let { min, max } = chartUtils.getMinMax(
-      coins.EOS.candles.map(x => x && x.percentChange)
-    );
+    // let { min, max } = chartUtils.getMinMax(
+    //   coins.EOS.candles.map(x => x && x.percentChange)
+    // );
 
     // const min = 0.5;
     // const max = 1.05;
@@ -47,20 +46,33 @@ export class App extends React.Component {
       };
     });
 
-    const seriesPctChange60m = {
-      ...this.state.options.series[0],
+    // const seriesPctChange60m = {
+    //   ...this.state.options.series[0],
+    //   color: "red",
+    //   data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
+    //   name: "PctChange60m",
+    //   xAxisIndex: 1,
+    //   yAxisIndex: 1,
+    //   large: true,
+    //   sampling: "average"
+    // };
+
+    // const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
+    // coins.ETH.trader.performanceAnalyzer.tradeHistory
+    // );
+
+    const seriesVolume = {
+      type: "bar",
       color: "red",
-      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
-      name: "PctChange60m",
+      data: coins.BTC.candles.map(x => [x.start * 1000, x.volume]),
+      name: "Volume",
       xAxisIndex: 1,
       yAxisIndex: 1,
       large: true,
       sampling: "average"
     };
 
-    const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
-      coins.ETH.trader.performanceAnalyzer.tradeHistory
-    );
+    const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory;
 
     const seriesTradesSell = {
       symbolSize: 10,
@@ -102,20 +114,13 @@ export class App extends React.Component {
       options: {
         ...this.state.options,
         legend,
-        yAxis: [
-          {
-            ...yAxis[0],
-            min,
-            max
-          },
-          yAxis[1]
-        ],
         series: [
           ...series,
           seriesTradesBuy,
           seriesTradesSell,
           seriesLabelsPredicted,
-          seriesPctChange60m
+          // seriesPctChange60m
+          seriesVolume
         ]
       },
       isLoading: false,

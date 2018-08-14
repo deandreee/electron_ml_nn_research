@@ -5,7 +5,7 @@ import * as chartUtils from "./chartUtils";
 //   value: number;
 // }
 
-export default {
+export const xAxis = {
   type: "time",
   // splitLine: { lineStyle: { color: 'white' }},
   axisLabel: {

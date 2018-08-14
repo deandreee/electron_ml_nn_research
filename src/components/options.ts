@@ -1,6 +1,7 @@
 import { EChartOption } from "echarts";
 import styles from "./styles";
-import xAxis from "./xAxis";
+import { xAxis } from "./xAxis";
+import { yAxis } from "./yAxis";
 // import tooltip from "chart/tooltip";
 import { dataZoom } from "./dataZoom";
 
@@ -15,12 +16,14 @@ export const options: EChartOption = {
       height: "70%"
     },
     {
-      left: "10%",
-      right: "8%",
-      top: "75%"
-      // height: '16%'
+      left: "50px",
+      right: "10px",
+      top: "75%",
+      height: 80
     }
   ],
+
+  yAxis,
 
   xAxis: [
     {

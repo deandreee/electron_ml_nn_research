@@ -1,5 +1,9 @@
 export const dataZoom = [
   {
+    type: "inside",
+    xAxisIndex: [0, 1]
+  },
+  {
     textStyle: {
       color: "#8392A5"
     },
@@ -21,9 +25,7 @@ export const dataZoom = [
       shadowColor: "rgba(0, 0, 0, 0.6)",
       shadowOffsetX: 2,
       shadowOffsetY: 2
-    }
-  },
-  {
-    type: "inside"
+    },
+    xAxisIndex: [0, 1]
   }
 ];

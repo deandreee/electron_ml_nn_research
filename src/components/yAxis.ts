@@ -2,7 +2,8 @@ import styles from "./styles";
 
 export const yAxis = [
   {
-    // min: 5000,
+    min: "dataMin",
+    max: "dataMax",
     // max: 10000,
     // nameTextStyle: { fontSize: 24, color: 'red' },
     axisLabel: {
