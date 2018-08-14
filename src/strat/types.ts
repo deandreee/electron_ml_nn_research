@@ -53,8 +53,6 @@ export enum Coins {
 // export type CoinList = { [key in keyof typeof Coins]: CoinData };
 export type CoinList = { [key: string]: CoinData };
 
-type HashMap<K extends Coins, V> = { [k in K]: V };
-
 export interface Portfolio {
   currency: number;
   asset: number;
@@ -66,4 +64,17 @@ export interface AdviceObj {
   id: string;
   date: Date;
   recommendation: Advice;
+}
+
+export interface Trade {
+  action: "buy" | "sell";
+  date: Date;
+  price: number;
+  portfolio: Portfolio;
+  balance: number;
+  candle: Candle;
+}
+
+export interface Report {
+  trades: Trade[];
 }

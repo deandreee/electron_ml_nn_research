@@ -1,8 +1,7 @@
 import * as moment from "moment";
-import { Moment } from "moment";
 import * as statslite from "stats-lite";
 import { config } from "./config";
-import { Portfolio, Candle } from "../types";
+import { Portfolio, Candle, Trade } from "../types";
 import * as ms from "ms";
 
 const perfConfig = config.performanceAnalyzer;
@@ -39,14 +38,6 @@ interface Start {
   portfolio?: Portfolio;
 }
 
-export interface Trade {
-  action: "buy" | "sell";
-  date: Date;
-  price: number;
-  portfolio: Portfolio;
-  balance: number;
-}
-
 export class PerformanceAnalyzer {
   dates: {
     start?: Date;
@@ -66,6 +57,7 @@ export class PerformanceAnalyzer {
   start: Start;
   openRoundTrip: boolean;
   price: number;
+  tradeHistory: Trade[];
 
   constructor(balance: number, portfolio: Portfolio) {
     this.balance = balance;
@@ -99,6 +91,8 @@ export class PerformanceAnalyzer {
     };
 
     this.openRoundTrip = false;
+
+    this.tradeHistory = []; // ask: this is mine
   }
 
   processCandle = (candle: Candle) => {
@@ -120,8 +114,9 @@ export class PerformanceAnalyzer {
 
     this.registerRoundtripPart(trade);
 
-    const report = this.calculateReportStatistics();
-    // TODO: put somewhere for logging?
+    this.calculateReportStatistics(); // TODO: put somewhere for logging?
+
+    this.tradeHistory.push(trade);
   };
 
   private registerRoundtripPart = (trade: Trade) => {
@@ -244,9 +239,5 @@ export class PerformanceAnalyzer {
     };
 
     return report;
-  };
-
-  private finalize = () => {
-    const report = this.calculateReportStatistics();
   };
 }

@@ -1,6 +1,6 @@
-import { Advice, AdviceObj, Candle, Portfolio } from "../types";
+import { Advice, AdviceObj, Candle, Portfolio, Trade } from "../types";
 import { config } from "./config";
-import { PerformanceAnalyzer, Trade } from "./PerformanceAnalyzer";
+import { PerformanceAnalyzer } from "./PerformanceAnalyzer";
 
 const calcConfig = config.paperTrader;
 const watchConfig = config.watch;
@@ -143,7 +143,8 @@ export class PaperTrader {
       balance: this.getBalance(),
       date: advice.date,
       effectivePrice,
-      feePercent: this.rawFee
+      feePercent: this.rawFee,
+      candle
     } as Trade);
 
     this.advice = advice.recommendation;

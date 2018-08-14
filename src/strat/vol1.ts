@@ -1,11 +1,9 @@
-import { Candle, CoinList, CoinData, AdviceObj } from "./types";
+import { CoinList, CoinData, AdviceObj, Report } from "./types";
 import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 
-const lookBack = 2;
-
-export const vol1 = (coins: CoinList, buyAt?: Date) => {
+export const vol1 = (coins: CoinList, buyAt?: Date): Report => {
   let hasBought = false;
 
   const trader = new PaperTrader(coins.BTC.candles[60]);
@@ -38,7 +36,7 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
       trader.processAdvice(
         {
           id: makeid(6),
-          date: new Date(),
+          date: new Date(coins.BTC.candles[i].start * 1000),
           recommendation: "long"
         } as AdviceObj,
         coins.BTC.candles[i]
@@ -58,6 +56,15 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
       !buyAt &&
       (change2m <= -1 || change10m <= -1 || change30m <= -2 || change60m <= -2)
     ) {
+      trader.processAdvice(
+        {
+          id: makeid(6),
+          date: new Date(coins.BTC.candles[i].start * 1000),
+          recommendation: "short"
+        } as AdviceObj,
+        coins.BTC.candles[i]
+      );
+
       if (!hasBought) {
         for (let key in coins) {
           coins[key].buyAt = coins[key].candles[i].close;
@@ -86,6 +93,8 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
   for (let key in coins) {
     calcProfit(coins[key]);
   }
+
+  return { trades: trader.performanceAnalyzer.tradeHistory };
 };
 
 export const calcProfit = (coin: CoinData) => {
@@ -122,7 +131,6 @@ export const getFutureResult = (coin: CoinData, i: number) => {
 };
 
 export const getFeatures = (coin: CoinData, i: number) => {
-  const candle = coin.candles[i];
   return [
     getCoinPctChange(coin, i, i - 1),
     getCoinPctChange(coin, i, i - 2),

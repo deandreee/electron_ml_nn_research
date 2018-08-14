@@ -1,5 +1,5 @@
 import * as Database from "better-sqlite3";
-import { Candle, Cb, CoinData, Coins, CsvCell, CoinList } from "./types";
+import { Candle, CoinList } from "./types";
 
 export const queryCoins = (from: Date, to: Date): CoinList => {
   const dbBinance = new Database("../gekko-develop/history/binance_0.1.db");
@@ -177,8 +177,6 @@ const getCoinPercentDrop = (
   to: Date
 ) => {
   const rows = query(db, tableName, from, to);
-
-  const min = Math.min(...rows.map(x => x.close));
   const max = Math.max(...rows.map(x => x.close));
   for (let i = 0; i < rows.length; i++) {
     const candle = rows[i];

@@ -4,10 +4,8 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import { options } from "./options";
 import * as strat from "../strat";
-import * as Database from "better-sqlite3";
-// import * as path from "path";
 import * as chartUtils from "./chartUtils";
-import { CoinList, CoinData } from "../strat/types";
+import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
 
 interface State {
@@ -26,7 +24,7 @@ export class App extends React.Component {
   async componentWillMount() {
     // const dbBinance = new Database("./binance_0.1.db");
 
-    const { coins, labelsPredicted } = strat.run();
+    const { coins, labelsPredicted, report } = strat.run();
 
     let { min, max } = chartUtils.getMinMax(
       coins.EOS.candles.map(x => x && x.percentChange)
@@ -43,7 +41,8 @@ export class App extends React.Component {
         color: coins[k].color || "white",
         data: coins[k].candles.map(x => x && [x.start * 1000, x.percentChange]),
         name: k,
-        large: true
+        large: true,
+        sampling: "average"
       };
     });
 
@@ -52,15 +51,27 @@ export class App extends React.Component {
       color: "red",
       data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
       name: "PctChange60m",
-      large: true,
       xAxisIndex: 1,
-      yAxisIndex: 1
+      yAxisIndex: 1,
+      large: true,
+      sampling: "average"
     };
 
-    const seriesTrades = {
-      symbolSize: 5,
-      data: [[coins.BTC.buyAtTs * 1000, coins.BTC.buyAtProfit]],
+    const seriesTradesSell = {
+      symbolSize: 10,
+      data: report.trades
+        .filter(x => x.action === "sell")
+        .map(x => [x.date.getTime(), x.candle.percentChange]),
       color: "red",
+      type: "scatter"
+    };
+
+    const seriesTradesBuy = {
+      symbolSize: 10,
+      data: report.trades
+        .filter(x => x.action === "buy")
+        .map(x => [x.date.getTime(), x.candle.percentChange]),
+      color: "green",
       type: "scatter"
     };
 
@@ -75,7 +86,9 @@ export class App extends React.Component {
         coins.BTC.candles[x.i].percentChange
       ]),
       color: "green",
-      type: "scatter"
+      type: "scatter",
+      large: true,
+      sampling: "average"
     };
 
     const legend = getLegend(coins);
@@ -105,7 +118,8 @@ export class App extends React.Component {
         ],
         series: [
           ...series,
-          seriesTrades,
+          seriesTradesBuy,
+          seriesTradesSell,
           seriesLabelsPredicted,
           seriesPctChange60m
         ]

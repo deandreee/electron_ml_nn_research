@@ -12,7 +12,7 @@ export const getLegend = (coins: CoinList) => {
   });
 
   legendSelected["BTC"] = true;
-  legendSelected["EOS"] = true;
+  // legendSelected["EOS"] = true;
 
   const legend = {
     type: "plain", // 'scroll',

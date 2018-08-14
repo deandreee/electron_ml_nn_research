@@ -1,17 +1,8 @@
-import * as Database from "better-sqlite3";
-import * as bluebird from "bluebird";
-import * as SVM from "svm";
-// const sxm = require("svm");
-import { makeid } from "./makeid";
-// import * as fs from "fs";
-// import * as csv from "csv";
-import { Candle, Cb, CoinData, Coins, CsvCell, CoinList } from "./types";
-// import { strat1 } from "./strat1";
+import { CoinList, Report } from "./types";
 import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
 
-const csvRows: (CsvCell)[][] = [];
 let buyAt: Date = null;
 
 // wow both down and up
@@ -21,7 +12,7 @@ let buyAt: Date = null;
 
 // pump weird small drops in a day, then shoots up straight up in 3m
 const from = new Date("2018-06-02T00:00:00.000Z");
-const to = new Date("2018-06-03T00:00:00.000Z");
+const to = new Date("2018-06-10T00:00:00.000Z");
 
 // dump
 // const from = new Date("2018-06-10T00:00:00.000Z");
@@ -44,23 +35,25 @@ const toExtended = new Date(to.getTime() + ms("1h"));
 interface Result {
   coins: CoinList;
   labelsPredicted: number[];
+  report: Report;
 }
 
 export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
-  vol1(coins, buyAt);
+  const report = vol1(coins, buyAt);
 
-  const svm = new SVM.SVM();
-  const candlesActual = coins.BTC.candles.filter(
-    x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
-  );
-  const data = candlesActual.map(x => x.features);
-  const labels = candlesActual.map(x => x.label);
-  svm.train(data, labels);
+  // const svm = new SVM.SVM();
+  // const candlesActual = coins.BTC.candles.filter(
+  //   x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
+  // );
+  // const data = candlesActual.map(x => x.features);
+  // const labels = candlesActual.map(x => x.label);
+  // svm.train(data, labels);
 
-  const labelsPredicted = svm.predict(data);
+  // const labelsPredicted = svm.predict(data);
+  const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted };
+  return { coins, labelsPredicted, report };
 
   //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
   //   await bluebird.fromCallback((cb: Cb) => fs.appendFile(fileName, str, cb));
