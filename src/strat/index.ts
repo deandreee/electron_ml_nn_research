@@ -1,4 +1,4 @@
-import { CoinList, Report } from "./types";
+import { CoinList } from "./types";
 import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
@@ -35,12 +35,11 @@ const toExtended = new Date(to.getTime() + ms("1h"));
 interface Result {
   coins: CoinList;
   labelsPredicted: number[];
-  report: Report;
 }
 
 export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
-  const report = vol1(coins, buyAt);
+  vol1(coins, buyAt);
 
   // const svm = new SVM.SVM();
   // const candlesActual = coins.BTC.candles.filter(
@@ -53,7 +52,7 @@ export const run = (): Result => {
   // const labelsPredicted = svm.predict(data);
   const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted, report };
+  return { coins, labelsPredicted };
 
   //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
   //   await bluebird.fromCallback((cb: Cb) => fs.appendFile(fileName, str, cb));

@@ -1,19 +1,25 @@
-import { CoinList, CoinData, AdviceObj, Report } from "./types";
+import { CoinList, CoinData, AdviceObj } from "./types";
 import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 
-export const vol1 = (coins: CoinList, buyAt?: Date): Report => {
+export const vol1 = (coins: CoinList, buyAt?: Date) => {
   let hasBought = false;
 
-  const trader = new PaperTrader(coins.BTC.candles[60]);
+  for (let key in coins) {
+    coins[key].trader = new PaperTrader(coins[key].candles[60]);
+  }
+
+  // const trader = new PaperTrader(coins.BTC.candles[60]);
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     if (i < 60 || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
     }
 
-    trader.processCandle(coins.BTC.candles[i]);
+    for (let key in coins) {
+      coins[key].trader.processCandle(coins[key].candles[i]);
+    }
 
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i);
     coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
@@ -33,14 +39,16 @@ export const vol1 = (coins: CoinList, buyAt?: Date): Report => {
     ) {
       // console.log(new Date(coins.BTC.candles[i].start * 1000), change10m);
 
-      trader.processAdvice(
-        {
-          id: makeid(6),
-          date: new Date(coins.BTC.candles[i].start * 1000),
-          recommendation: "long"
-        } as AdviceObj,
-        coins.BTC.candles[i]
-      );
+      for (let key in coins) {
+        coins[key].trader.processAdvice(
+          {
+            id: makeid(6),
+            date: new Date(coins[key].candles[i].start * 1000),
+            recommendation: "long"
+          } as AdviceObj,
+          coins[key].candles[i]
+        );
+      }
 
       if (!hasBought) {
         for (let key in coins) {
@@ -56,14 +64,16 @@ export const vol1 = (coins: CoinList, buyAt?: Date): Report => {
       !buyAt &&
       (change2m <= -1 || change10m <= -1 || change30m <= -2 || change60m <= -2)
     ) {
-      trader.processAdvice(
-        {
-          id: makeid(6),
-          date: new Date(coins.BTC.candles[i].start * 1000),
-          recommendation: "short"
-        } as AdviceObj,
-        coins.BTC.candles[i]
-      );
+      for (let key in coins) {
+        coins[key].trader.processAdvice(
+          {
+            id: makeid(6),
+            date: new Date(coins[key].candles[i].start * 1000),
+            recommendation: "short"
+          } as AdviceObj,
+          coins[key].candles[i]
+        );
+      }
 
       if (!hasBought) {
         for (let key in coins) {
@@ -93,8 +103,6 @@ export const vol1 = (coins: CoinList, buyAt?: Date): Report => {
   for (let key in coins) {
     calcProfit(coins[key]);
   }
-
-  return { trades: trader.performanceAnalyzer.tradeHistory };
 };
 
 export const calcProfit = (coin: CoinData) => {

@@ -24,7 +24,7 @@ export class App extends React.Component {
   async componentWillMount() {
     // const dbBinance = new Database("./binance_0.1.db");
 
-    const { coins, labelsPredicted, report } = strat.run();
+    const { coins, labelsPredicted } = strat.run();
 
     let { min, max } = chartUtils.getMinMax(
       coins.EOS.candles.map(x => x && x.percentChange)
@@ -57,9 +57,13 @@ export class App extends React.Component {
       sampling: "average"
     };
 
+    const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
+      coins.EOS.trader.performanceAnalyzer.tradeHistory
+    );
+
     const seriesTradesSell = {
       symbolSize: 10,
-      data: report.trades
+      data: trades
         .filter(x => x.action === "sell")
         .map(x => [x.date.getTime(), x.candle.percentChange]),
       color: "red",
@@ -68,7 +72,7 @@ export class App extends React.Component {
 
     const seriesTradesBuy = {
       symbolSize: 10,
-      data: report.trades
+      data: trades
         .filter(x => x.action === "buy")
         .map(x => [x.date.getTime(), x.candle.percentChange]),
       color: "green",

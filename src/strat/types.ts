@@ -1,3 +1,5 @@
+import { PaperTrader } from "./gekko/PaperTrader";
+
 export type Cb = (err: Error) => void;
 
 export interface Candle {
@@ -22,6 +24,7 @@ export interface CoinData {
   profitLast?: number;
   profitMax?: number;
   color?: string;
+  trader?: PaperTrader;
 }
 
 export enum Coins {
