@@ -9,7 +9,7 @@ export default {
   type: "time",
   // splitLine: { lineStyle: { color: 'white' }},
   axisLabel: {
-    color: styles.colors.primary,
+    color: styles.colors.axis,
     fontFamily: styles.fontFamily,
     formatter: function(ts: number, index: number) {
       return chartUtils.formatDateShort(ts);

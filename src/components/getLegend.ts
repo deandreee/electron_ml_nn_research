@@ -17,17 +17,19 @@ export const getLegend = (coins: CoinList) => {
   const legend = {
     type: "plain", // 'scroll',
     orient: "horizontal",
-    textStyle: {
-      color: styles.colors.primary,
-      fontFamily: styles.fontFamily
-    },
     left: 5,
     top: 5,
     // bottom: 0,
     // width: 1000,
     height: 200,
     data: Object.keys(coins),
-    selected: legendSelected
+    selected: legendSelected,
+    inactiveColor: "#777",
+    textStyle: {
+      // color: styles.colors.primary,
+      fontFamily: styles.fontFamily,
+      color: "#fff"
+    }
   };
 
   return legend;

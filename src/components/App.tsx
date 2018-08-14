@@ -7,6 +7,7 @@ import * as strat from "../strat";
 import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
+import { yAxis } from "./yAxis";
 
 interface State {
   isLoading: boolean;
@@ -103,22 +104,11 @@ export class App extends React.Component {
         legend,
         yAxis: [
           {
+            ...yAxis[0],
             min,
-            max,
-            axisLabel: {
-              color: styles.colors.primary,
-              fontFamily: styles.fontFamily
-            }
+            max
           },
-          {
-            scale: true,
-            gridIndex: 1,
-            splitNumber: 2,
-            axisLabel: { show: false },
-            axisLine: { show: false },
-            axisTick: { show: false },
-            splitLine: { show: false }
-          }
+          yAxis[1]
         ],
         series: [
           ...series,
@@ -168,7 +158,8 @@ export class App extends React.Component {
 
             const profit = Math.round(report.profit * 100) / 100;
             const market = Math.round(report.market * 100) / 100;
-            const alpha = Math.round(report.alpha * 100) / 100;
+            const relativeProfit =
+              Math.round(report.relativeProfit * 100) / 100;
 
             return (
               <div key={name} style={{ whiteSpace: "pre" }}>
@@ -179,8 +170,8 @@ export class App extends React.Component {
                 <span style={{ color: market > 0 ? "green" : "red" }}>
                   {this.pad(market + "", 8)}{" "}
                 </span>
-                <span style={{ color: alpha > 0 ? "green" : "red" }}>
-                  {this.pad(alpha + "", 8)}{" "}
+                <span style={{ color: relativeProfit > 0 ? "green" : "red" }}>
+                  {this.pad(relativeProfit + "", 8)}{" "}
                 </span>
               </div>
             );

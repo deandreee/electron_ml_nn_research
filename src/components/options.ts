@@ -2,6 +2,7 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import xAxis from "./xAxis";
 // import tooltip from "chart/tooltip";
+import { dataZoom } from "./dataZoom";
 
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,
@@ -24,7 +25,9 @@ export const options: EChartOption = {
   xAxis: [
     {
       ...xAxis,
-      axisLabel: { ...xAxis.axisLabel, formatter: null }
+      axisLabel: { ...xAxis.axisLabel, formatter: null },
+      axisLine: { lineStyle: { color: styles.colors.axis } },
+      splitLine: { show: false }
     },
     {
       type: "category",
@@ -39,28 +42,12 @@ export const options: EChartOption = {
       min: "dataMin",
       max: "dataMax"
     }
-  ],
+  ] as object[],
 
-  yAxis: [
-    {
-      min: 5000,
-      max: 10000,
-      // nameTextStyle: { fontSize: 24, color: 'red' },
-      axisLabel: {
-        color: styles.colors.primary,
-        fontFamily: styles.fontFamily
-      }
-    },
-    {
-      scale: true,
-      gridIndex: 1,
-      splitNumber: 2,
-      axisLabel: { show: false },
-      axisLine: { show: false },
-      axisTick: { show: false },
-      splitLine: { show: false }
-    }
-  ],
+  // yAxis: // moved to separate file because @types different (array vs object) [
+
+  dataZoom,
+
   series: [
     {
       color: styles.colors.primary,
@@ -79,7 +66,21 @@ export const options: EChartOption = {
       type: "scatter",
       snap: true
     }
-  ]
+  ],
+
+  tooltip: {
+    // https://ecomfe.github.io/echarts-examples/public/editor.html?c=candlestick-sh-2015
+    trigger: "axis",
+    axisPointer: {
+      animation: false,
+      type: "cross",
+      lineStyle: {
+        color: "#376df4",
+        width: 2,
+        opacity: 1
+      }
+    }
+  }
 
   //   tooltip: { ...tooltip }
 };

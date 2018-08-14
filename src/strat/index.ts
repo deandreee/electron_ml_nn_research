@@ -11,8 +11,8 @@ let buyAt: Date = null;
 // 15:47
 
 // pump weird small drops in a day, then shoots up straight up in 3m
-const from = new Date("2018-06-02T00:00:00.000Z");
-const to = new Date("2018-06-10T00:00:00.000Z");
+// const from = new Date("2018-06-02T00:00:00.000Z");
+// const to = new Date("2018-06-03T00:00:00.000Z");
 
 // dump
 // const from = new Date("2018-06-10T00:00:00.000Z");
@@ -28,6 +28,9 @@ const to = new Date("2018-06-10T00:00:00.000Z");
 // const buyAt = new Date("2018-07-29T04:00:00.000Z");
 // const from = new Date("2018-07-25T00:00:00.000Z");
 // const to = new Date("2018-07-26T00:00:00.000Z");
+
+const from = new Date("2018-07-01T00:00:00.000Z");
+const to = new Date("2018-08-01T00:00:00.000Z");
 
 const fromExtended = new Date(from.getTime() - ms("1h"));
 const toExtended = new Date(to.getTime() + ms("1h"));
