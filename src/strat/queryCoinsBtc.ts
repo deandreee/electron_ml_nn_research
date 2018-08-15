@@ -6,7 +6,7 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
   const dbKraken = new Database("../gekko-develop/history/kraken_0.1.db");
   const dbBitfinex = new Database("../gekko-develop/history/bitfinex_0.1.db");
   const dbPoloniex = new Database("../gekko-develop/history/poloniex_0.1.db");
-  // const dbGdax = new Database("../gekko-develop/history/gdax_0.1.db");
+  const dbGdax = new Database("../gekko-develop/history/gdax_0.1.db");
 
   const coins: CoinList = {
     BTC: {
@@ -39,13 +39,14 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
       candles: getCoin(dbBitfinex, "candles_USD_BTC", "BTC", from, to),
       buyAt: 0,
       color: "#729d34"
+    },
+    BTC_GDX: {
+      // don't have JUN yet, add later
+      name: "BTC_GDX",
+      candles: getCoin(dbGdax, "candles_USD_BTC", "BTC", from, to),
+      buyAt: 0,
+      color: "rgb(14, 125, 255)"
     }
-    // BTC_GDX: { // don't have JUN yet, add later
-    //   name: "BTC_GDX",
-    //   candles: getCoin(dbGdax, "candles_USD_BTC", "BTC", from, to),
-    //   buyAt: 0,
-    //   color: "rgb(14, 125, 255)"
-    // }
   };
   return coins;
 };

@@ -40,7 +40,7 @@ export class App extends React.Component {
       return {
         ...this.state.options.series[0],
         color: coins[k].color || "white",
-        data: coins[k].candles.map(x => x && [x.start * 1000, x.percentChange]),
+        data: coins[k].candles.map(x => x && [x.start * 1000, x.close]),
         name: k,
         large: true,
         sampling: "average"

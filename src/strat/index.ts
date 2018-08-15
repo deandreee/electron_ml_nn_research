@@ -1,31 +1,12 @@
 import { Candle, CoinList } from "./types";
 import { vol1 } from "./vol1";
 import * as ms from "ms";
-import { queryCoins } from "./queryCoins";
+import { queryCoins } from "./queryCoinsBtc";
 import { rescaleForSvm } from "./rescale";
+import * as pumps from "./pumps";
 const SVM = require("libsvm-js/asm");
 
 let buyAt: Date = null;
-
-// wow both down and up
-// const from = new Date("2018-05-24T00:00:00.000Z");
-// const to = new Date("2018-05-25T00:00:00.000Z");
-// 15:47
-
-// pump weird small drops in a day, then shoots up straight up in 3m
-// const from = new Date("2018-06-02T00:00:00.000Z");
-// const to = new Date("2018-06-03T00:00:00.000Z");
-
-// dump
-// const from = new Date("2018-06-10T00:00:00.000Z");
-// const from = new Date("2018-06-09T22:00:00.000Z"); // actually starts around 17:00
-// const to = new Date("2018-06-10T12:00:00.000Z");
-
-// very gradual, first signs around 07:36
-// const buyAt = new Date("2018-07-24T07:36:00.000Z");
-// const buyAt = new Date("2018-07-24T04:00:00.000Z");
-// const from = new Date("2018-07-24T00:00:00.000Z");
-// const to = new Date("2018-07-25T00:00:00.000Z");
 
 // const buyAt = new Date("2018-07-29T04:00:00.000Z");
 // const from = new Date("2018-07-25T00:00:00.000Z");
@@ -34,8 +15,10 @@ let buyAt: Date = null;
 // const from = new Date("2018-07-01T00:00:00.000Z");
 // const to = new Date("2018-08-01T00:00:00.000Z");
 
-const from = new Date("2018-07-24T00:00:00.000Z");
-const to = new Date("2018-07-25T00:00:00.000Z");
+const { from, to } = pumps.jun2;
+
+// const from = new Date("2018-07-24T00:00:00.000Z");
+// const to = new Date("2018-07-25T00:00:00.000Z");
 
 const fromExtended = new Date(from.getTime() - ms("1h"));
 const toExtended = new Date(to.getTime() + ms("1h"));
@@ -80,7 +63,7 @@ export const run = (): Result => {
 
 const predictSvm = (candlesActual: Candle[]): number[] => {
   const svm = new SVM({
-    kernel: SVM.KERNEL_TYPES.LINEAR, // The type of kernel I want to use
+    kernel: SVM.KERNEL_TYPES.RBF, // The type of kernel I want to use
     type: SVM.SVM_TYPES.C_SVC, // The type of SVM I want to run
     gamma: 1, // RBF kernel gamma parameter
     cost: 1 // C_SVC cost parameter
