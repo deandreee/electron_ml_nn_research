@@ -22,7 +22,9 @@ export const vol1 = (coins: CoinList, buyAt?: Date) => {
     }
 
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i);
-    coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
+    // coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
+    coins.BTC.candles[i].label =
+      getCoinPctChange(coins.BTC, i + 60, i) > 0.5 ? 1 : 0;
     coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 60, i);
 
     // 09:53 first real sign of pump
@@ -144,11 +146,11 @@ export const getFutureResult = (coin: CoinData, i: number) => {
 
 export const getFeatures = (coin: CoinData, i: number) => {
   return [
-    getCoinPctChange(coin, i, i - 1),
-    getCoinPctChange(coin, i, i - 2),
-    getCoinPctChange(coin, i, i - 5),
-    getCoinPctChange(coin, i, i - 10),
-    getCoinPctChange(coin, i, i - 30),
-    getCoinPctChange(coin, i, i - 60)
+    // getCoinPctChange(coin, i, i - 1),
+    // getCoinPctChange(coin, i, i - 2),
+    getCoinPctChange(coin, i, i - 5)
+    // getCoinPctChange(coin, i, i - 10),
+    // getCoinPctChange(coin, i, i - 30),
+    // getCoinPctChange(coin, i, i - 60)
   ];
 };

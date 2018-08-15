@@ -1,5 +1,6 @@
 import * as React from "react";
 import ReactEcharts from "echarts-for-react";
+import { flatten } from "lodash";
 import { EChartOption } from "echarts";
 import styles from "./styles";
 import { options } from "./options";
@@ -46,55 +47,63 @@ export class App extends React.Component {
       };
     });
 
-    // const seriesPctChange60m = {
-    //   ...this.state.options.series[0],
-    //   color: "red",
-    //   data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
-    //   name: "PctChange60m",
-    //   xAxisIndex: 1,
-    //   yAxisIndex: 1,
-    //   large: true,
-    //   sampling: "average"
-    // };
-
-    // const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
-    // coins.ETH.trader.performanceAnalyzer.tradeHistory
-    // );
-
-    const seriesVolume = {
-      type: "bar",
+    const seriesPctChange60m = {
+      ...this.state.options.series[0],
       color: "red",
-      data: coins.BTC.candles.map(x => [x.start * 1000, x.volume]),
-      name: "Volume",
+      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
+      name: "PctChange60m",
       xAxisIndex: 1,
       yAxisIndex: 1,
       large: true,
       sampling: "average"
     };
 
-    const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory;
+    // const trades = coins.BTC.trader.performanceAnalyzer.tradeHistory.concat(
+    // coins.ETH.trader.performanceAnalyzer.tradeHistory
+    // );
 
-    const seriesTradesSell = {
-      symbolSize: 10,
-      data: trades
-        .filter(x => x.action === "sell")
-        .map(x => [x.date.getTime(), x.candle.percentChange]),
-      color: "red",
-      type: "scatter"
-    };
+    const seriesTrades = flatten(
+      Object.keys(coins).map(key => {
+        const trades = coins[key].trader.performanceAnalyzer.tradeHistory;
 
-    const seriesTradesBuy = {
-      symbolSize: 10,
-      data: trades
-        .filter(x => x.action === "buy")
-        .map(x => [x.date.getTime(), x.candle.percentChange]),
-      color: "green",
-      type: "scatter"
-    };
+        const seriesTradesBuy = {
+          symbolSize: 10,
+          data: trades
+            .filter(x => x.action === "buy")
+            .map(x => [x.date.getTime(), x.candle.percentChange]),
+          color: "green",
+          type: "scatter",
+          name: key
+        };
+
+        const seriesTradesSell = {
+          symbolSize: 10,
+          data: trades
+            .filter(x => x.action === "sell")
+            .map(x => [x.date.getTime(), x.candle.percentChange]),
+          color: "red",
+          type: "scatter",
+          name: key
+        };
+
+        return [seriesTradesBuy, seriesTradesSell];
+      })
+    );
+
+    // const seriesVolume = {
+    //   type: "bar",
+    //   color: "red",
+    //   data: coins.BTC.candles.map(x => [x.start * 1000, x.volume]),
+    //   name: "Volume",
+    //   xAxisIndex: 1,
+    //   yAxisIndex: 1,
+    //   large: true,
+    //   sampling: "average"
+    // };
 
     const labelsFiltered = labelsPredicted
-      .map((x, i) => ({ x, i }))
-      .filter((x, i) => x.x === 1);
+      .filter(x => x === 1)
+      .map((x, i) => ({ x, i }));
 
     const seriesLabelsPredicted = {
       symbolSize: 5,
@@ -116,11 +125,10 @@ export class App extends React.Component {
         legend,
         series: [
           ...series,
-          seriesTradesBuy,
-          seriesTradesSell,
+          ...seriesTrades,
           seriesLabelsPredicted,
-          // seriesPctChange60m
-          seriesVolume
+          seriesPctChange60m
+          // seriesVolume
         ]
       },
       isLoading: false,
@@ -161,7 +169,7 @@ export class App extends React.Component {
             const coin = this.state.coins[k];
             const report = coin.trader.performanceAnalyzer.report;
 
-            const profit = Math.round(report.profit * 100) / 100;
+            // const profit = Math.round(report.profit * 100) / 100;
             const market = Math.round(report.market * 100) / 100;
             const relativeProfit =
               Math.round(report.relativeProfit * 100) / 100;
@@ -169,14 +177,20 @@ export class App extends React.Component {
             return (
               <div key={name} style={{ whiteSpace: "pre" }}>
                 <span style={{ fontStyle: "bold" }}>{this.pad(name, 8)}</span>
-                <span style={{ color: profit > 0 ? "green" : "red" }}>
+                {/* <span style={{ color: profit > 0 ? "green" : "red" }}>
                   {this.pad(profit + "", 8)}{" "}
-                </span>
+                </span>*/}
                 <span style={{ color: market > 0 ? "green" : "red" }}>
                   {this.pad(market + "", 8)}{" "}
                 </span>
                 <span style={{ color: relativeProfit > 0 ? "green" : "red" }}>
                   {this.pad(relativeProfit + "", 8)}{" "}
+                </span>
+                <span style={{ color: relativeProfit > 0 ? "green" : "red" }}>
+                  |{" "}
+                  {coin.trader.performanceAnalyzer.roundTrips
+                    .map(x => Math.round(x.profit * 100) / 100)
+                    .join("  |  ")}{" "}
                 </span>
               </div>
             );

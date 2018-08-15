@@ -103,15 +103,6 @@ const getCoinPercentDrop = (
   return rows;
 };
 
-// https://stats.stackexchange.com/questions/70801/how-to-normalize-data-to-0-1-range
-// newvalue= (max'-min')/(max-min)*(value-max)+max'
-// min' to max' => new
-// const rescale = (value: number, min: number, max: number): number => {
-//   const newMin = 0;
-//   const newMax = 100;
-//   return ((newMax - newMin) / (max - min)) * (value - max) + newMax;
-// };
-
 const query = (db: Database, table: string, from: Date, to: Date): Candle[] => {
   const fromTs = from.getTime() / 1000;
   const toTs = to.getTime() / 1000;
