@@ -27,9 +27,9 @@ export const vol1 = (coins: CoinList) => {
     coins.BTC.candles[i].features = getFeatures(coins.BTC, i, rsiVal!);
     // coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
     coins.BTC.candles[i].label = coins.BTC.candles[i].label =
-      getCoinPctChange(coins.BTC, i + 10, i) > 0 ? 1 : 0;
-    // getCoinPctChange(coins.BTC, i + 30, i) > 0.5 ? 1 : 0;
-    // getCoinPctChange(coins.BTC, i + 60, i) > 0.5 ? 1 : 0;
+      // getCoinPctChange(coins.BTC, i + 10, i) > 0 ? 1 : 0;
+      // getCoinPctChange(coins.BTC, i + 30, i) > 0.5 ? 1 : 0;
+      getCoinPctChange(coins.BTC, i + 30, i) > 1 ? 1 : 0;
 
     coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 60, i);
 

@@ -8,11 +8,17 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      // "program": "${workspaceFolder}/dist/main.js"
       "program": "${workspaceFolder}/dist/main.js",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       "preLaunchTask": "webpack"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "IndexGo",
+      "program": "${workspaceFolder}/dist-be/go.js",
+      "preLaunchTask": "webpack.be"
     }
   ]
 }

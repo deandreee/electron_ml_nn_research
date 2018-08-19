@@ -23,33 +23,12 @@ export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
   vol1(coins);
 
-  // const svm = new SVM();
   const candlesActual = coins.BTC.candles.filter(
     x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
   );
-  // const data = candlesActual.map(x => x.features);
-  // const labels = candlesActual.map(x => x.label);
-  // const data = [[0, 0], [0, 1], [1, 0], [1, 1]];
-  // const labels = [-1, 1, 1, -1];
-  // svm.train(data, labels, { C: 1 });
-  // svm.train(data, labels, { kernel: "rbf", rbfsigma: 0.5 }); // sigma in the gaussian kernel = 0.5
-
-  // const data = [[1, 2], [5, 8], [1.5, 1.8], [8, 8], [1, 0.6], [9, 11]];
-  // const labels = [0, 1, 0, 1, 0, 1];
-  // const input = data.map((x, i) => [x, labels[i]]);
-  // svm.train(input).done(() => {
-  //   console.log(svm.predictSync(data[0]));
-  // });
 
   const labelsPredicted = predictSvm(candlesActual);
-  // const labelsPredicted = svm.predictOne([1, 2]);
-  // const labelsPredicted: number[] = [];
-
   return { coins, labelsPredicted };
-
-  //   let str = await bluebird.fromCallback((cb: Cb) => csv.stringify(csvRows, cb));
-  //   await bluebird.fromCallback((cb: Cb) => fs.appendFile(fileName, str, cb));
-  //   console.log("csv.stringify done");
 };
 
 const predictSvm = (candlesActual: Candle[]): number[] => {
@@ -61,10 +40,6 @@ const predictSvm = (candlesActual: Candle[]): number[] => {
   });
 
   const features = candlesActual.map(x => x.features);
-  // const features2d = candlesActual.map(x => x.features);
-  // const features1d = features2d.map(x => x![0]);
-  // const data1d = rescaleArr0to1(features1d);
-  // const data2d = data1d.map(x => [x]);
   const labels = candlesActual.map(x => x.label);
 
   // min max for each feature, then re-calc
@@ -87,17 +62,3 @@ const predictSvm = (candlesActual: Candle[]): number[] => {
 
   return predicted;
 };
-
-// const go = () => {
-//   const svm = new SVM({
-//     kernel: SVM.KERNEL_TYPES.LINEAR, // The type of kernel I want to use
-//     type: SVM.SVM_TYPES.C_SVC, // The type of SVM I want to run
-//     gamma: 1, // RBF kernel gamma parameter
-//     cost: 1 // C_SVC cost parameter
-//   });
-//   const data = [[1, 2], [5, 8], [1.5, 1.8], [8, 8], [1, 0.6], [9, 11]];
-//   const labels = [0, 1, 0, 1, 0, 1];
-//   svm.train(data, labels, { C: 1 });
-
-//   svm.predict(data);
-// };

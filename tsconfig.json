@@ -16,5 +16,5 @@
     }
   },
   "include": ["src/**/*"],
-  "files": ["./typings/index.d.ts", "./app/index.tsx"]
+  "files": ["./typings/index.d.ts", "./app/index.tsx", "./app/go.ts"]
 }
