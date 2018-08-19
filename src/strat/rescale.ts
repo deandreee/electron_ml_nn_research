@@ -12,7 +12,7 @@ export const rescale = (value: number, min: number, max: number): number => {
 export const rescaleArr0to1 = (arr: number[]): number[] => {
   const min = Math.min(...arr);
   const max = Math.max(...arr);
-  const newMin = -1;
+  const newMin = 0;
   const newMax = 1;
   return arr.map(
     value => ((newMax - newMin) / (max - min)) * (value - max) + newMax
