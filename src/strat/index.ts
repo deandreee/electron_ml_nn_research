@@ -6,19 +6,10 @@ import * as pumps from "./pumps";
 import * as SVM from "libsvm-js/asm";
 import { rescale } from "./rescale";
 
-let buyAt: Date = null;
-
-// const buyAt = new Date("2018-07-29T04:00:00.000Z");
-// const from = new Date("2018-07-25T00:00:00.000Z");
-// const to = new Date("2018-07-26T00:00:00.000Z");
-
 // const from = new Date("2018-07-01T00:00:00.000Z");
 // const to = new Date("2018-08-01T00:00:00.000Z");
 
 const { from, to } = pumps.jun2;
-
-// const from = new Date("2018-07-24T00:00:00.000Z");
-// const to = new Date("2018-07-25T00:00:00.000Z");
 
 const fromExtended = new Date(from.getTime() - ms("1h"));
 const toExtended = new Date(to.getTime() + ms("1h"));
@@ -30,7 +21,7 @@ interface Result {
 
 export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
-  vol1(coins, buyAt);
+  vol1(coins);
 
   // const svm = new SVM();
   const candlesActual = coins.BTC.candles.filter(
