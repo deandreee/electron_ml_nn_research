@@ -11,10 +11,10 @@
       "showOutput": "always"
     },
     {
-      "taskName": "webpack.be",
-      "command": "webpack",
+      "taskName": "tsc.be",
+      "command": "tsc",
       "isShellCommand": true,
-      "args": ["--config", "webpack.be.config.js"],
+      "args": ["-p", "tsconfig.be.json"],
       "showOutput": "always"
     }
   ]

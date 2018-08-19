@@ -5,8 +5,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "sourceMap": true,
-    // "strict": true,
-    "outDir": "dist",
+    "outDir": "dist-be",
     "baseUrl": ".",
     "target": "es6",
     "lib": ["dom", "es6"],
@@ -16,5 +15,5 @@
     }
   },
   "include": ["src/**/*"],
-  "files": ["./typings/index.d.ts", "./app/index.tsx"]
+  "files": ["./src/go.ts"]
 }

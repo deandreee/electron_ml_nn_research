@@ -18,7 +18,7 @@
       "request": "launch",
       "name": "IndexGo",
       "program": "${workspaceFolder}/dist-be/go.js",
-      "preLaunchTask": "webpack.be"
+      "preLaunchTask": "tsc.be"
     }
   ]
 }
