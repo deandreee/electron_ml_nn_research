@@ -2,9 +2,9 @@ import { Candle, CoinList } from "./types";
 import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoinsBtc";
-import { rescaleForSvm } from "./rescale";
 import * as pumps from "./pumps";
-const SVM = require("libsvm-js/asm");
+import * as SVM from "libsvm-js/asm";
+import { rescale } from "./rescale";
 
 let buyAt: Date = null;
 
@@ -69,15 +69,31 @@ const predictSvm = (candlesActual: Candle[]): number[] => {
     cost: 1 // C_SVC cost parameter
   });
 
-  const features2d = candlesActual.map(x => x.features);
-  const features1d = features2d.map(x => x[0]);
-  const data1d = rescaleForSvm(features1d);
-  const data2d = data1d.map(x => [x]);
+  const features = candlesActual.map(x => x.features);
+  // const features2d = candlesActual.map(x => x.features);
+  // const features1d = features2d.map(x => x![0]);
+  // const data1d = rescaleArr0to1(features1d);
+  // const data2d = data1d.map(x => [x]);
   const labels = candlesActual.map(x => x.label);
 
-  svm.train(data2d, labels, { C: 1 });
-  const predicted = svm.predict(data2d);
-  console.log("predicted", predicted);
+  // min max for each feature, then re-calc
+  const fCount = features[0]!.length;
+  for (let f = 0; f < fCount; f++) {
+    const min = Math.min(...features.map(x => x![f]));
+    const max = Math.max(...features.map(x => x![f]));
+    for (let row of features) {
+      row![f] = rescale(row![f], min, max);
+    }
+  }
+
+  svm.train(features, labels, { C: 1 });
+  const predicted = svm.predict(features) as number[];
+
+  console.log("train 1", labels.filter(x => x === 1).length);
+  console.log("train 0", labels.filter(x => x === 0).length);
+  console.log("lbl 1", predicted.filter(x => x === 1).length);
+  console.log("lbl 0", predicted.filter(x => x === 0).length);
+
   return predicted;
 };
 

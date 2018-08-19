@@ -48,6 +48,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "stats-lite": "^2.1.1",
-    "svm": "^0.1.1"
+    "svm": "^0.1.1",
+    "technicalindicators": "^1.1.12"
   }
 }
