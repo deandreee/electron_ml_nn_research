@@ -14,38 +14,38 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
       name: "BTC",
       candles: getCoin(dbKraken, "candles_USD_XBT", "BTC", from, to),
       color: "black"
-    },
-    BTC_KRK: {
-      name: "BTC_KRK",
-      candles: getCoin(dbKraken, "candles_USD_XBT", "BTC", from, to),
-
-      color: "gray"
-    },
-    BTC_BNC: {
-      name: "BTC_BNC",
-      candles: getCoin(dbBinance, "candles_USDT_BTC", "BTC", from, to),
-
-      color: "rgb(240, 185, 11)"
-    },
-    BTC_POL: {
-      name: "BTC_BNC",
-      candles: getCoin(dbPoloniex, "candles_USDT_BTC", "BTC", from, to),
-
-      color: "#0a6970"
-    },
-    BTC_BFX: {
-      name: "BTC_BFX",
-      candles: getCoin(dbBitfinex, "candles_USD_BTC", "BTC", from, to),
-
-      color: "#729d34"
-    },
-    BTC_GDX: {
-      // don't have JUN yet, add later
-      name: "BTC_GDX",
-      candles: getCoin(dbGdax, "candles_USD_BTC", "BTC", from, to),
-
-      color: "rgb(14, 125, 255)"
     }
+    // BTC_KRK: {
+    //   name: "BTC_KRK",
+    //   candles: getCoin(dbKraken, "candles_USD_XBT", "BTC", from, to),
+
+    //   color: "gray"
+    // },
+    // BTC_BNC: {
+    //   name: "BTC_BNC",
+    //   candles: getCoin(dbBinance, "candles_USDT_BTC", "BTC", from, to),
+
+    //   color: "rgb(240, 185, 11)"
+    // },
+    // BTC_POL: {
+    //   name: "BTC_BNC",
+    //   candles: getCoin(dbPoloniex, "candles_USDT_BTC", "BTC", from, to),
+
+    //   color: "#0a6970"
+    // },
+    // BTC_BFX: {
+    //   name: "BTC_BFX",
+    //   candles: getCoin(dbBitfinex, "candles_USD_BTC", "BTC", from, to),
+
+    //   color: "#729d34"
+    // },
+    // BTC_GDX: {
+    //   // don't have JUN yet, add later
+    //   name: "BTC_GDX",
+    //   candles: getCoin(dbGdax, "candles_USD_BTC", "BTC", from, to),
+
+    //   color: "rgb(14, 125, 255)"
+    // }
   };
   return coins;
 };

@@ -197,11 +197,13 @@ export class App extends React.Component {
                 <span style={{ color: relativeProfit > 0 ? "green" : "red" }}>
                   {this.pad(relativeProfit + "", 8)}{" "}
                 </span>
-                <span style={{ color: relativeProfit > 0 ? "green" : "red" }}>
+                <span>
                   |{" "}
-                  {coin.trader.performanceAnalyzer.roundTrips
-                    .map(x => Math.round(x.profit * 100) / 100)
-                    .join("  |  ")}{" "}
+                  {coin.trader.performanceAnalyzer.roundTrips.map(x => (
+                    <span style={{ color: x.profit > 0 ? "green" : "red" }}>
+                      {Math.round(x.profit * 100) / 100} |{" "}
+                    </span>
+                  ))}
                 </span>
               </div>
             );
