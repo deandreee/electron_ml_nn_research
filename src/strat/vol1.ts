@@ -3,10 +3,20 @@ import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
+import * as stratPump from "./strats/pump";
+import * as stratPsar from "./strats/psar";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
-  // let psar = new PSAR({  });
+
+  let step = 0.025;
+  let max = 0.05;
+  let psar = new PSAR({
+    step,
+    max,
+    high: [coins.BTC.candles[0].high],
+    low: [coins.BTC.candles[0].low]
+  });
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
@@ -16,7 +26,22 @@ export const vol1 = (coins: CoinList) => {
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
-    const psarVal = psar.nextValue(coins.BTC.candles[i].close);
+    // @ts-ignore
+    const psarVal = psar.nextValue({
+      high: coins.BTC.candles[i].high,
+      low: coins.BTC.candles[i].low
+    });
+
+    coins.BTC.candles[i].ind = {
+      rsi: rsiVal,
+      psar: psarVal
+    };
+
+    // console.log("close: ", coins.BTC.candles[i].close);
+    // console.log("high: ", coins.BTC.candles[i].high);
+    // console.log("low: ", coins.BTC.candles[i].low);
+    // console.log("rsi: ", rsiVal);
+    // console.log("psarVal: ", psarVal);
 
     if (i < 60 || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
@@ -35,42 +60,10 @@ export const vol1 = (coins: CoinList) => {
 
     coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 30, i);
 
-    const change2m = getCoinPctChange(coins.BTC, i, i - 2);
-    const change10m = getCoinPctChange(coins.BTC, i, i - 10);
-    const change30m = getCoinPctChange(coins.BTC, i, i - 30);
-    const change60m = getCoinPctChange(coins.BTC, i, i - 60);
+    // stratPump.check(coins, i);
+    stratPsar.check(coins, i);
 
     // console.log(change10m);
-    if (change2m >= 1 || change10m >= 1 || change30m >= 2 || change60m >= 2) {
-      // console.log(new Date(coins.BTC.candles[i].start * 1000), change10m);
-
-      for (let key in coins) {
-        coins[key].trader.processAdvice(
-          {
-            id: makeid(6),
-            date: new Date(coins[key].candles[i].start * 1000),
-            recommendation: "long"
-          } as AdviceObj,
-          coins[key].candles[i]
-        );
-      }
-    } else if (
-      change2m <= -1 ||
-      change10m <= -1 ||
-      change30m <= -2 ||
-      change60m <= -2
-    ) {
-      for (let key in coins) {
-        coins[key].trader.processAdvice(
-          {
-            id: makeid(6),
-            date: new Date(coins[key].candles[i].start * 1000),
-            recommendation: "short"
-          } as AdviceObj,
-          coins[key].candles[i]
-        );
-      }
-    }
   }
 
   for (let key in coins) {

@@ -40,18 +40,27 @@ export class App extends React.Component {
       return {
         ...this.state.options.series[0],
         color: coins[k].color || "white",
-        data: coins[k].candles.map(x => x && [x.start * 1000, x.percentChange]),
+        data: coins[k].candles.map(x => x && [x.start * 1000, x.close]),
         name: k,
         large: true,
         sampling: "average"
       };
     });
 
-    const seriesPctChange60m = {
+    const seriesPsar = {
+      ...this.state.options.series[0],
+      color: "yellow",
+      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.ind.psar]),
+      name: "PSAR",
+      large: true,
+      sampling: "average"
+    };
+
+    const seriesRsi = {
       ...this.state.options.series[0],
       color: "red",
-      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.pctChange60m]),
-      name: "PctChange60m",
+      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.ind.rsi]),
+      name: "RSI",
       xAxisIndex: 1,
       yAxisIndex: 1,
       large: true,
@@ -70,7 +79,7 @@ export class App extends React.Component {
           symbolSize: 10,
           data: trades
             .filter(x => x.action === "buy")
-            .map(x => [x.date.getTime(), x.candle.percentChange]),
+            .map(x => [x.date.getTime(), x.candle.close]),
           color: "green",
           type: "scatter",
           name: key
@@ -80,7 +89,7 @@ export class App extends React.Component {
           symbolSize: 10,
           data: trades
             .filter(x => x.action === "sell")
-            .map(x => [x.date.getTime(), x.candle.percentChange]),
+            .map(x => [x.date.getTime(), x.candle.close]),
           color: "red",
           type: "scatter",
           name: key
@@ -126,9 +135,10 @@ export class App extends React.Component {
         legend,
         series: [
           ...series,
+          seriesPsar,
           ...seriesTrades,
-          seriesLabelsPredicted,
-          seriesPctChange60m
+          // seriesLabelsPredicted,
+          seriesRsi
           // seriesVolume
         ]
       },

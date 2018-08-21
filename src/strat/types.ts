@@ -5,11 +5,19 @@ export type Cb = (err: Error) => void;
 export interface Candle {
   start: number;
   close: number;
+  high: number;
+  low: number;
   volume: number;
   percentChange: number;
   pctChange60m: number;
   features?: number[];
   label?: number;
+  ind?: Indicators;
+}
+
+export interface Indicators {
+  rsi: number;
+  psar: number;
 }
 
 export type CsvCell = string | number;
