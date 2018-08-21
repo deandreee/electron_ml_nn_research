@@ -1,7 +1,7 @@
 import { Candle, CoinList } from "./types";
 import { vol1 } from "./vol1";
 import * as ms from "ms";
-import { queryCoins } from "./queryCoinsBtc";
+import { queryCoins } from "./queryCoins";
 import * as pumps from "./pumps";
 import * as SVM from "libsvm-js/asm";
 import { rescale } from "./rescale";

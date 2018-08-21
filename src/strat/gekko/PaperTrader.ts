@@ -117,6 +117,12 @@ export class PaperTrader {
   processAdvice = (advice: AdviceObj, candle: Candle) => {
     this.price = candle.close;
 
+    // ask: let's no allow starting with short for now
+    // eventually, will need to look at asset/currency, but not now
+    if (this.propogatedTrades === 0 && advice.recommendation === "short") {
+      return;
+    }
+
     // ask: let`s check here I think this is the best place, can't find whre it happens in gekko, so many places to look
     if (this.advice === advice.recommendation) {
       return;

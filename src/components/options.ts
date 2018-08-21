@@ -76,7 +76,7 @@ export const options: EChartOption = {
     trigger: "axis",
     axisPointer: {
       animation: false,
-      type: "cross",
+      // type: "cross", // removes that label at the bottom of axis that makes it hard to read, very good
       lineStyle: {
         color: "#376df4",
         width: 2,
