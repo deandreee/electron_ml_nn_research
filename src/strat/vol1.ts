@@ -3,8 +3,7 @@ import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
-import * as stratPump from "./strats/pump";
-import * as stratPsar from "./strats/psar";
+import { stratPump, stratPsar } from "./strats";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
