@@ -5,10 +5,12 @@ import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
 import { stratPump, stratPsar } from "./strats";
 import { XmPsar } from "./strats/ind/XmPsar";
+import { XmRsi } from "./strats/ind/XmRsi";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
   let xmPsar = new XmPsar(10);
+  let xmRsi = new XmRsi(10, 15);
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
@@ -17,8 +19,9 @@ export const vol1 = (coins: CoinList) => {
   // const trader = new PaperTrader(coins.BTC.candles[60]);
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
-    const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
+    // const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
     const psarVal = xmPsar.update(coins.BTC.candles[i]);
+    const rsiVal = xmRsi.update(coins.BTC.candles[i]);
 
     coins.BTC.candles[i].ind = {
       rsi: rsiVal,
