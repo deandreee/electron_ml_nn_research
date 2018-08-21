@@ -2,10 +2,11 @@ import { CoinList, CoinData, AdviceObj } from "./types";
 import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
-import { RSI } from "technicalindicators";
+import { RSI, PSAR } from "technicalindicators";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
+  // let psar = new PSAR({  });
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
@@ -15,6 +16,7 @@ export const vol1 = (coins: CoinList) => {
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
+    const psarVal = psar.nextValue(coins.BTC.candles[i].close);
 
     if (i < 60 || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
@@ -31,7 +33,7 @@ export const vol1 = (coins: CoinList) => {
       // getCoinPctChange(coins.BTC, i + 30, i) > 0.5 ? 1 : 0;
       getCoinPctChange(coins.BTC, i + 30, i) > 1 ? 1 : 0;
 
-    coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 60, i);
+    coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 30, i);
 
     const change2m = getCoinPctChange(coins.BTC, i, i - 2);
     const change10m = getCoinPctChange(coins.BTC, i, i - 10);

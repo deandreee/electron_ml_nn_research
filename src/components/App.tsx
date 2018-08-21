@@ -102,8 +102,10 @@ export class App extends React.Component {
     // };
 
     const labelsFiltered = labelsPredicted
-      .filter(x => x === 1)
-      .map((x, i) => ({ x, i }));
+      // const labelsFiltered = coins.BTC.candles
+      // .map(x => x.label)
+      .map((x, i) => ({ x, i }))
+      .filter(x => x.x === 1);
 
     const seriesLabelsPredicted = {
       symbolSize: 5,

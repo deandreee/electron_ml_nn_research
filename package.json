@@ -38,6 +38,7 @@
     "better-sqlite3": "^4.1.4",
     "bindings": "^1.3.0",
     "bluebird": "^3.5.1",
+    "brain.js": "^1.2.6",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
     "libsvm-js": "^0.2.1",
@@ -45,10 +46,12 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "ms": "^2.1.1",
+    "neataptic": "^1.4.7",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "stats-lite": "^2.1.1",
     "svm": "^0.1.1",
+    "synaptic": "^1.1.4",
     "technicalindicators": "^1.1.12"
   }
 }

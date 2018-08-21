@@ -14,8 +14,7 @@
       "taskName": "tsc.be",
       "command": "tsc",
       "isShellCommand": true,
-      "args": ["-p", "tsconfig.be.json"],
-      "showOutput": "always"
+      "args": ["-p", "tsconfig.be.json"]
     }
   ]
 }
