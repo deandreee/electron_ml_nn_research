@@ -5,9 +5,13 @@ export type Cb = (err: Error) => void;
 export interface Candle {
   start: number;
   close: number;
+  open: number;
   high: number;
   low: number;
   volume: number;
+  vwp: number;
+  trades: number;
+
   percentChange: number;
   pctChange60m: number;
   features?: number[];

@@ -4,18 +4,11 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
 import { stratPump, stratPsar } from "./strats";
+import { XmPsar } from "./strats/ind/XmPsar";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
-
-  let step = 0.025;
-  let max = 0.05;
-  let psar = new PSAR({
-    step,
-    max,
-    high: [coins.BTC.candles[0].high],
-    low: [coins.BTC.candles[0].low]
-  });
+  let xmPsar = new XmPsar(10);
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
@@ -25,11 +18,7 @@ export const vol1 = (coins: CoinList) => {
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
-    // @ts-ignore
-    const psarVal = psar.nextValue({
-      high: coins.BTC.candles[i].high,
-      low: coins.BTC.candles[i].low
-    });
+    const psarVal = xmPsar.update(coins.BTC.candles[i]);
 
     coins.BTC.candles[i].ind = {
       rsi: rsiVal,
