@@ -2,6 +2,8 @@ import { PaperTrader } from "./gekko/PaperTrader";
 
 export type Cb = (err: Error) => void;
 
+export type CandleProp = "close" | "percentChange";
+
 export interface Candle {
   start: number;
   close: number;
@@ -82,6 +84,7 @@ export interface Trade {
   portfolio: Portfolio;
   balance: number;
   candle: Candle;
+  reason: string;
 }
 
 export interface Report {

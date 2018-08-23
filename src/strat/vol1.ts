@@ -17,12 +17,9 @@ export const vol1 = (coins: CoinList) => {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
   }
 
-  // const trader = new PaperTrader(coins.BTC.candles[60]);
-
   for (let i = 0; i < coins.BTC.candles.length; i++) {
-    // const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
-    const psarVal = xmPsar.update(coins.EOS.candles[i]);
-    const rsiVal = xmRsi.update(coins.EOS.candles[i]);
+    const psarVal = xmPsar.update(coins.BTC.candles[i]);
+    const rsiVal = xmRsi.update(coins.BTC.candles[i]);
 
     coins.BTC.candles[i].ind = {
       rsi: rsiVal,

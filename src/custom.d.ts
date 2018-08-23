@@ -6,3 +6,4 @@ declare module "libsvm-js/asm";
 declare module "neataptic";
 declare module "synaptic";
 declare module "mtproto-storage-fs";
+declare module "safe-access";

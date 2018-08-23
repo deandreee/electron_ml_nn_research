@@ -114,7 +114,7 @@ export class PaperTrader {
     this.performanceAnalyzer.processCandle(candle);
   };
 
-  processAdvice = (advice: AdviceObj, candle: Candle) => {
+  processAdvice = (advice: AdviceObj, candle: Candle, reason: string) => {
     this.price = candle.close;
 
     // ask: let's no allow starting with short for now
@@ -150,7 +150,8 @@ export class PaperTrader {
       date: advice.date,
       effectivePrice,
       feePercent: this.rawFee,
-      candle
+      candle,
+      reason
     } as Trade);
 
     this.advice = advice.recommendation;

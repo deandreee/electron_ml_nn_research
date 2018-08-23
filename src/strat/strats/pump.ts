@@ -10,13 +10,13 @@ export const check = (coins: CoinList, i: number) => {
   const change60m = getCoinPctChange(coins.BTC, i, i - 60);
 
   if (change2m >= 1 || change10m >= 1 || change30m >= 2 || change60m >= 2) {
-    massBuy(coins, i);
+    massBuy(coins, i, "N/A");
   } else if (
     change2m <= -1 ||
     change10m <= -1 ||
     change30m <= -2 ||
     change60m <= -2
   ) {
-    massSell(coins, i);
+    massSell(coins, i, "N/A");
   }
 };

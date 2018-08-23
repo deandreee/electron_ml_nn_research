@@ -2,8 +2,9 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import { xAxis } from "./xAxis";
 import { yAxis } from "./yAxis";
-// import tooltip from "chart/tooltip";
 import { dataZoom } from "./dataZoom";
+import { axisTooltip, itemTooltip } from "./tooltip";
+import { tooltipFormatter } from "./tooltipFormatter";
 
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,
@@ -71,19 +72,6 @@ export const options: EChartOption = {
     }
   ],
 
-  tooltip: {
-    // https://ecomfe.github.io/echarts-examples/public/editor.html?c=candlestick-sh-2015
-    trigger: "axis",
-    axisPointer: {
-      animation: false,
-      // type: "cross", // removes that label at the bottom of axis that makes it hard to read, very good
-      lineStyle: {
-        color: "#376df4",
-        width: 2,
-        opacity: 1
-      }
-    }
-  }
-
-  //   tooltip: { ...tooltip }
+  // tooltip: axisTooltip,
+  tooltip: { ...itemTooltip, formatter: tooltipFormatter }
 };
