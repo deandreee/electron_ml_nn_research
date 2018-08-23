@@ -13,7 +13,7 @@ const hasRsiBeen = (
   rsi: number,
   comparison: "gt" | "lt"
 ) => {
-  const candles = coins.BTC.candles.slice(iBefore, i);
+  const candles = coins.EOS.candles.slice(iBefore, i);
   for (let x of candles) {
     if (comparison === "gt" && x.ind.rsi > rsi) {
       return true;
@@ -27,8 +27,8 @@ const hasRsiBeen = (
 };
 
 export const check = (coins: CoinList, i: number) => {
-  const prevCandle = coins.BTC.candles[i - 1];
-  const candle = coins.BTC.candles[i];
+  const prevCandle = coins.EOS.candles[i - 1];
+  const candle = coins.EOS.candles[i];
 
   // if (
   //   new Date(candle.start * 1000).toISOString() === "2018-06-02T06:25:00.000Z"

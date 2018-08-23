@@ -21,10 +21,15 @@ export const vol1 = (coins: CoinList) => {
 
   for (let i = 0; i < coins.BTC.candles.length; i++) {
     // const rsiVal = rsi.nextValue(coins.BTC.candles[i].close);
-    const psarVal = xmPsar.update(coins.BTC.candles[i]);
-    const rsiVal = xmRsi.update(coins.BTC.candles[i]);
+    const psarVal = xmPsar.update(coins.EOS.candles[i]);
+    const rsiVal = xmRsi.update(coins.EOS.candles[i]);
 
     coins.BTC.candles[i].ind = {
+      rsi: rsiVal,
+      psar: psarVal
+    };
+
+    coins.EOS.candles[i].ind = {
       rsi: rsiVal,
       psar: psarVal
     };

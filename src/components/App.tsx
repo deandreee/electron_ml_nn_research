@@ -220,7 +220,7 @@ export class App extends React.Component {
           }}
         />
         <Profits coins={this.state.coins} />
-        <Roundtrips coin={this.state.coins.BTC} />
+        <Roundtrips coin={this.state.coins.EOS} />
       </div>
     );
   }
