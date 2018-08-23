@@ -8,8 +8,10 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     height: 1000,
     width: 1700,
-    frame: false
+    frame: false,
     // titleBarStyle: "hiddenInset"
+    backgroundColor: "#21202D",
+    icon: path.join(__dirname, "assets/b.jpg")
   });
 
   // and load the index.html of the app.

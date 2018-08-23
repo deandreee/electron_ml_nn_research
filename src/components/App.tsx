@@ -235,7 +235,7 @@ export class App extends React.Component {
               Math.round(report.relativeProfit * 100) / 100;
 
             return (
-              <div key={name} style={{ whiteSpace: "pre" }}>
+              <div key={name} style={{ whiteSpace: "pre", color: "white" }}>
                 <span style={{ fontStyle: "bold" }}>{this.pad(name, 8)}</span>
                 {/* <span style={{ color: profit > 0 ? "green" : "red" }}>
                   {this.pad(profit + "", 8)}{" "}
