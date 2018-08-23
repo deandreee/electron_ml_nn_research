@@ -9,6 +9,8 @@ import { tooltipFormatter } from "./tooltipFormatter";
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,
 
+  animation: false,
+
   grid: [
     {
       left: "50px",

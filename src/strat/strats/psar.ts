@@ -33,7 +33,7 @@ export const check = (coins: CoinList, i: number) => {
 
   // basically stoploss for now
   const limitsStoploss = [
-    { mins: 1, pct: 0.5 },
+    { mins: 1, pct: -0.5 },
     { mins: 2, pct: -1 },
     { mins: 10, pct: -1 },
     { mins: 30, pct: -2 },
