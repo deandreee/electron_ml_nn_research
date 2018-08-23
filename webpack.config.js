@@ -1,4 +1,5 @@
 // const webpack = require("webpack");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   target: "electron-renderer",
@@ -17,13 +18,40 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
 
+  plugins: [
+    // new MiniCssExtractPlugin({
+    //   // Options similar to the same options in webpackOptions.output
+    //   // both options are optional
+    //   filename: "[name].css",
+    //   chunkFilename: "[id].css"
+    // })
+  ],
+
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      }
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     {
+      //       loader: MiniCssExtractPlugin.loader,
+      //       options: {
+      //         // you can specify a publicPath here
+      //         // by default it use publicPath in webpackOptions.output
+      //         publicPath: "../"
+      //       }
+      //     },
+      //     "css-loader"
+      //   ]
+      // }
     ]
   },
 

@@ -10,6 +10,7 @@ import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
 import { cryptonians, Signal } from "../strat/signals/cryptonians";
 import { Profits } from "./Profits";
+import { Roundtrips } from "./Roundtrips";
 
 interface State {
   isLoading: boolean;
@@ -219,6 +220,7 @@ export class App extends React.Component {
           }}
         />
         <Profits coins={this.state.coins} />
+        <Roundtrips coin={this.state.coins.BTC} />
       </div>
     );
   }

@@ -106,3 +106,29 @@ export interface Report {
   downside: number;
   alpha: number;
 }
+
+export interface RoundTrip {
+  id: number;
+
+  entryAt?: Date;
+  entryPrice?: number;
+  entryBalance?: number;
+
+  exitAt?: Date;
+  exitPrice?: number;
+  exitBalance?: number;
+
+  duration?: number;
+
+  pnl?: number;
+  profit?: number;
+
+  exit?: RoundTripAction;
+  entry?: RoundTripAction;
+}
+
+export interface RoundTripAction {
+  date: Date;
+  price: number;
+  total: number;
+}

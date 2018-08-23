@@ -1,37 +1,18 @@
 import * as moment from "moment";
 import * as statslite from "stats-lite";
 import { config } from "./config";
-import { Portfolio, Candle, Trade, Report } from "../types";
+import {
+  Portfolio,
+  Candle,
+  Trade,
+  Report,
+  RoundTrip,
+  RoundTripAction
+} from "../types";
 import * as ms from "ms";
 
 const perfConfig = config.performanceAnalyzer;
 const watchConfig = config.watch;
-
-interface RoundTripAction {
-  date: Date;
-  price: number;
-  total: number;
-}
-
-interface RoundTrip {
-  id: number;
-
-  entryAt?: Date;
-  entryPrice?: number;
-  entryBalance?: number;
-
-  exitAt?: Date;
-  exitPrice?: number;
-  exitBalance?: number;
-
-  duration?: number;
-
-  pnl?: number;
-  profit?: number;
-
-  exit?: RoundTripAction;
-  entry?: RoundTripAction;
-}
 
 interface Start {
   balance?: number;
