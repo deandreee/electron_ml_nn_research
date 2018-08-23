@@ -10,12 +10,12 @@ import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
 
-// const from = new Date("2018-07-01T00:00:00.000Z");
-// const to = new Date("2018-08-01T00:00:00.000Z");
+const from = new Date("2018-08-10T00:00:00.000Z");
+const to = new Date("2018-08-22T00:00:00.000Z");
 
-const { from, to } = pumps.jun2;
+// const { from, to } = pumps.jun2;
 
-const fromExtended = new Date(from.getTime() - ms("1h"));
+const fromExtended = new Date(from.getTime() - ms(`${15 * 30}m`)); // because XmRsi
 const toExtended = new Date(to.getTime() + ms("1h"));
 
 interface Result {
@@ -32,6 +32,7 @@ export const run = (): Result => {
   );
 
   const labelsPredicted = predictNeataptic(candlesActual);
+
   return { coins, labelsPredicted };
 };
 

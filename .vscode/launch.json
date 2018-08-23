@@ -18,7 +18,8 @@
       "request": "launch",
       "name": "IndexGo",
       "program": "${workspaceFolder}/dist-be/go.js",
-      "preLaunchTask": "tsc.be"
+      "preLaunchTask": "tsc.be",
+      "console": "integratedTerminal"
     }
   ]
 }

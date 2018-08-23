@@ -47,12 +47,14 @@
     "lodash-es": "^4.17.10",
     "moment": "^2.22.2",
     "ms": "^2.1.1",
+    "mtproto-storage-fs": "^0.3.1",
     "neataptic": "^1.4.7",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "stats-lite": "^2.1.1",
     "svm": "^0.1.1",
     "synaptic": "^1.1.4",
-    "technicalindicators": "^1.1.12"
+    "technicalindicators": "^1.1.12",
+    "telegram-mtproto": "^2.2.2"
   }
 }

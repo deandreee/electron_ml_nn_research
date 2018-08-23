@@ -10,7 +10,8 @@ import { XmRsi } from "./strats/ind/XmRsi";
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
   let xmPsar = new XmPsar(10);
-  let xmRsi = new XmRsi(10, 15);
+  let xmRsi = new XmRsi(30, 15);
+  let warmup = 30 * 15; // min
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
@@ -34,7 +35,7 @@ export const vol1 = (coins: CoinList) => {
     // console.log("rsi: ", rsiVal);
     // console.log("psarVal: ", psarVal);
 
-    if (i < 60 || i >= coins.BTC.candles.length - 60) {
+    if (i < warmup || i >= coins.BTC.candles.length - 60) {
       continue; // history warmup
     }
 

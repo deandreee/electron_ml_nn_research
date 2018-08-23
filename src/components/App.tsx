@@ -8,6 +8,7 @@ import * as strat from "../strat";
 // import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
+import { cryptonians, Signal } from "../strat/signals/cryptonians";
 
 interface State {
   isLoading: boolean;
@@ -23,16 +24,10 @@ export class App extends React.Component {
   };
 
   async componentWillMount() {
-    // const dbBinance = new Database("./binance_0.1.db");
-
     const { coins, labelsPredicted } = strat.run();
 
-    // let { min, max } = chartUtils.getMinMax(
-    //   coins.EOS.candles.map(x => x && x.percentChange)
-    // );
-
-    // const min = 0.5;
-    // const max = 1.05;
+    // const currentProp = "percentChange";
+    const currentProp = "close";
 
     const series = Object.keys(coins).map(k => {
       // const series = ["BTC", "ETH", "XRP", "BCC", "XLM", "TRX", "EOS"].map(k => {
@@ -40,7 +35,7 @@ export class App extends React.Component {
       return {
         ...this.state.options.series[0],
         color: coins[k].color || "white",
-        data: coins[k].candles.map(x => x && [x.start * 1000, x.close]),
+        data: coins[k].candles.map(x => x && [x.start * 1000, x[currentProp]]),
         name: k,
         large: true,
         sampling: "average"
@@ -49,11 +44,14 @@ export class App extends React.Component {
 
     const seriesPsar = {
       ...this.state.options.series[0],
-      color: "yellow",
+      color: "lightblue",
       data: coins.BTC.candles.map(x => x && [x.start * 1000, x.ind.psar]),
       name: "PSAR",
       large: true,
-      sampling: "average"
+      sampling: "average",
+      lineStyle: {
+        type: "dotted"
+      }
     };
 
     const seriesRsi = {
@@ -79,7 +77,7 @@ export class App extends React.Component {
           symbolSize: 10,
           data: trades
             .filter(x => x.action === "buy")
-            .map(x => [x.date.getTime(), x.candle.close]),
+            .map(x => [x.date.getTime(), x.candle[currentProp]]),
           color: "green",
           type: "scatter",
           name: key
@@ -89,8 +87,58 @@ export class App extends React.Component {
           symbolSize: 10,
           data: trades
             .filter(x => x.action === "sell")
-            .map(x => [x.date.getTime(), x.candle.close]),
+            .map(x => [x.date.getTime(), x.candle[currentProp]]),
           color: "red",
+          type: "scatter",
+          name: key
+        };
+
+        return [seriesTradesBuy, seriesTradesSell];
+      })
+    );
+
+    const getCandleForSignal = (signal: Signal) => {
+      const candles = coins[signal.asset].candles;
+      for (let i = 0; i < candles.length - 1; i++) {
+        if (
+          candles[i].start * 1000 < signal.date.getTime() &&
+          candles[i + 1].start * 1000 > signal.date.getTime()
+        ) {
+          return candles[i + 1];
+        }
+      }
+      console.log("candle not found for signal", signal);
+      return null;
+    };
+
+    const seriesSignals = flatten(
+      Object.keys(coins).map(key => {
+        const trades = cryptonians.filter(x => x.asset === key);
+
+        const seriesTradesBuy = {
+          symbolSize: 10,
+          data: trades
+            .filter(x => x.advice === "long")
+            .map(x => {
+              const candle = getCandleForSignal(x);
+              return candle ? [x.date.getTime(), candle[currentProp]] : null;
+            })
+            .filter(x => !!x),
+          color: "purple",
+          type: "scatter",
+          name: key
+        };
+
+        const seriesTradesSell = {
+          symbolSize: 10,
+          data: trades
+            .filter(x => x.advice === "short")
+            .map(x => {
+              const candle = getCandleForSignal(x);
+              return candle ? [x.date.getTime(), candle[currentProp]] : null;
+            })
+            .filter(x => !!x),
+          color: "lightblue",
           type: "scatter",
           name: key
         };
@@ -120,7 +168,7 @@ export class App extends React.Component {
       symbolSize: 5,
       data: labelsFiltered.map(x => [
         coins.BTC.candles[x.i].start * 1000,
-        coins.BTC.candles[x.i].percentChange
+        coins.BTC.candles[x.i][currentProp]
       ]),
       color: "green",
       type: "scatter",
@@ -137,6 +185,7 @@ export class App extends React.Component {
           ...series,
           seriesPsar,
           ...seriesTrades,
+          ...seriesSignals,
           // seriesLabelsPredicted,
           seriesRsi
           // seriesVolume
