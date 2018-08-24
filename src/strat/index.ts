@@ -9,6 +9,7 @@ import * as brain from "brain.js";
 import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
+import { config } from "./config";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
 const to = new Date("2018-08-22T00:00:00.000Z");
@@ -27,7 +28,7 @@ export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
   vol1(coins);
 
-  const candlesActual = coins.BTC.candles.filter(
+  const candlesActual = coins[config.leadCoin].candles.filter(
     x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
   );
 

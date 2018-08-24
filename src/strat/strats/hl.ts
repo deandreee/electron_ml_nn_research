@@ -1,9 +1,12 @@
 import { CoinList, CoinData, AdviceObj, Candle } from "../types";
 import { massBuy, massSell } from "../massTrade";
+import { config } from "../config";
 
 // let barscount = 0; // ask: not used
 // let DarvasHigh = 0; // ask: not used
 // let DarvasLow = 0; // ask: not used
+
+/*** mounir: calculate down peak and trade on ***/
 
 let candle_queue: Candle[] = []; // ask: yeah well this is weird, uses last 25 and clears when buying ...
 let is_buyin = false;
@@ -14,8 +17,8 @@ let is_buyin = false;
 let NoTradedSince = 0;
 
 export const check = (coins: CoinList, i: number) => {
-  const prevCandle = coins.BTC.candles[i - 1];
-  const candle = coins.BTC.candles[i];
+  const prevCandle = coins[config.leadCoin].candles[i - 1];
+  const candle = coins[config.leadCoin].candles[i];
   candle_queue.push(candle);
 
   checkReal(coins, candle, i);
@@ -70,14 +73,15 @@ const checkReal = (coins: CoinList, candle: Candle, i: number) => {
 
   // ask: diff between min/max including current candle
   const c1 = getPrevCandle();
+
+  // I don't get this, what is true range? ATR?
+  // ask: since c1 included un calculations, I dont see the point of max/min
+  // oh it's not, when candle_queue.length 25+, so there are possible candles that are not in min/max calculations ... amazing logic
   const trueRange =
-    Math.max(runningMax, c1.close) - Math.min(runningMin, c1.close); // ask: since c1 included un calculations, I dont see the point of max/min
+    Math.max(runningMax, c1.close) - Math.min(runningMin, c1.close);
 
+  // and this is even better
   const valid = trueRange / (candle.close - c1.close);
-  //   movingTrueRange.push(valid);
-
-  // ask: same but without the current ... oh great, not used anywhere
-  //   LowTopDif.push((runningMin - runningMax) / 100);
 
   if (candeLow && valid > 0 && !is_buyin) {
     candle_queue = []; // ask: clearing channel? oh, clearing everything

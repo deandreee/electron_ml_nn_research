@@ -11,6 +11,7 @@ import { getLegend } from "./getLegend";
 import { Profits } from "./Profits";
 import { Roundtrips } from "./Roundtrips";
 import { seriesSignals, seriesTrades } from "./series";
+import { config } from "../strat/config";
 
 interface State {
   isLoading: boolean;
@@ -46,7 +47,9 @@ export class App extends React.Component {
     const seriesPsar = {
       ...this.state.options.series[0],
       color: "lightblue",
-      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.ind.psar]),
+      data: coins[config.leadCoin].candles.map(
+        x => x && [x.start * 1000, x.ind.psar]
+      ),
       name: "PSAR",
       large: true,
       sampling: "average",
@@ -59,7 +62,9 @@ export class App extends React.Component {
     const seriesRsi = {
       ...this.state.options.series[0],
       color: "red",
-      data: coins.BTC.candles.map(x => x && [x.start * 1000, x.ind.rsi]),
+      data: coins[config.leadCoin].candles.map(
+        x => x && [x.start * 1000, x.ind.rsi]
+      ),
       name: "RSI",
       xAxisIndex: 1,
       yAxisIndex: 1,
@@ -71,7 +76,7 @@ export class App extends React.Component {
     // const seriesVolume = {
     //   type: "bar",
     //   color: "red",
-    //   data: coins.BTC.candles.map(x => [x.start * 1000, x.volume]),
+    //   data: coins[config.leadCoin].candles.map(x => [x.start * 1000, x.volume]),
     //   name: "Volume",
     //   xAxisIndex: 1,
     //   yAxisIndex: 1,
@@ -80,16 +85,14 @@ export class App extends React.Component {
     // };
 
     const labelsFiltered = labelsPredicted
-      // const labelsFiltered = coins.BTC.candles
-      // .map(x => x.label)
       .map((x, i) => ({ x, i }))
       .filter(x => x.x === 1);
 
     const seriesLabelsPredicted = {
       symbolSize: 5,
       data: labelsFiltered.map(x => [
-        coins.BTC.candles[x.i].start * 1000,
-        coins.BTC.candles[x.i][currentProp]
+        coins[config.leadCoin].candles[x.i].start * 1000,
+        coins[config.leadCoin].candles[x.i][currentProp]
       ]),
       color: "green",
       type: "scatter",
@@ -139,7 +142,7 @@ export class App extends React.Component {
           }}
         />
         <Profits coins={this.state.coins} />
-        <Roundtrips coin={this.state.coins.BTC} />
+        <Roundtrips coin={this.state.coins[config.leadCoin]} />
       </div>
     );
   }

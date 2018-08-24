@@ -6,38 +6,35 @@ import { RSI, PSAR } from "technicalindicators";
 import { stratPump, stratPsar, stratHl } from "./strats";
 import { XmPsar } from "./strats/ind/XmPsar";
 import { XmRsi } from "./strats/ind/XmRsi";
+import { config } from "./config";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
   let xmPsar = new XmPsar(20);
   let xmRsi = new XmRsi(30, 15);
   let warmup = 30 * 15; // min
+  const leadCoin = coins[config.leadCoin];
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
   }
 
-  for (let i = 0; i < coins.BTC.candles.length; i++) {
-    const psarVal = xmPsar.update(coins.BTC.candles[i]);
-    const rsiVal = xmRsi.update(coins.BTC.candles[i]);
+  for (let i = 0; i < leadCoin.candles.length; i++) {
+    const psarVal = xmPsar.update(leadCoin.candles[i]);
+    const rsiVal = xmRsi.update(leadCoin.candles[i]);
 
-    coins.BTC.candles[i].ind = {
+    leadCoin.candles[i].ind = {
       rsi: rsiVal,
       psar: psarVal
     };
 
-    coins.EOS.candles[i].ind = {
-      rsi: rsiVal,
-      psar: psarVal
-    };
-
-    // console.log("close: ", coins.BTC.candles[i].close);
-    // console.log("high: ", coins.BTC.candles[i].high);
-    // console.log("low: ", coins.BTC.candles[i].low);
+    // console.log("close: ", leadCoin.candles[i].close);
+    // console.log("high: ", leadCoin.candles[i].high);
+    // console.log("low: ", leadCoin.candles[i].low);
     // console.log("rsi: ", rsiVal);
     // console.log("psarVal: ", psarVal);
 
-    if (i < warmup || i >= coins.BTC.candles.length - 60) {
+    if (i < warmup || i >= leadCoin.candles.length - 60) {
       continue; // history warmup
     }
 
@@ -45,14 +42,14 @@ export const vol1 = (coins: CoinList) => {
       coins[key].trader.processCandle(coins[key].candles[i]);
     }
 
-    coins.BTC.candles[i].features = getFeatures(coins.BTC, i, rsiVal!);
-    // coins.BTC.candles[i].label = getFutureResult(coins.BTC, i) > 5 ? 1 : -1;
-    coins.BTC.candles[i].label = coins.BTC.candles[i].label =
-      // getCoinPctChange(coins.BTC, i + 10, i) > 0 ? 1 : 0;
-      // getCoinPctChange(coins.BTC, i + 30, i) > 0.5 ? 1 : 0;
-      getCoinPctChange(coins.BTC, i + 30, i) > 1 ? 1 : 0;
+    leadCoin.candles[i].features = getFeatures(leadCoin, i, rsiVal!);
+    // leadCoin.candles[i].label = getFutureResult(leadCoin, i) > 5 ? 1 : -1;
+    leadCoin.candles[i].label = leadCoin.candles[i].label =
+      // getCoinPctChange(leadCoin, i + 10, i) > 0 ? 1 : 0;
+      // getCoinPctChange(leadCoin, i + 30, i) > 0.5 ? 1 : 0;
+      getCoinPctChange(leadCoin, i + 30, i) > 1 ? 1 : 0;
 
-    coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 30, i);
+    leadCoin.candles[i].pctChange60m = getCoinPctChange(leadCoin, i + 30, i);
 
     // stratPump.check(coins, i);
     // stratPsar.check(coins, i);

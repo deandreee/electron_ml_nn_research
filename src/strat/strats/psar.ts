@@ -3,6 +3,7 @@ import { makeid } from "../makeid";
 import { getCoinPctChange, getPctChange } from "../utils";
 import { massBuy, massSell } from "../massTrade";
 import { pctChange } from "./ind/pctChange";
+import { config } from "../config";
 
 type Trend = "up" | "down" | null;
 let trend: Trend = null;
@@ -17,7 +18,7 @@ const hasRsiBeen = (
   rsi: number,
   comparison: "gt" | "lt"
 ) => {
-  const candles = coins.BTC.candles.slice(iBefore, i);
+  const candles = coins[config.leadCoin].candles.slice(iBefore, i);
   for (let x of candles) {
     if (comparison === "gt" && x.ind.rsi > rsi) {
       return true;
@@ -31,8 +32,8 @@ const hasRsiBeen = (
 };
 
 export const check = (coins: CoinList, i: number) => {
-  const prevCandle = coins.BTC.candles[i - 1];
-  const candle = coins.BTC.candles[i];
+  const prevCandle = coins[config.leadCoin].candles[i - 1];
+  const candle = coins[config.leadCoin].candles[i];
 
   // basically stoploss for now
   const limitsStoploss = [
@@ -43,7 +44,7 @@ export const check = (coins: CoinList, i: number) => {
     { mins: 60, pct: -2 }
   ];
 
-  const quickPctChange = pctChange(coins.BTC, i, limitsStoploss);
+  const quickPctChange = pctChange(coins[config.leadCoin], i, limitsStoploss);
 
   if (stoplossCooldown > 0) {
     stoplossCooldown--;
