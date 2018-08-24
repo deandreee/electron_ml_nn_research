@@ -3,13 +3,13 @@ import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
-import { stratPump, stratPsar } from "./strats";
+import { stratPump, stratPsar, stratHl } from "./strats";
 import { XmPsar } from "./strats/ind/XmPsar";
 import { XmRsi } from "./strats/ind/XmRsi";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
-  let xmPsar = new XmPsar(10);
+  let xmPsar = new XmPsar(20);
   let xmRsi = new XmRsi(30, 15);
   let warmup = 30 * 15; // min
 
@@ -55,7 +55,8 @@ export const vol1 = (coins: CoinList) => {
     coins.BTC.candles[i].pctChange60m = getCoinPctChange(coins.BTC, i + 30, i);
 
     // stratPump.check(coins, i);
-    stratPsar.check(coins, i);
+    // stratPsar.check(coins, i);
+    stratHl.check(coins, i);
 
     // console.log(change10m);
   }

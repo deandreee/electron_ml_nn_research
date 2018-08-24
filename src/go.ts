@@ -1,5 +1,10 @@
 import { run } from "./strat/index";
-run();
+const res = run();
+
+console.log(
+  "BTC",
+  res.coins.BTC.trader.performanceAnalyzer.report.relativeProfit
+);
 
 // import * as telegram from "./strat/telegram";
 // telegram.exec();
