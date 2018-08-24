@@ -38,7 +38,8 @@ export class App extends React.Component {
         data: coins[k].candles.map(x => x && [x.start * 1000, x[currentProp]]),
         name: k,
         large: true,
-        sampling: "average"
+        sampling: "average",
+        symbol: "none"
       };
     });
 
@@ -51,7 +52,8 @@ export class App extends React.Component {
       sampling: "average",
       lineStyle: {
         type: "dotted"
-      }
+      },
+      symbol: "none"
     };
 
     const seriesRsi = {
@@ -62,7 +64,8 @@ export class App extends React.Component {
       xAxisIndex: 1,
       yAxisIndex: 1,
       large: true,
-      sampling: "average"
+      sampling: "average",
+      symbol: "none"
     };
 
     // const seriesVolume = {
@@ -124,7 +127,7 @@ export class App extends React.Component {
       <div style={this.style}>
         <ReactEcharts
           option={this.state.options}
-          style={{ height: "500px", width: "100%" }}
+          style={{ height: "600px", width: "100%" }}
           notMerge={true}
           lazyUpdate={true}
           theme={"dark"}

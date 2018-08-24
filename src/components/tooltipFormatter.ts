@@ -1,5 +1,6 @@
-import styles from "./styles";
+import * as moment from "moment";
 import * as access from "safe-access";
+import styles from "./styles";
 
 type Cb = (ticker: string, res: string) => null;
 
@@ -15,7 +16,9 @@ export const tooltipFormatter = function(
   }
 
   setTimeout(function() {
-    const res = extra.reason;
+    const date = moment(params.data[0]).format("DD MMM   HH:mm");
+    // const date = new Date(params.data[0]).toISOString();
+    const res = `${date} | ${extra.reason}`;
     callback(ticket, res);
   }, 50);
 

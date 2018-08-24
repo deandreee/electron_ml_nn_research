@@ -7,6 +7,9 @@ import { pctChange } from "./ind/pctChange";
 type Trend = "up" | "down" | null;
 let trend: Trend = null;
 
+// don't allow to trade if have been stoplossed
+let stoplossCooldown = 0;
+
 const hasRsiBeen = (
   coins: CoinList,
   i: number,
@@ -40,18 +43,14 @@ export const check = (coins: CoinList, i: number) => {
     { mins: 60, pct: -2 }
   ];
 
-  if (pctChange(coins.BTC, i, limitsStoploss)) {
-    massSell(coins, i, "stoploss");
-    trend = "down";
-  }
+  const quickPctChange = pctChange(coins.BTC, i, limitsStoploss);
 
-  // if (
-  //   new Date(candle.start * 1000).toISOString() === "2018-06-02T06:25:00.000Z"
-  // ) {
-  //   debugger;
-  // }
-
-  if (
+  if (stoplossCooldown > 0) {
+    stoplossCooldown--;
+  } else if (quickPctChange) {
+    massSell(coins, i, `stoploss | ${quickPctChange}`);
+    stoplossCooldown = 5;
+  } else if (
     trend === "up" &&
     candle.ind.psar < prevCandle.ind.psar &&
     hasRsiBeen(coins, i, i - 20, 70, "gt")
@@ -65,6 +64,7 @@ export const check = (coins: CoinList, i: number) => {
     massBuy(coins, i, `psar > prevCandle`);
   }
 
+  // can't return, need to keep this
   if (candle.ind.psar > prevCandle.ind.psar) {
     trend = "up";
   } else {

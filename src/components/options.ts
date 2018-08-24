@@ -9,7 +9,7 @@ import { tooltipFormatter } from "./tooltipFormatter";
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,
 
-  animation: false,
+  animation: false, // performance !!!
 
   grid: [
     {
@@ -21,7 +21,7 @@ export const options: EChartOption = {
     {
       left: "50px",
       right: "10px",
-      top: "75%",
+      top: "80%",
       height: 80
     }
   ],
@@ -31,7 +31,7 @@ export const options: EChartOption = {
   xAxis: [
     {
       ...xAxis,
-      axisLabel: { ...xAxis.axisLabel, formatter: null },
+      axisLabel: { ...xAxis.axisLabel },
       axisLine: { lineStyle: { color: styles.colors.axis } },
       splitLine: { show: false }
     },

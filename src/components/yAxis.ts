@@ -17,7 +17,7 @@ export const yAxis = [
     scale: true,
     gridIndex: 1,
     // splitNumber: 2,
-    axisLabel: { show: false },
+    axisLabel: { show: true },
     axisLine: { show: false },
     axisTick: { show: false },
     splitLine: { show: true, interval: 20 } // either this or splitNumber, cant have both

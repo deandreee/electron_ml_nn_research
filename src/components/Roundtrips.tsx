@@ -2,6 +2,7 @@ import * as React from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { CoinData, RoundTrip } from "../strat/types";
+import * as moment from "moment";
 
 interface Props {
   coin: CoinData;
@@ -13,16 +14,18 @@ export class Roundtrips extends React.Component<Props, {}> {
       {
         id: "entryAt",
         Header: "Entry at",
-        accessor: (x: RoundTrip) => x.entryAt.toISOString()
+        accessor: (x: RoundTrip) => moment(x.entryAt).format("DD MMM    HH:mm")
       },
       {
         id: "exitAt",
         Header: "Exit at",
-        accessor: (x: RoundTrip) => x.exitAt.toISOString()
+        accessor: (x: RoundTrip) => moment(x.exitAt).format("DD MMM   HH:mm")
       },
+
       {
+        id: "duration",
         Header: "Exposure",
-        accessor: "duration"
+        accessor: (x: RoundTrip) => moment.duration(x.duration, "ms").humanize()
       },
       {
         Header: "Entry Balance",

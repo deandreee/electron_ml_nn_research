@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import styles from "./styles";
 import * as chartUtils from "./chartUtils";
 
@@ -12,7 +13,7 @@ export const xAxis = {
     color: styles.colors.axis,
     fontFamily: styles.fontFamily,
     formatter: function(ts: number, index: number) {
-      return chartUtils.formatDateShort(ts);
+      return moment(ts).format("DD MMM");
     }
   }
   // axisPointer: {
