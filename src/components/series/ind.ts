@@ -46,6 +46,20 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     symbol: "none"
   };
 
+  const seriesHlValid = {
+    ...options.series[0],
+    color: "green",
+    data: coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.hlTrueRange.valid]
+    ),
+    name: "HlValid",
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    large: true,
+    sampling: "average",
+    symbol: "none"
+  };
+
   const hlMax = coins[config.leadCoin].candles.map(
     x => x && [x.start * 1000, x.ind.hlTrueRange.runningMax]
   );
@@ -72,6 +86,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
 
     seriesHlTrueRange,
     seriesVixFix
+    // seriesHlValid // displays really badly due to all the interruptions
   ];
 };
 
