@@ -4,14 +4,15 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
 import { stratPump, stratPsar, stratHl } from "./strats";
-import { XmPsar } from "./strats/ind/XmPsar";
-import { XmRsi } from "./strats/ind/XmRsi";
+import { HlTrueRange, XmPsar, XmRsi, VixFix } from "./strats/ind";
 import { config } from "./config";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
   let xmPsar = new XmPsar(20);
   let xmRsi = new XmRsi(30, 15);
+  let hlTrueRange = new HlTrueRange(1, 25);
+  let vixFix = new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 });
   let warmup = 30 * 15; // min
   const leadCoin = coins[config.leadCoin];
 
@@ -22,10 +23,14 @@ export const vol1 = (coins: CoinList) => {
   for (let i = 0; i < leadCoin.candles.length; i++) {
     const psarVal = xmPsar.update(leadCoin.candles[i]);
     const rsiVal = xmRsi.update(leadCoin.candles[i]);
+    const hlTrueRangeVal = hlTrueRange.update(leadCoin.candles[i]);
+    const vixFixVal = vixFix.update(leadCoin.candles[i]);
 
     leadCoin.candles[i].ind = {
       rsi: rsiVal,
-      psar: psarVal
+      psar: psarVal,
+      hlTrueRange: hlTrueRangeVal,
+      vixFix: vixFixVal
     };
 
     // console.log("close: ", leadCoin.candles[i].close);

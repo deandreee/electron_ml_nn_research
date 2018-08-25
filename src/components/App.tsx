@@ -10,7 +10,7 @@ import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
 import { Profits } from "./Profits";
 import { Roundtrips } from "./Roundtrips";
-import { seriesSignals, seriesTrades } from "./series";
+import { seriesSignals, seriesTrades, seriesInd } from "./series";
 import { config } from "../strat/config";
 
 interface State {
@@ -44,46 +44,6 @@ export class App extends React.Component {
       };
     });
 
-    const seriesPsar = {
-      ...this.state.options.series[0],
-      color: "lightblue",
-      data: coins[config.leadCoin].candles.map(
-        x => x && [x.start * 1000, x.ind.psar]
-      ),
-      name: "PSAR",
-      large: true,
-      sampling: "average",
-      lineStyle: {
-        type: "dotted"
-      },
-      symbol: "none"
-    };
-
-    const seriesRsi = {
-      ...this.state.options.series[0],
-      color: "red",
-      data: coins[config.leadCoin].candles.map(
-        x => x && [x.start * 1000, x.ind.rsi]
-      ),
-      name: "RSI",
-      xAxisIndex: 1,
-      yAxisIndex: 1,
-      large: true,
-      sampling: "average",
-      symbol: "none"
-    };
-
-    // const seriesVolume = {
-    //   type: "bar",
-    //   color: "red",
-    //   data: coins[config.leadCoin].candles.map(x => [x.start * 1000, x.volume]),
-    //   name: "Volume",
-    //   xAxisIndex: 1,
-    //   yAxisIndex: 1,
-    //   large: true,
-    //   sampling: "average"
-    // };
-
     const labelsFiltered = labelsPredicted
       .map((x, i) => ({ x, i }))
       .filter(x => x.x === 1);
@@ -107,12 +67,11 @@ export class App extends React.Component {
         legend,
         series: [
           ...series,
-          seriesPsar,
+
           ...seriesTrades(currentProp, coins),
           ...seriesSignals(currentProp, coins),
           // seriesLabelsPredicted,
-          seriesRsi
-          // seriesVolume
+          ...seriesInd(currentProp, coins)
         ]
       },
       isLoading: false,

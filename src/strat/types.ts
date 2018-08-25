@@ -21,9 +21,18 @@ export interface Candle {
   ind?: Indicators;
 }
 
+export interface IndHlTrueRange {
+  trueRange: number;
+  valid: number;
+  runningMax: number;
+  runningMin: number;
+}
+
 export interface Indicators {
   rsi: number;
   psar: number;
+  hlTrueRange: IndHlTrueRange;
+  vixFix: number;
 }
 
 export type CsvCell = string | number;
