@@ -5,9 +5,12 @@ interface Hash {
   [name: string]: boolean;
 }
 
-export const getLegend = (coins: CoinList) => {
+export const getLegend = (coins: CoinList, seriesInd: any) => {
+  let coinNames = Object.keys(coins);
+  let indNames = seriesInd.map((x: any) => x.name);
+
   let legendSelected: Hash = {};
-  Object.keys(coins).forEach(k => {
+  [...coinNames, ...indNames].forEach(k => {
     legendSelected[k] = false;
   });
 
@@ -22,7 +25,7 @@ export const getLegend = (coins: CoinList) => {
     // bottom: 0,
     // width: 1000,
     height: 200,
-    data: Object.keys(coins),
+    data: [...coinNames, ...indNames],
     selected: legendSelected,
     inactiveColor: "#777",
     textStyle: {

@@ -59,7 +59,9 @@ export class App extends React.Component {
       large: true
     };
 
-    const legend = getLegend(coins);
+    const seriesInd_ = seriesInd(currentProp, coins);
+
+    const legend = getLegend(coins, seriesInd_);
 
     this.setState({
       options: {
@@ -71,7 +73,7 @@ export class App extends React.Component {
           ...seriesTrades(currentProp, coins),
           ...seriesSignals(currentProp, coins),
           // seriesLabelsPredicted,
-          ...seriesInd(currentProp, coins)
+          ...seriesInd_
         ]
       },
       isLoading: false,
