@@ -74,6 +74,6 @@ export const options: EChartOption = {
     }
   ],
 
-  // tooltip: axisTooltip,
-  tooltip: { ...itemTooltip, formatter: tooltipFormatter }
+  tooltip: axisTooltip
+  // tooltip: { ...itemTooltip, formatter: tooltipFormatter }
 };

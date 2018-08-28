@@ -31,12 +31,15 @@ export interface IndHlTrueRange {
 export interface Indicators {
   rsi: number;
   psar: number;
+  xmPsar: number;
   hlTrueRange: IndHlTrueRange;
   vixFix: number;
+  xmVixFix: number;
   zlema: number;
   hma: number;
   lrc: number;
   twiggs: number;
+  xmTwiggs: number;
 }
 
 export type CsvCell = string | number;

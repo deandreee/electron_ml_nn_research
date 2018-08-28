@@ -1,9 +1,10 @@
+import { times } from "lodash";
 import { CoinList, CoinData, AdviceObj } from "./types";
 import { getCoinPctChange, getPctChange } from "./utils";
 import { PaperTrader } from "./gekko/PaperTrader";
 import { makeid } from "./makeid";
 import { RSI, PSAR } from "technicalindicators";
-import { stratPump, stratPsar, stratHl } from "./strats";
+import { stratPump, stratPsar, stratHl, stratLinReg } from "./strats";
 import {
   HlTrueRange,
   XmPsar,
@@ -12,37 +13,40 @@ import {
   ZLEMA,
   HMA,
   LRC,
-  TWIGGS3
+  TWIGGS3,
+  XmBase,
+  PSAR2
 } from "./strats/ind";
 import { config } from "./config";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
-  let xmPsar = new XmPsar(20);
+  let psar = new PSAR2();
   let xmRsi = new XmRsi(30, 15);
   let hlTrueRange = new HlTrueRange(1, 25);
   let vixFix = new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 });
   let zlema = new ZLEMA(15);
   let hma = new HMA(15);
-  let lrc = new LRC(50);
+  let lrc = new LRC(120);
   let twiggs = new TWIGGS3(21);
   let warmup = 30 * 15; // min
   const leadCoin = coins[config.leadCoin];
+
+  const xmPsar = new XmBase(5, times(5).map(x => new PSAR2()));
+  const xmTwiggs = new XmBase(10, times(10).map(x => new TWIGGS3(21)));
+  const xmZlema = new XmBase(10, times(10).map(x => new ZLEMA(10)));
+  const xmVixFix = new XmBase(
+    10,
+    times(10).map(
+      x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
+    )
+  );
 
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
   }
 
   for (let i = 0; i < leadCoin.candles.length; i++) {
-    const psarVal = xmPsar.update(leadCoin.candles[i]);
-    const rsiVal = xmRsi.update(leadCoin.candles[i]);
-    const hlTrueRangeVal = hlTrueRange.update(leadCoin.candles[i]);
-    const vixFixVal = vixFix.update(leadCoin.candles[i]);
-    const zlemaVal = zlema.update(leadCoin.candles[i]);
-    const hmaVal = hma.update(leadCoin.candles[i]);
-    const lrcVal = lrc.update(leadCoin.candles[i].close);
-    const twiggsVal = twiggs.update(leadCoin.candles[i]);
-
     // if (leadCoin.candles[i].volume === 0) {
     //   console.log(
     //     "volume 0",
@@ -51,14 +55,17 @@ export const vol1 = (coins: CoinList) => {
     // }
 
     leadCoin.candles[i].ind = {
-      rsi: rsiVal,
-      psar: psarVal,
-      hlTrueRange: hlTrueRangeVal,
-      vixFix: vixFixVal,
-      zlema: zlemaVal,
-      hma: hmaVal,
-      lrc: lrcVal,
-      twiggs: twiggsVal
+      rsi: xmRsi.update(leadCoin.candles[i]),
+      psar: psar.update(leadCoin.candles[i]),
+      xmPsar: xmPsar.update(leadCoin.candles[i]),
+      hlTrueRange: hlTrueRange.update(leadCoin.candles[i]),
+      vixFix: vixFix.update(leadCoin.candles[i]),
+      xmVixFix: xmVixFix.update(leadCoin.candles[i]),
+      zlema: xmZlema.update(leadCoin.candles[i]),
+      hma: hma.update(leadCoin.candles[i]),
+      lrc: lrc.update(leadCoin.candles[i].close),
+      twiggs: twiggs.update(leadCoin.candles[i]),
+      xmTwiggs: xmTwiggs.update(leadCoin.candles[i])
     };
 
     // console.log("close: ", leadCoin.candles[i].close);
@@ -75,7 +82,11 @@ export const vol1 = (coins: CoinList) => {
       coins[key].trader.processCandle(coins[key].candles[i]);
     }
 
-    leadCoin.candles[i].features = getFeatures(leadCoin, i, rsiVal!);
+    leadCoin.candles[i].features = getFeatures(
+      leadCoin,
+      i,
+      leadCoin.candles[i].ind.rsi!
+    );
     // leadCoin.candles[i].label = getFutureResult(leadCoin, i) > 5 ? 1 : -1;
     leadCoin.candles[i].label = leadCoin.candles[i].label =
       // getCoinPctChange(leadCoin, i + 10, i) > 0 ? 1 : 0;
@@ -86,8 +97,8 @@ export const vol1 = (coins: CoinList) => {
 
     // stratPump.check(coins, i);
     // stratPsar.check(coins, i);
-    stratHl.check(coins, i);
-
+    // stratHl.check(coins, i);
+    stratLinReg.check(coins, i);
     // console.log(change10m);
   }
 
