@@ -57,8 +57,8 @@ export const vol1 = (coins: CoinList) => {
       vixFix: vixFixVal,
       zlema: zlemaVal,
       hma: hmaVal,
-      lrc: lrcVal
-      // twiggs: twiggsVal
+      lrc: lrcVal,
+      twiggs: 0
     };
 
     // console.log("close: ", leadCoin.candles[i].close);
