@@ -43,19 +43,35 @@ export class TWIGGS3 {
     // True Range Low (TRL) is the lesser of today's Low and yesterday's Close.
     const trl = Math.min(candle.low, lastClose);
 
+    // this is not good
+    const trc = trh - trl !== 0 ? trh - trl : 9999999;
+    const volume = candle.volume !== 0 ? candle.volume : 0.0000001;
+
     // Calculate AD using True Range High and True Range Low:
     // AD = {(Close - TRL) - (TRH - Close)} / {TRH - TRL} * Volume
     const up = candle.close - trl - (trh - candle.close);
-    const down = (trh - trl) * candle.volume;
+
+    const down = trc * volume;
     const ad = up / down;
 
     const smoothAd = this.wimaAd.update(ad);
-    const smoothVol = this.wimaVol.update(candle.volume);
+    const smoothVol = this.wimaVol.update(volume);
 
     if (smoothVol === 0) {
       return 0;
     }
 
-    return smoothAd / smoothVol;
+    const res = smoothAd / smoothVol;
+
+    // with small volume, this is possible, not sure if legit though...
+    if (res > 5) {
+      // throw new Error("gt");
+      return 5;
+    } else if (res < -5) {
+      // throw new Error("lt");
+      return -5;
+    }
+
+    return res;
   };
 }

@@ -25,7 +25,7 @@ export const vol1 = (coins: CoinList) => {
   let zlema = new ZLEMA(15);
   let hma = new HMA(15);
   let lrc = new LRC(50);
-  // let twiggs = new TWIGGS3(21);
+  let twiggs = new TWIGGS3(21);
   let warmup = 30 * 15; // min
   const leadCoin = coins[config.leadCoin];
 
@@ -41,14 +41,14 @@ export const vol1 = (coins: CoinList) => {
     const zlemaVal = zlema.update(leadCoin.candles[i]);
     const hmaVal = hma.update(leadCoin.candles[i]);
     const lrcVal = lrc.update(leadCoin.candles[i].close);
-    // const twiggsVal = twiggs.update(leadCoin.candles[i]);
+    const twiggsVal = twiggs.update(leadCoin.candles[i]);
 
-    if (leadCoin.candles[i].volume === 0) {
-      console.log(
-        "volume 0",
-        new Date(leadCoin.candles[i].start * 1000).toISOString()
-      );
-    }
+    // if (leadCoin.candles[i].volume === 0) {
+    //   console.log(
+    //     "volume 0",
+    //     new Date(leadCoin.candles[i].start * 1000).toISOString()
+    //   );
+    // }
 
     leadCoin.candles[i].ind = {
       rsi: rsiVal,
@@ -58,7 +58,7 @@ export const vol1 = (coins: CoinList) => {
       zlema: zlemaVal,
       hma: hmaVal,
       lrc: lrcVal,
-      twiggs: 0
+      twiggs: twiggsVal
     };
 
     // console.log("close: ", leadCoin.candles[i].close);
