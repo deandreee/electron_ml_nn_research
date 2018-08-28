@@ -33,6 +33,10 @@ export interface Indicators {
   psar: number;
   hlTrueRange: IndHlTrueRange;
   vixFix: number;
+  zlema: number;
+  hma: number;
+  lrc: number;
+  twiggs: number;
 }
 
 export type CsvCell = string | number;

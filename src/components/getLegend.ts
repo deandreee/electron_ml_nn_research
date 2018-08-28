@@ -18,13 +18,13 @@ export const getLegend = (coins: CoinList, seriesInd: any) => {
   // legendSelected["EOS"] = true;
 
   const legend = {
-    type: "plain", // 'scroll',
+    type: "scroll", // plain | scroll,
     orient: "horizontal",
     left: 5,
     top: 5,
     // bottom: 0,
     // width: 1000,
-    height: 200,
+    height: "auto",
     data: [...coinNames, ...indNames],
     selected: legendSelected,
     inactiveColor: "#777",

@@ -55,79 +55,79 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
       candles: getCoin(dbBinance, "candles_USDT_ADA", "ADA", from, to),
 
       color: "#3CC8C8"
-    },
-    IOT: {
-      name: "IOT",
-      candles: getCoin(dbBitfinex, "candles_USD_IOT", "IOT", from, to),
-
-      color: "#FFFFFF"
-    },
-    TRX: {
-      name: "TRX",
-      candles: getCoin(dbBitfinex, "candles_USD_TRX", "TRX", from, to),
-
-      color: "#396a74"
-    },
-    XMR: {
-      name: "XMR",
-      candles: getCoin(dbKraken, "candles_USD_XMR", "XMR", from, to),
-
-      color: "#FF6600"
-    },
-    NEO: {
-      name: "NEO",
-      candles: getCoin(dbBinance, "candles_USDT_NEO", "NEO", from, to),
-
-      color: "#58BF00"
-    },
-    DASH: {
-      name: "DASH",
-      candles: getCoin(dbKraken, "candles_USD_DASH", "DASH", from, to),
-
-      color: "#1c75bc"
-    },
-    ETC: {
-      name: "ETC",
-      candles: getCoin(dbKraken, "candles_USD_ETC", "ETC", from, to),
-
-      color: "#669073"
-    },
-    BNB: {
-      name: "BNB",
-      candles: getCoin(dbBinance, "candles_USDT_BNB", "BNB", from, to),
-
-      color: "#edba2d"
-    },
-    VEN: {
-      name: "VEN",
-      candles: getCoin(dbBitfinex, "candles_USD_VEN", "VEN", from, to),
-
-      color: "#42AFB2"
-    },
-    ZEC: {
-      name: "ZEC",
-      candles: getCoin(dbPoloniex, "candles_USDT_ZEC", "ZEC", from, to),
-
-      color: "#e5a93d"
-    },
-    QTUM: {
-      name: "QTUM",
-      candles: getCoin(dbBinance, "candles_USDT_QTUM", "QTUM", from, to),
-
-      color: "#359BCE"
-    },
-    OMG: {
-      name: "OMG",
-      candles: getCoin(dbBitfinex, "candles_USD_OMG", "OMG", from, to),
-
-      color: "#1A53F0"
-    },
-    ZRX: {
-      name: "ZRX",
-      candles: getCoin(dbBitfinex, "candles_USD_ZRX", "ZRX", from, to),
-
-      color: "black" // fix later
     }
+    // IOT: {
+    //   name: "IOT",
+    //   candles: getCoin(dbBitfinex, "candles_USD_IOT", "IOT", from, to),
+
+    //   color: "#FFFFFF"
+    // },
+    // TRX: {
+    //   name: "TRX",
+    //   candles: getCoin(dbBitfinex, "candles_USD_TRX", "TRX", from, to),
+
+    //   color: "#396a74"
+    // },
+    // XMR: {
+    //   name: "XMR",
+    //   candles: getCoin(dbKraken, "candles_USD_XMR", "XMR", from, to),
+
+    //   color: "#FF6600"
+    // },
+    // NEO: {
+    //   name: "NEO",
+    //   candles: getCoin(dbBinance, "candles_USDT_NEO", "NEO", from, to),
+
+    //   color: "#58BF00"
+    // },
+    // DASH: {
+    //   name: "DASH",
+    //   candles: getCoin(dbKraken, "candles_USD_DASH", "DASH", from, to),
+
+    //   color: "#1c75bc"
+    // },
+    // ETC: {
+    //   name: "ETC",
+    //   candles: getCoin(dbKraken, "candles_USD_ETC", "ETC", from, to),
+
+    //   color: "#669073"
+    // },
+    // BNB: {
+    //   name: "BNB",
+    //   candles: getCoin(dbBinance, "candles_USDT_BNB", "BNB", from, to),
+
+    //   color: "#edba2d"
+    // },
+    // VEN: {
+    //   name: "VEN",
+    //   candles: getCoin(dbBitfinex, "candles_USD_VEN", "VEN", from, to),
+
+    //   color: "#42AFB2"
+    // },
+    // ZEC: {
+    //   name: "ZEC",
+    //   candles: getCoin(dbPoloniex, "candles_USDT_ZEC", "ZEC", from, to),
+
+    //   color: "#e5a93d"
+    // },
+    // QTUM: {
+    //   name: "QTUM",
+    //   candles: getCoin(dbBinance, "candles_USDT_QTUM", "QTUM", from, to),
+
+    //   color: "#359BCE"
+    // },
+    // OMG: {
+    //   name: "OMG",
+    //   candles: getCoin(dbBitfinex, "candles_USD_OMG", "OMG", from, to),
+
+    //   color: "#1A53F0"
+    // },
+    // ZRX: {
+    //   name: "ZRX",
+    //   candles: getCoin(dbBitfinex, "candles_USD_ZRX", "ZRX", from, to),
+
+    //   color: "black" // fix later
+    // }
   };
   return coins;
 };

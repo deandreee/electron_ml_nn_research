@@ -18,6 +18,51 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     symbol: "none"
   };
 
+  const seriesZlema = {
+    ...options.series[0],
+    color: "lightblue",
+    data: coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.zlema]
+    ),
+    name: "ZLEMA",
+    large: true,
+    sampling: "average",
+    lineStyle: {
+      type: "dotted"
+    },
+    symbol: "none"
+  };
+
+  const seriesHma = {
+    ...options.series[0],
+    color: "green",
+    data: coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.hma]
+    ),
+    name: "HMA",
+    large: true,
+    sampling: "average",
+    lineStyle: {
+      type: "dotted"
+    },
+    symbol: "none"
+  };
+
+  const seriesLrc = {
+    ...options.series[0],
+    color: "green",
+    data: coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.lrc]
+    ),
+    name: "LRC",
+    large: true,
+    sampling: "average",
+    lineStyle: {
+      type: "dotted"
+    },
+    symbol: "none"
+  };
+
   const seriesRsi = {
     ...options.series[0],
     color: "red",
@@ -39,6 +84,20 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
       x => x && [x.start * 1000, x.ind.vixFix]
     ),
     name: "VixFix",
+    xAxisIndex: 1,
+    yAxisIndex: 1,
+    large: true,
+    sampling: "average",
+    symbol: "none"
+  };
+
+  const seriesTwiggs = {
+    ...options.series[0],
+    color: "red",
+    data: coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.twiggs]
+    ),
+    name: "TWIGGS",
     xAxisIndex: 1,
     yAxisIndex: 1,
     large: true,
@@ -85,8 +144,12 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     // seriesPsar,
 
     seriesHlTrueRange,
-    seriesVixFix
+    seriesVixFix,
     // seriesHlValid // displays really badly due to all the interruptions
+    seriesZlema,
+    seriesHma,
+    seriesLrc,
+    seriesTwiggs
   ];
 };
 
