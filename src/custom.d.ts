@@ -7,3 +7,4 @@ declare module "neataptic";
 declare module "synaptic";
 declare module "mtproto-storage-fs";
 declare module "safe-access";
+declare module "kalmanjs";

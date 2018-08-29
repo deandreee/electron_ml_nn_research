@@ -54,6 +54,8 @@ export interface Indicators {
   lrcChannel: IndChannel;
   twiggs: number;
   xmTwiggs: number;
+  kalman: number;
+  aroon: IndChannel;
 }
 
 export type CsvCell = string | number;

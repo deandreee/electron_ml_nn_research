@@ -177,6 +177,31 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     name: "HlTrueRange"
   };
 
+  const seriesKalman = {
+    ...baseDotted,
+    color: "lightblue",
+    data: data(coins, x => x.ind.kalman),
+    name: "Kalman"
+  };
+
+  const seriesAroonUp = {
+    ...base,
+    color: "green",
+    data: data(coins, x => x.ind.aroon.up),
+    name: "Aroon",
+    xAxisIndex: 1,
+    yAxisIndex: 1
+  };
+
+  const seriesAroonDown = {
+    ...base,
+    color: "red",
+    data: data(coins, x => x.ind.aroon.down),
+    name: "Aroon",
+    xAxisIndex: 1,
+    yAxisIndex: 1
+  };
+
   return [
     // seriesRsi,
     seriesPsar,
@@ -196,7 +221,10 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     seriesLrcSlope,
     // seriesLrcIntercept,
     seriesTwiggs,
-    seriesXmTwiggs
+    seriesXmTwiggs,
+    seriesKalman,
+    seriesAroonUp,
+    seriesAroonDown
   ];
 };
 

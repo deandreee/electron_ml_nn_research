@@ -15,7 +15,9 @@ import {
   LRC,
   TWIGGS3,
   XmBase,
-  PSAR2
+  PSAR2,
+  Kalman,
+  Aroon
 } from "./strats/ind";
 import { config } from "./config";
 import { LRCChannel } from "./strats/ind/LRCChannel";
@@ -46,6 +48,9 @@ export const vol1 = (coins: CoinList) => {
     )
   );
 
+  const kalman = new Kalman(5);
+  const aroon = new Aroon(60);
+
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
   }
@@ -72,7 +77,9 @@ export const vol1 = (coins: CoinList) => {
       lrc240: lrc240.update(leadCoin.candles[i].close),
       lrcChannel: lrcChannel.update(leadCoin.candles[i].close),
       twiggs: twiggs.update(leadCoin.candles[i]),
-      xmTwiggs: xmTwiggs.update(leadCoin.candles[i])
+      xmTwiggs: xmTwiggs.update(leadCoin.candles[i]),
+      kalman: kalman.update(leadCoin.candles[i].close),
+      aroon: aroon.update(leadCoin.candles[i])
     };
 
     // console.log("close: ", leadCoin.candles[i].close);

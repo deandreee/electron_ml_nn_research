@@ -15,9 +15,14 @@ export const check = (coins: CoinList, i: number) => {
   //   return; // do nuttin
   // }
 
+  // if (candle.close > candle.ind.lrcChannel.up) {
+  //   // kinda like overbought
+  //   massSell(coins, i, "lrcChannel.up");
+  // }
+
   // if (candle.ind.lrc > candle.close + 50) {
   // if (candle.close > candle.ind.lrc120) {
-  if (candle.ind.lrc60 > candle.ind.lrc240) {
+  if (candle.close > candle.ind.lrc60.result) {
     massBuy(coins, i, "lrc >");
     actionCooldown = 5;
   } else {
