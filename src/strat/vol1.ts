@@ -18,6 +18,7 @@ import {
   PSAR2
 } from "./strats/ind";
 import { config } from "./config";
+import { LRCChannel } from "./strats/ind/LRCChannel";
 
 export const vol1 = (coins: CoinList) => {
   let rsi = new RSI({ period: 15, values: [] });
@@ -27,7 +28,10 @@ export const vol1 = (coins: CoinList) => {
   let vixFix = new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 });
   let zlema = new ZLEMA(15);
   let hma = new HMA(15);
-  let lrc = new LRC(120);
+  let lrc60 = new LRC(60);
+  let lrc120 = new LRC(120);
+  let lrc240 = new LRC(240);
+  let lrcChannel = new LRCChannel(60, 1, -1);
   let twiggs = new TWIGGS3(21);
   let warmup = 30 * 15; // min
   const leadCoin = coins[config.leadCoin];
@@ -63,7 +67,10 @@ export const vol1 = (coins: CoinList) => {
       xmVixFix: xmVixFix.update(leadCoin.candles[i]),
       zlema: xmZlema.update(leadCoin.candles[i]),
       hma: hma.update(leadCoin.candles[i]),
-      lrc: lrc.update(leadCoin.candles[i].close),
+      lrc60: lrc60.update(leadCoin.candles[i].close),
+      lrc120: lrc120.update(leadCoin.candles[i].close),
+      lrc240: lrc240.update(leadCoin.candles[i].close),
+      lrcChannel: lrcChannel.update(leadCoin.candles[i].close),
       twiggs: twiggs.update(leadCoin.candles[i]),
       xmTwiggs: xmTwiggs.update(leadCoin.candles[i])
     };

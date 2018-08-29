@@ -39,138 +39,107 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
   };
 
   const seriesZlema = {
-    ...options.series[0],
+    ...baseDotted,
     color: "lightblue",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.zlema]
-    ),
-    name: "ZLEMA",
-    large: true,
-    sampling: "average",
-    lineStyle: {
-      type: "dotted"
-    },
-    symbol: "none"
+    data: data(coins, x => x.ind.zlema),
+    name: "ZLEMA"
   };
 
   const seriesHma = {
-    ...options.series[0],
+    ...baseDotted,
     color: "green",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.hma]
-    ),
-    name: "HMA",
-    large: true,
-    sampling: "average",
-    lineStyle: {
-      type: "dotted"
-    },
-    symbol: "none"
+    data: data(coins, x => x.ind.hma),
+
+    name: "HMA"
   };
 
-  const seriesLrc = {
-    ...options.series[0],
+  const seriesLrc60 = {
+    ...baseDotted,
+    color: "red",
+    data: data(coins, x => x.ind.lrc60),
+    name: "LRC"
+  };
+
+  const seriesLrc120 = {
+    ...baseDotted,
     color: "green",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.lrc]
-    ),
-    name: "LRC",
-    large: true,
-    sampling: "average",
-    lineStyle: {
-      type: "dotted"
-    },
-    symbol: "none"
+    data: data(coins, x => x.ind.lrc120),
+    name: "LRC"
+  };
+
+  const seriesLrc240 = {
+    ...baseDotted,
+    color: "blue",
+    data: data(coins, x => x.ind.lrc240),
+    name: "LRC"
+  };
+
+  const seriesLrcChannelUp = {
+    ...baseDotted,
+    color: "yellow",
+    data: data(coins, x => x.ind.lrcChannel.up),
+    name: "LRC"
+  };
+
+  const seriesLrcChannelDown = {
+    ...baseDotted,
+    color: "yellow",
+    data: data(coins, x => x.ind.lrcChannel.down),
+    name: "LRC"
   };
 
   const seriesRsi = {
-    ...options.series[0],
+    ...base,
     color: "red",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.rsi]
-    ),
+    data: data(coins, x => x.ind.rsi),
     name: "RSI",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none"
+    yAxisIndex: 1
   };
 
   const seriesVixFix = {
-    ...options.series[0],
+    ...base,
     color: "red",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.vixFix]
-    ),
+    data: data(coins, x => x.ind.vixFix),
     name: "VixFix",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none"
+    yAxisIndex: 1
   };
 
   const seriesXmVixFix = {
-    ...options.series[0],
+    ...base,
     color: "red",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.xmVixFix]
-    ),
+    data: data(coins, x => x.ind.xmVixFix),
     name: "XmVixFix",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none",
-    lineStyle: {
-      type: "dotted"
-    }
+    yAxisIndex: 1
   };
 
   const seriesTwiggs = {
-    ...options.series[0],
+    ...base,
     color: "red",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.twiggs]
-    ),
+    data: data(coins, x => x.ind.twiggs),
     name: "TWIGGS",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none"
+    yAxisIndex: 1
   };
 
   const seriesXmTwiggs = {
-    ...options.series[0],
+    ...baseDotted,
     color: "red",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.xmTwiggs]
-    ),
+    data: data(coins, x => x.ind.xmTwiggs),
     name: "XmTWIGGS",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none",
-    lineStyle: {
-      type: "dotted"
-    }
+    yAxisIndex: 1
   };
 
   const seriesHlValid = {
-    ...options.series[0],
+    ...base,
     color: "green",
-    data: coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.hlTrueRange.valid]
-    ),
+    data: data(coins, x => x.ind.hlTrueRange.valid),
     name: "HlValid",
     xAxisIndex: 1,
-    yAxisIndex: 1,
-    large: true,
-    sampling: "average",
-    symbol: "none"
+    yAxisIndex: 1
   };
 
   const hlMax = coins[config.leadCoin].candles.map(
@@ -182,15 +151,12 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
   );
 
   const seriesHlTrueRange = {
-    ...options.series[0],
+    ...base,
     type: "scatter",
     symbolSize: 10,
     color: "purple",
     data: hlMax.concat(hlMin),
-    name: "HlTrueRange",
-    large: true,
-    sampling: "average"
-    // symbol: "none"
+    name: "HlTrueRange"
   };
 
   return [
@@ -204,7 +170,11 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     // seriesHlValid // displays really badly due to all the interruptions
     seriesZlema,
     seriesHma,
-    seriesLrc,
+    seriesLrc60,
+    seriesLrc120,
+    seriesLrc240,
+    seriesLrcChannelUp,
+    seriesLrcChannelDown,
     seriesTwiggs,
     seriesXmTwiggs
   ];

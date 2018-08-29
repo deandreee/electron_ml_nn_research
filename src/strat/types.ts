@@ -28,6 +28,10 @@ export interface IndHlTrueRange {
   runningMin: number;
 }
 
+export interface IndChannel {
+  up: number;
+  down: number;
+}
 export interface Indicators {
   rsi: number;
   psar: number;
@@ -37,7 +41,10 @@ export interface Indicators {
   xmVixFix: number;
   zlema: number;
   hma: number;
-  lrc: number;
+  lrc60: number;
+  lrc120: number;
+  lrc240: number;
+  lrcChannel: IndChannel;
   twiggs: number;
   xmTwiggs: number;
 }
