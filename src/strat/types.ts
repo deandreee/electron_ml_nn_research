@@ -32,6 +32,13 @@ export interface IndChannel {
   up: number;
   down: number;
 }
+
+export interface IndLRC {
+  slope: number;
+  intercept: number;
+  result: number;
+}
+
 export interface Indicators {
   rsi: number;
   psar: number;
@@ -41,9 +48,9 @@ export interface Indicators {
   xmVixFix: number;
   zlema: number;
   hma: number;
-  lrc60: number;
-  lrc120: number;
-  lrc240: number;
+  lrc60: IndLRC;
+  lrc120: IndLRC;
+  lrc240: IndLRC;
   lrcChannel: IndChannel;
   twiggs: number;
   xmTwiggs: number;

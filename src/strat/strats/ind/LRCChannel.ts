@@ -21,8 +21,8 @@ export class LRCChannel {
       return { up: null, down: null };
     }
 
-    const up = val + (val * this.up) / 100;
-    const down = val + (val * this.down) / 100;
+    const up = val.result + (val.result * this.up) / 100;
+    const down = val.result + (val.result * this.down) / 100;
     return { up, down };
   };
 }

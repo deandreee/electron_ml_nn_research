@@ -56,21 +56,21 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
   const seriesLrc60 = {
     ...baseDotted,
     color: "red",
-    data: data(coins, x => x.ind.lrc60),
+    data: data(coins, x => x.ind.lrc60.result),
     name: "LRC"
   };
 
   const seriesLrc120 = {
     ...baseDotted,
     color: "green",
-    data: data(coins, x => x.ind.lrc120),
+    data: data(coins, x => x.ind.lrc120.result),
     name: "LRC"
   };
 
   const seriesLrc240 = {
     ...baseDotted,
     color: "blue",
-    data: data(coins, x => x.ind.lrc240),
+    data: data(coins, x => x.ind.lrc240.result),
     name: "LRC"
   };
 
@@ -86,6 +86,24 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     color: "yellow",
     data: data(coins, x => x.ind.lrcChannel.down),
     name: "LRC"
+  };
+
+  const seriesLrcSlope = {
+    ...base,
+    color: "red",
+    data: data(coins, x => x.ind.lrc60.slope),
+    name: "LRC",
+    xAxisIndex: 1,
+    yAxisIndex: 1
+  };
+
+  const seriesLrcIntercept = {
+    ...base,
+    color: "green",
+    data: data(coins, x => x.ind.lrc60.intercept),
+    name: "LRC",
+    xAxisIndex: 1,
+    yAxisIndex: 1
   };
 
   const seriesRsi = {
@@ -175,6 +193,8 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     seriesLrc240,
     seriesLrcChannelUp,
     seriesLrcChannelDown,
+    seriesLrcSlope,
+    // seriesLrcIntercept,
     seriesTwiggs,
     seriesXmTwiggs
   ];

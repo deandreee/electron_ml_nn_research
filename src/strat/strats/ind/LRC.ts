@@ -2,11 +2,13 @@
  * Linear regression curve, from gekko default
  */
 
-import { Candle } from "../../types";
+import { Candle, IndLRC } from "../../types";
 
 export class LRC {
   depth: number;
   result: number;
+  slope: number;
+  intercept: number;
   age: number;
   history: number[];
   x: number[];
@@ -27,7 +29,7 @@ export class LRC {
     }
   }
 
-  update = (price: number): number => {
+  update = (price: number): IndLRC => {
     // We need sufficient history to get the right result.
     if (this.result === -1 && this.age < this.depth) {
       this.history[this.age] = price;
@@ -35,7 +37,7 @@ export class LRC {
       this.result = -1;
       // log.debug("Waiting for sufficient age: ", this.age, " out of ", this.depth);
       //
-      return null;
+      return { slope: null, intercept: null, result: null };
     }
 
     this.age++;
@@ -48,7 +50,11 @@ export class LRC {
     this.calculate(price);
 
     // log.debug("Checking LRC: ", this.result.toFixed(8), "\tH: ", this.age);
-    return this.result;
+    return {
+      slope: this.slope,
+      intercept: this.intercept,
+      result: this.result
+    };
   };
 
   /*
@@ -110,6 +116,9 @@ export class LRC {
   calculate = (price: number) => {
     // get the reg
     var reg = this.linreg(this.x, this.history);
+
+    this.slope = reg[0];
+    this.intercept = reg[1];
 
     // y = a * x + b
     this.result = (this.depth - 1) * reg[0] + reg[1];
