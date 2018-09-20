@@ -1,4 +1,4 @@
-import { CoinData } from "./types";
+import { CoinData, Candle } from "./types";
 
 // return change as % like 5.8% not 0.058
 export const getPctChange = (curr: number, prev: number) => {
@@ -10,13 +10,21 @@ export const getCoinPctChange = (
   idxCurr: number,
   idxPrev: number
 ) => {
-  if (idxPrev >= coin.candles.length || idxPrev < 0) {
+  return getCandlePctChange(coin.candles, idxCurr, idxPrev);
+};
+
+export const getCandlePctChange = (
+  candles: Candle[],
+  idxCurr: number,
+  idxPrev: number
+) => {
+  if (idxPrev >= candles.length || idxPrev < 0) {
     throw new Error(
       `utils/getCoinPctChange: index out of bounds | length: ${
-        coin.candles.length
+        candles.length
       } | idxPrev: ${idxPrev}`
     );
   }
 
-  return getPctChange(coin.candles[idxCurr].close, coin.candles[idxPrev].close);
+  return getPctChange(candles[idxCurr].close, candles[idxPrev].close);
 };

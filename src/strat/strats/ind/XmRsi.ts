@@ -24,9 +24,6 @@ export class XmRsi {
     const candles = this.waveManager.getCurrentWave().candles;
     const lastXcandles = candles.slice(candles.length - this.interval - 1); // 1 extra
 
-    let step = 0.025;
-    let max = 0.05;
-
     let rsi = new RSI({
       period: this.interval,
       values: lastXcandles.map(x => x.close)

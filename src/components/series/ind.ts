@@ -106,15 +106,6 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     yAxisIndex: 1
   };
 
-  const seriesRsi = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.rsi),
-    name: "RSI",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
-
   const seriesVixFix = {
     ...base,
     color: "red",
@@ -202,8 +193,37 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     yAxisIndex: 1
   };
 
+  const flash = "path://M7,2V13H10V22L17,10H13L17,2H7Z";
+  const seriesPctChange = {
+    ...base,
+    type: "scatter",
+    symbol: flash,
+    symbolSize: 15,
+    color: "red",
+    name: "pctChange",
+    data: coins[config.leadCoin].candles
+      .filter(x => x.pctChange60m < -1)
+      .map(x => [x.start * 1000, x.close + x.close * 0.005])
+  };
+
+  const seriesRsi = {
+    ...base,
+    // type: "scatter",
+    // symbol: flash,
+    // symbolSize: 10,
+    color: "red",
+    // data: data(coins, x => x.ind.rsi),
+    data: coins[config.leadCoin].candles
+      // .filter(x => x && x.ind.rsi > 80)
+      .map(x => x && [x.start * 1000, x.ind.rsi > 80 ? x.ind.rsi : null]),
+    name: "RSI",
+    xAxisIndex: 1,
+    yAxisIndex: 1
+  };
+
   return [
-    // seriesRsi,
+    seriesRsi,
+    seriesPctChange,
     seriesPsar,
     seriesXmPsar,
 
@@ -218,13 +238,13 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     seriesLrc240,
     seriesLrcChannelUp,
     seriesLrcChannelDown,
-    seriesLrcSlope,
+    seriesLrcSlope
     // seriesLrcIntercept,
-    seriesTwiggs,
-    seriesXmTwiggs,
-    seriesKalman,
-    seriesAroonUp,
-    seriesAroonDown
+    // seriesTwiggs,
+    // seriesXmTwiggs,
+    // seriesKalman,
+    // seriesAroonUp,
+    // seriesAroonDown
   ];
 };
 

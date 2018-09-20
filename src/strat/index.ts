@@ -10,6 +10,7 @@ import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
 import { config } from "./config";
+import { featurePower } from "./featurePower";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
 const to = new Date("2018-08-22T00:00:00.000Z");
@@ -32,7 +33,10 @@ export const run = (): Result => {
     x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
   );
 
-  const labelsPredicted = predictNeataptic(candlesActual);
+  featurePower(coins[config.leadCoin].candles);
+
+  // const labelsPredicted = predictNeataptic(candlesActual);
+  const labelsPredicted: number[] = [];
 
   return { coins, labelsPredicted };
 };

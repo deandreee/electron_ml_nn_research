@@ -22,7 +22,10 @@ export const check = (coins: CoinList, i: number) => {
 
   // if (candle.ind.lrc > candle.close + 50) {
   // if (candle.close > candle.ind.lrc120) {
-  if (candle.close > candle.ind.lrc60.result) {
+  if (
+    candle.close > candle.ind.lrc60.result &&
+    candle.ind.aroon.up > candle.ind.aroon.down
+  ) {
     massBuy(coins, i, "lrc >");
     actionCooldown = 5;
   } else {
