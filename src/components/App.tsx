@@ -102,8 +102,8 @@ export class App extends React.Component {
             maskColor: styles.colors.background
           }}
         />
-        <Profits coins={this.state.coins} />
-        <Roundtrips coin={this.state.coins[config.leadCoin]} />
+        {/* <Profits coins={this.state.coins} /> */}
+        {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}
       </div>
     );
   }

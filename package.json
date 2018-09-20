@@ -22,7 +22,7 @@
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.0",
     "css-loader": "^1.0.0",
-    "electron": "^2.0.2",
+    "electron": "^2.0.10",
     "electron-rebuild": "^1.8.2",
     "mini-css-extract-plugin": "^0.4.2",
     "source-map-loader": "^0.2.3",
@@ -55,6 +55,7 @@
     "ms": "^2.1.1",
     "mtproto-storage-fs": "^0.3.1",
     "neataptic": "^1.4.7",
+    "pandas-js": "^0.2.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-table": "^6.8.6",

@@ -1,12 +1,19 @@
 import { Candle } from "./types";
 import { getCandlePctChange } from "./utils";
-import { XmRsi } from "./strats/ind";
+import { XmRsi, XmBase, VixFix } from "./strats/ind";
+import { times } from "lodash-es";
 
 let warmup = 30 * 15; // min
 let extended = 180; // 1h
 
 export const featurePower = (candles: Candle[]) => {
-  let xmRsi = new XmRsi(30, 15);
+  const xmRsi = new XmRsi(120, 15);
+  const xmVixFix = new XmBase(
+    10,
+    times(10).map(
+      x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
+    )
+  );
 
   let rsiDropCount = 0;
   let rsiNoDropCount = 0;
@@ -19,10 +26,12 @@ export const featurePower = (candles: Candle[]) => {
     }
 
     candle.ind.rsi = xmRsi.update(candle);
+    candle.ind.vixFix = xmVixFix.update(candle);
+
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
     if (candle.ind.rsi > 80) {
-      if (candle.pctChange60m < -0.5) {
+      if (candle.pctChange60m < -1) {
         rsiDropCount++;
       } else {
         rsiNoDropCount++;

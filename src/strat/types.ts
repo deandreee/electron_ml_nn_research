@@ -40,22 +40,22 @@ export interface IndLRC {
 }
 
 export interface Indicators {
-  rsi: number;
-  psar: number;
-  xmPsar: number;
-  hlTrueRange: IndHlTrueRange;
-  vixFix: number;
-  xmVixFix: number;
-  zlema: number;
-  hma: number;
-  lrc60: IndLRC;
-  lrc120: IndLRC;
-  lrc240: IndLRC;
-  lrcChannel: IndChannel;
-  twiggs: number;
-  xmTwiggs: number;
-  kalman: number;
-  aroon: IndChannel;
+  rsi?: number;
+  psar?: number;
+  xmPsar?: number;
+  hlTrueRange?: IndHlTrueRange;
+  vixFix?: number;
+  xmVixFix?: number;
+  zlema?: number;
+  hma?: number;
+  lrc60?: IndLRC;
+  lrc120?: IndLRC;
+  lrc240?: IndLRC;
+  lrcChannel?: IndChannel;
+  twiggs?: number;
+  xmTwiggs?: number;
+  kalman?: number;
+  aroon?: IndChannel;
 }
 
 export type CsvCell = string | number;

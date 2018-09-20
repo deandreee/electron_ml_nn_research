@@ -11,6 +11,8 @@ import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
 import { config } from "./config";
 import { featurePower } from "./featurePower";
+import { corr } from "./corr";
+import { PaperTrader } from "./gekko/PaperTrader";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
 const to = new Date("2018-08-22T00:00:00.000Z");
@@ -27,13 +29,18 @@ interface Result {
 
 export const run = (): Result => {
   const coins = queryCoins(fromExtended, toExtended);
-  vol1(coins);
+  // vol1(coins);
+
+  for (let key in coins) {
+    coins[key].trader = new PaperTrader(coins[key].candles[60]);
+  }
 
   const candlesActual = coins[config.leadCoin].candles.filter(
     x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
   );
 
-  featurePower(coins[config.leadCoin].candles);
+  // featurePower(coins[config.leadCoin].candles);
+  corr(coins[config.leadCoin].candles);
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];

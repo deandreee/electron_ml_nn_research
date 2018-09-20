@@ -17,235 +17,260 @@ const baseDotted = {
   }
 };
 
-type fnGetInd = (x: Candle) => number;
+type fnGetInd = (x: Candle) => any;
+type fnGetIndValue = (x: Candle) => number;
 
-const data = (coins: CoinList, fn: fnGetInd) => {
+const data = (coins: CoinList, fn: fnGetIndValue) => {
   return coins[config.leadCoin].candles.map(x => x && [x.start * 1000, fn(x)]);
 };
 
+const hasIndicator = (coins: CoinList, fn: fnGetInd) => {
+  const candles = coins[config.leadCoin].candles;
+  return fn(candles[candles.length - 1]) !== undefined;
+};
+
 export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
-  const seriesPsar = {
-    ...base,
-    color: "lightblue",
-    data: data(coins, x => x.ind.psar),
-    name: "PSAR"
-  };
+  const series = [];
 
-  const seriesXmPsar = {
-    ...baseDotted,
-    color: "lightblue",
-    data: data(coins, x => x.ind.xmPsar),
-    name: "XmPSAR"
-  };
+  if (hasIndicator(coins, x => x.ind.psar)) {
+    series.push({
+      ...base,
+      color: "lightblue",
+      data: data(coins, x => x.ind.psar),
+      name: "PSAR"
+    });
+  }
 
-  const seriesZlema = {
-    ...baseDotted,
-    color: "lightblue",
-    data: data(coins, x => x.ind.zlema),
-    name: "ZLEMA"
-  };
+  if (hasIndicator(coins, x => x.ind.xmPsar)) {
+    series.push({
+      ...baseDotted,
+      color: "lightblue",
+      data: data(coins, x => x.ind.xmPsar),
+      name: "XmPSAR"
+    });
+  }
 
-  const seriesHma = {
-    ...baseDotted,
-    color: "green",
-    data: data(coins, x => x.ind.hma),
+  if (hasIndicator(coins, x => x.ind.zlema)) {
+    series.push({
+      ...baseDotted,
+      color: "lightblue",
+      data: data(coins, x => x.ind.zlema),
+      name: "ZLEMA"
+    });
+  }
 
-    name: "HMA"
-  };
+  if (hasIndicator(coins, x => x.ind.hma)) {
+    series.push({
+      ...baseDotted,
+      color: "green",
+      data: data(coins, x => x.ind.hma),
+      name: "HMA"
+    });
+  }
 
-  const seriesLrc60 = {
-    ...baseDotted,
-    color: "red",
-    data: data(coins, x => x.ind.lrc60.result),
-    name: "LRC"
-  };
+  if (hasIndicator(coins, x => x.ind.lrc60)) {
+    series.push({
+      ...baseDotted,
+      color: "red",
+      data: data(coins, x => x.ind.lrc60.result),
+      name: "LRC60"
+    });
+  }
 
-  const seriesLrc120 = {
-    ...baseDotted,
-    color: "green",
-    data: data(coins, x => x.ind.lrc120.result),
-    name: "LRC"
-  };
+  if (hasIndicator(coins, x => x.ind.lrc120)) {
+    series.push({
+      ...baseDotted,
+      color: "green",
+      data: data(coins, x => x.ind.lrc120.result),
+      name: "LRC120"
+    });
+  }
 
-  const seriesLrc240 = {
-    ...baseDotted,
-    color: "blue",
-    data: data(coins, x => x.ind.lrc240.result),
-    name: "LRC"
-  };
+  if (hasIndicator(coins, x => x.ind.lrc240)) {
+    series.push({
+      ...baseDotted,
+      color: "blue",
+      data: data(coins, x => x.ind.lrc240.result),
+      name: "LRC240"
+    });
+  }
 
-  const seriesLrcChannelUp = {
-    ...baseDotted,
-    color: "yellow",
-    data: data(coins, x => x.ind.lrcChannel.up),
-    name: "LRC"
-  };
+  if (hasIndicator(coins, x => x.ind.lrcChannel)) {
+    series.push({
+      ...baseDotted,
+      color: "yellow",
+      data: data(coins, x => x.ind.lrcChannel.up),
+      name: "LRC"
+    });
+  }
 
-  const seriesLrcChannelDown = {
-    ...baseDotted,
-    color: "yellow",
-    data: data(coins, x => x.ind.lrcChannel.down),
-    name: "LRC"
-  };
+  if (hasIndicator(coins, x => x.ind.lrcChannel)) {
+    series.push({
+      ...baseDotted,
+      color: "yellow",
+      data: data(coins, x => x.ind.lrcChannel.down),
+      name: "LRC"
+    });
+  }
 
-  const seriesLrcSlope = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.lrc60.slope),
-    name: "LRC",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.lrc60)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: data(coins, x => x.ind.lrc60.slope),
+      name: "LRC",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesLrcIntercept = {
-    ...base,
-    color: "green",
-    data: data(coins, x => x.ind.lrc60.intercept),
-    name: "LRC",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.lrc60)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: data(coins, x => x.ind.lrc60.intercept),
+      name: "LRC",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesVixFix = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.vixFix),
-    name: "VixFix",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.vixFix)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: data(coins, x => x.ind.vixFix),
+      name: "VixFix",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesXmVixFix = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.xmVixFix),
-    name: "XmVixFix",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.xmVixFix)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: data(coins, x => x.ind.xmVixFix),
+      name: "XmVixFix",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesTwiggs = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.twiggs),
-    name: "TWIGGS",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.twiggs)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: data(coins, x => x.ind.twiggs),
+      name: "TWIGGS",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesXmTwiggs = {
-    ...baseDotted,
-    color: "red",
-    data: data(coins, x => x.ind.xmTwiggs),
-    name: "XmTWIGGS",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.xmTwiggs)) {
+    series.push({
+      ...baseDotted,
+      color: "red",
+      data: data(coins, x => x.ind.xmTwiggs),
+      name: "XmTWIGGS",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesHlValid = {
-    ...base,
-    color: "green",
-    data: data(coins, x => x.ind.hlTrueRange.valid),
-    name: "HlValid",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.hlTrueRange)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: data(coins, x => x.ind.hlTrueRange.valid),
+      name: "HlValid",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
 
-  const hlMax = coins[config.leadCoin].candles.map(
-    x => x && [x.start * 1000, x.ind.hlTrueRange.runningMax]
-  );
+    const hlMax = coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.hlTrueRange.runningMax]
+    );
 
-  const hlMin = coins[config.leadCoin].candles.map(
-    x => x && [x.start * 1000, x.ind.hlTrueRange.runningMin]
-  );
+    const hlMin = coins[config.leadCoin].candles.map(
+      x => x && [x.start * 1000, x.ind.hlTrueRange.runningMin]
+    );
 
-  const seriesHlTrueRange = {
-    ...base,
-    type: "scatter",
-    symbolSize: 10,
-    color: "purple",
-    data: hlMax.concat(hlMin),
-    name: "HlTrueRange"
-  };
+    series.push({
+      ...base,
+      type: "scatter",
+      symbolSize: 10,
+      color: "purple",
+      data: hlMax.concat(hlMin),
+      name: "HlTrueRange"
+    });
+  }
 
-  const seriesKalman = {
-    ...baseDotted,
-    color: "lightblue",
-    data: data(coins, x => x.ind.kalman),
-    name: "Kalman"
-  };
+  if (hasIndicator(coins, x => x.ind.kalman)) {
+    series.push({
+      ...baseDotted,
+      color: "lightblue",
+      data: data(coins, x => x.ind.kalman),
+      name: "Kalman"
+    });
+  }
 
-  const seriesAroonUp = {
-    ...base,
-    color: "green",
-    data: data(coins, x => x.ind.aroon.up),
-    name: "Aroon",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.aroon)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: data(coins, x => x.ind.aroon.up),
+      name: "Aroon",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  const seriesAroonDown = {
-    ...base,
-    color: "red",
-    data: data(coins, x => x.ind.aroon.down),
-    name: "Aroon",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.aroon)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: data(coins, x => x.ind.aroon.down),
+      name: "Aroon",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
   const flash = "path://M7,2V13H10V22L17,10H13L17,2H7Z";
-  const seriesPctChange = {
-    ...base,
-    type: "scatter",
-    symbol: flash,
-    symbolSize: 15,
-    color: "red",
-    name: "pctChange",
-    data: coins[config.leadCoin].candles
-      .filter(x => x.pctChange60m < -1)
-      .map(x => [x.start * 1000, x.close + x.close * 0.005])
-  };
+  if (hasIndicator(coins, x => x.pctChange60m)) {
+    series.push({
+      ...base,
+      type: "scatter",
+      symbol: flash,
+      symbolSize: 15,
+      color: "red",
+      name: "pctChange",
+      data: coins[config.leadCoin].candles
+        .filter(x => x.pctChange60m < -1)
+        .map(x => [x.start * 1000, x.close + x.close * 0.005])
+    });
+  }
 
-  const seriesRsi = {
-    ...base,
-    // type: "scatter",
-    // symbol: flash,
-    // symbolSize: 10,
-    color: "red",
-    // data: data(coins, x => x.ind.rsi),
-    data: coins[config.leadCoin].candles
-      // .filter(x => x && x.ind.rsi > 80)
-      .map(x => x && [x.start * 1000, x.ind.rsi > 80 ? x.ind.rsi : null]),
-    name: "RSI",
-    xAxisIndex: 1,
-    yAxisIndex: 1
-  };
+  if (hasIndicator(coins, x => x.ind.rsi)) {
+    series.push({
+      ...base,
+      // type: "scatter",
+      // symbol: flash,
+      // symbolSize: 10,
+      color: "red",
+      // data: data(coins, x => x.ind.rsi),
+      data: coins[config.leadCoin].candles
+        // .filter(x => x && x.ind.rsi > 80)
+        .map(x => x && [x.start * 1000, x.ind.rsi > 80 ? x.ind.rsi : null]),
+      name: "RSI",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
 
-  return [
-    seriesRsi,
-    seriesPctChange,
-    seriesPsar,
-    seriesXmPsar,
-
-    seriesHlTrueRange,
-    seriesVixFix,
-    seriesXmVixFix,
-    // seriesHlValid // displays really badly due to all the interruptions
-    seriesZlema,
-    seriesHma,
-    seriesLrc60,
-    seriesLrc120,
-    seriesLrc240,
-    seriesLrcChannelUp,
-    seriesLrcChannelDown,
-    seriesLrcSlope
-    // seriesLrcIntercept,
-    // seriesTwiggs,
-    // seriesXmTwiggs,
-    // seriesKalman,
-    // seriesAroonUp,
-    // seriesAroonDown
-  ];
+  return series;
 };
 
 // const seriesVolume = {
