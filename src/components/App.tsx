@@ -12,22 +12,27 @@ import { Profits } from "./Profits";
 import { Roundtrips } from "./Roundtrips";
 import { seriesSignals, seriesTrades, seriesInd } from "./series";
 import { config } from "../strat/config";
+import { CorrChart } from "./CorrChart";
 
 interface State {
   isLoading: boolean;
   options: EChartOption;
   coins: CoinList;
+  x: number[];
+  y: number[];
 }
 
 export class App extends React.Component {
   readonly state: State = {
     isLoading: true,
     options: options,
-    coins: {}
+    coins: {},
+    x: [],
+    y: []
   };
 
   async componentWillMount() {
-    const { coins, labelsPredicted } = strat.run();
+    const { coins, labelsPredicted, x, y } = strat.run();
 
     // const currentProp = "percentChange";
     const currentProp = "close";
@@ -77,7 +82,9 @@ export class App extends React.Component {
         ]
       },
       isLoading: false,
-      coins
+      coins,
+      x,
+      y
     });
   }
 
@@ -91,7 +98,7 @@ export class App extends React.Component {
       <div style={this.style}>
         <ReactEcharts
           option={this.state.options}
-          style={{ height: "600px", width: "100%" }}
+          style={{ height: "300px", width: "100%" }}
           notMerge={true}
           lazyUpdate={true}
           theme={"dark"}
@@ -102,6 +109,7 @@ export class App extends React.Component {
             maskColor: styles.colors.background
           }}
         />
+        <CorrChart x={this.state.x} y={this.state.y} />
         {/* <Profits coins={this.state.coins} /> */}
         {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}
       </div>

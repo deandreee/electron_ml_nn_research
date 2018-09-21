@@ -26,7 +26,7 @@ const data = (coins: CoinList, fn: fnGetIndValue) => {
 
 const hasIndicator = (coins: CoinList, fn: fnGetInd) => {
   const candles = coins[config.leadCoin].candles;
-  return fn(candles[candles.length - 1]) !== undefined;
+  return fn(candles[candles.length - 1000]) !== undefined; // quick fix, not sure about the number
 };
 
 export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
@@ -72,7 +72,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "red",
-      data: data(coins, x => x.ind.lrc60.result),
+      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.result),
       name: "LRC60"
     });
   }
@@ -81,7 +81,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "green",
-      data: data(coins, x => x.ind.lrc120.result),
+      data: data(coins, x => x.ind.lrc120 && x.ind.lrc120.result),
       name: "LRC120"
     });
   }
@@ -90,7 +90,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "blue",
-      data: data(coins, x => x.ind.lrc240.result),
+      data: data(coins, x => x.ind.lrc240 && x.ind.lrc240.result),
       name: "LRC240"
     });
   }
@@ -99,7 +99,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "yellow",
-      data: data(coins, x => x.ind.lrcChannel.up),
+      data: data(coins, x => x.ind.lrcChannel && x.ind.lrcChannel.up),
       name: "LRC"
     });
   }
@@ -108,7 +108,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "yellow",
-      data: data(coins, x => x.ind.lrcChannel.down),
+      data: data(coins, x => x.ind.lrcChannel && x.ind.lrcChannel.down),
       name: "LRC"
     });
   }
@@ -117,7 +117,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...base,
       color: "red",
-      data: data(coins, x => x.ind.lrc60.slope),
+      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.slope),
       name: "LRC",
       xAxisIndex: 1,
       yAxisIndex: 1
@@ -128,7 +128,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...base,
       color: "green",
-      data: data(coins, x => x.ind.lrc60.intercept),
+      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.intercept),
       name: "LRC",
       xAxisIndex: 1,
       yAxisIndex: 1
@@ -183,18 +183,20 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...base,
       color: "green",
-      data: data(coins, x => x.ind.hlTrueRange.valid),
+      data: data(coins, x => x.ind.hlTrueRange && x.ind.hlTrueRange.valid),
       name: "HlValid",
       xAxisIndex: 1,
       yAxisIndex: 1
     });
 
     const hlMax = coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.hlTrueRange.runningMax]
+      x =>
+        x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMax]
     );
 
     const hlMin = coins[config.leadCoin].candles.map(
-      x => x && [x.start * 1000, x.ind.hlTrueRange.runningMin]
+      x =>
+        x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMin]
     );
 
     series.push({
@@ -220,7 +222,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...base,
       color: "green",
-      data: data(coins, x => x.ind.aroon.up),
+      data: data(coins, x => x.ind.aroon && x.ind.aroon.up),
       name: "Aroon",
       xAxisIndex: 1,
       yAxisIndex: 1
@@ -231,7 +233,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...base,
       color: "red",
-      data: data(coins, x => x.ind.aroon.down),
+      data: data(coins, x => x.ind.aroon && x.ind.aroon.down),
       name: "Aroon",
       xAxisIndex: 1,
       yAxisIndex: 1

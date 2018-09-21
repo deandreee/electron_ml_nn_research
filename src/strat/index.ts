@@ -25,6 +25,8 @@ const toExtended = new Date(to.getTime() + ms("1h"));
 interface Result {
   coins: CoinList;
   labelsPredicted: number[];
+  x: number[];
+  y: number[];
 }
 
 export const run = (): Result => {
@@ -40,12 +42,12 @@ export const run = (): Result => {
   );
 
   // featurePower(coins[config.leadCoin].candles);
-  corr(coins[config.leadCoin].candles);
+  const { x, y } = corr(coins[config.leadCoin].candles);
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted };
+  return { coins, labelsPredicted, x, y };
 };
 
 const predictSvm = (candlesActual: Candle[]): number[] => {

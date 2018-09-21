@@ -1,7 +1,8 @@
 import { times } from "lodash-es";
 import { Series } from "pandas-js";
+import * as regression from "regression";
 import { Candle } from "./types";
-import { getCandlePctChange } from "./utils";
+import { getCandlePctChange, getPctChange } from "./utils";
 import { XmRsi, XmBase, VixFix, LRC, ZLEMA } from "./strats/ind";
 
 let warmup = 30 * 15; // min
@@ -64,6 +65,10 @@ export const corr = (candles: Candle[]) => {
   const candlesActual = candles.filter(
     (x, i) => !(i < warmup + skipStart || i >= candles.length - extended)
   );
+  const candlesActualExtended = candles.filter(
+    (x, i) => !(i < warmup + skipStart)
+  );
+
   // const rsi = new Series(candlesActual.map(x => (x.ind.rsi > 80 ? 1 : 0))); // this binary version might be worth trying
   const rsi = new Series(candlesActual.map(x => x.ind.rsi));
   const vixFix = new Series(candlesActual.map(x => x.ind.vixFix));
@@ -120,6 +125,143 @@ export const corr = (candles: Candle[]) => {
   console.log("zlema_ 120", round2(zlema_.corr(new Series(pctChange120m_))));
   console.log("zlema_ 180", round2(zlema_.corr(new Series(pctChange180m_))));
   console.log("zlema_ 240", round2(zlema_.corr(new Series(pctChange240m_))));
+
+  const pricesXhAhead = candlesActual.map(
+    (x, i) => candlesActualExtended[i + 240].close
+  );
+  const pricesXhAheadSeries = new Series(pricesXhAhead);
+
+  console.log("rsi 10 vs prices", round2(rsi.corr(pricesXhAheadSeries)));
+  console.log("vixFix 10 prices", round2(vixFix.corr(pricesXhAheadSeries)));
+  console.log("lrc60_ vs prices", round2(lrc60_.corr(pricesXhAheadSeries)));
+  console.log("lrc120_ vs prices", round2(lrc120_.corr(pricesXhAheadSeries)));
+  console.log("lrc240 vs prices", round2(lrc240_.corr(pricesXhAheadSeries)));
+  console.log("zlema_ vs prices", round2(zlema_.corr(pricesXhAheadSeries)));
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc60.result)
+        .map((x, i) => [x, pricesXhAhead[i]])
+    );
+
+    console.log("regression lrc60", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc120.result)
+        .map((x, i) => [x, pricesXhAhead[i]])
+    );
+
+    console.log("regression lrc120", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc240.result)
+        .map((x, i) => [x, pricesXhAhead[i]])
+    );
+
+    console.log("regression lrc240", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual.map(x => x.ind.rsi).map((x, i) => [x, pricesXhAhead[i]])
+    );
+
+    console.log("regression rsi", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc240)
+        .map((x, i) => [x.result, pctChange10m_[i]])
+    );
+
+    console.log("regression lrc240 pctChange10m_", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc240)
+        .map((x, i) => [x.result, pctChange120m_[i]])
+    );
+
+    console.log("regression lrc240 pctChange120m_", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const result = regression.linear(
+      candlesActual
+        .map(x => x.ind.lrc240)
+        .map((x, i) => [x.result, pctChange240m_[i]])
+    );
+
+    console.log("regression lrc240 pctChange240m_", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+  }
+
+  {
+    const lrc240PctChange: number[] = [];
+    for (let i = 240; i < candlesActual.length; i++) {
+      lrc240PctChange.push(
+        getPctChange(
+          candlesActual[i].ind.lrc240.result,
+          candlesActual[i - 240].ind.lrc240.result
+        )
+      );
+    }
+
+    const pctChange240m_Sliced240 = pctChange240m_.slice(240);
+
+    const result = regression.linear(
+      lrc240PctChange.map((x, i) => [x, pctChange240m_Sliced240[i]])
+    );
+
+    console.log("regression lrc240PctChange", {
+      string: result.string,
+      eq: result.equation,
+      r2: result.r2
+    });
+
+    const x = candlesActual.map(x => x.ind.lrc60.result);
+    const y = pricesXhAhead;
+
+    return { x, y };
+  }
 };
 
 const round2 = (value: number) => {
