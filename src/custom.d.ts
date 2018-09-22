@@ -10,3 +10,4 @@ declare module "safe-access";
 declare module "kalmanjs";
 declare module "pandas-js";
 declare module "regression";
+declare module "indicators";

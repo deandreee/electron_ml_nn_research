@@ -68,3 +68,11 @@ export const getAvgCandlePctChange = (
 
   return Math.round((sum / (idxAvgTo - idxAvgFrom)) * 10) / 10;
 };
+
+export const times = (x: number) => {
+  const res = [];
+  for (let i = 0; i < x; i++) {
+    res.push(i);
+  }
+  return res;
+};

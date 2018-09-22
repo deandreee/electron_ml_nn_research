@@ -13,3 +13,4 @@ export * from "./XmBase";
 export * from "./PSAR2";
 export * from "./Kalman";
 export * from "./Aroon";
+export * from "./MFI";

@@ -1,7 +1,7 @@
 import { Candle } from "./types";
 import { getCandlePctChange } from "./utils";
 import { XmRsi, XmBase, VixFix } from "./strats/ind";
-import { times } from "lodash-es";
+import { times } from "./utils";
 
 let warmup = 30 * 15; // min
 let extended = 180; // 1h

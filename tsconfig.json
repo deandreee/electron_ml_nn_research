@@ -14,7 +14,8 @@
     "jsx": "react",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "files": ["./typings/index.d.ts", "./app/index.tsx"]
