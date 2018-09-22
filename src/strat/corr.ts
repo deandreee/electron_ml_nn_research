@@ -2,7 +2,12 @@ import { times } from "lodash-es";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
-import { getCandlePctChange, getPctChange } from "./utils";
+import {
+  getCandlePctChange,
+  getMaxCandlePctChange,
+  getAvgCandlePctChange,
+  getPctChange
+} from "./utils";
 import { XmRsi, XmBase, VixFix, LRC, ZLEMA } from "./strats/ind";
 
 let warmup = 30 * 15; // min
@@ -53,7 +58,7 @@ export const corr = (candles: Candle[]) => {
     pctChange10m.push(getCandlePctChange(candles, i + 10, i));
     pctChange30m.push(getCandlePctChange(candles, i + 30, i));
     pctChange60m.push(getCandlePctChange(candles, i + 60, i));
-    pctChange120m.push(getCandlePctChange(candles, i + 120, i));
+    pctChange120m.push(getAvgCandlePctChange(candles, i, i + 100, i + 140));
     pctChange180m.push(getCandlePctChange(candles, i + 180, i));
     pctChange240m.push(getCandlePctChange(candles, i + 240, i));
   }
@@ -245,22 +250,31 @@ export const corr = (candles: Candle[]) => {
       );
     }
 
+    const reg_rsi_pctChange120m = regression.linear(
+      candlesActual.map(x => x.ind.rsi).map((x, i) => [x, pctChange120m_[i]])
+    );
+
+    console.log("regression rsi pctChange120m_", {
+      string: reg_rsi_pctChange120m.string,
+      eq: reg_rsi_pctChange120m.equation,
+      r2: reg_rsi_pctChange120m.r2
+    });
+
     const pctChange240m_Sliced240 = pctChange240m_.slice(240);
 
     const result = regression.linear(
       lrc240PctChange.map((x, i) => [x, pctChange240m_Sliced240[i]])
     );
 
-    console.log("regression lrc240PctChange", {
-      string: result.string,
-      eq: result.equation,
-      r2: result.r2
-    });
+    console.log("regression lrc240PctChange", result.string, "r2", result.r2);
 
-    const x = candlesActual.map(x => x.ind.lrc60.result);
-    const y = pricesXhAhead;
+    // const x = candlesActual.map(x => x.ind.lrc60.result);
+    // const y = pricesXhAhead;
 
-    return { x, y };
+    const x = candlesActual.map(x => x.ind.rsi);
+    const y = pctChange120m_;
+
+    return { x, y, regEquation: reg_rsi_pctChange120m.equation };
   }
 };
 

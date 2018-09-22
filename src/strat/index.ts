@@ -15,6 +15,7 @@ import { corr } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
+// const to = new Date("2018-08-13T00:00:00.000Z");
 const to = new Date("2018-08-22T00:00:00.000Z");
 
 // const { from, to } = pumps.jun2;
@@ -27,6 +28,7 @@ interface Result {
   labelsPredicted: number[];
   x: number[];
   y: number[];
+  regEquation: number[];
 }
 
 export const run = (): Result => {
@@ -42,12 +44,12 @@ export const run = (): Result => {
   );
 
   // featurePower(coins[config.leadCoin].candles);
-  const { x, y } = corr(coins[config.leadCoin].candles);
+  const { x, y, regEquation } = corr(coins[config.leadCoin].candles);
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted, x, y };
+  return { coins, labelsPredicted, x, y, regEquation };
 };
 
 const predictSvm = (candlesActual: Candle[]): number[] => {

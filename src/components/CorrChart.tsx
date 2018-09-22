@@ -14,6 +14,7 @@ interface State {
 interface Props {
   x: number[];
   y: number[];
+  regEquation: number[];
 }
 
 export class CorrChart extends React.Component<Props, State> {
@@ -23,6 +24,12 @@ export class CorrChart extends React.Component<Props, State> {
   };
 
   componentWillMount() {
+    const xMin = Math.min.apply(null, this.props.x);
+    const xMax = Math.max.apply(null, this.props.x);
+
+    const regMin = this.props.regEquation[0] * xMin + this.props.regEquation[1];
+    const regMax = this.props.regEquation[0] * xMax + this.props.regEquation[1];
+
     this.setState({
       options: {
         ...this.state.options,
@@ -32,6 +39,12 @@ export class CorrChart extends React.Component<Props, State> {
             type: "scatter",
             symbolSize: 10,
             data: this.props.x.map((x, i) => [x, this.props.y[i]])
+          },
+          {
+            ...this.state.options.series[0],
+            color: "red",
+            type: "line",
+            data: [[xMin, regMin], [xMax, regMax]]
           }
         ]
       },

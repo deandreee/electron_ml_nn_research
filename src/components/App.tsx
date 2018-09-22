@@ -20,6 +20,7 @@ interface State {
   coins: CoinList;
   x: number[];
   y: number[];
+  regEquation: number[];
 }
 
 export class App extends React.Component {
@@ -28,11 +29,12 @@ export class App extends React.Component {
     options: options,
     coins: {},
     x: [],
-    y: []
+    y: [],
+    regEquation: []
   };
 
   async componentWillMount() {
-    const { coins, labelsPredicted, x, y } = strat.run();
+    const { coins, labelsPredicted, x, y, regEquation } = strat.run();
 
     // const currentProp = "percentChange";
     const currentProp = "close";
@@ -84,7 +86,8 @@ export class App extends React.Component {
       isLoading: false,
       coins,
       x,
-      y
+      y,
+      regEquation
     });
   }
 
@@ -109,7 +112,11 @@ export class App extends React.Component {
             maskColor: styles.colors.background
           }}
         />
-        <CorrChart x={this.state.x} y={this.state.y} />
+        <CorrChart
+          x={this.state.x}
+          y={this.state.y}
+          regEquation={this.state.regEquation}
+        />
         {/* <Profits coins={this.state.coins} /> */}
         {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}
       </div>
