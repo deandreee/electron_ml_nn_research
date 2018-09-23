@@ -44,7 +44,7 @@
     "brain.js": "^1.2.6",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
-    "electron": "^3.0.0",
+    "electron": "^2.0.10",
     "electron-rebuild": "^1.8.2",
     "kalmanjs": "^1.0.0-beta",
     "libsvm-js": "^0.2.1",

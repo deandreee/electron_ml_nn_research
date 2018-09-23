@@ -13,10 +13,20 @@ import { pricesXAhead } from "./pricesXAhead";
 import { linreg } from "./linreg";
 import { linregSplitRSI } from "./linregSplitRSI";
 
-// import { BB } from "../../../gekko-develop/strategies/indicators"; // babel polyfill error, let's fix later
+// import { BB } from "../../../gekko-develop/strategies/indicators"; // babel polyfill error, let's fix later (only for MFI, can include TI lib only once)
+const { MACD } = require("../../../gekko-develop/strategies/indicators");
 
 let warmup = 30 * 15; // min
 let extended = 240; // 1h
+
+export interface LinRegResult {
+  x: number[];
+  y: number[];
+  regEquation: number[];
+  r2: number;
+  corr: number;
+  name: string;
+}
 
 export const corr = (candles: Candle[]) => {
   const xmRsi = new XmRsi(60, 60);
@@ -35,6 +45,7 @@ export const corr = (candles: Candle[]) => {
     60,
     times(60).map(x => new BBands({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }))
   );
+  const macd = new MACD({ short: 12, long: 26, signal: 9 });
 
   const pctChange10m: number[] = [];
   const pctChange30m: number[] = [];
@@ -62,7 +73,9 @@ export const corr = (candles: Candle[]) => {
       lrc240: lrc240.update(candle.close),
       zlema: xmZlema.update(candle),
       mfi: mfi.update(candle),
-      bbands: bbands.update(candle, "close")
+      bbands: bbands.update(candle, "close"),
+      macd: macd.update(candle.close) // change when switch to Xm
+      // macd: macd.update(candle, "close")
     };
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
@@ -136,6 +149,8 @@ export const corr = (candles: Candle[]) => {
   //     );
   //   }
 
+  const linRegs = [];
+
   linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "reg_rsi_pctChange60m");
 
   linreg(
@@ -172,6 +187,7 @@ export const corr = (candles: Candle[]) => {
     pctChange120m_,
     "reg_lrc60_pctChange120m"
   );
+
   linreg(
     candlesActual,
     x => x.ind.mfi,
@@ -214,7 +230,7 @@ export const corr = (candles: Candle[]) => {
     "reg_bbands_pctChange60m"
   );
 
-  const { x, y, regEquation } = linreg(
+  linreg(
     candlesActual,
     x => x.ind.bbands.upper - x.ind.bbands.lower,
     pctChange120m_,
@@ -225,8 +241,24 @@ export const corr = (candles: Candle[]) => {
     candlesActual,
     x => x.ind.bbands.upper - x.ind.bbands.lower,
     pctChange240m_,
-    "reg_bbands_pctChange240m"
+    "BBands vs 240m"
   );
 
-  return { x, y, regEquation };
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.macd.histo, pctChange10m_, "MACD vs 10m")
+  );
+
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.macd.histo, pctChange60m_, "MACD vs 60m")
+  );
+
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.macd.histo, pctChange120m_, "MACD vs 120m")
+  );
+
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.macd.histo, pctChange240m_, "MACD vs 240m")
+  );
+
+  return linRegs;
 };

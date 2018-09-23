@@ -5,6 +5,7 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import { options } from "./options";
 import * as strat from "../strat";
+import { LinRegResult } from "../strat/corr";
 // import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
@@ -18,9 +19,7 @@ interface State {
   isLoading: boolean;
   options: EChartOption;
   coins: CoinList;
-  x: number[];
-  y: number[];
-  regEquation: number[];
+  linRegs: LinRegResult[];
 }
 
 export class App extends React.Component {
@@ -28,13 +27,11 @@ export class App extends React.Component {
     isLoading: true,
     options: options,
     coins: {},
-    x: [],
-    y: [],
-    regEquation: []
+    linRegs: []
   };
 
   async componentWillMount() {
-    const { coins, labelsPredicted, x, y, regEquation } = strat.run();
+    const { coins, labelsPredicted, linRegs } = strat.run();
 
     // const currentProp = "percentChange";
     const currentProp = "close";
@@ -85,9 +82,7 @@ export class App extends React.Component {
       },
       isLoading: false,
       coins,
-      x,
-      y,
-      regEquation
+      linRegs
     });
   }
 
@@ -99,7 +94,7 @@ export class App extends React.Component {
   render() {
     return (
       <div style={this.style}>
-        <ReactEcharts
+        {/* <ReactEcharts
           option={this.state.options}
           style={{ height: "300px", width: "100%" }}
           notMerge={true}
@@ -111,12 +106,23 @@ export class App extends React.Component {
             color: styles.colors.primary,
             maskColor: styles.colors.background
           }}
-        />
-        <CorrChart
-          x={this.state.x}
-          y={this.state.y}
-          regEquation={this.state.regEquation}
-        />
+        /> */}
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "48%" }}>
+            <CorrChart linReg={this.state.linRegs[0]} />
+          </div>
+          <div style={{ width: "48%" }}>
+            <CorrChart linReg={this.state.linRegs[1]} />
+          </div>
+        </div>
+        <div style={{ display: "flex" }}>
+          <div style={{ width: "48%" }}>
+            <CorrChart linReg={this.state.linRegs[2]} />
+          </div>
+          <div style={{ width: "48%" }}>
+            <CorrChart linReg={this.state.linRegs[3]} />
+          </div>
+        </div>
         {/* <Profits coins={this.state.coins} /> */}
         {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}
       </div>

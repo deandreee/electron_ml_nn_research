@@ -24,14 +24,12 @@ export const linreg = (
   const result = regression.linear(indArr.map((x, i) => [x, pctChange[i]]));
   console.log(`REG ${name} ${result.string} | r2   =  ${result.r2}`);
 
-  console.log(
-    "\t\t\t CORR",
-    round2(new Series(indArr).corr(new Series(pctChange)))
-  );
+  const corr = round2(new Series(indArr).corr(new Series(pctChange)));
+  console.log("\t\t\t CORR", corr);
 
   const x = indArr;
   const y = pctChange;
   const regEquation = result.equation;
 
-  return { x, y, regEquation };
+  return { x, y, regEquation, r2: result.r2, corr, name };
 };

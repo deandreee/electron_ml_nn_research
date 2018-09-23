@@ -44,6 +44,12 @@ export interface BBands {
   lower: number;
 }
 
+export interface MACD {
+  signal: number;
+  diff: number;
+  histo: number;
+}
+
 export interface Indicators {
   rsi?: number;
   psar?: number;
@@ -63,6 +69,7 @@ export interface Indicators {
   aroon?: IndChannel;
   mfi?: number;
   bbands?: BBands;
+  macd?: MACD;
 }
 
 export type CsvCell = string | number;

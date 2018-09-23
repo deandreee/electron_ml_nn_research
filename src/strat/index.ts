@@ -6,7 +6,7 @@ import * as pumps from "./pumps";
 import { rescale } from "./rescale";
 import { config } from "./config";
 import { featurePower } from "./featurePower";
-import { corr } from "./corr";
+import { corr, LinRegResult } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
@@ -21,9 +21,7 @@ const toExtended = new Date(to.getTime() + ms("1h"));
 interface Result {
   coins: CoinList;
   labelsPredicted: number[];
-  x: number[];
-  y: number[];
-  regEquation: number[];
+  linRegs: LinRegResult[];
 }
 
 export const run = (): Result => {
@@ -39,10 +37,10 @@ export const run = (): Result => {
   );
 
   // featurePower(coins[config.leadCoin].candles);
-  const { x, y, regEquation } = corr(coins[config.leadCoin].candles);
+  const linRegs = corr(coins[config.leadCoin].candles);
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted, x, y, regEquation };
+  return { coins, labelsPredicted, linRegs };
 };

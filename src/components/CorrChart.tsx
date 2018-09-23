@@ -5,6 +5,7 @@ import { EChartOption } from "echarts";
 import styles from "./styles";
 import { optionsCorr } from "./optionsCorr";
 import { config } from "../strat/config";
+import { LinRegResult } from "../strat/corr";
 
 interface State {
   isLoading: boolean;
@@ -12,9 +13,7 @@ interface State {
 }
 
 interface Props {
-  x: number[];
-  y: number[];
-  regEquation: number[];
+  linReg: LinRegResult;
 }
 
 export class CorrChart extends React.Component<Props, State> {
@@ -24,21 +23,35 @@ export class CorrChart extends React.Component<Props, State> {
   };
 
   componentWillMount() {
-    const xMin = Math.min.apply(null, this.props.x);
-    const xMax = Math.max.apply(null, this.props.x);
+    const xMin = Math.min.apply(null, this.props.linReg.x);
+    const xMax = Math.max.apply(null, this.props.linReg.x);
 
-    const regMin = this.props.regEquation[0] * xMin + this.props.regEquation[1];
-    const regMax = this.props.regEquation[0] * xMax + this.props.regEquation[1];
+    const regMin =
+      this.props.linReg.regEquation[0] * xMin +
+      this.props.linReg.regEquation[1];
+    const regMax =
+      this.props.linReg.regEquation[0] * xMax +
+      this.props.linReg.regEquation[1];
 
     this.setState({
       options: {
         ...this.state.options,
+        title: {
+          text: `${this.props.linReg.name}`,
+          subtext: `r2: ${this.props.linReg.r2} | corr: ${
+            this.props.linReg.corr
+          }`,
+          left: "center",
+          textStyle: {
+            fontSize: 10
+          }
+        },
         series: [
           {
             ...this.state.options.series[0],
             type: "scatter",
             symbolSize: 10,
-            data: this.props.x.map((x, i) => [x, this.props.y[i]])
+            data: this.props.linReg.x.map((x, i) => [x, this.props.linReg.y[i]])
           },
           {
             ...this.state.options.series[0],
@@ -62,7 +75,7 @@ export class CorrChart extends React.Component<Props, State> {
       <div style={this.style}>
         <ReactEcharts
           option={this.state.options}
-          style={{ height: "600px", width: "100%" }}
+          style={{ height: "500px", width: "100%" }}
           notMerge={true}
           lazyUpdate={true}
           theme={"dark"}
