@@ -76,3 +76,7 @@ export const times = (x: number) => {
   }
   return res;
 };
+
+export const round2 = (value: number) => {
+  return Math.round(value * 100) / 100;
+};

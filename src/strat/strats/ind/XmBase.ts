@@ -18,11 +18,12 @@ export class XmBase {
     }
   }
 
-  update = (smallCandle: Candle) => {
+  update = (smallCandle: Candle, prop?: string) => {
     const bigCandle = this.waveManager.update(smallCandle);
     if (bigCandle) {
       const idx = this.waveManager.getCurrentWaveIdx(); // should start with 0
-      const res = this.indArr[idx].update(bigCandle);
+      // @ts-ignore
+      const res = this.indArr[idx].update(prop ? bigCandle[prop] : bigCandle);
       return res;
     }
   };

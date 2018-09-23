@@ -39,6 +39,11 @@ export interface IndLRC {
   result: number;
 }
 
+export interface BBands {
+  upper: number;
+  lower: number;
+}
+
 export interface Indicators {
   rsi?: number;
   psar?: number;
@@ -57,6 +62,7 @@ export interface Indicators {
   kalman?: number;
   aroon?: IndChannel;
   mfi?: number;
+  bbands?: BBands;
 }
 
 export type CsvCell = string | number;

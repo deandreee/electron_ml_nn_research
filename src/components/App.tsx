@@ -78,7 +78,7 @@ export class App extends React.Component {
           ...series,
 
           // ...seriesTrades(currentProp, coins),
-          ...seriesSignals(currentProp, coins),
+          // ...seriesSignals(currentProp, coins),
           // seriesLabelsPredicted,
           ...seriesInd_
         ]

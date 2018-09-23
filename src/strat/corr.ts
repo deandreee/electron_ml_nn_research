@@ -1,4 +1,4 @@
-import { times } from "./utils";
+import { times, round2 } from "./utils";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
@@ -8,15 +8,18 @@ import {
   getAvgCandlePctChange,
   getPctChange
 } from "./utils";
-import { XmRsi, XmBase, VixFix, LRC, ZLEMA, MFI } from "./strats/ind";
+import { XmRsi, XmBase, VixFix, LRC, ZLEMA, MFI, BBands } from "./strats/ind";
+import { pricesXAhead } from "./pricesXAhead";
+import { linreg } from "./linreg";
+import { linregSplitRSI } from "./linregSplitRSI";
 
-// import { MFI } from "../../../gekko-develop/strategies/indicators"; // babel polyfill error, let's fix later
+// import { BB } from "../../../gekko-develop/strategies/indicators"; // babel polyfill error, let's fix later
 
 let warmup = 30 * 15; // min
 let extended = 240; // 1h
 
 export const corr = (candles: Candle[]) => {
-  const xmRsi = new XmRsi(60, 15);
+  const xmRsi = new XmRsi(60, 60);
   const xmVixFix = new XmBase(
     120,
     times(120).map(
@@ -28,6 +31,10 @@ export const corr = (candles: Candle[]) => {
   const lrc240 = new LRC(240);
   const xmZlema = new XmBase(60, times(60).map(x => new ZLEMA(60)));
   const mfi = new XmBase(60, times(60).map(x => new MFI(15)));
+  const bbands = new XmBase(
+    60,
+    times(60).map(x => new BBands({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }))
+  );
 
   const pctChange10m: number[] = [];
   const pctChange30m: number[] = [];
@@ -54,7 +61,8 @@ export const corr = (candles: Candle[]) => {
       lrc120: lrc120.update(candle.close),
       lrc240: lrc240.update(candle.close),
       zlema: xmZlema.update(candle),
-      mfi: mfi.update(candle)
+      mfi: mfi.update(candle),
+      bbands: bbands.update(candle, "close")
     };
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
@@ -170,11 +178,34 @@ export const corr = (candles: Candle[]) => {
   //     );
   //   }
 
+  linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "reg_rsi_pctChange60m");
+
   linreg(
     candlesActual,
     x => x.ind.rsi,
     pctChange120m_,
     "reg_rsi_pctChange120m"
+  );
+
+  linreg(
+    candlesActual,
+    x => x.ind.rsi,
+    pctChange240m_,
+    "reg_rsi_pctChange240m"
+  );
+
+  linregSplitRSI(
+    candlesActual,
+    x => x.ind.rsi,
+    pctChange120m_,
+    "reg SPLIT RSI 120m"
+  );
+
+  linregSplitRSI(
+    candlesActual,
+    x => x.ind.rsi,
+    pctChange240m_,
+    "reg SPLIT RSI 240m"
   );
 
   linreg(
@@ -190,97 +221,54 @@ export const corr = (candles: Candle[]) => {
     "reg_mfi_pctChange120m"
   );
 
-  const { x, y, regEquation } = linreg(
+  linreg(
+    candlesActual,
+    x => x.ind.vixFix,
+    pctChange60m_,
+    "reg_vixFix_pctChange60m"
+  );
+
+  linreg(
     candlesActual,
     x => x.ind.vixFix,
     pctChange120m_,
     "reg_vixFix_pctChange120m"
   );
 
-  return { x, y, regEquation };
-};
-
-type fnGetInd = (candle: Candle) => number;
-
-const linreg = (
-  candlesActual: Candle[],
-  fnGetInd: fnGetInd,
-  pctChange: number[],
-  name: string
-) => {
-  const indArr = candlesActual.map(fnGetInd);
-
-  if (indArr.length !== pctChange.length) {
-    throw new Error(
-      `linreg length not equal => ${name} | ${indArr.length} vs ${
-        pctChange.length
-      }`
-    );
-  }
-
-  const result = regression.linear(indArr.map((x, i) => [x, pctChange[i]]));
-
-  console.log(`REG ${name} ${result.string} | r2   =  ${result.r2}`);
-
-  const x = indArr;
-  const y = pctChange;
-  const regEquation = result.equation;
-
-  return { x, y, regEquation };
-};
-
-const round2 = (value: number) => {
-  return Math.round(value * 100) / 100;
-};
-
-const pricesXAhead = (
-  candlesActual: Candle[],
-  candlesActualExtended: Candle[]
-) => {
-  const pricesXhAhead = candlesActual.map(
-    (x, i) => candlesActualExtended[i + 240].close
+  linreg(
+    candlesActual,
+    x => x.ind.vixFix,
+    pctChange240m_,
+    "reg_vixFix_pctChange240m"
   );
-  const pricesXhAheadSeries = new Series(pricesXhAhead);
 
-  const rsi = new Series(candlesActual.map(x => x.ind.rsi));
-  const vixFix = new Series(candlesActual.map(x => x.ind.vixFix));
-  const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60.result));
-  const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120.result));
-  const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240.result));
-  const zlema_ = new Series(candlesActual.map(x => x.ind.zlema));
+  linreg(
+    candlesActual,
+    x => x.ind.bbands.upper - x.ind.bbands.lower,
+    pctChange10m_,
+    "reg_bbands_pctChange10m"
+  );
 
-  console.log("rsi 10 vs prices", round2(rsi.corr(pricesXhAheadSeries)));
-  console.log("vixFix 10 prices", round2(vixFix.corr(pricesXhAheadSeries)));
-  console.log("lrc60_ vs prices", round2(lrc60_.corr(pricesXhAheadSeries)));
-  console.log("lrc120_ vs prices", round2(lrc120_.corr(pricesXhAheadSeries)));
-  console.log("lrc240 vs prices", round2(lrc240_.corr(pricesXhAheadSeries)));
-  console.log("zlema_ vs prices", round2(zlema_.corr(pricesXhAheadSeries)));
+  linreg(
+    candlesActual,
+    x => x.ind.bbands.upper - x.ind.bbands.lower,
+    pctChange60m_,
+    "reg_bbands_pctChange60m"
+  );
 
-  {
-    const result = regression.linear(
-      candlesActual
-        .map(x => x.ind.lrc120.result)
-        .map((x, i) => [x, pricesXhAhead[i]])
-    );
+  const { x, y, regEquation } = linreg(
+    candlesActual,
+    x => x.ind.bbands.upper - x.ind.bbands.lower,
+    pctChange120m_,
+    "reg_bbands_pctChange120m"
+  );
 
-    console.log("regression lrc120", result.string, "r2", result.r2);
-  }
+  linreg(
+    candlesActual,
+    x => x.ind.bbands.upper - x.ind.bbands.lower,
+    pctChange240m_,
+    "reg_bbands_pctChange240m"
+  );
 
-  {
-    const result = regression.linear(
-      candlesActual
-        .map(x => x.ind.lrc240.result)
-        .map((x, i) => [x, pricesXhAhead[i]])
-    );
-
-    console.log("regression lrc240", result.string, "r2", result.r2);
-  }
-
-  {
-    const result = regression.linear(
-      candlesActual.map(x => x.ind.rsi).map((x, i) => [x, pricesXhAhead[i]])
-    );
-
-    console.log("regression rsi", result.string, "r2", result.r2);
-  }
+  return { x, y, regEquation };
 };
