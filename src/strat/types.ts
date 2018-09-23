@@ -57,7 +57,8 @@ export interface Indicators {
   hlTrueRange?: IndHlTrueRange;
   vixFix?: number;
   xmVixFix?: number;
-  zlema?: number;
+  zlema60Fast?: number;
+  zlema60Slow?: number;
   hma?: number;
   lrc60?: IndLRC;
   lrc120?: IndLRC;
@@ -69,7 +70,9 @@ export interface Indicators {
   aroon?: IndChannel;
   mfi?: number;
   bbands?: BBands;
-  macd?: MACD;
+  macd60?: MACD;
+  macd120?: MACD;
+  macd240?: MACD;
 }
 
 export type CsvCell = string | number;

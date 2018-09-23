@@ -50,12 +50,12 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     });
   }
 
-  if (hasIndicator(coins, x => x.ind.zlema)) {
+  if (hasIndicator(coins, x => x.ind.zlema60Fast)) {
     series.push({
       ...baseDotted,
       color: "lightblue",
-      data: data(coins, x => x.ind.zlema),
-      name: "ZLEMA"
+      data: data(coins, x => x.ind.zlema60Fast),
+      name: "zlema60Fast"
     });
   }
 

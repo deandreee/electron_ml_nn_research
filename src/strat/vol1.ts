@@ -70,7 +70,6 @@ export const vol1 = (coins: CoinList) => {
       hlTrueRange: hlTrueRange.update(leadCoin.candles[i]),
       vixFix: vixFix.update(leadCoin.candles[i]),
       xmVixFix: xmVixFix.update(leadCoin.candles[i]),
-      zlema: xmZlema.update(leadCoin.candles[i]),
       hma: hma.update(leadCoin.candles[i]),
       lrc60: lrc60.update(leadCoin.candles[i].close),
       lrc120: lrc120.update(leadCoin.candles[i].close),
