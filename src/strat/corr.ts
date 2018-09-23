@@ -101,48 +101,6 @@ export const corr = (candles: Candle[]) => {
   const pctChange180m_ = pctChange180m.slice(skipStart);
   const pctChange240m_ = pctChange240m.slice(skipStart);
 
-  console.log("rsi 10", round2(rsi.corr(new Series(pctChange10m_))));
-  console.log("rsi 30", round2(rsi.corr(new Series(pctChange30m_))));
-  console.log("rsi 60", round2(rsi.corr(new Series(pctChange60m_))));
-  console.log("rsi 120", round2(rsi.corr(new Series(pctChange120m_))));
-  console.log("rsi 180", round2(rsi.corr(new Series(pctChange180m_))));
-  console.log("rsi 240", round2(rsi.corr(new Series(pctChange240m_))));
-
-  console.log("vixFix 10", round2(vixFix.corr(new Series(pctChange10m_))));
-  console.log("vixFix 30", round2(vixFix.corr(new Series(pctChange30m_))));
-  console.log("vixFix 60", round2(vixFix.corr(new Series(pctChange60m_))));
-  console.log("vixFix 120", round2(vixFix.corr(new Series(pctChange120m_))));
-  console.log("vixFix 180", round2(vixFix.corr(new Series(pctChange180m_))));
-  console.log("vixFix 240", round2(vixFix.corr(new Series(pctChange240m_))));
-
-  console.log("lrc60_ 10", round2(lrc60_.corr(new Series(pctChange10m_))));
-  console.log("lrc60_ 30", round2(lrc60_.corr(new Series(pctChange30m_))));
-  console.log("lrc60_ 60", round2(lrc60_.corr(new Series(pctChange60m_))));
-  console.log("lrc60_ 120", round2(lrc60_.corr(new Series(pctChange120m_))));
-  console.log("lrc60_ 180", round2(lrc60_.corr(new Series(pctChange180m_))));
-  console.log("lrc60_ 240", round2(lrc60_.corr(new Series(pctChange240m_))));
-
-  console.log("lrc120_ 10", round2(lrc120_.corr(new Series(pctChange10m_))));
-  console.log("lrc120_ 30", round2(lrc120_.corr(new Series(pctChange30m_))));
-  console.log("lrc120_ 60", round2(lrc120_.corr(new Series(pctChange60m_))));
-  console.log("lrc120_ 120", round2(lrc120_.corr(new Series(pctChange120m_))));
-  console.log("lrc120_ 180", round2(lrc120_.corr(new Series(pctChange180m_))));
-  console.log("lrc120_ 240", round2(lrc120_.corr(new Series(pctChange240m_))));
-
-  console.log("lrc240_ 10", round2(lrc240_.corr(new Series(pctChange10m_))));
-  console.log("lrc240_ 30", round2(lrc240_.corr(new Series(pctChange30m_))));
-  console.log("lrc240_ 60", round2(lrc240_.corr(new Series(pctChange60m_))));
-  console.log("lrc240_ 120", round2(lrc240_.corr(new Series(pctChange120m_))));
-  console.log("lrc240_ 180", round2(lrc240_.corr(new Series(pctChange180m_))));
-  console.log("lrc240_ 240", round2(lrc240_.corr(new Series(pctChange240m_))));
-
-  console.log("zlema_ 10", round2(zlema_.corr(new Series(pctChange10m_))));
-  console.log("zlema_ 30", round2(zlema_.corr(new Series(pctChange30m_))));
-  console.log("zlema_ 60", round2(zlema_.corr(new Series(pctChange60m_))));
-  console.log("zlema_ 120", round2(zlema_.corr(new Series(pctChange120m_))));
-  console.log("zlema_ 180", round2(zlema_.corr(new Series(pctChange180m_))));
-  console.log("zlema_ 240", round2(zlema_.corr(new Series(pctChange240m_))));
-
   pricesXAhead(candlesActual, candlesActualExtended);
 
   // linreg(
