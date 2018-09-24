@@ -26,15 +26,12 @@ const {
   ZerolagHATEMA
 } = require("../../../gekko-develop/strategies/indicators/lizard");
 
-// let warmup = 30 * 15; // RSI min
-// let warmup = 26 * 240; // MACD min
-
 // warmup = wait for first candle
 // skipstart = wait for ind to have enough
 
-const warmup = 240; // ZLEMA
-const skipStart = 120 * 60;
-let extended = 240; // 1h
+export const WARMUP = 240; // => biggest candle used
+export const WARMUP_IND = 120 * 60; // => ind ready
+export const EXTENDED = 1500; // 1h
 
 export interface LinRegResult {
   x: number[];
@@ -100,6 +97,8 @@ export const corr = (candles: Candle[]) => {
   const pctChange120m: number[] = [];
   const pctChange180m: number[] = [];
   const pctChange240m: number[] = [];
+  const pctChange480m: number[] = [];
+  const pctChange24h: number[] = [];
 
   let rsiDropCount = 0;
   let rsiNoDropCount = 0;
@@ -107,9 +106,9 @@ export const corr = (candles: Candle[]) => {
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
-    if (i < warmup || i >= candles.length - extended) {
+    if (i < WARMUP || i >= candles.length - EXTENDED) {
       candle.ind = {};
-      continue; // history warmup
+      continue; // history WARMUP
     }
 
     candle.ind = {
@@ -133,19 +132,20 @@ export const corr = (candles: Candle[]) => {
 
     pctChange10m.push(getCandlePctChange(candles, i + 10, i));
     pctChange30m.push(getCandlePctChange(candles, i + 30, i));
-    pctChange60m.push(getCandlePctChange(candles, i + 60, i));
+    pctChange60m.push(getAvgCandlePctChange(candles, i, i + 50, i + 70));
     pctChange120m.push(getAvgCandlePctChange(candles, i, i + 100, i + 140));
-    pctChange180m.push(getCandlePctChange(candles, i + 180, i));
-    pctChange240m.push(getCandlePctChange(candles, i + 240, i));
+    pctChange240m.push(getAvgCandlePctChange(candles, i, i + 220, i + 260));
+    pctChange480m.push(getAvgCandlePctChange(candles, i, i + 450, i + 500));
+    pctChange24h.push(getAvgCandlePctChange(candles, i, i + 1400, i + 1500));
   }
 
   // console.log("drop vs no drop: ", rsiDropCount, rsiNoDropCount);
 
   const candlesActual = candles.filter(
-    (x, i) => !(i < warmup + skipStart || i >= candles.length - extended)
+    (x, i) => !(i < WARMUP + WARMUP_IND || i >= candles.length - EXTENDED)
   );
   const candlesActualExtended = candles.filter(
-    (x, i) => !(i < warmup + skipStart)
+    (x, i) => !(i < WARMUP + WARMUP_IND)
   );
 
   // const rsi = new Series(candlesActual.map(x => (x.ind.rsi > 80 ? 1 : 0))); // this binary version might be worth trying
@@ -155,12 +155,14 @@ export const corr = (candles: Candle[]) => {
   const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120.result));
   const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240.result));
 
-  const pctChange10m_ = pctChange10m.slice(skipStart);
-  const pctChange30m_ = pctChange30m.slice(skipStart);
-  const pctChange60m_ = pctChange60m.slice(skipStart);
-  const pctChange120m_ = pctChange120m.slice(skipStart);
-  const pctChange180m_ = pctChange180m.slice(skipStart);
-  const pctChange240m_ = pctChange240m.slice(skipStart);
+  const pctChange10m_ = pctChange10m.slice(WARMUP_IND);
+  const pctChange30m_ = pctChange30m.slice(WARMUP_IND);
+  const pctChange60m_ = pctChange60m.slice(WARMUP_IND);
+  const pctChange120m_ = pctChange120m.slice(WARMUP_IND);
+  const pctChange180m_ = pctChange180m.slice(WARMUP_IND);
+  const pctChange240m_ = pctChange240m.slice(WARMUP_IND);
+  const pctChange480m_ = pctChange480m.slice(WARMUP_IND);
+  const pctChange24h_ = pctChange24h.slice(WARMUP_IND);
 
   pricesXAhead(candlesActual, candlesActualExtended);
 
@@ -348,22 +350,21 @@ export const corr = (candles: Candle[]) => {
   );
 
   /// MACD LRC ///
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange10m_,
-      "MACD LRC vs 10m"
-    )
+
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange10m_,
+    "MACD LRC vs 10m"
   );
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange60m_,
-      "MACD LRC vs 60m"
-    )
+
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange60m_,
+    "MACD LRC vs 60m"
   );
+
   linRegs.push(
     linreg(
       candlesActual,
@@ -378,6 +379,23 @@ export const corr = (candles: Candle[]) => {
       x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
       pctChange240m_,
       "MACD LRC vs 240m"
+    )
+  );
+
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange480m_,
+      "MACD LRC vs 480m"
+    )
+  );
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange24h_,
+      "MACD LRC vs 24h"
     )
   );
 

@@ -5,7 +5,7 @@ import { queryCoins } from "./queryCoins";
 import * as pumps from "./pumps";
 import { rescale } from "./rescale";
 import { config } from "./config";
-import { corr, LinRegResult } from "./corr";
+import { corr, LinRegResult, WARMUP, WARMUP_IND, EXTENDED } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 
 const from = new Date("2018-08-01T00:00:00.000Z");
@@ -14,8 +14,8 @@ const to = new Date("2018-09-01T00:00:00.000Z");
 
 // const { from, to } = pumps.jun2;
 
-const fromExtended = new Date(from.getTime() - ms(`${15 * 30}m`)); // because XmRsi
-const toExtended = new Date(to.getTime() + ms("1h"));
+const fromExtended = new Date(from.getTime() - ms(`${WARMUP + WARMUP_IND}m`));
+const toExtended = new Date(to.getTime() + ms(`${EXTENDED}m`));
 
 interface Result {
   coins: CoinList;

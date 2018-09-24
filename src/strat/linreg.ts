@@ -24,7 +24,9 @@ export const linreg = (
   }
 
   const result = regression.linear(indArr.map((x, i) => [x, pctChange[i]]));
-  console.log(`REG ${name} ${result.string} | r2   =  ${result.r2}`);
+  console.log(`REG ${name}`);
+  console.log(`\t ${result.string}`);
+  console.log(`\t r2: ${result.r2}`);
 
   const s1 = new Series(indArr);
   const s2 = new Series(pctChange);
@@ -33,7 +35,8 @@ export const linreg = (
   // const corrPearson = spearson.correlation.pearson(indArr, pctChange);
   // const corrSpearman = spearson.correlation.spearman(indArr, pctChange);
 
-  console.log("\t\t\t CORR", corr);
+  console.log(`\t corr ${corr}`);
+  console.log("\t -----------------------------------");
 
   const x = indArr;
   const y = pctChange;
