@@ -81,6 +81,10 @@ export const corr = (candles: Candle[]) => {
     times(120).map(x => new MACD({ short: 12, long: 26, signal: 9 }))
   );
 
+  const macdHistoLrc = new XmBase(120, times(120).map(x => new LRC(12)));
+
+  const macdHistoLrcSlow = new XmBase(120, times(120).map(x => new LRC(16)));
+
   const macd240 = new XmBase(
     240,
     times(240).map(x => new MACD({ short: 12, long: 26, signal: 9 }))
@@ -121,7 +125,8 @@ export const corr = (candles: Candle[]) => {
       macd60: macd60.update(candle, "close"),
       macd120: macd120.update(candle, "close"),
       macd240: macd240.update(candle, "close"),
-      macd60_PSAR: macd60_PSAR.update(candle)
+      macdHistoLrc: macdHistoLrc.update(candle, "close"),
+      macdHistoLrcSlow: macdHistoLrcSlow.update(candle, "close")
     };
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
@@ -196,19 +201,10 @@ export const corr = (candles: Candle[]) => {
 
   linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "reg_rsi_pctChange60m");
 
-  linRegs.push(
-    linreg(candlesActual, x => x.ind.rsi, pctChange10m_, "RSI vs 10m")
-  );
-
-  linRegs.push(
-    linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "RSI vs 60m")
-  );
-  linRegs.push(
-    linreg(candlesActual, x => x.ind.rsi, pctChange120m_, "RSI vs 120m")
-  );
-  linRegs.push(
-    linreg(candlesActual, x => x.ind.rsi, pctChange240m_, "RSI vs 240m")
-  );
+  linreg(candlesActual, x => x.ind.rsi, pctChange10m_, "RSI vs 10m");
+  linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "RSI vs 60m");
+  linreg(candlesActual, x => x.ind.rsi, pctChange120m_, "RSI vs 120m");
+  linreg(candlesActual, x => x.ind.rsi, pctChange240m_, "RSI vs 240m");
 
   linregSplitRSI(
     candlesActual,
@@ -293,20 +289,30 @@ export const corr = (candles: Candle[]) => {
 
   /// MACD ///
 
-  linreg(candlesActual, x => x.ind.macd120.histo, pctChange10m_, "MACD vs 10m");
-
-  linreg(candlesActual, x => x.ind.macd120.histo, pctChange60m_, "MACD vs 60m");
+  linreg(
+    candlesActual,
+    x => round2(x.ind.macd120.histo),
+    pctChange10m_,
+    "MACD vs 10m"
+  );
 
   linreg(
     candlesActual,
-    x => x.ind.macd120.histo,
+    x => round2(x.ind.macd120.histo),
+    pctChange60m_,
+    "MACD vs 60m"
+  );
+
+  linreg(
+    candlesActual,
+    x => round2(x.ind.macd120.histo),
     pctChange120m_,
     "MACD vs 120m"
   );
 
   linreg(
     candlesActual,
-    x => x.ind.macd120.histo,
+    x => round2(x.ind.macd120.histo),
     pctChange240m_,
     "MACD vs 240m"
   );
@@ -339,6 +345,40 @@ export const corr = (candles: Candle[]) => {
     x => x.ind.zlema60Slow - x.ind.zlema60Fast,
     pctChange240m_,
     "ZLEMA vs 240m"
+  );
+
+  /// MACD LRC ///
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange10m_,
+      "MACD LRC vs 10m"
+    )
+  );
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange60m_,
+      "MACD LRC vs 60m"
+    )
+  );
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange120m_,
+      "MACD LRC vs 120m"
+    )
+  );
+  linRegs.push(
+    linreg(
+      candlesActual,
+      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+      pctChange240m_,
+      "MACD LRC vs 240m"
+    )
   );
 
   return linRegs;

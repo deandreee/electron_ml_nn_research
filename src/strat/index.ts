@@ -8,9 +8,9 @@ import { config } from "./config";
 import { corr, LinRegResult } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 
-const from = new Date("2018-08-10T00:00:00.000Z");
+const from = new Date("2018-08-01T00:00:00.000Z");
 // const to = new Date("2018-08-13T00:00:00.000Z");
-const to = new Date("2018-09-10T00:00:00.000Z");
+const to = new Date("2018-09-01T00:00:00.000Z");
 
 // const { from, to } = pumps.jun2;
 

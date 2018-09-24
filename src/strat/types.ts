@@ -74,6 +74,8 @@ export interface Indicators {
   macd120?: MACD;
   macd240?: MACD;
   macd60_PSAR?: number;
+  macdHistoLrc?: number;
+  macdHistoLrcSlow?: number;
 }
 
 export type CsvCell = string | number;
