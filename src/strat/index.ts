@@ -2,9 +2,9 @@ import { CoinList } from "./types";
 // import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
-import { config } from "./config";
-import { corr, LinRegResult, WARMUP_IND, EXTENDED } from "./corr";
+import { corrCalc, LinRegResult, WARMUP_IND, EXTENDED } from "./corrCalc";
 import { PaperTrader } from "./gekko/PaperTrader";
+import { corrMFI } from "./corrMFI";
 
 const from = new Date("2018-08-01T00:00:00.000Z");
 // const to = new Date("2018-08-13T00:00:00.000Z");
@@ -30,10 +30,30 @@ export const run = (): Result => {
   }
 
   // featurePower(coins[config.leadCoin].candles);
-  const linRegs = corr(coins[config.leadCoin].candles);
+  // corr(coins.BTC.candles);
+
+  const cases = [
+    coins.BTC,
+    coins.ETH,
+    coins.XRP,
+    coins.BCC,
+    coins.EOS,
+    coins.XLM,
+    coins.LTC,
+    coins.ADA,
+    coins.DASH
+  ];
+
+  for (let coin of cases) {
+    const { candlesActual, pctChange } = corrCalc(coin.candles);
+    console.log(
+      ` ------------------------- ${coin.name} ------------------------- `
+    );
+    corrMFI(candlesActual, pctChange);
+  }
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
 
-  return { coins, labelsPredicted, linRegs };
+  return { coins, labelsPredicted, linRegs: [] };
 };

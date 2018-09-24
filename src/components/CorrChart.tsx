@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 import { EChartOption } from "echarts";
 import styles from "./styles";
 import { optionsCorr } from "./optionsCorr";
-import { LinRegResult } from "../strat/corr";
+import { LinRegResult } from "../strat/corrCalc";
 import { round2 } from "../strat/utils";
 
 interface State {

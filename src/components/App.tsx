@@ -3,11 +3,11 @@ import * as React from "react";
 import { EChartOption } from "echarts";
 import { options } from "./options";
 import * as strat from "../strat";
-import { LinRegResult } from "../strat/corr";
+import { LinRegResult } from "../strat/corrCalc";
 // import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
-import { getLegend } from "./getLegend";
-import { seriesInd } from "./series";
+// import { getLegend } from "./getLegend";
+// import { seriesInd } from "./series";
 import { CorrChart } from "./CorrChart";
 
 interface State {
@@ -58,21 +58,21 @@ export class App extends React.Component {
     //   large: true
     // };
 
-    const seriesInd_ = seriesInd(currentProp, coins);
+    // const seriesInd_ = seriesInd(currentProp, coins);
 
-    const legend = getLegend(coins, seriesInd_);
+    // const legend = getLegend(coins, seriesInd_);
 
     this.setState({
       options: {
         ...this.state.options,
-        legend,
+        // legend,
         series: [
-          ...series,
+          ...series
 
           // ...seriesTrades(currentProp, coins),
           // ...seriesSignals(currentProp, coins),
           // seriesLabelsPredicted,
-          ...seriesInd_
+          // ...seriesInd_
         ]
       },
       isLoading: false,
@@ -104,18 +104,26 @@ export class App extends React.Component {
         /> */}
         <div style={{ display: "flex" }}>
           <div style={{ width: "48%" }}>
-            <CorrChart linReg={this.state.linRegs[0]} />
+            {this.state.linRegs[0] && (
+              <CorrChart linReg={this.state.linRegs[0]} />
+            )}
           </div>
           <div style={{ width: "48%" }}>
-            <CorrChart linReg={this.state.linRegs[1]} />
+            {this.state.linRegs[1] && (
+              <CorrChart linReg={this.state.linRegs[1]} />
+            )}
           </div>
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ width: "48%" }}>
-            <CorrChart linReg={this.state.linRegs[2]} />
+            {this.state.linRegs[2] && (
+              <CorrChart linReg={this.state.linRegs[2]} />
+            )}
           </div>
           <div style={{ width: "48%" }}>
-            <CorrChart linReg={this.state.linRegs[3]} />
+            {this.state.linRegs[3] && (
+              <CorrChart linReg={this.state.linRegs[3]} />
+            )}
           </div>
         </div>
         {/* <Profits coins={this.state.coins} /> */}
