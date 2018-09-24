@@ -1,14 +1,7 @@
 import * as moment from "moment";
 import * as statslite from "stats-lite";
 import { config } from "./config";
-import {
-  Portfolio,
-  Candle,
-  Trade,
-  Report,
-  RoundTrip,
-  RoundTripAction
-} from "../types";
+import { Portfolio, Candle, Trade, Report, RoundTrip } from "../types";
 import * as ms from "ms";
 
 const perfConfig = config.performanceAnalyzer;

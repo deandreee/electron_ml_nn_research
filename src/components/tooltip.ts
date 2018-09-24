@@ -1,36 +1,4 @@
-import * as access from "safe-access";
 import styles from "./styles";
-
-// (point: Array, params: Object|Array.<Object>, dom: HTMLDomElement, rect: Object, size: Object) => Array
-// size:
-// contentSize [465, 185]
-// viewSize [1920, 500]
-let positionDesktop = (
-  pt: number[],
-  params: any,
-  domElem: any,
-  rect: any,
-  size: object
-) => {
-  // console.log(pt, rect, size);
-  // console.log(pt);
-
-  let [x, y] = pt;
-  // return [ x - 10, y - 1 ];
-  // return [ x, y ];
-
-  let contentX = access(size, "contentSize[0]");
-  let viewX = access(size, "viewSize[0]");
-
-  if (!contentX || !viewX) {
-    // just in case
-    return [x, y];
-  } else if (x + contentX > viewX) {
-    return [x - contentX, y];
-  } else {
-    return [x, y];
-  }
-};
 
 export const itemTooltip = {
   show: true,

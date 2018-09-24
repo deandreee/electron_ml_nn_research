@@ -53,8 +53,6 @@ export class TWIGGS2 {
   //LT = lessThan, MT = moreThan
   // TMF = EMA[Volume *((Close - LL) / (HH - LL) * 2 - 1 )] / EMA[Volume] * 100
   calculate = (candle: Candle): number => {
-    const lastClose = this.history.slice(-1)[0].close;
-
     const periodCandles = this.history.slice(-this.period).map(x => x.close);
     const trh = Math.max(...periodCandles);
     const trl = Math.min(...periodCandles);

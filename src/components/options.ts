@@ -3,8 +3,7 @@ import styles from "./styles";
 import { xAxis } from "./xAxis";
 import { yAxis } from "./yAxis";
 import { dataZoom } from "./dataZoom";
-import { axisTooltip, itemTooltip } from "./tooltip";
-import { tooltipFormatter } from "./tooltipFormatter";
+import { axisTooltip } from "./tooltip";
 
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,

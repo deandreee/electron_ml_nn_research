@@ -2,7 +2,7 @@
  * Linear regression curve, from gekko default
  */
 
-import { Candle, IndLRC } from "../../types";
+import { IndLRC } from "../../types";
 
 export class LRC {
   depth: number;

@@ -1,18 +1,13 @@
 import * as React from "react";
-import ReactEcharts from "echarts-for-react";
-import { flatten } from "lodash";
+// import ReactEcharts from "echarts-for-react";
 import { EChartOption } from "echarts";
-import styles from "./styles";
 import { options } from "./options";
 import * as strat from "../strat";
 import { LinRegResult } from "../strat/corr";
 // import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
-import { Profits } from "./Profits";
-import { Roundtrips } from "./Roundtrips";
-import { seriesSignals, seriesTrades, seriesInd } from "./series";
-import { config } from "../strat/config";
+import { seriesInd } from "./series";
 import { CorrChart } from "./CorrChart";
 
 interface State {
@@ -31,7 +26,7 @@ export class App extends React.Component {
   };
 
   async componentWillMount() {
-    const { coins, labelsPredicted, linRegs } = strat.run();
+    const { coins, linRegs } = strat.run();
 
     // const currentProp = "percentChange";
     const currentProp = "close";
@@ -48,20 +43,20 @@ export class App extends React.Component {
       };
     });
 
-    const labelsFiltered = labelsPredicted
-      .map((x, i) => ({ x, i }))
-      .filter(x => x.x === 1);
+    // const labelsFiltered = labelsPredicted
+    //   .map((x, i) => ({ x, i }))
+    //   .filter(x => x.x === 1);
 
-    const seriesLabelsPredicted = {
-      symbolSize: 5,
-      data: labelsFiltered.map(x => [
-        coins[config.leadCoin].candles[x.i].start * 1000,
-        coins[config.leadCoin].candles[x.i][currentProp]
-      ]),
-      color: "green",
-      type: "scatter",
-      large: true
-    };
+    // const seriesLabelsPredicted = {
+    //   symbolSize: 5,
+    //   data: labelsFiltered.map(x => [
+    //     coins[config.leadCoin].candles[x.i].start * 1000,
+    //     coins[config.leadCoin].candles[x.i][currentProp]
+    //   ]),
+    //   color: "green",
+    //   type: "scatter",
+    //   large: true
+    // };
 
     const seriesInd_ = seriesInd(currentProp, coins);
 

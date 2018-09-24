@@ -1,4 +1,3 @@
-import { times } from "lodash";
 import { Candle } from "../../types";
 import { WaveManager } from "../utils/WaveManager";
 

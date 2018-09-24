@@ -1,6 +1,5 @@
 import * as moment from "moment";
 import styles from "./styles";
-import * as chartUtils from "./chartUtils";
 
 // interface FormatterParams {
 //   value: number;

@@ -1,10 +1,8 @@
 import * as React from "react";
 import ReactEcharts from "echarts-for-react";
-import { flatten } from "lodash";
 import { EChartOption } from "echarts";
 import styles from "./styles";
 import { optionsCorr } from "./optionsCorr";
-import { config } from "../strat/config";
 import { LinRegResult } from "../strat/corr";
 import { round2 } from "../strat/utils";
 

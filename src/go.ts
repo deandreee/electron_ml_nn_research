@@ -1,6 +1,6 @@
 import { run } from "./strat/index";
-import { config } from "./strat/config";
-const res = run();
+// import { config } from "./strat/config";
+run();
 
 // console.log(
 //   config.leadCoin,

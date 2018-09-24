@@ -1,5 +1,5 @@
 import { makeid } from "./makeid";
-import { CoinList, CoinData, AdviceObj } from "./types";
+import { CoinList, AdviceObj } from "./types";
 
 export const massBuy = (coins: CoinList, i: number, reason: string) => {
   for (let key in coins) {

@@ -1,4 +1,4 @@
-import { times, round2 } from "./utils";
+import { round2 } from "./utils";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";

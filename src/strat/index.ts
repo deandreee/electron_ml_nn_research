@@ -1,9 +1,7 @@
-import { Candle, CoinList } from "./types";
+import { CoinList } from "./types";
 // import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
-import * as pumps from "./pumps";
-import { rescale } from "./rescale";
 import { config } from "./config";
 import { corr, LinRegResult, WARMUP_IND, EXTENDED } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
@@ -30,10 +28,6 @@ export const run = (): Result => {
   for (let key in coins) {
     coins[key].trader = new PaperTrader(coins[key].candles[60]);
   }
-
-  const candlesActual = coins[config.leadCoin].candles.filter(
-    x => x.start * 1000 >= from.getTime() && x.start * 1000 <= to.getTime()
-  );
 
   // featurePower(coins[config.leadCoin].candles);
   const linRegs = corr(coins[config.leadCoin].candles);

@@ -1,7 +1,6 @@
 // Wilders Moving Average for TWIGSS
 // http://www.incrediblecharts.com/indicators/twiggs_money_flow.php
 // http://www.incrediblecharts.com/indicators/wilder_moving_average.php
-import { Candle } from "../../types";
 
 export class WiMA {
   period: number;

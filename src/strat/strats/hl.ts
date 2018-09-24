@@ -1,4 +1,4 @@
-import { CoinList, CoinData, AdviceObj, Candle } from "../types";
+import { CoinList, Candle } from "../types";
 import { massBuy, massSell } from "../massTrade";
 import { config } from "../config";
 
@@ -17,7 +17,6 @@ let is_buyin = false;
 let NoTradedSince = 0;
 
 export const check = (coins: CoinList, i: number) => {
-  const prevCandle = coins[config.leadCoin].candles[i - 1];
   const candle = coins[config.leadCoin].candles[i];
   candle_queue.push(candle);
 

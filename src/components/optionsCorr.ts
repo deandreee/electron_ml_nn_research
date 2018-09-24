@@ -1,11 +1,5 @@
 import { EChartOption } from "echarts";
-import * as moment from "moment";
 import styles from "./styles";
-import { xAxis } from "./xAxis";
-import { yAxis } from "./yAxis";
-import { dataZoom } from "./dataZoom";
-import { axisTooltip, itemTooltip } from "./tooltip";
-import { tooltipFormatter } from "./tooltipFormatter";
 
 export const optionsCorr: EChartOption = {
   backgroundColor: styles.colors.background,

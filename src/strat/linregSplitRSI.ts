@@ -1,4 +1,4 @@
-import { times, round2, avg } from "./utils";
+import { round2, avg } from "./utils";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
@@ -43,6 +43,8 @@ export const linregSplitRSI = (
   const s2 = new Series(yScaled);
   const corr = round2(s1.corr(s2));
   console.log(`\t corr ${corr}`);
+  console.log(`\t avgPct ${avgPct}`);
+
   console.log("\t -----------------------------------");
 
   const regEquation = result.equation;

@@ -1,19 +1,12 @@
-import { Candle, CoinList } from "./types";
-import { vol1 } from "./vol1";
-import * as ms from "ms";
-import { queryCoins } from "./queryCoins";
-import * as pumps from "./pumps";
+import { Candle } from "./types";
 import * as SVM from "libsvm-js/asm";
 import { rescale } from "./rescale";
 import * as brain from "brain.js";
 import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
-import { config } from "./config";
-import { corr } from "./corr";
-import { PaperTrader } from "./gekko/PaperTrader";
 
-const predictSvm = (candlesActual: Candle[]): number[] => {
+export const predictSvm = (candlesActual: Candle[]): number[] => {
   const svm = new SVM({
     kernel: SVM.KERNEL_TYPES.RBF, // The type of kernel I want to use
     type: SVM.SVM_TYPES.C_SVC, // The type of SVM I want to run
@@ -49,7 +42,7 @@ const predictSvm = (candlesActual: Candle[]): number[] => {
   return predicted;
 };
 
-const predictBrain = (candlesActual: Candle[]): number[] => {
+export const predictBrain = (candlesActual: Candle[]): number[] => {
   const features = candlesActual.map(x => x.features);
   const labels = candlesActual.map(x => x.label);
 
@@ -69,7 +62,7 @@ const predictBrain = (candlesActual: Candle[]): number[] => {
   return output;
 };
 
-const predictNeataptic = (candlesActual: Candle[]): number[] => {
+export const predictNeataptic = (candlesActual: Candle[]): number[] => {
   const { testFeatures, testLabels } = getTrainData(candlesActual);
 
   const len = testFeatures[0].length;
@@ -94,7 +87,7 @@ const predictNeataptic = (candlesActual: Candle[]): number[] => {
   return output.map(x => (x > 0.1 ? 1 : x));
 };
 
-const predictSynaptic = (candlesActual: Candle[]): number[] => {
+export const predictSynaptic = (candlesActual: Candle[]): number[] => {
   const features = candlesActual.map(x => x.features);
   const labels = candlesActual.map(x => x.label);
 
@@ -107,8 +100,6 @@ const predictSynaptic = (candlesActual: Candle[]): number[] => {
       row![f] = rescale(row![f], min, max);
     }
   }
-
-  const len = features[0].length;
 
   const Architect = synaptic.Architect;
   const Layer = synaptic.Layer;
@@ -131,7 +122,7 @@ const predictSynaptic = (candlesActual: Candle[]): number[] => {
   };
 
   let trainData = features.map((x, i) => ({ input: x, output: [labels[i]] }));
-  const trainResults = trainer.train(trainData, trainOptions);
+  trainer.train(trainData, trainOptions);
 
   const output = features.map(x => lstm.activate(x) as number);
   return output.map(x => (x > 0.01 ? 1 : x));

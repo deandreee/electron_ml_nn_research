@@ -2,11 +2,11 @@ import * as Database from "better-sqlite3";
 import { Candle, CoinList } from "./types";
 
 export const queryCoins = (from: Date, to: Date): CoinList => {
-  const dbBinance = new Database("../gekko-develop/history/binance_0.1.db");
+  // const dbBinance = new Database("../gekko-develop/history/binance_0.1.db");
   const dbKraken = new Database("../gekko-develop/history/kraken_0.1.db");
-  const dbBitfinex = new Database("../gekko-develop/history/bitfinex_0.1.db");
-  const dbPoloniex = new Database("../gekko-develop/history/poloniex_0.1.db");
-  const dbGdax = new Database("../gekko-develop/history/gdax_0.1.db");
+  // const dbBitfinex = new Database("../gekko-develop/history/bitfinex_0.1.db");
+  // const dbPoloniex = new Database("../gekko-develop/history/poloniex_0.1.db");
+  // const dbGdax = new Database("../gekko-develop/history/gdax_0.1.db");
 
   const coins: CoinList = {
     BTC: {

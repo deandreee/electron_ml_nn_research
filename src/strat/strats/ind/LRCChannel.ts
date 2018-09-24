@@ -1,6 +1,6 @@
 import { LRC } from "./LRC";
 
-import { Candle, IndChannel } from "../../types";
+import { IndChannel } from "../../types";
 
 export class LRCChannel {
   depth: number;

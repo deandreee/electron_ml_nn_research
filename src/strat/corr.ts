@@ -1,14 +1,6 @@
-import { times, round2 } from "./utils";
-import { Series } from "pandas-js";
-import * as regression from "regression";
+import { round2 } from "./utils";
 import { Candle } from "./types";
-import {
-  getCandlePctChange,
-  getMaxCandlePctChange,
-  getAvgCandlePctChange,
-  getPctChange
-} from "./utils";
-import { pricesXAhead } from "./pricesXAhead";
+import { getCandlePctChange, getAvgCandlePctChange } from "./utils";
 import { linreg } from "./linreg";
 import { linregSplitRSI } from "./linregSplitRSI";
 
@@ -19,8 +11,6 @@ const {
 
 const {
   MACD,
-  PSAR_TI,
-  PSARProps,
   RSI,
   LRC,
   BBANDS,
@@ -51,7 +41,6 @@ export const corr = (candles: Candle[]) => {
   const waveManager10 = new WaveManager(10);
   const waveManager60 = new WaveManager(60);
   const waveManager120 = new WaveManager(120);
-  const waveManager240 = new WaveManager(240);
 
   const xmRsi = new XmBase(waveManager60, () => new RSI({ interval: 20 }));
   const xmVixFix = new XmBase(
@@ -83,18 +72,6 @@ export const corr = (candles: Candle[]) => {
 
   const macdHistoLrc = new XmBase(waveManager120, () => new LRC(12));
   const macdHistoLrcSlow = new XmBase(waveManager120, () => new LRC(16));
-
-  const macd240 = new XmBase(
-    waveManager240,
-    () => new MACD({ short: 12, long: 26, signal: 9 })
-  );
-
-  const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, {
-    resultHistory: true
-  });
-
-  let rsiDropCount = 0;
-  let rsiNoDropCount = 0;
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -148,7 +125,6 @@ export const corr = (candles: Candle[]) => {
   const candlesActual = candles.filter(
     (x, i) => !(i < WARMUP_IND || i >= candles.length - EXTENDED)
   );
-  const candlesActualExtended = candles.filter((x, i) => !(i < WARMUP_IND));
 
   const pctChange10m = candlesActual.map(x => x.pctChange._10m);
   const pctChange60m = candlesActual.map(x => x.pctChange._60m);
@@ -187,10 +163,18 @@ export const corr = (candles: Candle[]) => {
   /// MFI ///
 
   linreg(candlesActual, x => x.ind.mfi, pctChange60m, "MFI vs 600m");
-  linreg(candlesActual, x => x.ind.mfi, pctChange120m, "MFI vs 120m");
-  linreg(candlesActual, x => x.ind.mfi, pctChange240m, "MFI vs 240m");
-  linreg(candlesActual, x => x.ind.mfi, pctChange480m, "MFI vs 480m");
-  linreg(candlesActual, x => x.ind.mfi, pctChange24h, "MFI vs 24h");
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.mfi, pctChange120m, "MFI vs 120m")
+  );
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.mfi, pctChange240m, "MFI vs 240m")
+  );
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.mfi, pctChange480m, "MFI vs 480m")
+  );
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.mfi, pctChange24h, "MFI vs 24h")
+  );
 
   /// VixFix ///
   // linreg(candlesActual, x => x.ind.vixFix, pctChange60m, "VIXFIX vs 60m");
@@ -303,38 +287,32 @@ export const corr = (candles: Candle[]) => {
     "MACD LRC vs 60m"
   );
 
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange120m,
-      "MACD LRC vs 120m"
-    )
-  );
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange240m,
-      "MACD LRC vs 240m"
-    )
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange120m,
+    "MACD LRC vs 120m"
   );
 
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange480m,
-      "MACD LRC vs 480m"
-    )
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange240m,
+    "MACD LRC vs 240m"
   );
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
-      pctChange24h,
-      "MACD LRC vs 24h"
-    )
+
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange480m,
+    "MACD LRC vs 480m"
+  );
+
+  linreg(
+    candlesActual,
+    x => x.ind.macdHistoLrcSlow - x.ind.macdHistoLrc,
+    pctChange24h,
+    "MACD LRC vs 24h"
   );
 
   return linRegs;

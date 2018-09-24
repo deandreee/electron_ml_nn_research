@@ -1,5 +1,4 @@
 import { Candle, IndHlTrueRange } from "../../types";
-import { WaveManager } from "../utils/WaveManager";
 
 export class HlTrueRange {
   candleSize: number;

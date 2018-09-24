@@ -1,6 +1,5 @@
-import { CoinList, CoinData, AdviceObj } from "../types";
-import { makeid } from "../makeid";
-import { getCoinPctChange, getPctChange } from "../utils";
+import { CoinList } from "../types";
+import { getCoinPctChange } from "../utils";
 import { massBuy, massSell } from "../massTrade";
 import { config } from "../config";
 

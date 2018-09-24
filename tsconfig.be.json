@@ -3,6 +3,7 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "sourceMap": true,
     "outDir": "dist-be",
     "baseUrl": ".",

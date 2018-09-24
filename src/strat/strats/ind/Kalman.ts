@@ -1,5 +1,4 @@
 import KalmanFilter from "kalmanjs";
-import { Candle, IndChannel } from "../../types";
 
 export class Kalman {
   period: number;

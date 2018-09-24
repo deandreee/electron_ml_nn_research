@@ -1,6 +1,5 @@
 import * as moment from "moment";
 import * as access from "safe-access";
-import styles from "./styles";
 
 type Cb = (ticker: string, res: string) => null;
 
@@ -10,7 +9,6 @@ export const tooltipFormatter = function(
   callback: Cb
 ) {
   const extra = access(params, "data[2]");
-  let seriesIndex = params.seriesIndex;
   if (!extra) {
     return "Extra not found";
   }
