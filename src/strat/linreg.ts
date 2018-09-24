@@ -37,8 +37,8 @@ export const linreg = (
   console.log(`\t ${result.string}`);
   console.log(`\t r2: ${result.r2}`);
 
-  const s1 = new Series(indArr);
-  const s2 = new Series(pctChange);
+  const s1 = new Series(xScaled);
+  const s2 = new Series(yScaled);
   const corr = round2(s1.corr(s2));
 
   // const corrPearson = spearson.correlation.pearson(indArr, pctChange);

@@ -2,7 +2,7 @@ import { times, round2, avg } from "./utils";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
-import { WSAEINPROGRESS, WSAEADDRINUSE } from "constants";
+import { rescaleArrPlusMinus1 } from "./rescale";
 
 type fnGetInd = (candle: Candle) => number;
 
@@ -27,17 +27,24 @@ export const linregSplitRSI = (
 
   const avgPct = round2(avg(indArrSplit, x => x[1]));
 
-  const result = regression.linear(indArrSplit);
-  console.log(
-    `REG ${name} ${result.string} | r2   =  ${result.r2} | avgPct = ${avgPct}`
-  );
-
-  const s1 = new Series(indArrSplit.map(x => x[0]));
-  const s2 = new Series(indArrSplit.map(x => x[1]));
-  console.log("\t\t\t CORR", round2(s1.corr(s2)));
-
   const x = indArr;
   const y = pctChange;
+  const xScaled = rescaleArrPlusMinus1(x);
+  const yScaled = rescaleArrPlusMinus1(y);
+
+  const result = regression.linear(
+    xScaled.map((w, i) => [xScaled[i], yScaled[i]])
+  );
+  console.log(`REG ${name}`);
+  console.log(`\t ${result.string}`);
+  console.log(`\t r2: ${result.r2}`);
+
+  const s1 = new Series(xScaled);
+  const s2 = new Series(yScaled);
+  const corr = round2(s1.corr(s2));
+  console.log(`\t corr ${corr}`);
+  console.log("\t -----------------------------------");
+
   const regEquation = result.equation;
 
   return { x, y, regEquation };
