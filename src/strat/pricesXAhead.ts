@@ -14,9 +14,9 @@ export const pricesXAhead = (
 
   const rsi = new Series(candlesActual.map(x => x.ind.rsi));
   const vixFix = new Series(candlesActual.map(x => x.ind.vixFix));
-  const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60.result));
-  const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120.result));
-  const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240.result));
+  const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60));
+  const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120));
+  const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240));
 
   console.log("rsi 10 vs prices", round2(rsi.corr(pricesXhAheadSeries)));
   console.log("vixFix 10 prices", round2(vixFix.corr(pricesXhAheadSeries)));
@@ -26,9 +26,7 @@ export const pricesXAhead = (
 
   {
     const result = regression.linear(
-      candlesActual
-        .map(x => x.ind.lrc120.result)
-        .map((x, i) => [x, pricesXhAhead[i]])
+      candlesActual.map(x => x.ind.lrc120).map((x, i) => [x, pricesXhAhead[i]])
     );
 
     console.log("regression lrc120", result.string, "r2", result.r2);
@@ -36,9 +34,7 @@ export const pricesXAhead = (
 
   {
     const result = regression.linear(
-      candlesActual
-        .map(x => x.ind.lrc240.result)
-        .map((x, i) => [x, pricesXhAhead[i]])
+      candlesActual.map(x => x.ind.lrc240).map((x, i) => [x, pricesXhAhead[i]])
     );
 
     console.log("regression lrc240", result.string, "r2", result.r2);

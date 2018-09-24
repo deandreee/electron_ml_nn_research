@@ -60,9 +60,9 @@ export interface Indicators {
   zlema60Fast?: number;
   zlema60Slow?: number;
   hma?: number;
-  lrc60?: IndLRC;
-  lrc120?: IndLRC;
-  lrc240?: IndLRC;
+  lrc60?: number;
+  lrc120?: number;
+  lrc240?: number;
   lrcChannel?: IndChannel;
   twiggs?: number;
   xmTwiggs?: number;

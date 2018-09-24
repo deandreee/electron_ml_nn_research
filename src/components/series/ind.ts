@@ -72,7 +72,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "red",
-      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.result),
+      data: data(coins, x => x.ind.lrc60),
       name: "LRC60"
     });
   }
@@ -81,7 +81,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "green",
-      data: data(coins, x => x.ind.lrc120 && x.ind.lrc120.result),
+      data: data(coins, x => x.ind.lrc120),
       name: "LRC120"
     });
   }
@@ -90,7 +90,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     series.push({
       ...baseDotted,
       color: "blue",
-      data: data(coins, x => x.ind.lrc240 && x.ind.lrc240.result),
+      data: data(coins, x => x.ind.lrc240),
       name: "LRC240"
     });
   }
@@ -110,28 +110,6 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
       color: "yellow",
       data: data(coins, x => x.ind.lrcChannel && x.ind.lrcChannel.down),
       name: "LRC"
-    });
-  }
-
-  if (hasIndicator(coins, x => x.ind.lrc60)) {
-    series.push({
-      ...base,
-      color: "red",
-      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.slope),
-      name: "LRC",
-      xAxisIndex: 1,
-      yAxisIndex: 1
-    });
-  }
-
-  if (hasIndicator(coins, x => x.ind.lrc60)) {
-    series.push({
-      ...base,
-      color: "green",
-      data: data(coins, x => x.ind.lrc60 && x.ind.lrc60.intercept),
-      name: "LRC",
-      xAxisIndex: 1,
-      yAxisIndex: 1
     });
   }
 

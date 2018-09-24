@@ -23,7 +23,7 @@ export const check = (coins: CoinList, i: number) => {
   // if (candle.ind.lrc > candle.close + 50) {
   // if (candle.close > candle.ind.lrc120) {
   if (
-    candle.close > candle.ind.lrc60.result &&
+    candle.close > candle.ind.lrc60 &&
     candle.ind.aroon.up > candle.ind.aroon.down
   ) {
     massBuy(coins, i, "lrc >");

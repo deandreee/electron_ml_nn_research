@@ -20,7 +20,8 @@ const {
   PSARProps,
   RSI,
   LRC,
-  BBANDS
+  BBANDS,
+  VixFix
 } = require("../../../gekko-develop/strategies/indicators");
 const {
   ZerolagHATEMA
@@ -30,7 +31,7 @@ const {
 // skipstart = wait for ind to have enough
 
 export const WARMUP = 240; // => biggest candle used
-export const WARMUP_IND = 120 * 60; // => ind ready
+export const WARMUP_IND = 120 * 61; // => ind ready
 export const EXTENDED = 1500; // 1h
 
 export interface LinRegResult {
@@ -44,12 +45,12 @@ export interface LinRegResult {
 
 export const corr = (candles: Candle[]) => {
   const xmRsi = new XmBase(60, times(60).map(x => new RSI({ interval: 20 })));
-  // const xmVixFix = new XmBase(
-  //   120,
-  //   times(120).map(
-  //     x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
-  //   )
-  // );
+  const xmVixFix = new XmBase(
+    120,
+    times(120).map(
+      x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
+    )
+  );
   const lrc60 = new XmBase(60, times(60).map(x => new LRC(60)));
   const lrc120 = new XmBase(120, times(120).map(x => new LRC(60)));
 
@@ -112,7 +113,7 @@ export const corr = (candles: Candle[]) => {
 
     candle.ind = {
       rsi: xmRsi.update(candle),
-      // vixFix: xmVixFix.update(candle),
+      vixFix: xmVixFix.update(candle),
       lrc60: lrc60.update(candle, "close"),
       lrc120: lrc120.update(candle, "close"),
       // lrc240: lrc240.update(candle, "close"),
@@ -160,21 +161,21 @@ export const corr = (candles: Candle[]) => {
 
   // linreg(
   //   candlesActual,
-  //   x => x.ind.lrc240 && x.ind.lrc240.result,
+  //   x => x.ind.lrc240
   //   pctChange10m_,
   //   "reg lrc240 pctChange10m"
   // );
 
   // linreg(
   //   candlesActual,
-  //   x => x.ind.lrc240 && x.ind.lrc240.result,
+  //   x => x.ind.lrc240
   //   pctChange120m_,
   //   "reg lrc240 pctChange120m"
   // );
 
   // linreg(
   //   candlesActual,
-  //   x => x.ind.lrc240 && x.ind.lrc240.result,
+  //   x => x.ind.lrc240
   //   pctChange240m_,
   //   "reg lrc240 pctChange240m"
   // );
@@ -185,8 +186,8 @@ export const corr = (candles: Candle[]) => {
   //   for (let i = 240; i < candlesActual.length; i++) {
   //     lrc240PctChange.push(
   //       getPctChange(
-  //         candlesActual[i].ind.lrc240.result,
-  //         candlesActual[i - 240].ind.lrc240.result
+  //         candlesActual[i].ind.lrc240
+  //         candlesActual[i - 240].ind.lrc240
   //       )
   //     );
   //   }
@@ -212,12 +213,7 @@ export const corr = (candles: Candle[]) => {
     "SPLIT RSI 240m"
   );
 
-  linreg(
-    candlesActual,
-    x => x.ind.lrc60.result,
-    pctChange120m_,
-    "LRC60 vs 120m"
-  );
+  linreg(candlesActual, x => x.ind.lrc60, pctChange120m_, "LRC60 vs 120m");
 
   linreg(candlesActual, x => x.ind.mfi, pctChange120m_, "MFI vs 120m");
 
