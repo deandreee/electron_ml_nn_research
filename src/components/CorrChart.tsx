@@ -6,6 +6,7 @@ import styles from "./styles";
 import { optionsCorr } from "./optionsCorr";
 import { config } from "../strat/config";
 import { LinRegResult } from "../strat/corr";
+import { round2 } from "../strat/utils";
 
 interface State {
   isLoading: boolean;
@@ -23,8 +24,11 @@ export class CorrChart extends React.Component<Props, State> {
   };
 
   componentWillMount() {
-    const xMin = Math.min.apply(null, this.props.linReg.x);
-    const xMax = Math.max.apply(null, this.props.linReg.x);
+    const xMin = round2(Math.min.apply(null, this.props.linReg.x));
+    const xMax = round2(Math.max.apply(null, this.props.linReg.x));
+
+    const yMin = round2(Math.min.apply(null, this.props.linReg.y));
+    const yMax = round2(Math.max.apply(null, this.props.linReg.y));
 
     const regMin =
       this.props.linReg.regEquation[0] * xMin +
@@ -36,6 +40,8 @@ export class CorrChart extends React.Component<Props, State> {
     this.setState({
       options: {
         ...this.state.options,
+        xAxis: { ...this.state.options.xAxis, min: xMin, max: xMax },
+        yAxis: { ...this.state.options.yAxis, min: yMin, max: yMax },
         title: {
           text: `${this.props.linReg.name}`,
           subtext: `r2: ${this.props.linReg.r2} | corr: ${
