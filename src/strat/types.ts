@@ -4,6 +4,15 @@ export type Cb = (err: Error) => void;
 
 export type CandleProp = "close" | "percentChange";
 
+interface CandlePctChange {
+  _10m: number;
+  _60m: number;
+  _120m: number;
+  _240m: number;
+  _480m: number;
+  _24h: number;
+}
+
 export interface Candle {
   start: number;
   close: number;
@@ -16,6 +25,9 @@ export interface Candle {
 
   percentChange: number;
   pctChange60m: number;
+
+  pctChange: CandlePctChange;
+
   features?: number[];
   label?: number;
   ind?: Indicators;
