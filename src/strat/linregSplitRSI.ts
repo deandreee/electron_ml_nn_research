@@ -1,4 +1,4 @@
-import { times, round2 } from "./utils";
+import { times, round2, avg } from "./utils";
 import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
@@ -25,8 +25,12 @@ export const linregSplitRSI = (
     );
   }
 
+  const avgPct = round2(avg(indArrSplit, x => x[1]));
+
   const result = regression.linear(indArrSplit);
-  console.log(`REG ${name} ${result.string} | r2   =  ${result.r2}`);
+  console.log(
+    `REG ${name} ${result.string} | r2   =  ${result.r2} | avgPct = ${avgPct}`
+  );
 
   const s1 = new Series(indArrSplit.map(x => x[0]));
   const s2 = new Series(indArrSplit.map(x => x[1]));

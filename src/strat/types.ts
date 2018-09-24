@@ -73,6 +73,7 @@ export interface Indicators {
   macd60?: MACD;
   macd120?: MACD;
   macd240?: MACD;
+  macd60_PSAR?: number;
 }
 
 export type CsvCell = string | number;

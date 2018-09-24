@@ -1,17 +1,16 @@
 import { Candle, CoinList } from "./types";
-import { vol1 } from "./vol1";
+// import { vol1 } from "./vol1";
 import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
 import * as pumps from "./pumps";
 import { rescale } from "./rescale";
 import { config } from "./config";
-import { featurePower } from "./featurePower";
 import { corr, LinRegResult } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 
 const from = new Date("2018-08-10T00:00:00.000Z");
 // const to = new Date("2018-08-13T00:00:00.000Z");
-const to = new Date("2018-08-22T00:00:00.000Z");
+const to = new Date("2018-09-10T00:00:00.000Z");
 
 // const { from, to } = pumps.jun2;
 

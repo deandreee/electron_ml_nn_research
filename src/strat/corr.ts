@@ -8,13 +8,20 @@ import {
   getAvgCandlePctChange,
   getPctChange
 } from "./utils";
-import { XmRsi, XmBase, VixFix, LRC, MFI, BBands } from "./strats/ind";
+import { XmBase } from "./strats/ind";
 import { pricesXAhead } from "./pricesXAhead";
 import { linreg } from "./linreg";
 import { linregSplitRSI } from "./linregSplitRSI";
 
 // import { BB } from "../../../gekko-develop/strategies/indicators"; // babel polyfill error, let's fix later (only for MFI, can include TI lib only once)
-const { MACD } = require("../../../gekko-develop/strategies/indicators");
+const {
+  MACD,
+  PSAR_TI,
+  PSARProps,
+  RSI,
+  LRC,
+  BBANDS
+} = require("../../../gekko-develop/strategies/indicators");
 const {
   ZerolagHATEMA
 } = require("../../../gekko-develop/strategies/indicators/lizard");
@@ -39,13 +46,13 @@ export interface LinRegResult {
 }
 
 export const corr = (candles: Candle[]) => {
-  const xmRsi = new XmRsi(60, 60);
-  const xmVixFix = new XmBase(
-    120,
-    times(120).map(
-      x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
-    )
-  );
+  const xmRsi = new XmBase(60, times(60).map(x => new RSI(20)));
+  // const xmVixFix = new XmBase(
+  //   120,
+  //   times(120).map(
+  //     x => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 })
+  //   )
+  // );
   const lrc60 = new LRC(60);
   const lrc120 = new LRC(120);
   const lrc240 = new LRC(240);
@@ -59,10 +66,10 @@ export const corr = (candles: Candle[]) => {
     times(120).map(x => new ZerolagHATEMA(60))
   );
 
-  const mfi = new XmBase(60, times(60).map(x => new MFI(15)));
+  // const mfi = new XmBase(60, times(60).map(x => new MFI(15)));
   const bbands = new XmBase(
     60,
-    times(60).map(x => new BBands({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }))
+    times(60).map(x => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }))
   );
   const macd60 = new XmBase(
     60,
@@ -78,6 +85,10 @@ export const corr = (candles: Candle[]) => {
     240,
     times(240).map(x => new MACD({ short: 12, long: 26, signal: 9 }))
   );
+
+  const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, {
+    resultHistory: true
+  });
 
   const pctChange10m: number[] = [];
   const pctChange30m: number[] = [];
@@ -99,17 +110,18 @@ export const corr = (candles: Candle[]) => {
 
     candle.ind = {
       rsi: xmRsi.update(candle),
-      vixFix: xmVixFix.update(candle),
+      // vixFix: xmVixFix.update(candle),
       lrc60: lrc60.update(candle.close),
       lrc120: lrc120.update(candle.close),
       lrc240: lrc240.update(candle.close),
       zlema60Fast: zlema60Fast.update(candle),
       zlema60Slow: zlema60Slow.update(candle),
-      mfi: mfi.update(candle),
+      // mfi: mfi.update(candle),
       bbands: bbands.update(candle, "close"),
       macd60: macd60.update(candle, "close"),
       macd120: macd120.update(candle, "close"),
-      macd240: macd240.update(candle, "close")
+      macd240: macd240.update(candle, "close"),
+      macd60_PSAR: macd60_PSAR.update(candle)
     };
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
@@ -184,18 +196,18 @@ export const corr = (candles: Candle[]) => {
 
   linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "reg_rsi_pctChange60m");
 
-  linreg(
-    candlesActual,
-    x => x.ind.rsi,
-    pctChange120m_,
-    "reg_rsi_pctChange120m"
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.rsi, pctChange10m_, "RSI vs 10m")
   );
 
-  linreg(
-    candlesActual,
-    x => x.ind.rsi,
-    pctChange240m_,
-    "reg_rsi_pctChange240m"
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.rsi, pctChange60m_, "RSI vs 60m")
+  );
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.rsi, pctChange120m_, "RSI vs 120m")
+  );
+  linRegs.push(
+    linreg(candlesActual, x => x.ind.rsi, pctChange240m_, "RSI vs 240m")
   );
 
   linregSplitRSI(
@@ -226,6 +238,8 @@ export const corr = (candles: Candle[]) => {
     "reg_mfi_pctChange120m"
   );
 
+  /// VixFix ///
+
   linreg(
     candlesActual,
     x => x.ind.vixFix,
@@ -246,6 +260,8 @@ export const corr = (candles: Candle[]) => {
     pctChange240m_,
     "reg_vixFix_pctChange240m"
   );
+
+  /// BBands ///
 
   linreg(
     candlesActual,
@@ -277,59 +293,52 @@ export const corr = (candles: Candle[]) => {
 
   /// MACD ///
 
-  linreg(candlesActual, x => x.ind.macd240.histo, pctChange10m_, "MACD vs 10m");
+  linreg(candlesActual, x => x.ind.macd120.histo, pctChange10m_, "MACD vs 10m");
 
-  linreg(candlesActual, x => x.ind.macd240.histo, pctChange60m_, "MACD vs 60m");
+  linreg(candlesActual, x => x.ind.macd120.histo, pctChange60m_, "MACD vs 60m");
 
   linreg(
     candlesActual,
-    x => x.ind.macd240.histo,
+    x => x.ind.macd120.histo,
     pctChange120m_,
     "MACD vs 120m"
   );
 
   linreg(
     candlesActual,
-    x => x.ind.macd240.histo,
+    x => x.ind.macd120.histo,
     pctChange240m_,
     "MACD vs 240m"
   );
 
   /// ZLEMA ///
 
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.zlema60Slow - x.ind.zlema60Fast,
-      pctChange10m_,
-      "ZLEMA vs 10m"
-    )
-  );
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.zlema60Slow - x.ind.zlema60Fast,
-      pctChange60m_,
-      "ZLEMA vs 60m"
-    )
+  linreg(
+    candlesActual,
+    x => x.ind.zlema60Slow - x.ind.zlema60Fast,
+    pctChange10m_,
+    "ZLEMA vs 10m"
   );
 
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.zlema60Slow - x.ind.zlema60Fast,
-      pctChange120m_,
-      "ZLEMA vs 120m"
-    )
+  linreg(
+    candlesActual,
+    x => x.ind.zlema60Slow - x.ind.zlema60Fast,
+    pctChange60m_,
+    "ZLEMA vs 60m"
   );
 
-  linRegs.push(
-    linreg(
-      candlesActual,
-      x => x.ind.zlema60Slow - x.ind.zlema60Fast,
-      pctChange240m_,
-      "ZLEMA vs 240m"
-    )
+  linreg(
+    candlesActual,
+    x => x.ind.zlema60Slow - x.ind.zlema60Fast,
+    pctChange120m_,
+    "ZLEMA vs 120m"
+  );
+
+  linreg(
+    candlesActual,
+    x => x.ind.zlema60Slow - x.ind.zlema60Fast,
+    pctChange240m_,
+    "ZLEMA vs 240m"
   );
 
   return linRegs;

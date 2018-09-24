@@ -10,7 +10,6 @@ import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import { getTrainData } from "./getTrainData";
 import { config } from "./config";
-import { featurePower } from "./featurePower";
 import { corr } from "./corr";
 import { PaperTrader } from "./gekko/PaperTrader";
 

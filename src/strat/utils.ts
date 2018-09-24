@@ -80,3 +80,13 @@ export const times = (x: number) => {
 export const round2 = (value: number) => {
   return Math.round(value * 100) / 100;
 };
+
+type fnGetNum = (x: any) => number;
+
+export const avg = (arr: any[], fnGetNum: fnGetNum) => {
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += fnGetNum(arr[i]);
+  }
+  return sum / arr.length;
+};
