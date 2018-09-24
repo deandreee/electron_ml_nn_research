@@ -55,7 +55,7 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
       candles: getCoin(dbBinance, "candles_USDT_ADA", "ADA", from, to),
 
       color: "#3CC8C8"
-    }
+    },
     // IOT: {
     //   name: "IOT",
     //   candles: getCoin(dbBitfinex, "candles_USD_IOT", "IOT", from, to),
@@ -80,12 +80,12 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
 
     //   color: "#58BF00"
     // },
-    // DASH: {
-    //   name: "DASH",
-    //   candles: getCoin(dbKraken, "candles_USD_DASH", "DASH", from, to),
+    DASH: {
+      name: "DASH",
+      candles: getCoin(dbKraken, "candles_USD_DASH", "DASH", from, to),
 
-    //   color: "#1c75bc"
-    // },
+      color: "#1c75bc"
+    }
     // ETC: {
     //   name: "ETC",
     //   candles: getCoin(dbKraken, "candles_USD_ETC", "ETC", from, to),

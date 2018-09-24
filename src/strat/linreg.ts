@@ -3,6 +3,8 @@ import { Series } from "pandas-js";
 import * as regression from "regression";
 import { Candle } from "./types";
 
+// const { spearson } = require("../../../gekko-develop/strategies/utils");
+
 type fnGetInd = (candle: Candle) => number;
 
 export const linreg = (
@@ -27,6 +29,10 @@ export const linreg = (
   const s1 = new Series(indArr);
   const s2 = new Series(pctChange);
   const corr = round2(s1.corr(s2));
+
+  // const corrPearson = spearson.correlation.pearson(indArr, pctChange);
+  // const corrSpearman = spearson.correlation.spearman(indArr, pctChange);
+
   console.log("\t\t\t CORR", corr);
 
   const x = indArr;
