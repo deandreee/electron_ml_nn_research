@@ -17,7 +17,10 @@ const {
 } = require("../../../gekko-develop/strategies/indicators");
 const { ZerolagHATEMA } = require("../../../gekko-develop/strategies/indicators/lizard");
 
-const { InverseFisherTransformSmoothed } = require("../../../gekko-develop/strategies/indicators/ninja");
+const {
+  InverseFisherTransform,
+  InverseFisherTransformSmoothed
+} = require("../../../gekko-develop/strategies/indicators/ninja");
 
 // warmup = wait for first candle
 // skipstart = wait for ind to have enough
@@ -68,6 +71,15 @@ export const corrCalc = (candles: Candle[]) => {
     resultHistory: true
   });
 
+  const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
+  const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
+  const ift60x15 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 15 }));
+  const ift10x15 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 15 }));
+  const ift30x15 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 15 }));
+  const ift120x15 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 15 }));
+  const ift10x30 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 30 }));
+  const ift60x30 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 30 }));
+  const ift120x30 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 30 }));
   const ifts10x15 = new XmBase(waveManager10, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
@@ -86,7 +98,7 @@ export const corrCalc = (candles: Candle[]) => {
     const bigCandle60 = waveManager60.update(candle);
     const bigCandle120 = waveManager120.update(candle);
 
-    if (!bigCandle10 || !bigCandle60 || !bigCandle120) {
+    if (!bigCandle10 || !bigCandle30 || !bigCandle60 || !bigCandle120) {
       continue;
     }
 
@@ -104,6 +116,15 @@ export const corrCalc = (candles: Candle[]) => {
       atr60: atr60.update(candle),
       atr240: atr240.update(candle),
       cci: cci.update(candle),
+      ift30x5: ift30x5.update(bigCandle30),
+      ift60x5: ift60x5.update(bigCandle60),
+      ift60x15: ift60x15.update(bigCandle60),
+      ift10x15: ift10x15.update(bigCandle10),
+      ift30x15: ift30x15.update(bigCandle30),
+      ift120x15: ift120x15.update(bigCandle120),
+      ift10x30: ift10x30.update(bigCandle10),
+      ift60x30: ift60x30.update(bigCandle60),
+      ift120x30: ift120x30.update(bigCandle120),
       ifts10x15: ifts10x15.update(bigCandle10),
       ifts30x15: ifts30x15.update(bigCandle30),
       ifts60x15: ifts60x15.update(bigCandle60)

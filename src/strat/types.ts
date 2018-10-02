@@ -106,6 +106,17 @@ export interface Indicators {
   atr60?: number;
   atr240?: number;
   cci?: number;
+
+  ift30x5?: number;
+  ift60x5?: number;
+  ift60x15?: number;
+  ift10x15?: number;
+  ift30x15?: number;
+  ift120x15?: number;
+  ift10x30?: number;
+  ift60x30?: number;
+  ift120x30?: number;
+
   ifts10x15?: number;
   ifts30x15?: number;
   ifts60x15?: number;
