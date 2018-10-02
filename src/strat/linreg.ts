@@ -8,15 +8,27 @@ import { rescaleArrPlusMinus1 } from "./rescale";
 
 type fnGetInd = (candle: Candle) => number;
 
-export const linregFX = (candlesActual: Candle[], fnGetInd: fnGetInd, pctChange: PctChange, name: string) => {
-  linreg(candlesActual, fnGetInd, pctChange._60m, `${name} vs 60m`);
-  linreg(candlesActual, fnGetInd, pctChange._120m, `${name} vs 120m`);
-  linreg(candlesActual, fnGetInd, pctChange._240m, `${name} vs 240m`);
-  linreg(candlesActual, fnGetInd, pctChange._480m, `${name} vs 480m`);
-  linreg(candlesActual, fnGetInd, pctChange._24h, `${name} vs 24h`);
+export const linregFX = (
+  coinName: string,
+  candlesActual: Candle[],
+  fnGetInd: fnGetInd,
+  pctChange: PctChange,
+  name: string
+) => {
+  linreg(coinName, candlesActual, fnGetInd, pctChange._60m, `${name} vs 60m`);
+  linreg(coinName, candlesActual, fnGetInd, pctChange._120m, `${name} vs 120m`);
+  linreg(coinName, candlesActual, fnGetInd, pctChange._240m, `${name} vs 240m`);
+  linreg(coinName, candlesActual, fnGetInd, pctChange._480m, `${name} vs 480m`);
+  linreg(coinName, candlesActual, fnGetInd, pctChange._24h, `${name} vs 24h`);
 };
 
-export const linreg = (candlesActual: Candle[], fnGetInd: fnGetInd, pctChange: number[], name: string) => {
+export const linreg = (
+  coinName: string,
+  candlesActual: Candle[],
+  fnGetInd: fnGetInd,
+  pctChange: number[],
+  name: string
+) => {
   const indArr = candlesActual.map(fnGetInd);
 
   if (indArr.length !== pctChange.length) {
@@ -42,7 +54,7 @@ export const linreg = (candlesActual: Candle[], fnGetInd: fnGetInd, pctChange: n
   // const corrPearson = spearson.correlation.pearson(indArr, pctChange);
   // const corrSpearman = spearson.correlation.spearman(indArr, pctChange);
 
-  console.log(`${name} \t\t corr ${corr}`);
+  console.log(`${coinName} \t\t ${name} \t\t corr ${corr}`);
   // console.log("\t -----------------------------------");
 
   const regEquation = result.equation;

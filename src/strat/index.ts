@@ -31,28 +31,18 @@ export const run = (): Result => {
   // featurePower(coins[config.leadCoin].candles);
   // corr(coins.BTC.candles);
 
-  const cases = [
-    coins.BTC,
-    coins.ETH,
-    coins.XRP,
-    coins.BCC,
-    coins.EOS,
-    coins.XLM,
-    coins.LTC,
-    coins.ADA,
-    coins.DASH
-  ];
+  const cases = [coins.BTC, coins.ETH, coins.XRP, coins.BCC, coins.EOS, coins.XLM, coins.LTC, coins.ADA, coins.DASH];
 
   for (let coin of cases) {
-    console.log(
-      ` ------------------------- ${coin.name} ------------------------- `
-    );
+    // console.log(
+    //   ` ------------------------- ${coin.name} ------------------------- `
+    // );
     const { candlesActual, pctChange } = corrCalc(coin.candles);
     // corrMFI(candlesActual, pctChange);
     // corrATR(candlesActual, pctChange);
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
-    corrIFTS(candlesActual, pctChange);
+    corrIFTS(coin.name, candlesActual, pctChange);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);
