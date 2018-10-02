@@ -4,16 +4,15 @@ import * as ms from "ms";
 import { queryCoins } from "./queryCoins";
 import { corrCalc, LinRegResult, WARMUP_IND, EXTENDED } from "./corrCalc";
 import { PaperTrader } from "./gekko/PaperTrader";
-import { corrMFI } from "./corrMFI";
+// import { corrMFI } from "./corrMFI";
+// import { corrATR } from "./corrATR";
+// import { corrCCI } from "./corrCCI";
+// import { corrMACD } from "./corrMACD";
+import { JunJul } from "./dataranges";
+import { corrIFTS } from "./corrIFTS";
 
-const from = new Date("2018-08-01T00:00:00.000Z");
-// const to = new Date("2018-08-13T00:00:00.000Z");
-const to = new Date("2018-09-01T00:00:00.000Z");
-
-// const { from, to } = pumps.jun2;
-
-const fromExtended = new Date(from.getTime() - ms(`${WARMUP_IND}m`));
-const toExtended = new Date(to.getTime() + ms(`${EXTENDED}m`));
+const fromExtended = new Date(JunJul.from.getTime() - ms(`${WARMUP_IND}m`));
+const toExtended = new Date(JunJul.to.getTime() + ms(`${EXTENDED}m`));
 
 interface Result {
   coins: CoinList;
@@ -45,11 +44,15 @@ export const run = (): Result => {
   ];
 
   for (let coin of cases) {
-    const { candlesActual, pctChange } = corrCalc(coin.candles);
     console.log(
       ` ------------------------- ${coin.name} ------------------------- `
     );
-    corrMFI(candlesActual, pctChange);
+    const { candlesActual, pctChange } = corrCalc(coin.candles);
+    // corrMFI(candlesActual, pctChange);
+    // corrATR(candlesActual, pctChange);
+    // corrCCI(candlesActual, pctChange);
+    // corrMACD(candlesActual, pctChange);
+    corrIFTS(candlesActual, pctChange);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);

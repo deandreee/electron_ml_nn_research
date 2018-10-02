@@ -71,6 +71,12 @@ export interface MACD {
   histo: number;
 }
 
+export interface PSAR {
+  result: number;
+  trend: "up" | "down";
+  trendLength: number;
+}
+
 export interface Indicators {
   rsi?: number;
   psar?: number;
@@ -92,11 +98,17 @@ export interface Indicators {
   mfi?: number;
   bbands?: BBands;
   macd60?: MACD;
+  macd60_PSAR?: PSAR;
   macd120?: MACD;
   macd240?: MACD;
-  macd60_PSAR?: number;
   macdHistoLrc?: number;
   macdHistoLrcSlow?: number;
+  atr60?: number;
+  atr240?: number;
+  cci?: number;
+  ifts10x15?: number;
+  ifts30x15?: number;
+  ifts60x15?: number;
 }
 
 export type CsvCell = string | number;
