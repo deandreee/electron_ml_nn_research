@@ -1,10 +1,10 @@
 import { Candle } from "./types";
 import * as libsvm from "libsvm-js";
-import { rescale } from "./rescale";
 import * as brain from "brain.js";
 import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
-import { round1 } from "./utils";
+import * as mlUtils from "./mlUtils";
+
 // import { getTrainData } from "./getTrainData";
 
 // https://github.com/mljs/libsvm
@@ -24,6 +24,7 @@ const createRBFSVM = async () => {
     // kernel: SVM.KERNEL_TYPES.LINEAR,
     // type: SVM.SVM_TYPES.C_SVC
     type: SVM.SVM_TYPES.EPSILON_SVR // regression if continuous range of numbers
+    // type: SVM.SVM_TYPES.NU_SVR // regression if continuous range of numbers
     // gamma: 1, // Default value is 1/num_features
     // cost: 1, // Cost parameter, for C SVC, Epsilon SVR and NU SVR, default 1
     // weight: {
@@ -52,51 +53,23 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
-  features = rescaleFeatures(features);
-  labels = rescaleRow(labels);
+  features = mlUtils.rescaleFeatures(features);
+  labels = mlUtils.rescaleRow(labels);
   // labels = rescaleRowRoundNumbers(labels);
 
-  logFeaturesPlusMinus1(features);
-  logLabelsPlusMinus1(labels);
+  mlUtils.logFeaturesPlusMinus1(features);
+  mlUtils.logLabelsPlusMinus1(labels);
 
   // svm.train(features, labels, { C: 1 });
   svm.train(features, labels);
   const predicted = svm.predict(features) as number[];
-  logLabelsPlusMinus1(predicted);
+  mlUtils.logLabelsPlusMinus1(predicted);
 
   // const crossVal = svm.crossValidation(features, labels);
   // console.log(crossVal);
 
   const p1 = svm.predictOneProbability(features[0]);
   console.log("p1", labels[0], p1, p1.estimates[0], p1.estimates[1], p1.estimates[2]);
-};
-
-// const logLabelsPlusMinus5 = (labels: number[]) => {
-//   for (let i = -5; i <= 5; i++) {
-//     const count = labels.filter(x => x === i).length;
-//     console.log(`label \t ${i} \t ${count}`);
-//   }
-// };
-
-const logFeaturesPlusMinus1 = (features: number[][]) => {
-  const fCount = features[0].length;
-  for (let fc = 0; fc < fCount; fc++) {
-    console.log(`      ---------- FEATURE: ${fc} ----------       `);
-    logRowPlusMinus1(features.map(x => x[fc]));
-  }
-};
-
-const logLabelsPlusMinus1 = (labels: number[]) => {
-  console.log(`      ---------- LABELS ----------       `);
-  logRowPlusMinus1(labels);
-};
-
-const logRowPlusMinus1 = (row: number[]) => {
-  for (let i = -1; i <= 1; i += 0.1) {
-    const iRounded = round1(i);
-    const count = row.filter(x => round1(x) === iRounded).length;
-    console.log(`label \t ${iRounded} \t ${count}`);
-  }
 };
 
 export const predictBrain = (candlesActual: Candle[]): number[] => {
@@ -119,50 +92,14 @@ export const predictBrain = (candlesActual: Candle[]): number[] => {
   return output;
 };
 
-const rescaleFeatures = (features: number[][]) => {
-  const fCount = features[0].length; // small count like 5
-  for (let fc = 0; fc < fCount; fc++) {
-    // big length like 50k
-    const min = Math.min(...features.map(x => x[fc]));
-    const max = Math.max(...features.map(x => x[fc]));
-    for (let row of features) {
-      row![fc] = rescale(row![fc], min, max);
-    }
-  }
-  return features;
-};
+export const predictNeataptic = (candlesActual: Candle[]) => {
+  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi]);
+  let labels = candlesActual.map(x => x.pctChange._240m);
 
-// const rescaleRowRoundNumbers = (labels: number[]) => {
-//   return labels.map(x => Math.round(x));
-// };
+  features = mlUtils.rescaleFeatures(features);
+  labels = mlUtils.rescaleRow(labels);
 
-const rescaleRow = (labels: number[]) => {
-  const min = Math.min(...labels);
-  const max = Math.max(...labels);
-  const res = labels.map(x => rescale(x, min, max));
-
-  checkNaN(res);
-
-  return res;
-};
-
-const checkNaN = (row: number[]) => {
-  for (let x of row) {
-    if (isNaN(x)) {
-      throw new Error("NaN found!");
-    }
-  }
-};
-
-export const predictNeataptic = (candlesActual: Candle[]): number[] => {
-  // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15, x.ind.macd60.histo, x.ind.macd120.histo]);
-  let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
-  let labels = candlesActual.map(x => x.pctChange._480m);
-
-  features = rescaleFeatures(features);
-  labels = rescaleRow(labels);
-
-  logLabelsPlusMinus1(labels);
+  mlUtils.logLabelsPlusMinus1(labels);
 
   const len = features[0].length;
   const net = new neataptic.architect.LSTM(len, len * 2, 1);
@@ -182,24 +119,17 @@ export const predictNeataptic = (candlesActual: Candle[]): number[] => {
   });
 
   const output = features.map(x => net.activate(x) as number);
-  logLabelsPlusMinus1(output);
-
-  return output.map(x => (x > 0.1 ? 1 : x));
+  mlUtils.logLabelsPlusMinus1(output);
 };
 
-export const predictSynaptic = (candlesActual: Candle[]): number[] => {
-  const features = candlesActual.map(x => x.features);
-  const labels = candlesActual.map(x => x.label);
+export const predictSynaptic = (candlesActual: Candle[]) => {
+  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi]);
+  let labels = candlesActual.map(x => x.pctChange._240m);
 
-  // min max for each feature, then re-calc
-  const fCount = features[0]!.length;
-  for (let f = 0; f < fCount; f++) {
-    const min = Math.min(...features.map(x => x![f]));
-    const max = Math.max(...features.map(x => x![f]));
-    for (let row of features) {
-      row![f] = rescale(row![f], min, max);
-    }
-  }
+  features = mlUtils.rescaleFeatures(features);
+  labels = mlUtils.rescaleRow(labels);
+
+  mlUtils.logLabelsPlusMinus1(labels);
 
   const Architect = synaptic.Architect;
   const Layer = synaptic.Layer;
@@ -225,5 +155,5 @@ export const predictSynaptic = (candlesActual: Candle[]): number[] => {
   trainer.train(trainData, trainOptions);
 
   const output = features.map(x => lstm.activate(x) as number);
-  return output.map(x => (x > 0.01 ? 1 : x));
+  mlUtils.logLabelsPlusMinus1(output);
 };
