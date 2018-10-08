@@ -8,11 +8,12 @@ import { PaperTrader } from "./gekko/PaperTrader";
 // import { corrATR } from "./corrATR";
 // import { corrCCI } from "./corrCCI";
 // import { corrMACD } from "./corrMACD";
-import { JunJul } from "./dataranges";
-import { corrIFTS } from "./corrIFTS";
+import { SepHalf } from "./dataranges";
+// import { corrIFTS } from "./corrIFTS";
+import { predictSvm } from "./ml";
 
-const fromExtended = new Date(JunJul.from.getTime() - ms(`${WARMUP_IND}m`));
-const toExtended = new Date(JunJul.to.getTime() + ms(`${EXTENDED}m`));
+const fromExtended = new Date(SepHalf.from.getTime() - ms(`${WARMUP_IND}m`));
+const toExtended = new Date(SepHalf.to.getTime() + ms(`${EXTENDED}m`));
 
 interface Result {
   coins: CoinList;
@@ -31,18 +32,20 @@ export const run = (): Result => {
   // featurePower(coins[config.leadCoin].candles);
   // corr(coins.BTC.candles);
 
-  const cases = [coins.BTC, coins.ETH, coins.XRP, coins.BCC, coins.EOS, coins.XLM, coins.LTC, coins.ADA, coins.DASH];
+  // const cases = [coins.BTC, coins.ETH, coins.XRP, coins.BCC, coins.EOS, coins.XLM, coins.LTC, coins.ADA, coins.DASH];
+  const cases = [coins.BTC];
 
   for (let coin of cases) {
     // console.log(
     //   ` ------------------------- ${coin.name} ------------------------- `
     // );
-    const { candlesActual, pctChange } = corrCalc(coin.candles);
+    const { candlesActual } = corrCalc(coin.candles);
     // corrMFI(candlesActual, pctChange);
     // corrATR(candlesActual, pctChange);
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
-    corrIFTS(coin.name, candlesActual, pctChange);
+    // corrIFTS(coin.name, candlesActual, pctChange);
+    predictSvm(candlesActual);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);

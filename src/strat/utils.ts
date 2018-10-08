@@ -5,29 +5,17 @@ export const getPctChange = (curr: number, prev: number) => {
   return ((curr - prev) / prev) * 100;
 };
 
-export const getCoinPctChange = (
-  coin: CoinData,
-  idxCurr: number,
-  idxPrev: number
-) => {
+export const getCoinPctChange = (coin: CoinData, idxCurr: number, idxPrev: number) => {
   return getCandlePctChange(coin.candles, idxCurr, idxPrev);
 };
 
-export const getCandlePctChange = (
-  candles: Candle[],
-  idxCurr: number,
-  idxPrev: number
-) => {
+export const getCandlePctChange = (candles: Candle[], idxCurr: number, idxPrev: number) => {
   checkIdx(candles, idxPrev);
 
   return getPctChange(candles[idxCurr].close, candles[idxPrev].close);
 };
 
-export const getMaxCandlePctChange = (
-  candles: Candle[],
-  idxCurr: number,
-  idxPrev: number
-) => {
+export const getMaxCandlePctChange = (candles: Candle[], idxCurr: number, idxPrev: number) => {
   checkIdx(candles, idxPrev);
 
   let max = -Infinity;
@@ -43,20 +31,11 @@ export const getMaxCandlePctChange = (
 
 const checkIdx = (candles: Candle[], idx: number) => {
   if (idx >= candles.length || idx < 0) {
-    throw new Error(
-      `utils/getCoinPctChange: index out of bounds | length: ${
-        candles.length
-      } | idxPrev: ${idx}`
-    );
+    throw new Error(`utils/getCoinPctChange: index out of bounds | length: ${candles.length} | idxPrev: ${idx}`);
   }
 };
 
-export const getAvgCandlePctChange = (
-  candles: Candle[],
-  idxCurr: number,
-  idxAvgFrom: number,
-  idxAvgTo: number
-) => {
+export const getAvgCandlePctChange = (candles: Candle[], idxCurr: number, idxAvgFrom: number, idxAvgTo: number) => {
   checkIdx(candles, idxCurr);
   checkIdx(candles, idxAvgFrom);
   checkIdx(candles, idxAvgTo);
@@ -75,6 +54,10 @@ export const times = (x: number) => {
     res.push(i);
   }
   return res;
+};
+
+export const round1 = (value: number) => {
+  return Math.round(value * 10) / 10;
 };
 
 export const round2 = (value: number) => {

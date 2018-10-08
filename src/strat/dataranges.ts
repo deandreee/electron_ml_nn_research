@@ -31,5 +31,11 @@ export const Aug = {
 export const Sep = {
   name: "Sep",
   from: new Date("2018-09-01T00:00:00Z"),
-  to: new Date("2018-09-23T00:00:00Z")
+  to: new Date("2018-10-01T00:00:00Z")
+};
+
+export const SepHalf = {
+  name: "Sep",
+  from: new Date("2018-09-01T00:00:00Z"),
+  to: new Date("2018-09-15T00:00:00Z")
 };

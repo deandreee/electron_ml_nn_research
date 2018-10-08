@@ -54,7 +54,7 @@ export const linreg = (
   // const corrPearson = spearson.correlation.pearson(indArr, pctChange);
   // const corrSpearman = spearson.correlation.spearman(indArr, pctChange);
 
-  console.log(`${coinName} \t\t ${name} \t\t corr ${corr}`);
+  console.log(`${coinName} \t\t ${name} \t\t ${corr}`);
   // console.log("\t -----------------------------------");
 
   const regEquation = result.equation;
