@@ -22,8 +22,8 @@ const createRBFSVM = async () => {
   return new SVM({
     kernel: SVM.KERNEL_TYPES.RBF,
     // kernel: SVM.KERNEL_TYPES.LINEAR,
-    // type: SVM.SVM_TYPES.C_SVC
-    type: SVM.SVM_TYPES.EPSILON_SVR // regression if continuous range of numbers
+    type: SVM.SVM_TYPES.C_SVC
+    // type: SVM.SVM_TYPES.EPSILON_SVR // regression if continuous range of numbers
     // type: SVM.SVM_TYPES.NU_SVR // regression if continuous range of numbers
     // gamma: 1, // Default value is 1/num_features
     // cost: 1, // Cost parameter, for C SVC, Epsilon SVR and NU SVR, default 1
@@ -54,16 +54,28 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);
-  labels = mlUtils.rescaleRow(labels);
-  // labels = rescaleRowRoundNumbers(labels);
+  // labels = mlUtils.rescaleRow(labels);
+  labels = mlUtils.rescaleRowRoundNumbers(labels);
 
   mlUtils.logFeaturesPlusMinus1(features);
-  mlUtils.logLabelsPlusMinus1(labels);
+  mlUtils.logLabelsPlusMinus5(labels);
+
+  const labelCount = mlUtils.countLabels(labels, -5, 5, 1);
+  console.log("labelCount", labelCount);
+
+  let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
+  // testData = mlUtils.oversample(testData, labelCount);
+  testData = mlUtils.undersample(testData, labelCount, 200);
+
+  features = testData.map(x => x.features);
+  labels = testData.map(x => x.label);
+
+  mlUtils.logLabelsPlusMinus5(labels);
 
   // svm.train(features, labels, { C: 1 });
   svm.train(features, labels);
   const predicted = svm.predict(features) as number[];
-  mlUtils.logLabelsPlusMinus1(predicted);
+  mlUtils.logLabelsPlusMinus5(predicted);
 
   // const crossVal = svm.crossValidation(features, labels);
   // console.log(crossVal);

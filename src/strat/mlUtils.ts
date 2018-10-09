@@ -42,9 +42,9 @@ export const rescaleFeatures = (features: number[][]) => {
   return features;
 };
 
-// const rescaleRowRoundNumbers = (labels: number[]) => {
-//   return labels.map(x => Math.round(x));
-// };
+export const rescaleRowRoundNumbers = (labels: number[]) => {
+  return labels.map(x => Math.round(x));
+};
 
 export const rescaleRow = (labels: number[]) => {
   const min = Math.min(...labels);
@@ -62,4 +62,106 @@ export const checkNaN = (row: number[]) => {
       throw new Error("NaN found!");
     }
   }
+};
+
+interface TestData {
+  features: number[];
+  label: number;
+}
+
+export interface LabelCount {
+  [label: number]: number;
+}
+
+export const countLabels = (labels: number[], start: number, end: number, increment: number) => {
+  const labelCount: LabelCount = {};
+
+  for (let i = start; i <= end; i += increment) {
+    const count = countByLabel(labels, i);
+    // if (count > 0) {
+    labelCount[i] = count;
+    // }
+  }
+
+  return labelCount;
+};
+
+export const countByLabel = (labels: number[], label: number) => {
+  let res = 0;
+  for (let x of labels) {
+    if (x === label) {
+      res++;
+    }
+  }
+  return res;
+};
+
+interface TestData {
+  features: number[];
+  label: number;
+}
+
+export const undersample = (testData: TestData[], labelCount: LabelCount, max: number) => {
+  let res: TestData[] = [];
+  try {
+    for (let label in labelCount) {
+      if (labelCount[label] >= max) {
+        const reSamples = take(testData, Number(label), max);
+        res = res.concat(reSamples);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return res;
+};
+
+export const take = (testData: TestData[], label: number, count: number) => {
+  let res: TestData[] = [];
+  for (let x of testData) {
+    if (x.label === label) {
+      res.push(x);
+      if (res.length === count) {
+        return res;
+      }
+    }
+  }
+
+  throw new Error(`Not enough items found for label ${label}`);
+};
+
+export const oversample = (testData: TestData[], labelCount: LabelCount) => {
+  const max = Math.max(...Object.keys(labelCount).map(key => labelCount[Number(key)]));
+
+  for (let label in labelCount) {
+    if (labelCount[label] < max) {
+      const reSamples = duplicateClass(testData, Number(label), max - labelCount[label]);
+      console.log("reSamples", label, reSamples.length);
+
+      testData = testData.concat(reSamples);
+    }
+  }
+
+  return testData;
+};
+
+export const duplicateClass = (testData: TestData[], label: number, diff: number) => {
+  const existing = testData.filter(x => x.label === label);
+  const reSamples: TestData[] = [];
+
+  if (existing.length === 0) {
+    return reSamples;
+  }
+
+  for (let i = 0; i < diff; i++) {
+    const x = existing[i % existing.length];
+
+    if (!x) {
+      throw new Error("existing null");
+    }
+
+    reSamples.push(x);
+  }
+  return reSamples;
 };
