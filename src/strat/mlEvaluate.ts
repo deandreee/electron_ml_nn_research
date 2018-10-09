@@ -36,7 +36,7 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
     recall[x] = !isNaN(rx) ? rx : 0;
   }
 
-  console.log("preision", precision);
+  // console.log("preision", precision);
 
   const precisionTotal = sum(objToArr(precision)) / uniqueLabels.length;
   const recallTotal = sum(objToArr(recall)) / uniqueLabels.length;

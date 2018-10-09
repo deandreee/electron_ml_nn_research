@@ -50,11 +50,35 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   // x.ind.bbands.upppredicteder - x.ind.bbands.lower,
   // x.ind.macd60.histo,
 
-  let features = candlesActual.map(x => [
-    x.ind.macd60.histo,
-    x.ind.macd120.histo,
-    x.ind.bbands.upper - x.ind.bbands.lower
-  ]);
+  let features = candlesActual.map(x => [x.ind.macd120_ADX60]);
+
+  // let features = candlesActual.map(x => [
+  //   x.ind.macd60.histo,
+  //   x.ind.macd120.histo,
+  //   x.ind.bbands.upper - x.ind.bbands.lower,
+  //   // x.ind.atr60,
+  //   // x.ind.atr240
+  //   x.ind.rsi60x10,
+  //   x.ind.rsi60x20,
+  //   x.ind.rsi120x10,
+
+  //   // x.ind.zerlagMacd60.histo
+  //   x.ind.zerlagMacd120.histo,
+  //   x.ind.cci,
+
+  //   x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow,
+  //   x.ind.macd120_ADX60
+  //   // x.ind.macd60_PSAR.result
+  //   // x.ind.zlema60Fast - x.ind.zlema60Slow
+  //   // x.ind.ift60x15
+  //   // x.ind.vixFix
+
+  //   // x.ind.bbands.upper - x.ind.bbands.lower,
+  //   //
+  //   // x.ind.ift60x15,
+  //   // x.ind.ift30x15,
+  //   // x.ind.ift120x15,
+  // ]);
   // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
@@ -114,7 +138,7 @@ export const predictBrain = (candlesActual: Candle[]): number[] => {
 };
 
 export const predictNeataptic = (candlesActual: Candle[]) => {
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi]);
+  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);
@@ -144,7 +168,7 @@ export const predictNeataptic = (candlesActual: Candle[]) => {
 };
 
 export const predictSynaptic = (candlesActual: Candle[]) => {
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi]);
+  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);

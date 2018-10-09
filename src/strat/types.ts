@@ -78,7 +78,10 @@ export interface PSAR {
 }
 
 export interface Indicators {
-  rsi?: number;
+  rsi30x10?: number;
+  rsi60x10?: number;
+  rsi60x20?: number;
+  rsi120x10?: number;
   psar?: number;
   xmPsar?: number;
   hlTrueRange?: IndHlTrueRange;
@@ -103,6 +106,14 @@ export interface Indicators {
   macd240?: MACD;
   macdHistoLrc?: number;
   macdHistoLrcSlow?: number;
+  zerlagMacd60?: MACD;
+  zerlagMacd120?: MACD;
+  macd60_ADX30?: number;
+  macd60_ADX60?: number;
+  macd60_ADX120?: number;
+  macd120_ADX30?: number;
+  macd120_ADX60?: number;
+  macd120_ADX120?: number;
   atr60?: number;
   atr240?: number;
   cci?: number;

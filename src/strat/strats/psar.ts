@@ -9,19 +9,13 @@ let trend: Trend = null;
 // don't allow to trade if have been stoplossed
 let stoplossCooldown = 0;
 
-const hasRsiBeen = (
-  coins: CoinList,
-  i: number,
-  iBefore: number,
-  rsi: number,
-  comparison: "gt" | "lt"
-) => {
+const hasRsiBeen = (coins: CoinList, i: number, iBefore: number, rsi: number, comparison: "gt" | "lt") => {
   const candles = coins[config.leadCoin].candles.slice(iBefore, i);
   for (let x of candles) {
-    if (comparison === "gt" && x.ind.rsi > rsi) {
+    if (comparison === "gt" && x.ind.rsi60x10 > rsi) {
       return true;
     }
-    if (comparison === "lt" && x.ind.rsi < rsi) {
+    if (comparison === "lt" && x.ind.rsi60x10 < rsi) {
       return true;
     }
   }
@@ -49,17 +43,9 @@ export const check = (coins: CoinList, i: number) => {
   } else if (quickPctChange) {
     massSell(coins, i, `stoploss | ${quickPctChange}`);
     stoplossCooldown = 5;
-  } else if (
-    trend === "up" &&
-    candle.ind.psar < prevCandle.ind.psar &&
-    hasRsiBeen(coins, i, i - 20, 70, "gt")
-  ) {
+  } else if (trend === "up" && candle.ind.psar < prevCandle.ind.psar && hasRsiBeen(coins, i, i - 20, 70, "gt")) {
     massSell(coins, i, `psar < prevCandle`);
-  } else if (
-    trend === "down" &&
-    candle.ind.psar > prevCandle.ind.psar &&
-    hasRsiBeen(coins, i, i - 20, 20, "lt")
-  ) {
+  } else if (trend === "down" && candle.ind.psar > prevCandle.ind.psar && hasRsiBeen(coins, i, i - 20, 20, "lt")) {
     massBuy(coins, i, `psar > prevCandle`);
   }
 

@@ -1,6 +1,6 @@
 import { round1 } from "./utils";
 import { rescale } from "./rescale";
-import { uniq } from "lodash";
+import { shuffle, uniq } from "lodash";
 
 export const logLabels = (uniqueLabels: number[], labels: number[]) => {
   for (let lbl of uniqueLabels) {
@@ -125,7 +125,7 @@ export const middlesample = (testData: TestData[], labelCount: NumberMap, max: n
     console.log(err);
   }
 
-  return res;
+  return shuffle(res);
 };
 
 export const undersample = (testData: TestData[], labelCount: NumberMap, max: number) => {

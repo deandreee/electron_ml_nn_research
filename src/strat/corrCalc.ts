@@ -13,9 +13,10 @@ const {
   ATR,
   CCI,
   PSAR_TI,
-  PSARProps
+  PSARProps,
+  ADX
 } = require("../../../gekko-develop/strategies/indicators");
-const { ZerolagHATEMA } = require("../../../gekko-develop/strategies/indicators/lizard");
+const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
 
 const {
   InverseFisherTransform,
@@ -38,13 +39,20 @@ export interface LinRegResult {
   name: string;
 }
 
+const wHist = {
+  resultHistory: true
+};
+
 export const corrCalc = (candles: Candle[]) => {
   const waveManager10 = new WaveManager(10);
   const waveManager30 = new WaveManager(30);
   const waveManager60 = new WaveManager(60);
   const waveManager120 = new WaveManager(120);
 
-  const xmRsi = new XmBase(waveManager60, () => new RSI({ interval: 20 }));
+  const rsi30x10 = new XmBase(waveManager30, () => new RSI({ interval: 10 }));
+  const rsi60x10 = new XmBase(waveManager60, () => new RSI({ interval: 10 }));
+  const rsi60x20 = new XmBase(waveManager60, () => new RSI({ interval: 20 }));
+  const rsi120x10 = new XmBase(waveManager60, () => new RSI({ interval: 10 }));
   const xmVixFix = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
 
   const lrc60 = new XmBase(waveManager60, () => new LRC(60));
@@ -57,19 +65,26 @@ export const corrCalc = (candles: Candle[]) => {
   const bbands = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
 
   const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
-
   const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
+  const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  const zerlagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
 
   const macdHistoLrc = new XmBase(waveManager120, () => new LRC(12));
   const macdHistoLrcSlow = new XmBase(waveManager120, () => new LRC(16));
 
   const atr60 = new ATR(60);
   const atr240 = new ATR(240);
-  const cci = new CCI({ constant: 0.015, history: 120 });
+  const cci = new XmBase(waveManager60, () => new CCI({ constant: 0.015, history: 120 }));
 
-  const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, {
-    resultHistory: true
-  });
+  const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, wHist);
+
+  const macd60_ADX30 = new ADX(30, wHist);
+  const macd60_ADX60 = new ADX(60, wHist);
+  const macd60_ADX120 = new ADX(120, wHist);
+
+  const macd120_ADX30 = new ADX(30, wHist);
+  const macd120_ADX60 = new ADX(60, wHist);
+  const macd120_ADX120 = new ADX(120, wHist);
 
   const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
   const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
@@ -103,7 +118,10 @@ export const corrCalc = (candles: Candle[]) => {
     }
 
     candle.ind = {
-      rsi: xmRsi.update(bigCandle60),
+      rsi30x10: rsi30x10.update(bigCandle30),
+      rsi60x10: rsi60x10.update(bigCandle60),
+      rsi60x20: rsi60x20.update(bigCandle60),
+      rsi120x10: rsi120x10.update(bigCandle120),
       vixFix: xmVixFix.update(bigCandle120),
       lrc60: lrc60.update(bigCandle60.close),
       lrc120: lrc120.update(bigCandle120.close),
@@ -113,9 +131,11 @@ export const corrCalc = (candles: Candle[]) => {
       bbands: bbands.update(bigCandle60.close),
       macd60: macd60.update(bigCandle60.close),
       macd120: macd120.update(bigCandle120.close),
+      zerlagMacd60: zerlagMacd60.update(bigCandle60),
+      zerlagMacd120: zerlagMacd120.update(bigCandle120),
       atr60: atr60.update(candle),
       atr240: atr240.update(candle),
-      cci: cci.update(candle),
+      cci: cci.update(bigCandle60),
       ift30x5: ift30x5.update(bigCandle30),
       ift60x5: ift60x5.update(bigCandle60),
       ift60x15: ift60x15.update(bigCandle60),
@@ -134,6 +154,13 @@ export const corrCalc = (candles: Candle[]) => {
     candle.ind.macdHistoLrcSlow = macdHistoLrcSlow.update(candle.ind.macd120 && candle.ind.macd120.histo);
 
     candle.ind.macd60_PSAR = macd60_PSAR.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
+    candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
+    candle.ind.macd60_ADX60 = macd60_ADX60.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
+    candle.ind.macd60_ADX120 = macd60_ADX120.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
+
+    candle.ind.macd120_ADX30 = macd120_ADX30.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
+    candle.ind.macd120_ADX60 = macd120_ADX60.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
+    candle.ind.macd120_ADX120 = macd120_ADX120.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 

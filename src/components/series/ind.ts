@@ -168,13 +168,11 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     });
 
     const hlMax = coins[config.leadCoin].candles.map(
-      x =>
-        x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMax]
+      x => x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMax]
     );
 
     const hlMin = coins[config.leadCoin].candles.map(
-      x =>
-        x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMin]
+      x => x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMin]
     );
 
     series.push({
@@ -233,7 +231,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     });
   }
 
-  if (hasIndicator(coins, x => x.ind.rsi)) {
+  if (hasIndicator(coins, x => x.ind.rsi60x10)) {
     series.push({
       ...base,
       // type: "scatter",
@@ -243,7 +241,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
       // data: data(coins, x => x.ind.rsi),
       data: coins[config.leadCoin].candles
         // .filter(x => x && x.ind.rsi > 80)
-        .map(x => x && [x.start * 1000, x.ind.rsi > 80 ? x.ind.rsi : null]),
+        .map(x => x && [x.start * 1000, x.ind.rsi60x10 > 80 ? x.ind.rsi60x10 : null]),
       name: "RSI",
       xAxisIndex: 1,
       yAxisIndex: 1

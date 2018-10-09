@@ -8,12 +8,13 @@ import { PaperTrader } from "./gekko/PaperTrader";
 // import { corrATR } from "./corrATR";
 // import { corrCCI } from "./corrCCI";
 // import { corrMACD } from "./corrMACD";
-import { SepHalf } from "./dataranges";
+import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
 
-const fromExtended = new Date(SepHalf.from.getTime() - ms(`${WARMUP_IND}m`));
-const toExtended = new Date(SepHalf.to.getTime() + ms(`${EXTENDED}m`));
+const range = dataranges.Jun;
+const fromExtended = new Date(range.from.getTime() - ms(`${WARMUP_IND}m`));
+const toExtended = new Date(range.to.getTime() + ms(`${EXTENDED}m`));
 
 interface Result {
   coins: CoinList;
