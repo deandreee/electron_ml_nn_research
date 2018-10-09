@@ -69,12 +69,12 @@ interface TestData {
   label: number;
 }
 
-export interface LabelCount {
+export interface NumberMap {
   [label: number]: number;
 }
 
 export const countLabels = (labels: number[], start: number, end: number, increment: number) => {
-  const labelCount: LabelCount = {};
+  const labelCount: NumberMap = {};
 
   for (let i = start; i <= end; i += increment) {
     const count = countByLabel(labels, i);
@@ -101,7 +101,27 @@ interface TestData {
   label: number;
 }
 
-export const undersample = (testData: TestData[], labelCount: LabelCount, max: number) => {
+export const middlesample = (testData: TestData[], labelCount: NumberMap, max: number) => {
+  let res: TestData[] = [];
+  try {
+    for (let label in labelCount) {
+      if (labelCount[label] >= max) {
+        const reSamples = take(testData, Number(label), max);
+        res = res.concat(reSamples);
+      } else {
+        const { existing, reSamples } = duplicateClass(testData, Number(label), max - labelCount[label]);
+        res = res.concat(existing);
+        res = res.concat(reSamples);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return res;
+};
+
+export const undersample = (testData: TestData[], labelCount: NumberMap, max: number) => {
   let res: TestData[] = [];
   try {
     for (let label in labelCount) {
@@ -131,14 +151,12 @@ export const take = (testData: TestData[], label: number, count: number) => {
   throw new Error(`Not enough items found for label ${label}`);
 };
 
-export const oversample = (testData: TestData[], labelCount: LabelCount) => {
+export const oversample = (testData: TestData[], labelCount: NumberMap) => {
   const max = Math.max(...Object.keys(labelCount).map(key => labelCount[Number(key)]));
 
   for (let label in labelCount) {
     if (labelCount[label] < max) {
-      const reSamples = duplicateClass(testData, Number(label), max - labelCount[label]);
-      console.log("reSamples", label, reSamples.length);
-
+      const { reSamples } = duplicateClass(testData, Number(label), max - labelCount[label]);
       testData = testData.concat(reSamples);
     }
   }
@@ -151,7 +169,7 @@ export const duplicateClass = (testData: TestData[], label: number, diff: number
   const reSamples: TestData[] = [];
 
   if (existing.length === 0) {
-    return reSamples;
+    return { existing, reSamples };
   }
 
   for (let i = 0; i < diff; i++) {
@@ -163,5 +181,5 @@ export const duplicateClass = (testData: TestData[], label: number, diff: number
 
     reSamples.push(x);
   }
-  return reSamples;
+  return { existing, reSamples };
 };

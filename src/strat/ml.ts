@@ -4,6 +4,7 @@ import * as brain from "brain.js";
 import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import * as mlUtils from "./mlUtils";
+import * as mlEvaluate from "./mlEvaluate";
 
 // import { getTrainData } from "./getTrainData";
 
@@ -61,11 +62,13 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   mlUtils.logLabelsPlusMinus5(labels);
 
   const labelCount = mlUtils.countLabels(labels, -5, 5, 1);
+  const labelNames = Object.keys(labelCount).map(x => Number(x));
   console.log("labelCount", labelCount);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   // testData = mlUtils.oversample(testData, labelCount);
-  testData = mlUtils.undersample(testData, labelCount, 200);
+  // testData = mlUtils.undersample(testData, labelCount, 200);
+  testData = mlUtils.middlesample(testData, labelCount, 500);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
@@ -77,11 +80,13 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   const predicted = svm.predict(features) as number[];
   mlUtils.logLabelsPlusMinus5(predicted);
 
-  // const crossVal = svm.crossValidation(features, labels);
+  mlEvaluate.evaluateResults(labelNames, labels, predicted);
+
+  // const crossVal = svm.crossValidation(features, labels, 3);
   // console.log(crossVal);
 
-  const p1 = svm.predictOneProbability(features[0]);
-  console.log("p1", labels[0], p1, p1.estimates[0], p1.estimates[1], p1.estimates[2]);
+  // const p1 = svm.predictOneProbability(features[0]);
+  // console.log("p1", labels[0], p1, p1.estimates[0], p1.estimates[1], p1.estimates[2]);
 };
 
 export const predictBrain = (candlesActual: Candle[]): number[] => {
