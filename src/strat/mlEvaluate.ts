@@ -1,10 +1,11 @@
 import { NumberMap } from "./mlUtils";
+import { sum } from "lodash";
 
-export const evaluateResults = (labelNames: number[], input: number[], output: number[]) => {
+export const evaluateResults = (uniqueLabels: number[], input: number[], output: number[]) => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
 
-  for (let x of labelNames) {
+  for (let x of uniqueLabels) {
     truePositives[x] = 0;
     falsePositives[x] = 0;
   }
@@ -20,11 +21,20 @@ export const evaluateResults = (labelNames: number[], input: number[], output: n
   }
 
   let precision: NumberMap = {};
-  for (let x of labelNames) {
-    precision[x] = truePositives[x] / (truePositives[x] + falsePositives[x]);
+  for (let x of uniqueLabels) {
+    const px = truePositives[x] / (truePositives[x] + falsePositives[x]);
+    precision[x] = !isNaN(px) ? px : 0;
   }
 
   console.log("preision", precision);
 
-  return precision;
+  const precisionTotal = sum(objToArr(precision)) / uniqueLabels.length;
+
+  console.log("PRECISION_TOTAL", precisionTotal);
+
+  return { precision, precisionTotal };
+};
+
+const objToArr = (o: any) => {
+  return Object.keys(o).map(x => o[x]);
 };

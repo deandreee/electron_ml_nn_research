@@ -1,5 +1,13 @@
 import { round1 } from "./utils";
 import { rescale } from "./rescale";
+import { uniq } from "lodash";
+
+export const logLabels = (uniqueLabels: number[], labels: number[]) => {
+  for (let lbl of uniqueLabels) {
+    const count = labels.filter(x => x === lbl).length;
+    console.log(`label \t ${lbl} \t ${count}`);
+  }
+};
 
 export const logLabelsPlusMinus5 = (labels: number[]) => {
   for (let i = -5; i <= 5; i++) {
@@ -73,14 +81,13 @@ export interface NumberMap {
   [label: number]: number;
 }
 
-export const countLabels = (labels: number[], start: number, end: number, increment: number) => {
+export const countLabels = (uniqueLabels: number[], labels: number[]) => {
   const labelCount: NumberMap = {};
 
-  for (let i = start; i <= end; i += increment) {
-    const count = countByLabel(labels, i);
-    // if (count > 0) {
-    labelCount[i] = count;
-    // }
+  for (let lbl of uniqueLabels) {
+    const count = countByLabel(labels, lbl);
+    console.log(`countLabels \t ${lbl} \t ${count}`);
+    labelCount[lbl] = count;
   }
 
   return labelCount;
@@ -182,4 +189,8 @@ export const duplicateClass = (testData: TestData[], label: number, diff: number
     reSamples.push(x);
   }
   return { existing, reSamples };
+};
+
+export const getUniqueLabels = (labels: number[]) => {
+  return uniq(labels).sort();
 };

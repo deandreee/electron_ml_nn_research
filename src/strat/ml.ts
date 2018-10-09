@@ -50,19 +50,23 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   // x.ind.bbands.upppredicteder - x.ind.bbands.lower,
   // x.ind.macd60.histo,
 
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi]);
+  let features = candlesActual.map(x => [
+    x.ind.macd60.histo,
+    x.ind.macd120.histo,
+    x.ind.bbands.upper - x.ind.bbands.lower
+  ]);
   // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);
   // labels = mlUtils.rescaleRow(labels);
   labels = mlUtils.rescaleRowRoundNumbers(labels);
+  const uniqueLabels = mlUtils.getUniqueLabels(labels);
 
   mlUtils.logFeaturesPlusMinus1(features);
-  mlUtils.logLabelsPlusMinus5(labels);
+  mlUtils.logLabels(uniqueLabels, labels);
 
-  const labelCount = mlUtils.countLabels(labels, -5, 5, 1);
-  const labelNames = Object.keys(labelCount).map(x => Number(x));
+  const labelCount = mlUtils.countLabels(uniqueLabels, labels);
   console.log("labelCount", labelCount);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
@@ -73,14 +77,14 @@ export const predictSvm = async (candlesActual: Candle[]) => {
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
 
-  mlUtils.logLabelsPlusMinus5(labels);
+  mlUtils.logLabels(uniqueLabels, labels);
 
   // svm.train(features, labels, { C: 1 });
   svm.train(features, labels);
   const predicted = svm.predict(features) as number[];
-  mlUtils.logLabelsPlusMinus5(predicted);
+  mlUtils.logLabels(uniqueLabels, predicted);
 
-  mlEvaluate.evaluateResults(labelNames, labels, predicted);
+  mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
 
   // const crossVal = svm.crossValidation(features, labels, 3);
   // console.log(crossVal);
