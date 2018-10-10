@@ -40,13 +40,13 @@ export const run = (): Result => {
     // console.log(
     //   ` ------------------------- ${coin.name} ------------------------- `
     // );
-    const { candlesActual } = corrCalc(coin.candles);
+    const { corrCandles } = corrCalc(coin.candles);
     // corrMFI(candlesActual, pctChange);
     // corrATR(candlesActual, pctChange);
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
     // corrIFTS(coin.name, candlesActual, pctChange);
-    predict.predictSvm(candlesActual);
+    predict.predictSvm(corrCandles);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);

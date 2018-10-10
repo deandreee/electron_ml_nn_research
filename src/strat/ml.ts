@@ -6,6 +6,7 @@ import * as synaptic from "synaptic";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { getFeatures } from "./getFeatures";
+import { CorrCandles } from "./corrCalc";
 
 // import { getTrainData } from "./getTrainData";
 
@@ -45,11 +46,11 @@ const createRBFSVM = async () => {
 //   });
 // };
 
-export const predictSvm = async (candlesActual: Candle[]) => {
+export const predictSvm = async (corrCandles: CorrCandles) => {
   const svm = await createRBFSVM();
 
-  let features = getFeatures(candlesActual);
-  let labels = candlesActual.map(x => x.pctChange._240m);
+  let features = getFeatures(corrCandles);
+  let labels = corrCandles.candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);
   // labels = mlUtils.rescaleRow(labels);

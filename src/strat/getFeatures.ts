@@ -1,10 +1,19 @@
-import { Candle } from "./types";
+import { CorrCandles } from "./corrCalc";
 
-export const getFeatures = (candlesActual: Candle[]) => {
+export const getFeatures = (corrCandles: CorrCandles) => {
   // x.ind.bbands.upppredicteder - x.ind.bbands.lower,
   // x.ind.macd60.histo,
 
-  let features = candlesActual.map(x => [x.close - x.ind.atr360 - x.ind.atr60]);
+  let features = corrCandles.candlesActual.map((x, i) => {
+    const bbandsNow = x.ind.bbands.upper - x.ind.bbands.lower;
+    const candlePrev = corrCandles.getPrev(i, 480);
+    const bbandsPrev = candlePrev.ind.bbands.upper - candlePrev.ind.bbands.lower;
+
+    // - better than /
+    // much better
+    // 60 ok | 120 ok | 240 ok | 480 nok
+    return [bbandsNow - bbandsPrev];
+  });
 
   // x.ind.atr960 / x.ind.atr120 wtf 0.38
   // x.ind.atr960 - x.ind.atr120 about the same

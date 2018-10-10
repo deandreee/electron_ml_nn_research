@@ -226,5 +226,27 @@ export const corrCalc = (candles: Candle[]) => {
     _24h: candlesActual.map(x => x.pctChange._24h)
   };
 
-  return { candlesActual, pctChange };
+  const corrCandles = new CorrCandles(candles, candlesActual, WARMUP_IND, EXTENDED);
+
+  return { corrCandles, pctChange };
 };
+
+export class CorrCandles {
+  candles: Candle[];
+  candlesActual: Candle[];
+  WARMUP_IND: number;
+  EXTENDED: number;
+
+  constructor(candles: Candle[], candlesActual: Candle[], WARMUP_IND: number, EXTENDED: number) {
+    this.candles = candles;
+    this.candlesActual = candlesActual;
+    this.WARMUP_IND = WARMUP_IND;
+    this.EXTENDED = this.EXTENDED;
+  }
+
+  // candles actual is used further, but we still need to see the diff n periods ago,
+  // so we look into full candles
+  getPrev = (curr: number, minus: number) => {
+    return this.candles[curr - minus + this.WARMUP_IND];
+  };
+}
