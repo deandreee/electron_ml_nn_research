@@ -59,16 +59,28 @@ export const rescaleRow = (labels: number[]) => {
   const max = Math.max(...labels);
   const res = labels.map(x => rescale(x, min, max));
 
-  checkNaN(res);
+  sanityCheckRow(res);
 
   return res;
 };
 
-export const checkNaN = (row: number[]) => {
+export const sanityCheckRow = (row: number[]) => {
   for (let x of row) {
-    if (isNaN(x)) {
-      throw new Error("NaN found!");
-    }
+    sanityCheck(x);
+  }
+};
+
+export const sanityCheck = (x: number) => {
+  if (isNaN(x)) {
+    throw new Error("NaN found!");
+  }
+
+  if (x === undefined) {
+    throw new Error("undefined found!");
+  }
+
+  if (x === null) {
+    throw new Error("null found!");
   }
 };
 

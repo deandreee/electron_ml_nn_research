@@ -1,6 +1,10 @@
 import { run } from "./strat/index";
 // import { config } from "./strat/config";
-run();
+try {
+  run();
+} catch (err) {
+  console.error(err);
+}
 
 // console.log(
 //   config.leadCoin,

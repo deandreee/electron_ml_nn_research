@@ -26,7 +26,7 @@ export class App extends React.Component {
   };
 
   async componentWillMount() {
-    const { coins, linRegs } = strat.run();
+    const { coins, linRegs } = await strat.run();
 
     // const currentProp = "percentChange";
     const currentProp = "close";
@@ -103,28 +103,12 @@ export class App extends React.Component {
           }}
         /> */}
         <div style={{ display: "flex" }}>
-          <div style={{ width: "48%" }}>
-            {this.state.linRegs[0] && (
-              <CorrChart linReg={this.state.linRegs[0]} />
-            )}
-          </div>
-          <div style={{ width: "48%" }}>
-            {this.state.linRegs[1] && (
-              <CorrChart linReg={this.state.linRegs[1]} />
-            )}
-          </div>
+          <div style={{ width: "48%" }}>{this.state.linRegs[0] && <CorrChart linReg={this.state.linRegs[0]} />}</div>
+          <div style={{ width: "48%" }}>{this.state.linRegs[1] && <CorrChart linReg={this.state.linRegs[1]} />}</div>
         </div>
         <div style={{ display: "flex" }}>
-          <div style={{ width: "48%" }}>
-            {this.state.linRegs[2] && (
-              <CorrChart linReg={this.state.linRegs[2]} />
-            )}
-          </div>
-          <div style={{ width: "48%" }}>
-            {this.state.linRegs[3] && (
-              <CorrChart linReg={this.state.linRegs[3]} />
-            )}
-          </div>
+          <div style={{ width: "48%" }}>{this.state.linRegs[2] && <CorrChart linReg={this.state.linRegs[2]} />}</div>
+          <div style={{ width: "48%" }}>{this.state.linRegs[3] && <CorrChart linReg={this.state.linRegs[3]} />}</div>
         </div>
         {/* <Profits coins={this.state.coins} /> */}
         {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}

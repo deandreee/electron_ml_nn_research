@@ -113,6 +113,7 @@ export interface Indicators {
   mfi120_30?: number;
   mfi120_60?: number;
   bbands?: BBands;
+  macd30?: MACD;
   macd60?: MACD;
   macd60_PSAR?: PSAR;
   macd120?: MACD;

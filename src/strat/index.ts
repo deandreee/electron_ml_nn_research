@@ -22,7 +22,7 @@ interface Result {
   linRegs: LinRegResult[];
 }
 
-export const run = (): Result => {
+export const run = async (): Promise<Result> => {
   const coins = queryCoins(fromExtended, toExtended);
   // vol1(coins);
 
@@ -46,7 +46,7 @@ export const run = (): Result => {
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
     // corrIFTS(coin.name, candlesActual, pctChange);
-    predict.predictSvm(corrCandles);
+    await predict.predictSvm(corrCandles);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);

@@ -84,6 +84,7 @@ export const corrCalc = (candles: Candle[]) => {
 
   const bbands = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
 
+  const macd30 = new XmBase(waveManager30, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
@@ -167,6 +168,7 @@ export const corrCalc = (candles: Candle[]) => {
       mfi120_30: mfi120_30.update(bigCandle120),
       mfi120_60: mfi120_60.update(bigCandle120),
       bbands: bbands.update(bigCandle60.close),
+      macd30: macd30.update(bigCandle30.close),
       macd60: macd60.update(bigCandle60.close),
       macd120: macd120.update(bigCandle120.close),
       zerlagMacd60: zerlagMacd60.update(bigCandle60),

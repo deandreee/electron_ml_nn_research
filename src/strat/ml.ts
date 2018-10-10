@@ -47,6 +47,14 @@ const createRBFSVM = async () => {
 // };
 
 export const predictSvm = async (corrCandles: CorrCandles) => {
+  try {
+    await predictSvm_(corrCandles);
+  } catch (err) {
+    console.error(err.stack);
+  }
+};
+
+const predictSvm_ = async (corrCandles: CorrCandles) => {
   const svm = await createRBFSVM();
 
   let features = getFeatures(corrCandles);
