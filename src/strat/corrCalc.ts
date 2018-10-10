@@ -14,7 +14,8 @@ const {
   CCI,
   PSAR_TI,
   PSARProps,
-  ADX
+  ADX,
+  SMA
 } = require("../../../gekko-develop/strategies/indicators");
 const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
 
@@ -53,15 +54,28 @@ export const corrCalc = (candles: Candle[]) => {
   const rsi60x10 = new XmBase(waveManager60, () => new RSI({ interval: 10 }));
   const rsi60x20 = new XmBase(waveManager60, () => new RSI({ interval: 20 }));
   const rsi120x10 = new XmBase(waveManager60, () => new RSI({ interval: 10 }));
-  const xmVixFix = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix30 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix60 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
 
-  const lrc60 = new XmBase(waveManager60, () => new LRC(60));
-  const lrc120 = new XmBase(waveManager120, () => new LRC(60));
+  const lrc10 = new XmBase(waveManager10, () => new LRC(60));
+  const lrc30 = new XmBase(waveManager30, () => new LRC(30));
+  const lrc60 = new XmBase(waveManager60, () => new LRC(30));
+  const lrc120 = new XmBase(waveManager120, () => new LRC(30));
+  const lrc30_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
+  const lrc60_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
 
   const zlema60Fast = new XmBase(waveManager120, () => new ZerolagHATEMA(20));
   const zlema60Slow = new XmBase(waveManager120, () => new ZerolagHATEMA(60));
 
-  const mfi = new XmBase(waveManager60, () => new MFI(30));
+  const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
+  const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
+  const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
+
+  const mfi120_15 = new XmBase(waveManager120, () => new MFI(15));
+  const mfi120_30 = new XmBase(waveManager120, () => new MFI(30));
+  const mfi120_60 = new XmBase(waveManager120, () => new MFI(60));
+
   const bbands = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
 
   const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
@@ -73,7 +87,12 @@ export const corrCalc = (candles: Candle[]) => {
   const macdHistoLrcSlow = new XmBase(waveManager120, () => new LRC(16));
 
   const atr60 = new ATR(60);
+  const atr120 = new ATR(120);
   const atr240 = new ATR(240);
+  const atr360 = new ATR(360);
+  const atr480 = new ATR(480);
+  const atr720 = new ATR(720);
+  const atr960 = new ATR(960);
   const cci = new XmBase(waveManager60, () => new CCI({ constant: 0.015, history: 120 }));
 
   const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, wHist);
@@ -85,6 +104,9 @@ export const corrCalc = (candles: Candle[]) => {
   const macd120_ADX30 = new ADX(30, wHist);
   const macd120_ADX60 = new ADX(60, wHist);
   const macd120_ADX120 = new ADX(120, wHist);
+
+  const volume60 = new SMA(60, wHist);
+  const volume120 = new SMA(120, wHist);
 
   const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
   const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
@@ -122,20 +144,36 @@ export const corrCalc = (candles: Candle[]) => {
       rsi60x10: rsi60x10.update(bigCandle60),
       rsi60x20: rsi60x20.update(bigCandle60),
       rsi120x10: rsi120x10.update(bigCandle120),
-      vixFix: xmVixFix.update(bigCandle120),
+      vixFix30: vixFix30.update(bigCandle30),
+      vixFix60: vixFix60.update(bigCandle60),
+      vixFix120: vixFix120.update(bigCandle120),
+      lrc10: lrc10.update(bigCandle10.close),
+      lrc30: lrc30.update(bigCandle30.close),
       lrc60: lrc60.update(bigCandle60.close),
       lrc120: lrc120.update(bigCandle120.close),
       zlema60Fast: zlema60Fast.update(bigCandle60),
       zlema60Slow: zlema60Slow.update(bigCandle60),
-      mfi: mfi.update(bigCandle60),
+      mfi60_15: mfi60_15.update(bigCandle60),
+      mfi60_30: mfi60_30.update(bigCandle60),
+      mfi60_60: mfi60_60.update(bigCandle60),
+      mfi120_15: mfi120_15.update(bigCandle120),
+      mfi120_30: mfi120_30.update(bigCandle120),
+      mfi120_60: mfi120_60.update(bigCandle120),
       bbands: bbands.update(bigCandle60.close),
       macd60: macd60.update(bigCandle60.close),
       macd120: macd120.update(bigCandle120.close),
       zerlagMacd60: zerlagMacd60.update(bigCandle60),
       zerlagMacd120: zerlagMacd120.update(bigCandle120),
       atr60: atr60.update(candle),
+      atr120: atr120.update(candle),
       atr240: atr240.update(candle),
+      atr360: atr360.update(candle),
+      atr480: atr480.update(candle),
+      atr720: atr720.update(candle),
+      atr960: atr960.update(candle),
       cci: cci.update(bigCandle60),
+      volume60: volume60.update(candle.volume),
+      volume120: volume120.update(candle.volume),
       ift30x5: ift30x5.update(bigCandle30),
       ift60x5: ift60x5.update(bigCandle60),
       ift60x15: ift60x15.update(bigCandle60),
@@ -161,6 +199,9 @@ export const corrCalc = (candles: Candle[]) => {
     candle.ind.macd120_ADX30 = macd120_ADX30.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
     candle.ind.macd120_ADX60 = macd120_ADX60.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
     candle.ind.macd120_ADX120 = macd120_ADX120.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
+
+    candle.ind.lrc30_PSAR = lrc30_PSAR.update(valueToOHLC(candle.ind.lrc30));
+    candle.ind.lrc60_PSAR = lrc60_PSAR.update(valueToOHLC(candle.ind.lrc60));
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 

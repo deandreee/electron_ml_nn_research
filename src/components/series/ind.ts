@@ -113,23 +113,23 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     });
   }
 
-  if (hasIndicator(coins, x => x.ind.vixFix)) {
+  if (hasIndicator(coins, x => x.ind.vixFix30)) {
     series.push({
       ...base,
       color: "red",
-      data: data(coins, x => x.ind.vixFix),
-      name: "VixFix",
+      data: data(coins, x => x.ind.vixFix30),
+      name: "vixFix30",
       xAxisIndex: 1,
       yAxisIndex: 1
     });
   }
 
-  if (hasIndicator(coins, x => x.ind.xmVixFix)) {
+  if (hasIndicator(coins, x => x.ind.vixFix60)) {
     series.push({
       ...base,
       color: "red",
-      data: data(coins, x => x.ind.xmVixFix),
-      name: "XmVixFix",
+      data: data(coins, x => x.ind.vixFix60),
+      name: "vixFix60",
       xAxisIndex: 1,
       yAxisIndex: 1
     });

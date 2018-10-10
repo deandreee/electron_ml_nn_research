@@ -5,6 +5,7 @@ import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
+import { getFeatures } from "./getFeatures";
 
 // import { getTrainData } from "./getTrainData";
 
@@ -47,39 +48,7 @@ const createRBFSVM = async () => {
 export const predictSvm = async (candlesActual: Candle[]) => {
   const svm = await createRBFSVM();
 
-  // x.ind.bbands.upppredicteder - x.ind.bbands.lower,
-  // x.ind.macd60.histo,
-
-  let features = candlesActual.map(x => [x.ind.macd120_ADX60]);
-
-  // let features = candlesActual.map(x => [
-  //   x.ind.macd60.histo,
-  //   x.ind.macd120.histo,
-  //   x.ind.bbands.upper - x.ind.bbands.lower,
-  //   // x.ind.atr60,
-  //   // x.ind.atr240
-  //   x.ind.rsi60x10,
-  //   x.ind.rsi60x20,
-  //   x.ind.rsi120x10,
-
-  //   // x.ind.zerlagMacd60.histo
-  //   x.ind.zerlagMacd120.histo,
-  //   x.ind.cci,
-
-  //   x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow,
-  //   x.ind.macd120_ADX60
-  //   // x.ind.macd60_PSAR.result
-  //   // x.ind.zlema60Fast - x.ind.zlema60Slow
-  //   // x.ind.ift60x15
-  //   // x.ind.vixFix
-
-  //   // x.ind.bbands.upper - x.ind.bbands.lower,
-  //   //
-  //   // x.ind.ift60x15,
-  //   // x.ind.ift30x15,
-  //   // x.ind.ift120x15,
-  // ]);
-  // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
+  let features = getFeatures(candlesActual);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);

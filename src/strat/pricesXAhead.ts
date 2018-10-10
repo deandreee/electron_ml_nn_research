@@ -8,13 +8,13 @@ export const pricesXAhead = (candlesActual: Candle[], candlesActualExtended: Can
   const pricesXhAheadSeries = new Series(pricesXhAhead);
 
   const rsi = new Series(candlesActual.map(x => x.ind.rsi60x10));
-  const vixFix = new Series(candlesActual.map(x => x.ind.vixFix));
+  const vixFix60 = new Series(candlesActual.map(x => x.ind.vixFix60));
   const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60));
   const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120));
   const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240));
 
   console.log("rsi 10 vs prices", round2(rsi.corr(pricesXhAheadSeries)));
-  console.log("vixFix 10 prices", round2(vixFix.corr(pricesXhAheadSeries)));
+  console.log("vixFix60 10 prices", round2(vixFix60.corr(pricesXhAheadSeries)));
   console.log("lrc60_ vs prices", round2(lrc60_.corr(pricesXhAheadSeries)));
   console.log("lrc120_ vs prices", round2(lrc120_.corr(pricesXhAheadSeries)));
   console.log("lrc240 vs prices", round2(lrc240_.corr(pricesXhAheadSeries)));
