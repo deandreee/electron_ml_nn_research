@@ -15,7 +15,8 @@ const {
   PSAR_TI,
   PSARProps,
   ADX,
-  SMA
+  SMA,
+  LRCPred
 } = require("../../../gekko-develop/strategies/indicators");
 const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
 
@@ -58,12 +59,17 @@ export const corrCalc = (candles: Candle[]) => {
   const vixFix60 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
   const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
 
+  const lrc1 = new LRC(480);
   const lrc10 = new XmBase(waveManager10, () => new LRC(60));
   const lrc30 = new XmBase(waveManager30, () => new LRC(30));
   const lrc60 = new XmBase(waveManager60, () => new LRC(30));
   const lrc120 = new XmBase(waveManager120, () => new LRC(30));
   const lrc30_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
   const lrc60_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
+
+  const lrc1_pred = new LRCPred(60, wHist);
+  const lrc10_lrc = new LRC(60, wHist);
+  const lrc10_pred = new LRCPred(60, wHist);
 
   const zlema60Fast = new XmBase(waveManager120, () => new ZerolagHATEMA(20));
   const zlema60Slow = new XmBase(waveManager120, () => new ZerolagHATEMA(60));
@@ -147,6 +153,7 @@ export const corrCalc = (candles: Candle[]) => {
       vixFix30: vixFix30.update(bigCandle30),
       vixFix60: vixFix60.update(bigCandle60),
       vixFix120: vixFix120.update(bigCandle120),
+      lrc1: lrc1.update(candle.close),
       lrc10: lrc10.update(bigCandle10.close),
       lrc30: lrc30.update(bigCandle30.close),
       lrc60: lrc60.update(bigCandle60.close),
@@ -202,6 +209,11 @@ export const corrCalc = (candles: Candle[]) => {
 
     candle.ind.lrc30_PSAR = lrc30_PSAR.update(valueToOHLC(candle.ind.lrc30));
     candle.ind.lrc60_PSAR = lrc60_PSAR.update(valueToOHLC(candle.ind.lrc60));
+
+    candle.ind.lrc1_pred = lrc1_pred.update(lrc1);
+
+    lrc10_lrc.update(candle.ind.lrc10);
+    candle.ind.lrc10_pred = lrc10_pred.update(lrc10_lrc);
 
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 

@@ -91,6 +91,7 @@ export interface Indicators {
   zlema60Fast?: number;
   zlema60Slow?: number;
   hma?: number;
+  lrc1?: IndLRC;
   lrc10?: IndLRC;
   lrc30?: IndLRC;
   lrc60?: number;
@@ -99,6 +100,8 @@ export interface Indicators {
   lrc30_PSAR?: PSAR;
   lrc60_PSAR?: PSAR;
   lrcChannel?: IndChannel;
+  lrc1_pred?: number;
+  lrc10_pred?: number;
   twiggs?: number;
   xmTwiggs?: number;
   kalman?: number;
