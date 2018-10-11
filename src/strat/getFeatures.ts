@@ -36,7 +36,7 @@ export const getFeatures = (corrCandles: CorrCandles) => {
   // x.ind.zerlagMacd120.histo
   //   ]);
 
-  let features = corrCandles.candlesActual.map((x, i) => [x.ind.macd30.histo]);
+  let features = corrCandles.candlesActual.map((x, i) => [x.ind.stochKD.k - x.ind.stochKD.d]);
 
   // x.ind.macd60.histo - corrCandles.getPrev(i, 120).ind.macd60.histo // 0.14
   // x.ind.macd60.histo - corrCandles.getPrev(i, 240).ind.macd60.histo // 0.22
@@ -59,6 +59,9 @@ export const getFeatures = (corrCandles: CorrCandles) => {
   // x.ind.mfi120_60;
 
   // let features = candlesActual.map(x => [
+
+  // x.ind.stochKD.k 0.17
+  // x.ind.stochKD.d 0.2
 
   //   x.ind.macd30.histo 0.22
   //   x.ind.macd60.histo 0.28

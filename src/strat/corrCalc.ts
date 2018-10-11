@@ -16,7 +16,8 @@ const {
   PSARProps,
   ADX,
   SMA,
-  LRCPred
+  LRCPred,
+  StochKD
 } = require("../../../gekko-develop/strategies/indicators");
 const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
 
@@ -128,6 +129,8 @@ export const corrCalc = (candles: Candle[]) => {
   const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
 
+  const stochKD = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
+
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
@@ -194,7 +197,8 @@ export const corrCalc = (candles: Candle[]) => {
       ift120x30: ift120x30.update(bigCandle120),
       ifts10x15: ifts10x15.update(bigCandle10),
       ifts30x15: ifts30x15.update(bigCandle30),
-      ifts60x15: ifts60x15.update(bigCandle60)
+      ifts60x15: ifts60x15.update(bigCandle60),
+      stochKD: stochKD.update(bigCandle60)
     };
 
     candle.ind.macdHistoLrc = macdHistoLrc.update(candle.ind.macd120 && candle.ind.macd120.histo);

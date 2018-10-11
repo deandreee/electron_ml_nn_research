@@ -87,6 +87,8 @@ const predictSvm_ = async (corrCandles: CorrCandles) => {
   mlUtils.logLabels(uniqueLabels, predicted);
 
   mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  mlEvaluate.evaluateResultsInXs(3, labels, predicted);
+  mlEvaluate.evaluateResultsInXs(5, labels, predicted);
 
   // const crossVal = svm.crossValidation(features, labels, 3);
   // console.log(crossVal);

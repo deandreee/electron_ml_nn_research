@@ -77,6 +77,11 @@ export interface PSAR {
   trendLength: number;
 }
 
+export interface StochKD {
+  k: number;
+  d: number;
+}
+
 export interface Indicators {
   rsi30x10?: number;
   rsi60x10?: number;
@@ -153,6 +158,8 @@ export interface Indicators {
   ifts10x15?: number;
   ifts30x15?: number;
   ifts60x15?: number;
+
+  stochKD?: StochKD;
 }
 
 export type CsvCell = string | number;
