@@ -48,17 +48,22 @@ const createRBFSVM = async () => {
 
 export const predictSvm = async (corrCandles: CorrCandles) => {
   try {
-    await predictSvm_(corrCandles);
+    return await predictSvm_(corrCandles);
   } catch (err) {
     console.error(err.stack);
+    return null;
   }
+};
+
+const getLabels = (corrCandles: CorrCandles) => {
+  return corrCandles.candlesActual.map(x => x.pctChange._480m);
 };
 
 const predictSvm_ = async (corrCandles: CorrCandles) => {
   const svm = await createRBFSVM();
 
   let features = getFeatures(corrCandles);
-  let labels = corrCandles.candlesActual.map(x => x.pctChange._240m);
+  let labels = getLabels(corrCandles);
 
   features = mlUtils.rescaleFeatures(features);
   // labels = mlUtils.rescaleRow(labels);
@@ -76,25 +81,50 @@ const predictSvm_ = async (corrCandles: CorrCandles) => {
   // testData = mlUtils.undersample(testData, labelCount, 200);
   testData = mlUtils.middlesample(testData, labelCount, 500);
 
-  features = testData.map(x => x.features);
-  labels = testData.map(x => x.label);
+  const featuresMiddlesampled = testData.map(x => x.features);
+  const labelsMiddlesampled = testData.map(x => x.label);
 
-  mlUtils.logLabels(uniqueLabels, labels);
+  mlUtils.logLabels(uniqueLabels, labelsMiddlesampled);
 
-  // svm.train(features, labels, { C: 1 });
-  svm.train(features, labels);
+  // TRAIN WITH MIDDLE, PREDICT WITH ORIGINAL !!!
+  svm.train(featuresMiddlesampled, labelsMiddlesampled);
   const predicted = svm.predict(features) as number[];
   mlUtils.logLabels(uniqueLabels, predicted);
 
-  mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
-  mlEvaluate.evaluateResultsInXs(3, labels, predicted);
-  mlEvaluate.evaluateResultsInXs(5, labels, predicted);
+  const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  const results3s = mlEvaluate.evaluateResultsInXs(3, labels, predicted);
+  const results5s = mlEvaluate.evaluateResultsInXs(5, labels, predicted);
 
   // const crossVal = svm.crossValidation(features, labels, 3);
   // console.log(crossVal);
 
   // const p1 = svm.predictOneProbability(features[0]);
   // console.log("p1", labels[0], p1, p1.estimates[0], p1.estimates[1], p1.estimates[2]);
+
+  return { svm, results, results3s, results5s };
+};
+
+export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles) => {
+  try {
+    predictAnotherMonth_(svm, corrCandles);
+  } catch (err) {
+    console.error(err.stack);
+  }
+};
+
+export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {
+  let features = getFeatures(corrCandles);
+  let labels = getLabels(corrCandles);
+  features = mlUtils.rescaleFeatures(features);
+  labels = mlUtils.rescaleRowRoundNumbers(labels);
+  const uniqueLabels = mlUtils.getUniqueLabels(labels);
+
+  const predicted = svm.predict(features) as number[];
+  mlUtils.logLabels(uniqueLabels, predicted);
+
+  mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  mlEvaluate.evaluateResultsInXs(3, labels, predicted);
+  mlEvaluate.evaluateResultsInXs(5, labels, predicted);
 };
 
 export const predictBrain = (candlesActual: Candle[]): number[] => {

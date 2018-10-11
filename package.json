@@ -42,6 +42,7 @@
     "bindings": "^1.3.0",
     "bluebird": "^3.5.1",
     "brain.js": "^1.2.6",
+    "csv": "^4.0.0",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
     "electron": "^2.0.10",

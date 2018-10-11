@@ -12,10 +12,6 @@ import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
 
-const range = dataranges.Jun;
-const fromExtended = new Date(range.from.getTime() - ms(`${WARMUP_IND}m`));
-const toExtended = new Date(range.to.getTime() + ms(`${EXTENDED}m`));
-
 interface Result {
   coins: CoinList;
   labelsPredicted: number[];
@@ -23,6 +19,10 @@ interface Result {
 }
 
 export const run = async (): Promise<Result> => {
+  const range = dataranges.Jun;
+  const fromExtended = new Date(range.from.getTime() - ms(`${WARMUP_IND}m`));
+  const toExtended = new Date(range.to.getTime() + ms(`${EXTENDED}m`));
+
   const coins = queryCoins(fromExtended, toExtended);
   // vol1(coins);
 
@@ -46,11 +46,23 @@ export const run = async (): Promise<Result> => {
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
     // corrIFTS(coin.name, candlesActual, pctChange);
-    await predict.predictSvm(corrCandles);
+    const { svm } = await predict.predictSvm(corrCandles);
+
+    // predictNext(svm, dataranges.Jul);
+    // predictNext(svm, dataranges.Aug);
+    // predictNext(svm, dataranges.Sep);
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
 
   return { coins, labelsPredicted, linRegs: [] };
+};
+
+export const predictNext = (svm: any, datarange: any) => {
+  const fromExtended = new Date(datarange.from.getTime() - ms(`${WARMUP_IND}m`));
+  const toExtended = new Date(datarange.to.getTime() + ms(`${EXTENDED}m`));
+  const coinsNext = queryCoins(fromExtended, toExtended);
+  const { corrCandles } = corrCalc(coinsNext.BTC.candles);
+  predict.predictAnotherMonth(svm, corrCandles);
 };

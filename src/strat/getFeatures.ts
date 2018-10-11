@@ -1,6 +1,6 @@
 import { CorrCandles } from "./corrCalc";
 import { Candle } from "./types";
-import * as mlUtils from "./mlUtils";
+// import * as mlUtils from "./mlUtils";
 
 export const getBBands = (x: Candle, i: number, corrCandles: CorrCandles) => {
   const bbandsNow = x.ind.bbands.upper - x.ind.bbands.lower;
@@ -15,28 +15,21 @@ export const getBBands = (x: Candle, i: number, corrCandles: CorrCandles) => {
 };
 
 export const getFeatures = (corrCandles: CorrCandles) => {
-  // x.ind.bbands.upppredicteder - x.ind.bbands.lower,
-  // x.ind.macd60.histo,
+  let features = corrCandles.candlesActual.map((x, i) => [
+    getBBands(x, i, corrCandles),
+    x.ind.atr960 - x.ind.atr120,
+    x.ind.rsi60x10,
+    x.ind.rsi60x20,
+    x.ind.rsi120x10,
+    x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow, // 0.59
+    x.ind.macd120_ADX60,
+    x.ind.zlema60Fast - x.ind.zlema60Slow,
+    x.ind.zerlagMacd120.histo // 0.73
+  ]);
 
-  //   let features = corrCandles.candlesActual.map((x, i) => [x.ind.lrc10_pred - x.close]);
-
-  // x.ind.lrc10_pred - x.close 0.06
-
-  //   let features = corrCandles.candlesActual.map((x, i) => [getBBands(x, i, corrCandles)]);
-
-  //   let features = corrCandles.candlesActual.map((x, i) => [
-  //     getBBands(x, i, corrCandles),
-  //     x.ind.atr960 - x.ind.atr120,
-  //     x.ind.rsi60x10,
-  //     x.ind.rsi60x20,
-  //     x.ind.rsi120x10,
-  //     x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow // 0.59
-  //   x.ind.macd120_ADX60
-  // x.ind.zlema60Fast - x.ind.zlema60Slow,
-  // x.ind.zerlagMacd120.histo
-  //   ]);
-
-  let features = corrCandles.candlesActual.map((x, i) => [x.ind.stochKD.k - x.ind.stochKD.d]);
+  // let features = corrCandles.candlesActual.map((x, i) => [
+  //   x.ind.macd60.histo - corrCandles.getPrev(i, 1500).ind.macd60.histo
+  // ]);
 
   // x.ind.macd60.histo - corrCandles.getPrev(i, 120).ind.macd60.histo // 0.14
   // x.ind.macd60.histo - corrCandles.getPrev(i, 240).ind.macd60.histo // 0.22
@@ -48,6 +41,7 @@ export const getFeatures = (corrCandles: CorrCandles) => {
   //   x.ind.rsi60x20,
   //   x.ind.rsi120x10,]);
 
+  // something is wrong, no longer returning the same results...
   // x.ind.atr960 / x.ind.atr120 wtf 0.38
   // x.ind.atr960 - x.ind.atr120 about the same
 
@@ -63,11 +57,13 @@ export const getFeatures = (corrCandles: CorrCandles) => {
   // x.ind.stochKD.k 0.17
   // x.ind.stochKD.d 0.2
 
+  // x.ind.lrc10_pred - x.close 0.06
+
   //   x.ind.macd30.histo 0.22
   //   x.ind.macd60.histo 0.28
   //   x.ind.macd120.histo 0.21
   //   x.ind.bbands.upper - x.ind.bbands.lower,
-  // x.ind.atr60,
+  //   x.ind.atr60,
   //   // x.ind.atr240
   //   x.ind.rsi60x10,
   //   x.ind.rsi60x20,
@@ -99,7 +95,7 @@ export const getFeatures = (corrCandles: CorrCandles) => {
   // ]);
   // let features = candlesActual.map(x => [x.ind.ifts30x15, x.ind.ifts60x15]);
 
-  features.forEach(mlUtils.sanityCheckRow);
+  // features.forEach(mlUtils.sanityCheckRow);
 
   return features;
 };
