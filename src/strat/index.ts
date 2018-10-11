@@ -11,6 +11,7 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
+import * as csvLogger from "./csvLogger";
 
 interface Result {
   coins: CoinList;
@@ -46,11 +47,13 @@ export const run = async (): Promise<Result> => {
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
     // corrIFTS(coin.name, candlesActual, pctChange);
-    const { svm } = await predict.predictSvm(corrCandles);
+    const { results, results3s, results5s } = await predict.predictSvm(corrCandles);
 
     // predictNext(svm, dataranges.Jul);
     // predictNext(svm, dataranges.Aug);
     // predictNext(svm, dataranges.Sep);
+    const featureName = "TBD";
+    await csvLogger.append("svms", range.name, featureName, { results, results3s, results5s });
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);

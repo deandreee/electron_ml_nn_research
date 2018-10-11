@@ -12,3 +12,4 @@ declare module "pandas-js";
 declare module "regression";
 declare module "indicators";
 declare module "ml-performance";
+declare module "csv";

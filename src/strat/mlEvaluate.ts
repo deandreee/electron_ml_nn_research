@@ -63,7 +63,15 @@ const getGroupX = (x: number, limit: number) => {
   return 0;
 };
 
-export const evaluateResultsInXs = (limit: number, input: number[], output: number[]) => {
+export interface MlEvaluateResults {
+  fScore: number;
+  precision: NumberMap;
+  precisionTotal: number;
+  recall: NumberMap;
+  recallTotal: number;
+}
+
+export const evaluateResultsInXs = (limit: number, input: number[], output: number[]): MlEvaluateResults => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};
