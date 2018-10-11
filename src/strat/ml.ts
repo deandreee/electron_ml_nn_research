@@ -5,7 +5,7 @@ import * as neataptic from "neataptic";
 import * as synaptic from "synaptic";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { getFeatures } from "./getFeatures";
+import { getFeatures, FnGetFeature } from "./getFeatures";
 import { CorrCandles } from "./corrCalc";
 
 // import { getTrainData } from "./getTrainData";
@@ -46,9 +46,9 @@ const createRBFSVM = async () => {
 //   });
 // };
 
-export const predictSvm = async (corrCandles: CorrCandles) => {
+export const predictSvm = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
-    return await predictSvm_(corrCandles);
+    return await predictSvm_(corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
     return null;
@@ -56,13 +56,15 @@ export const predictSvm = async (corrCandles: CorrCandles) => {
 };
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._480m);
+  return corrCandles.candlesActual.map(x => x.pctChange._240m);
 };
 
-const predictSvm_ = async (corrCandles: CorrCandles) => {
+const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   const svm = await createRBFSVM();
 
-  let features = getFeatures(corrCandles);
+  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  features.forEach(mlUtils.sanityCheckRow);
+
   let labels = getLabels(corrCandles);
 
   features = mlUtils.rescaleFeatures(features);

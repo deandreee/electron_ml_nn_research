@@ -99,3 +99,12 @@ export const getFeatures = (corrCandles: CorrCandles) => {
 
   return features;
 };
+
+export type FnGetFeature = (x: Candle, i: number, corrCandles: CorrCandles) => number;
+
+export const getFeaturesSplit = () => {
+  return [
+    { name: "macd30", fn: ((x, i, corrCandles) => x.ind.macd30.histo) as FnGetFeature },
+    { name: "macd60", fn: ((x, i, corrCandles) => x.ind.macd60.histo) as FnGetFeature }
+  ];
+};

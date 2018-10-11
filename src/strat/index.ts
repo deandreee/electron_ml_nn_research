@@ -12,6 +12,7 @@ import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
 import * as csvLogger from "./csvLogger";
+import { getFeaturesSplit } from "./getFeatures";
 
 interface Result {
   coins: CoinList;
@@ -47,13 +48,16 @@ export const run = async (): Promise<Result> => {
     // corrCCI(candlesActual, pctChange);
     // corrMACD(candlesActual, pctChange);
     // corrIFTS(coin.name, candlesActual, pctChange);
-    const { results, results3s, results5s } = await predict.predictSvm(corrCandles);
+
+    const featuresSplit = getFeaturesSplit();
+    for (let x of featuresSplit) {
+      const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
+      await csvLogger.append("svms", range.name, x.name, { results, results3s, results5s });
+    }
 
     // predictNext(svm, dataranges.Jul);
     // predictNext(svm, dataranges.Aug);
     // predictNext(svm, dataranges.Sep);
-    const featureName = "TBD";
-    await csvLogger.append("svms", range.name, featureName, { results, results3s, results5s });
   }
 
   // const labelsPredicted = predictNeataptic(candlesActual);
