@@ -36,10 +36,17 @@ interface AppendProps {
   results5s: MlEvaluateResults;
 }
 
-export const append = async (fileName: string, daterange: string, featureName: string, props: AppendProps) => {
+export const append = async (
+  fileName: string,
+  daterange: string,
+  target: string,
+  featureName: string,
+  props: AppendProps
+) => {
   let row = [
     new Date().toISOString(),
     daterange,
+    target,
     featureName,
 
     round2(props.results.precisionTotal),

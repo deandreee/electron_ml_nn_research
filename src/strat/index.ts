@@ -11,7 +11,7 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
-import * as csvLogger from "./csvLogger";
+// import * as csvLogger from "./csvLogger";
 import { getFeaturesSplit } from "./getFeatures";
 
 interface Result {
@@ -51,8 +51,10 @@ export const run = async (): Promise<Result> => {
 
     const featuresSplit = getFeaturesSplit();
     for (let x of featuresSplit) {
-      const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
-      await csvLogger.append("svms", range.name, x.name, { results, results3s, results5s });
+      console.log(`     ----- RUNNING ${x.name} -----     `);
+      // const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
+      // await csvLogger.append("svm_temp.csv", range.name, "120m", x.name, { results, results3s, results5s });
+      await predict.predictSvmRegression(corrCandles, x.fn);
     }
 
     // predictNext(svm, dataranges.Jul);

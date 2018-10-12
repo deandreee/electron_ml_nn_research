@@ -30,7 +30,9 @@ const {
 // skipstart = wait for ind to have enough
 
 // export const WARMUP = 240; // => biggest candle usedDASH
-export const WARMUP_IND = 120 * 60; // => ind ready
+// not really sure why 62 not 60, but there were problebs with MFI
+// probably something like RSI 14 ready on 15 or smth like that
+export const WARMUP_IND = 120 * 62; // => ind ready
 export const EXTENDED = 1500; // 1h
 
 export interface LinRegResult {

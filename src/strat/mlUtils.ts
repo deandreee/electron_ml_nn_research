@@ -98,7 +98,7 @@ export const countLabels = (uniqueLabels: number[], labels: number[]) => {
 
   for (let lbl of uniqueLabels) {
     const count = countByLabel(labels, lbl);
-    console.log(`countLabels \t ${lbl} \t ${count}`);
+    // console.log(`countLabels \t ${lbl} \t ${count}`);
     labelCount[lbl] = count;
   }
 
@@ -122,19 +122,16 @@ interface TestData {
 
 export const middlesample = (testData: TestData[], labelCount: NumberMap, max: number) => {
   let res: TestData[] = [];
-  try {
-    for (let label in labelCount) {
-      if (labelCount[label] >= max) {
-        const reSamples = take(testData, Number(label), max);
-        res = res.concat(reSamples);
-      } else {
-        const { existing, reSamples } = duplicateClass(testData, Number(label), max - labelCount[label]);
-        res = res.concat(existing);
-        res = res.concat(reSamples);
-      }
+
+  for (let label in labelCount) {
+    if (labelCount[label] >= max) {
+      const reSamples = take(testData, Number(label), max);
+      res = res.concat(reSamples);
+    } else {
+      const { existing, reSamples } = duplicateClass(testData, Number(label), max - labelCount[label]);
+      res = res.concat(existing);
+      res = res.concat(reSamples);
     }
-  } catch (err) {
-    console.log(err);
   }
 
   return shuffle(res);

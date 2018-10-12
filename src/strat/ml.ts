@@ -7,6 +7,7 @@ import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { getFeatures, FnGetFeature } from "./getFeatures";
 import { CorrCandles } from "./corrCalc";
+import { round2 } from "./utils";
 
 // import { getTrainData } from "./getTrainData";
 
@@ -25,7 +26,11 @@ const createRBFSVM = async () => {
   return new SVM({
     kernel: SVM.KERNEL_TYPES.RBF,
     // kernel: SVM.KERNEL_TYPES.LINEAR,
-    type: SVM.SVM_TYPES.C_SVC
+    type: SVM.SVM_TYPES.C_SVC,
+    // Default value is 1/num_features
+    // if we go with single feature, then it's 1
+    gamma: 10,
+    cost: 5000,
     // type: SVM.SVM_TYPES.EPSILON_SVR // regression if continuous range of numbers
     // type: SVM.SVM_TYPES.NU_SVR // regression if continuous range of numbers
     // gamma: 1, // Default value is 1/num_features
@@ -36,6 +41,7 @@ const createRBFSVM = async () => {
     // }
     // [options.shrinking]	boolean	true	Use shrinking euristics (faster),
     // shrinking: false
+    quiet: true
   });
 };
 
@@ -51,12 +57,12 @@ export const predictSvm = async (corrCandles: CorrCandles, fnGetFeature: FnGetFe
     return await predictSvm_(corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
-    return null;
+    throw new Error(err);
   }
 };
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._240m);
+  return corrCandles.candlesActual.map(x => x.pctChange._120m);
 };
 
 const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -72,11 +78,10 @@ const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature)
   labels = mlUtils.rescaleRowRoundNumbers(labels);
   const uniqueLabels = mlUtils.getUniqueLabels(labels);
 
-  mlUtils.logFeaturesPlusMinus1(features);
-  mlUtils.logLabels(uniqueLabels, labels);
+  // mlUtils.logFeaturesPlusMinus1(features);
+  // mlUtils.logLabels(uniqueLabels, labels);
 
   const labelCount = mlUtils.countLabels(uniqueLabels, labels);
-  console.log("labelCount", labelCount);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   // testData = mlUtils.oversample(testData, labelCount);
@@ -86,12 +91,13 @@ const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature)
   const featuresMiddlesampled = testData.map(x => x.features);
   const labelsMiddlesampled = testData.map(x => x.label);
 
-  mlUtils.logLabels(uniqueLabels, labelsMiddlesampled);
+  // sanity check here that all 500
+  // mlUtils.logLabels(uniqueLabels, labelsMiddlesampled);
 
   // TRAIN WITH MIDDLE, PREDICT WITH ORIGINAL !!!
   svm.train(featuresMiddlesampled, labelsMiddlesampled);
   const predicted = svm.predict(features) as number[];
-  mlUtils.logLabels(uniqueLabels, predicted);
+  // mlUtils.logLabels(uniqueLabels, predicted);
 
   const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
   const results3s = mlEvaluate.evaluateResultsInXs(3, labels, predicted);
@@ -112,6 +118,31 @@ export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles) => {
   } catch (err) {
     console.error(err.stack);
   }
+};
+
+export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+  const SVM = await libsvm;
+
+  const svm = new SVM({
+    kernel: SVM.KERNEL_TYPES.RBF,
+    type: SVM.SVM_TYPES.EPSILON_SVR,
+    quiet: true
+  });
+
+  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  features.forEach(mlUtils.sanityCheckRow);
+
+  let labels = getLabels(corrCandles);
+
+  features = mlUtils.rescaleFeatures(features);
+  labels = labels.map(x => round2(x));
+
+  svm.train(features, labels);
+  const predicted = svm.predict(features) as number[];
+
+  mlEvaluate.evalRegMSE(labels, predicted);
+
+  return { svm };
 };
 
 export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {
@@ -149,7 +180,7 @@ export const predictBrain = (candlesActual: Candle[]): number[] => {
   return output;
 };
 
-export const predictNeataptic = (candlesActual: Candle[]) => {
+export const predictNeataptic = async (candlesActual: Candle[]) => {
   let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 

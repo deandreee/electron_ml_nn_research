@@ -118,3 +118,24 @@ export const evaluateResultsInXs = (limit: number, input: number[], output: numb
 
   return { fScore, precision, precisionTotal, recall, recallTotal };
 };
+
+export const evalRegMSE = (labels: number[], predicted: number[]) => {
+  if (labels.length !== predicted.length) {
+    throw new Error("evalRegMSE: lengths not equal");
+  }
+
+  let errSum = 0;
+  for (let i = 0; i < labels.length; i++) {
+    const lbl = labels[i];
+    const pred = predicted[i];
+    const err = lbl - pred;
+
+    errSum += err * err;
+  }
+
+  const mse = errSum / labels.length;
+
+  console.log(padEnd("MSE", 10), round2(mse));
+
+  return mse;
+};
