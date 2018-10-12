@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as csv from "csv";
 import { MlEvaluateResults } from "./mlEvaluate";
-import { round2 } from "./utils";
+import { fromCb, round2 } from "./utils";
 
 export const writeHeader = async (fileName: string) => {
   let columns = ["date", "res/pr", "res/rc", "res/fs"];
@@ -10,25 +10,6 @@ export const writeHeader = async (fileName: string) => {
   let str = await fromCb(cb => csv.stringify(data, cb));
   await fromCb(cb => fs.appendFile(fileName, str, cb));
 };
-
-type Cb = (x: any) => any;
-
-export function fromCb(cb: Cb) {
-  return new Promise((resolve, reject) => {
-    try {
-      cb((err: any, value: any) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        resolve(value);
-      });
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
 
 interface AppendProps {
   results: MlEvaluateResults;

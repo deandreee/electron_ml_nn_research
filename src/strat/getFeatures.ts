@@ -105,10 +105,14 @@ interface FeatureSplit {
 
 export const getFeaturesSplitTest = (): FeatureSplit[] => {
   return [
-    {
-      name: "stochKD.d",
-      fn: (x, i, corrCandles) => x.close - x.ind.stochKD.d
-    }
+    // {
+    //   name: "stochKD.d",
+    //   fn: (x, i, corrCandles) => x.close - x.ind.stochKD.d
+    // }
+    // {
+    //   name: "macdHistoLrc - slow",
+    //   fn: (x, i, corrCandles) => x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow
+    // }
     // {
     //   name: "atr960 / atr120",
     //   fn: (x, i, corrCandles) => x.ind.atr960 / x.ind.atr120
@@ -129,10 +133,10 @@ export const getFeaturesSplitTest = (): FeatureSplit[] => {
     //   name: "atr360",
     //   fn: (x, i, corrCandles) => x.close - x.ind.atr360
     // },
-    // {
-    //   name: "rsi60x10",
-    //   fn: (x, i, corrCandles) => x.ind.rsi60x10
-    // },
+    {
+      name: "rsi60x10",
+      fn: (x, i, corrCandles) => x.ind.rsi60x10
+    }
     // {
     //   name: "rsi60x20",
     //   fn: (x, i, corrCandles) => x.ind.rsi60x20

@@ -8,6 +8,7 @@ import * as mlEvaluate from "./mlEvaluate";
 import { getFeatures, FnGetFeature } from "./getFeatures";
 import { CorrCandles } from "./corrCalc";
 import { round2 } from "./utils";
+// import * as csvLog from "./csvLog";
 
 // import { getTrainData } from "./getTrainData";
 
@@ -126,15 +127,19 @@ export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeatur
   const svm = new SVM({
     kernel: SVM.KERNEL_TYPES.RBF,
     type: SVM.SVM_TYPES.EPSILON_SVR,
+    gamma: 200,
+    cost: 1000,
     quiet: true
   });
 
   let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
   features.forEach(mlUtils.sanityCheckRow);
+  // await csvLog.append("output/features.csv", features.map(x => x[0]));
 
   let labels = getLabels(corrCandles);
 
   features = mlUtils.rescaleFeatures(features);
+  // await csvLog.append("output/features_scaled.csv", features.map(x => x[0]));
   labels = labels.map(x => round2(x));
 
   svm.train(features, labels);
@@ -142,7 +147,7 @@ export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeatur
 
   mlEvaluate.evalRegMSE(labels, predicted);
 
-  return { svm };
+  return { svm, labels, predicted };
 };
 
 export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {

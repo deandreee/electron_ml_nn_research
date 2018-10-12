@@ -45,7 +45,7 @@ export const getAvgCandlePctChange = (candles: Candle[], idxCurr: number, idxAvg
     sum += getPctChange(candles[i].close, candles[idxCurr].close);
   }
 
-  return Math.round((sum / (idxAvgTo - idxAvgFrom)) * 10) / 10;
+  return round1(sum / (idxAvgTo - idxAvgFrom));
 };
 
 export const times = (x: number) => {
@@ -72,4 +72,23 @@ export const avg = (arr: any[], fnGetNum: fnGetNum) => {
     sum += fnGetNum(arr[i]);
   }
   return sum / arr.length;
+};
+
+type Cb = (x: any) => any;
+
+export const fromCb = (cb: Cb) => {
+  return new Promise((resolve, reject) => {
+    try {
+      cb((err: any, value: any) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(value);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
 };

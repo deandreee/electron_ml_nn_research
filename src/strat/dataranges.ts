@@ -47,7 +47,13 @@ export const Sep = {
 };
 
 export const SepHalf = {
-  name: "Sep",
+  name: "SepHalf",
   from: new Date("2018-09-01T00:00:00Z"),
+  to: new Date("2018-09-15T00:00:00Z")
+};
+
+export const SepWeek = {
+  name: "SepWeek",
+  from: new Date("2018-09-08T00:00:00Z"),
   to: new Date("2018-09-15T00:00:00Z")
 };
