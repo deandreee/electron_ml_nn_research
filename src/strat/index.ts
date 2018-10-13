@@ -10,14 +10,21 @@ import { PaperTrader } from "./gekko/PaperTrader";
 // import { corrMACD } from "./corrMACD";
 import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
+// @ts-ignore
 import * as predict from "./ml";
+// @ts-ignore
 import * as mlLR from "./mlLR";
+// @ts-ignore
+import * as mlXG from "./mlXG";
 
+// @ts-ignore
+import * as csvLog from "./csvLog";
 // @ts-ignore
 import * as csvLogger from "./csvLogger";
 // @ts-ignore
 import * as csvLogPredictions from "./csvLogPredictions";
 import { getFeaturesSplit } from "./getFeatures";
+import { round2 } from "./utils";
 
 interface Result {
   coins: CoinList;
@@ -66,10 +73,82 @@ export const run = async (): Promise<Result> => {
       // const { labels, predicted } = await predict.predictNeataptic(corrCandles, x.fn);
       // await csvLogPredictions.append("output/lbl_vs_pred_neat.csv", labels, predicted);
 
-      // const { mse, r2, gamma, cost } = await predict.predictSvmRegression(corrCandles, x.fn);
-      // await csvLogger.appendReg("output/temp2.csv", range.name, "24h", x.name, gamma, cost, mse, r2);
+      // const fileName = "output/svm_24h_best_2.csv";
+      // const { svm, mse, r2, gamma, cost } = await predict.predictSvmRegression(corrCandles, x.fn);
+      // await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
 
-      await mlLR.predict(corrCandles, x.fn);
+      // {
+      //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Jul, x.fn);
+      //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+      // }
+
+      // {
+      //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Aug, x.fn);
+      //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+      // }
+
+      // {
+      //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Sep, x.fn);
+      //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+      // }
+
+      // await mlLR.predict(corrCandles, x.fn);
+
+      const fileName = "output/xg_24h_all.csv";
+      const { booster, mse, r2, evalCorr } = await mlXG.predict(corrCandles, x.fn);
+      await csvLog.append(fileName, [
+        range.name,
+        "24h",
+        x.name,
+        round2(mse),
+        round2(r2),
+        round2(evalCorr.corr),
+        round2(evalCorr.r2)
+      ]);
+
+      {
+        const corrCandles = corrCandlesNext(dataranges.Jul);
+        const { mse, r2, evalCorr } = await mlXG.predictAnotherMonth(booster, corrCandles, x.fn);
+        await csvLog.append(fileName, [
+          range.name,
+          "24h",
+          x.name,
+          round2(mse),
+          round2(r2),
+          round2(evalCorr.corr),
+          round2(evalCorr.r2)
+        ]);
+      }
+
+      {
+        const corrCandles = corrCandlesNext(dataranges.Aug);
+        const { mse, r2, evalCorr } = await mlXG.predictAnotherMonth(booster, corrCandles, x.fn);
+        await csvLog.append(fileName, [
+          range.name,
+          "24h",
+          x.name,
+          round2(mse),
+          round2(r2),
+          round2(evalCorr.corr),
+          round2(evalCorr.r2)
+        ]);
+      }
+
+      {
+        const corrCandles = corrCandlesNext(dataranges.Sep);
+        const { mse, r2, evalCorr } = await mlXG.predictAnotherMonth(booster, corrCandles, x.fn);
+        await csvLog.append(fileName, [
+          range.name,
+          "24h",
+          x.name,
+          round2(mse),
+          round2(r2),
+          round2(evalCorr.corr),
+          round2(evalCorr.r2)
+        ]);
+      }
+
+      booster.free();
 
       logEnd(x.name);
     }
@@ -94,10 +173,10 @@ const logEnd = (name: string) => {
   console.timeEnd(name);
 };
 
-export const predictNext = (svm: any, datarange: any) => {
+export const corrCandlesNext = (datarange: any) => {
   const fromExtended = new Date(datarange.from.getTime() - ms(`${WARMUP_IND}m`));
   const toExtended = new Date(datarange.to.getTime() + ms(`${EXTENDED}m`));
   const coinsNext = queryCoins(fromExtended, toExtended);
   const { corrCandles } = corrCalc(coinsNext.BTC.candles);
-  predict.predictAnotherMonth(svm, corrCandles);
+  return corrCandles;
 };

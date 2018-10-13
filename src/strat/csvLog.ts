@@ -8,7 +8,7 @@ export const appendVertical = async (fileName: string, row: number[]) => {
   await fromCb(cb => fs.appendFile(fileName, str, cb));
 };
 
-export const append = async (fileName: string, row: number[]) => {
+export const append = async (fileName: string, row: (number | string)[]) => {
   let str = await fromCb(cb => csv.stringify([row], cb));
   await fromCb(cb => fs.appendFile(fileName, str, cb));
 };

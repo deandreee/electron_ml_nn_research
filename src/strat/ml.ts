@@ -1,7 +1,7 @@
 import * as libsvm from "libsvm-js";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { getFeatures, FnGetFeature } from "./getFeatures";
+import { FnGetFeature } from "./getFeatures";
 import { CorrCandles } from "./corrCalc";
 import { round2 } from "./utils";
 // import * as csvLog from "./csvLog";
@@ -109,14 +109,6 @@ const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature)
   return { svm, results, results3s, results5s };
 };
 
-export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles) => {
-  try {
-    predictAnotherMonth_(svm, corrCandles);
-  } catch (err) {
-    console.error(err.stack);
-  }
-};
-
 export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   const SVM = await libsvm;
 
@@ -151,17 +143,46 @@ export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeatur
   return { svm, labels, predicted, mse, gamma, cost, r2 };
 };
 
-export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {
-  let features = getFeatures(corrCandles);
+export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+  try {
+    return predictAnotherMonthReg(svm, corrCandles, fnGetFeature);
+  } catch (err) {
+    console.error(err.stack);
+    throw new Error(err);
+  }
+};
+
+// not sure if we will need classes anymore
+// export const predictAnotherMonthClass = (svm: any, corrCandles: CorrCandles) => {
+//   let features = getFeatures(corrCandles);
+//   let labels = getLabels(corrCandles);
+//   features = mlUtils.rescaleFeatures(features);
+//   labels = mlUtils.rescaleRowRoundNumbers(labels);
+//   const uniqueLabels = mlUtils.getUniqueLabels(labels);
+
+//   const predicted = svm.predict(features) as number[];
+//   mlUtils.logLabels(uniqueLabels, predicted);
+
+//   mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+//   mlEvaluate.evaluateResultsInXs(3, labels, predicted);
+//   mlEvaluate.evaluateResultsInXs(5, labels, predicted);
+// };
+
+export const predictAnotherMonthReg = (svm: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  features.forEach(mlUtils.sanityCheckRow);
+
   let labels = getLabels(corrCandles);
+
   features = mlUtils.rescaleFeatures(features);
-  labels = mlUtils.rescaleRowRoundNumbers(labels);
-  const uniqueLabels = mlUtils.getUniqueLabels(labels);
+  labels = labels.map(x => round2(x));
 
+  // DO NOT RE-TRAIN HERE!!!
   const predicted = svm.predict(features) as number[];
-  mlUtils.logLabels(uniqueLabels, predicted);
 
-  mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
-  mlEvaluate.evaluateResultsInXs(3, labels, predicted);
-  mlEvaluate.evaluateResultsInXs(5, labels, predicted);
+  const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
+  const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
+  mlEvaluate.evalRegCorr(labels, predicted);
+
+  return { svm, labels, predicted, mse, gamma: svm.options.gamma, cost: svm.options.cost, r2 };
 };

@@ -116,6 +116,44 @@ export const getFeaturesSplitTest = (): FeatureSplit[] => {
   ];
 };
 
+export const getFeaturesBest = (): FeatureSplit[] => {
+  return [
+    { name: "lrc10_pred", fn: (x, i, corrCandles) => x.ind.lrc10_pred },
+    {
+      name: "atr960",
+      fn: (x, i, corrCandles) => x.close - x.ind.atr960
+    },
+    {
+      name: "atr360",
+      fn: (x, i, corrCandles) => x.close - x.ind.atr360
+    },
+    {
+      name: "atr60",
+      fn: (x, i, corrCandles) => x.close - x.ind.atr60
+    },
+    {
+      name: "mfi60_15",
+      fn: (x, i, corrCandles) => x.close - x.ind.mfi60_15
+    },
+    {
+      name: "mfi120_30",
+      fn: (x, i, corrCandles) => x.close - x.ind.mfi120_30
+    },
+    {
+      name: "stochKD.k",
+      fn: (x, i, corrCandles) => x.close - x.ind.stochKD.k
+    },
+    {
+      name: "stochKD.d",
+      fn: (x, i, corrCandles) => x.close - x.ind.stochKD.d
+    },
+    {
+      name: "zlema60Fast - slow",
+      fn: (x, i, corrCandles) => x.ind.zlema60Fast - x.ind.zlema60Slow
+    }
+  ];
+};
+
 export const getFeaturesSplitAll = (): FeatureSplit[] => {
   return [
     { name: "macd30", fn: (x, i, corrCandles) => x.ind.macd30.histo },
