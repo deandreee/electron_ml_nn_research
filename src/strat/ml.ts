@@ -1,8 +1,4 @@
-import { Candle } from "./types";
 import * as libsvm from "libsvm-js";
-import * as brain from "brain.js";
-import * as neataptic from "neataptic";
-import * as synaptic from "synaptic";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { getFeatures, FnGetFeature } from "./getFeatures";
@@ -63,7 +59,7 @@ export const predictSvm = async (corrCandles: CorrCandles, fnGetFeature: FnGetFe
 };
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._120m);
+  return corrCandles.candlesActual.map(x => x.pctChange._24h);
 };
 
 const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -124,30 +120,35 @@ export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles) => {
 export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   const SVM = await libsvm;
 
+  const gamma = 3;
+  const cost = 3;
+
   const svm = new SVM({
     kernel: SVM.KERNEL_TYPES.RBF,
     type: SVM.SVM_TYPES.EPSILON_SVR,
-    gamma: 200,
-    cost: 1000,
+    gamma,
+    cost,
     quiet: true
   });
 
   let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
   features.forEach(mlUtils.sanityCheckRow);
-  // await csvLog.append("output/features.csv", features.map(x => x[0]));
+  // await csvLog.appendVertical("output/features.csv", features.map(x => x[0]));
 
   let labels = getLabels(corrCandles);
 
   features = mlUtils.rescaleFeatures(features);
-  // await csvLog.append("output/features_scaled.csv", features.map(x => x[0]));
+  // await csvLog.appendVertical("output/features_scaled.csv", features.map(x => x[0]));
   labels = labels.map(x => round2(x));
 
   svm.train(features, labels);
   const predicted = svm.predict(features) as number[];
 
-  mlEvaluate.evalRegMSE(labels, predicted);
+  const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
+  const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
+  mlEvaluate.evalRegCorr(labels, predicted);
 
-  return { svm, labels, predicted };
+  return { svm, labels, predicted, mse, gamma, cost, r2 };
 };
 
 export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {
@@ -163,90 +164,4 @@ export const predictAnotherMonth_ = (svm: any, corrCandles: CorrCandles) => {
   mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
   mlEvaluate.evaluateResultsInXs(3, labels, predicted);
   mlEvaluate.evaluateResultsInXs(5, labels, predicted);
-};
-
-export const predictBrain = (candlesActual: Candle[]): number[] => {
-  const features = candlesActual.map(x => x.features);
-  const labels = candlesActual.map(x => x.label);
-
-  const net = new brain.recurrent.LSTM();
-
-  features.map((x, i) => {
-    console.log("train", i);
-    let data = { input: x, output: [labels[i]] };
-    net.train([data]);
-  });
-
-  const output = features.map(x => {
-    const res = net.run(x) as number;
-    return res;
-  });
-
-  return output;
-};
-
-export const predictNeataptic = async (candlesActual: Candle[]) => {
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
-  let labels = candlesActual.map(x => x.pctChange._240m);
-
-  features = mlUtils.rescaleFeatures(features);
-  labels = mlUtils.rescaleRow(labels);
-
-  mlUtils.logLabelsPlusMinus1(labels);
-
-  const len = features[0].length;
-  const net = new neataptic.architect.LSTM(len, len * 2, 1);
-
-  let data = features.map((x, i) => ({
-    input: x,
-    output: [labels[i]]
-  }));
-
-  net.train(data, {
-    log: 1, // 500,
-    iterations: 100,
-    error: 0.5,
-    clear: true,
-    rate: 0.05,
-    shuffle: true // !!!
-  });
-
-  const output = features.map(x => net.activate(x) as number);
-  mlUtils.logLabelsPlusMinus1(output);
-};
-
-export const predictSynaptic = (candlesActual: Candle[]) => {
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
-  let labels = candlesActual.map(x => x.pctChange._240m);
-
-  features = mlUtils.rescaleFeatures(features);
-  labels = mlUtils.rescaleRow(labels);
-
-  mlUtils.logLabelsPlusMinus1(labels);
-
-  const Architect = synaptic.Architect;
-  const Layer = synaptic.Layer;
-  const Trainer = synaptic.Trainer;
-
-  const lstmOptions = {
-    peepholes: Layer.connectionType.ALL_TO_ALL,
-    hiddenToHidden: false,
-    outputToHidden: false,
-    outputToGates: false,
-    inputToOutput: true
-  };
-  const lstm = new Architect.LSTM(1, 4, 4, 4, 1, lstmOptions);
-  const trainer = new Trainer(lstm);
-
-  const trainOptions = {
-    rate: 0.2,
-    iterations: 10000,
-    error: 0.005
-  };
-
-  let trainData = features.map((x, i) => ({ input: x, output: [labels[i]] }));
-  trainer.train(trainData, trainOptions);
-
-  const output = features.map(x => lstm.activate(x) as number);
-  mlUtils.logLabelsPlusMinus1(output);
 };

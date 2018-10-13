@@ -47,3 +47,18 @@ export const append = async (
 
   await fromCb(cb => fs.appendFile(fileName, str, cb));
 };
+
+export const appendReg = async (
+  fileName: string,
+  daterange: string,
+  target: string,
+  featureName: string,
+  gamma: number,
+  cost: number,
+  mse: number,
+  r2: number
+) => {
+  let row = [new Date().toISOString(), daterange, target, featureName, gamma, cost, round2(mse), round2(r2)];
+  let str = await fromCb(cb => csv.stringify([row], cb));
+  await fromCb(cb => fs.appendFile(fileName, str, cb));
+};

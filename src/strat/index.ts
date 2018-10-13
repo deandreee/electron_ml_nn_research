@@ -11,7 +11,11 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import * as dataranges from "./dataranges";
 // import { corrIFTS } from "./corrIFTS";
 import * as predict from "./ml";
-// import * as csvLogger from "./csvLogger";
+import * as mlLR from "./mlLR";
+
+// @ts-ignore
+import * as csvLogger from "./csvLogger";
+// @ts-ignore
 import * as csvLogPredictions from "./csvLogPredictions";
 import { getFeaturesSplit } from "./getFeatures";
 
@@ -22,7 +26,7 @@ interface Result {
 }
 
 export const run = async (): Promise<Result> => {
-  const range = dataranges.SepWeek;
+  const range = dataranges.Jun;
   const fromExtended = new Date(range.from.getTime() - ms(`${WARMUP_IND}m`));
   const toExtended = new Date(range.to.getTime() + ms(`${EXTENDED}m`));
 
@@ -52,11 +56,22 @@ export const run = async (): Promise<Result> => {
 
     const featuresSplit = getFeaturesSplit();
     for (let x of featuresSplit) {
-      console.log(`     ----- RUNNING ${x.name} -----     `);
+      logStart(x.name);
       // const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
       // await csvLogger.append("output/svm_temp.csv", range.name, "120m", x.name, { results, results3s, results5s });
-      const { labels, predicted } = await predict.predictSvmRegression(corrCandles, x.fn);
-      await csvLogPredictions.append("output/lbl_vs_pred.csv", labels, predicted);
+
+      // const { labels, predicted } = await predict.predictSvmRegression(corrCandles, x.fn);
+      // await csvLogPredictions.append("output/lbl_vs_pred.csv", labels, predicted);
+
+      // const { labels, predicted } = await predict.predictNeataptic(corrCandles, x.fn);
+      // await csvLogPredictions.append("output/lbl_vs_pred_neat.csv", labels, predicted);
+
+      // const { mse, r2, gamma, cost } = await predict.predictSvmRegression(corrCandles, x.fn);
+      // await csvLogger.appendReg("output/temp2.csv", range.name, "24h", x.name, gamma, cost, mse, r2);
+
+      await mlLR.predict(corrCandles, x.fn);
+
+      logEnd(x.name);
     }
 
     // predictNext(svm, dataranges.Jul);
@@ -68,6 +83,15 @@ export const run = async (): Promise<Result> => {
   const labelsPredicted: number[] = [];
 
   return { coins, labelsPredicted, linRegs: [] };
+};
+
+const logStart = (name: string) => {
+  console.time(name);
+  console.log(`-------------------- RUNNING ${name} --------------------`);
+};
+
+const logEnd = (name: string) => {
+  console.timeEnd(name);
 };
 
 export const predictNext = (svm: any, datarange: any) => {

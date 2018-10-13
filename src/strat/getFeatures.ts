@@ -105,54 +105,14 @@ interface FeatureSplit {
 
 export const getFeaturesSplitTest = (): FeatureSplit[] => {
   return [
-    // {
-    //   name: "stochKD.d",
-    //   fn: (x, i, corrCandles) => x.close - x.ind.stochKD.d
-    // }
-    // {
-    //   name: "macdHistoLrc - slow",
-    //   fn: (x, i, corrCandles) => x.ind.macdHistoLrc - x.ind.macdHistoLrcSlow
-    // }
-    // {
-    //   name: "atr960 / atr120",
-    //   fn: (x, i, corrCandles) => x.ind.atr960 / x.ind.atr120
-    // },
-    // {
-    //   name: "atr960",
-    //   fn: (x, i, corrCandles) => x.close - x.ind.atr960
-    // },
-    // {
-    //   name: "atr720",
-    //   fn: (x, i, corrCandles) => x.close - x.ind.atr720
-    // },
-    // {
-    //   name: "atr480",
-    //   fn: (x, i, corrCandles) => x.close - x.ind.atr480
-    // },
-    // {
-    //   name: "atr360",
-    //   fn: (x, i, corrCandles) => x.close - x.ind.atr360
-    // },
     {
-      name: "rsi60x10",
-      fn: (x, i, corrCandles) => x.ind.rsi60x10
+      name: "stochKD.k",
+      fn: (x, i, corrCandles) => x.close - x.ind.stochKD.k
+    },
+    {
+      name: "stochKD.d",
+      fn: (x, i, corrCandles) => x.close - x.ind.stochKD.d
     }
-    // {
-    //   name: "rsi60x20",
-    //   fn: (x, i, corrCandles) => x.ind.rsi60x20
-    // },
-    // {
-    //   name: "rsi120x10",
-    //   fn: (x, i, corrCandles) => x.ind.rsi120x10
-    // },
-    // {
-    //   name: "zerlagMacd60",
-    //   fn: (x, i, corrCandles) => x.ind.zerlagMacd60.histo
-    // },
-    // {
-    //   name: "zerlagMacd120",
-    //   fn: (x, i, corrCandles) => x.ind.zerlagMacd120.histo
-    // }
   ];
 };
 
@@ -346,4 +306,4 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplit = getFeaturesSplitTest;
+export const getFeaturesSplit = getFeaturesSplitAll;

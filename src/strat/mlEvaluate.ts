@@ -1,6 +1,8 @@
 import { NumberMap } from "./mlUtils";
 import { padEnd, sum } from "lodash";
-import { round2 } from "./utils";
+import { avg, round2 } from "./utils";
+import * as regression from "regression";
+import { Series } from "pandas-js";
 
 // * Precision/Specificity: how many selected instances are relevant.
 // * Recall/Sensitivity: how many relevant instances are selected.
@@ -119,11 +121,8 @@ export const evaluateResultsInXs = (limit: number, input: number[], output: numb
   return { fScore, precision, precisionTotal, recall, recallTotal };
 };
 
-export const evalRegMSE = (labels: number[], predicted: number[]) => {
-  if (labels.length !== predicted.length) {
-    throw new Error("evalRegMSE: lengths not equal");
-  }
-
+// Where SSE is the sum of squared errors
+export const calcSSE = (labels: number[], predicted: number[]) => {
   let errSum = 0;
   for (let i = 0; i < labels.length; i++) {
     const lbl = labels[i];
@@ -133,9 +132,59 @@ export const evalRegMSE = (labels: number[], predicted: number[]) => {
     errSum += err * err;
   }
 
+  return errSum;
+};
+
+// SST is the sum of squared errors of our baseline model.
+export const calcSST = (labels: number[]) => {
+  const mean = avg(labels, x => x);
+  let errSum = 0;
+  for (let i = 0; i < labels.length; i++) {
+    const lbl = labels[i];
+    const err = lbl - mean;
+    errSum += err * err;
+  }
+
+  return errSum;
+};
+
+export const evalRegMSE = (labels: number[], predicted: number[]) => {
+  if (labels.length !== predicted.length) {
+    throw new Error("evalRegMSE: lengths not equal");
+  }
+
+  const errSum = calcSSE(labels, predicted);
   const mse = errSum / labels.length;
 
   console.log(padEnd("MSE", 10), round2(mse));
 
-  return mse;
+  return { mse };
+};
+
+export const evalRegR2 = (labels: number[], predicted: number[]) => {
+  if (labels.length !== predicted.length) {
+    throw new Error("evalRegMSE: lengths not equal");
+  }
+
+  const sse = calcSSE(labels, predicted);
+  const sst = calcSST(labels);
+  const r2 = 1 - sse / sst;
+
+  console.log(padEnd("R2", 10), round2(r2));
+
+  return { r2 };
+};
+
+export const evalRegCorr = (labels: number[], predicted: number[]) => {
+  const linreg = regression.linear(labels.map((w, i) => [labels[i], predicted[i]]));
+  const r2 = linreg.r2;
+
+  const s1 = new Series(labels);
+  const s2 = new Series(predicted);
+  const corr = round2(s1.corr(s2));
+
+  console.log(padEnd("CORR/LR", 10), round2(corr));
+  console.log(padEnd("R2/LR", 10), round2(r2));
+
+  return { r2, corr };
 };
