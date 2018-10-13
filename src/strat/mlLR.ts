@@ -12,9 +12,9 @@ const getLabels = (corrCandles: CorrCandles) => {
 
 export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   // in this case features in 1d array !!!
-  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
+  let features2d = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   let labels = getLabels(corrCandles);
-  features = mlUtils.rescaleRow(features);
+  let features = mlUtils.rescaleRow(features2d.map(x => x[0]));
   labels = labels.map(x => round2(x));
 
   mlUtils.sanityCheckRow(features);

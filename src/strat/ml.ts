@@ -65,7 +65,7 @@ const getLabels = (corrCandles: CorrCandles) => {
 const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   const svm = await createRBFSVM();
 
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
 
   let labels = getLabels(corrCandles);
@@ -123,7 +123,7 @@ export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeatur
     quiet: true
   });
 
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   // await csvLog.appendVertical("output/features.csv", features.map(x => x[0]));
 
@@ -169,7 +169,7 @@ export const predictAnotherMonth = (svm: any, corrCandles: CorrCandles, fnGetFea
 // };
 
 export const predictAnotherMonthReg = (svm: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
 
   let labels = getLabels(corrCandles);

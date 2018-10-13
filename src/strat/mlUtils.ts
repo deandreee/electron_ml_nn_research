@@ -203,3 +203,17 @@ export const duplicateClass = (testData: TestData[], label: number, diff: number
 export const getUniqueLabels = (labels: number[]) => {
   return uniq(labels).sort();
 };
+
+export const filterByLabels = (features: number[][], labels: number[], limit: number) => {
+  let fs: number[][] = [];
+  let ls: number[] = [];
+
+  for (let i = 0; i < labels.length; i++) {
+    if (Math.abs(labels[i]) >= limit) {
+      fs.push(features[i]);
+      ls.push(labels[i]);
+    }
+  }
+
+  return { features: fs, labels: ls };
+};

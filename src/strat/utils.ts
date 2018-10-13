@@ -41,7 +41,8 @@ export const getAvgCandlePctChange = (candles: Candle[], idxCurr: number, idxAvg
   checkIdx(candles, idxAvgTo);
 
   let sum = 0;
-  for (let i = idxAvgFrom; i <= idxAvgTo; i++) {
+  // skip <= otherwise / length (idxAvgTo - idxAvgFrom) has 1 too much
+  for (let i = idxAvgFrom; i < idxAvgTo; i++) {
     sum += getPctChange(candles[i].close, candles[idxCurr].close);
   }
 

@@ -6,7 +6,7 @@ import { CorrCandles } from "./corrCalc";
 import { round2 } from "./utils";
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._24h);
+  return corrCandles.candlesActual.map(x => x.pctChange._240m);
 };
 
 export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -19,9 +19,14 @@ export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatu
 };
 
 export const predict_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   let labels = getLabels(corrCandles);
+
+  // const filtered = mlUtils.filterByLabels(features, labels, 3);
+  // features = filtered.features;
+  // labels = filtered.labels;
+
   features = mlUtils.rescaleFeatures(features);
   labels = labels.map(x => round2(x));
 
@@ -52,7 +57,7 @@ export const predict_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeat
 };
 
 export const predictAnotherMonth = (booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
 
   let labels = getLabels(corrCandles);

@@ -9,7 +9,7 @@ import { round2 } from "./utils";
 import { FnGetFeature } from "./getFeatures";
 
 export const predictNeataptic = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
-  let features = corrCandles.candlesActual.map((x, i) => [fnGetFeature(x, i, corrCandles)]);
+  let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   let labels = corrCandles.candlesActual.map(x => x.pctChange._240m);
 

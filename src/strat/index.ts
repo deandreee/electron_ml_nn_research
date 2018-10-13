@@ -94,7 +94,7 @@ export const run = async (): Promise<Result> => {
 
       // await mlLR.predict(corrCandles, x.fn);
 
-      const fileName = "output/xg_24h_all.csv";
+      const fileName = "output/xg_240m_best.csv";
       const { booster, mse, r2, evalCorr } = await mlXG.predict(corrCandles, x.fn);
       await csvLog.append(fileName, [
         range.name,
