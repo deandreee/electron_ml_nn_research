@@ -59,7 +59,7 @@ export const predictSvm = async (corrCandles: CorrCandles, fnGetFeature: FnGetFe
 };
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._24h);
+  return corrCandles.candlesActual.map(x => x.pctChange._1d);
 };
 
 const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {

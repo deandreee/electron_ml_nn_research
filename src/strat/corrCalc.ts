@@ -1,4 +1,4 @@
-import { Candle, PctChange } from "./types";
+import { Candle, PctChange, CoinData } from "./types";
 import { getCandlePctChange, getAvgCandlePctChange } from "./utils";
 
 const { XmBase, WaveManager, valueToOHLC } = require("../../../gekko-develop/strategies/utils");
@@ -33,7 +33,7 @@ const {
 // not really sure why 62 not 60, but there were problebs with MFI
 // probably something like RSI 14 ready on 15 or smth like that
 export const WARMUP_IND = 120 * 62; // => ind ready
-export const EXTENDED = 1500; // 1h
+export const EXTENDED = 1500 * 7; // X days
 
 export interface LinRegResult {
   x: number[];
@@ -48,7 +48,9 @@ const wHist = {
   resultHistory: true
 };
 
-export const corrCalc = (candles: Candle[]) => {
+export const corrCalc = (coin: CoinData) => {
+  const candles = coin.candles;
+
   const waveManager10 = new WaveManager(10);
   const waveManager30 = new WaveManager(30);
   const waveManager60 = new WaveManager(60);
@@ -231,7 +233,9 @@ export const corrCalc = (candles: Candle[]) => {
       _120m: getAvgCandlePctChange(candles, i, i + 100, i + 140),
       _240m: getAvgCandlePctChange(candles, i, i + 220, i + 260),
       _480m: getAvgCandlePctChange(candles, i, i + 450, i + 500),
-      _24h: getAvgCandlePctChange(candles, i, i + 1400, i + 1500)
+      _1d: getAvgCandlePctChange(candles, i, i + 1400, i + 1500),
+      _2d: getAvgCandlePctChange(candles, i, i + 2860, i + 3000),
+      _7d: getAvgCandlePctChange(candles, i, i + 10060, i + 10100)
     };
   }
 
@@ -243,21 +247,25 @@ export const corrCalc = (candles: Candle[]) => {
     _120m: candlesActual.map(x => x.pctChange._120m),
     _240m: candlesActual.map(x => x.pctChange._240m),
     _480m: candlesActual.map(x => x.pctChange._480m),
-    _24h: candlesActual.map(x => x.pctChange._24h)
+    _1d: candlesActual.map(x => x.pctChange._1d),
+    _2d: candlesActual.map(x => x.pctChange._2d),
+    _7d: candlesActual.map(x => x.pctChange._7d)
   };
 
-  const corrCandles = new CorrCandles(candles, candlesActual, WARMUP_IND, EXTENDED);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);
 
   return { corrCandles, pctChange };
 };
 
 export class CorrCandles {
+  coin: CoinData;
   candles: Candle[];
   candlesActual: Candle[];
   WARMUP_IND: number;
   EXTENDED: number;
 
-  constructor(candles: Candle[], candlesActual: Candle[], WARMUP_IND: number, EXTENDED: number) {
+  constructor(coin: CoinData, candles: Candle[], candlesActual: Candle[], WARMUP_IND: number, EXTENDED: number) {
+    this.coin = coin;
     this.candles = candles;
     this.candlesActual = candlesActual;
     this.WARMUP_IND = WARMUP_IND;

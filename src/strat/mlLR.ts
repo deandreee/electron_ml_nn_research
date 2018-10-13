@@ -7,7 +7,7 @@ import { round2 } from "./utils";
 import * as csvLog from "./csvLog";
 
 const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._24h);
+  return corrCandles.candlesActual.map(x => x.pctChange._1d);
 };
 
 export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {

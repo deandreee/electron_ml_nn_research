@@ -4,24 +4,21 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "./getFeatures";
 import { CorrCandles } from "./corrCalc";
 import { round2 } from "./utils";
+import { mlGetLabels } from "./mlGetLabels";
 
-const getLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange._240m);
-};
-
-export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
-    return await predict_(corrCandles, fnGetFeature);
+    return await train_(corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
     throw new Error(err);
   }
 };
 
-export const predict_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = getLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles);
 
   // const filtered = mlUtils.filterByLabels(features, labels, 3);
   // features = filtered.features;
@@ -45,22 +42,15 @@ export const predict_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeat
   });
 
   booster.train(features, labels);
-  const predicted = booster.predict(features);
 
-  //   booster.free();
-
-  const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
-  const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
-  const evalCorr = mlEvaluate.evalRegCorr(labels, predicted);
-
-  return { booster, labels, predicted, mse, r2, evalCorr };
+  return { booster, features, labels };
 };
 
-export const predictAnotherMonth = (booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+// let's not complicate, just go full cycle, getting features/labels is fast anyway
+export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-
-  let labels = getLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles);
 
   features = mlUtils.rescaleFeatures(features);
   labels = labels.map(x => round2(x));

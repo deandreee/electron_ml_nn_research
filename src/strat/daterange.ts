@@ -1,58 +1,64 @@
-export const JunJul = {
+export interface DateRange {
+  name: string;
+  from: Date;
+  to: Date;
+}
+
+export const JunJul: DateRange = {
   name: "Jun-Jul",
   from: new Date("2018-06-01T00:00:00Z"),
   to: new Date("2018-08-01T00:00:00Z")
 };
 
-export const MayWhipsaw = {
+export const MayWhipsaw: DateRange = {
   name: "MayWhipsaw",
   from: new Date("2018-05-10T00:00:00Z"),
   to: new Date("2018-06-08T00:00:00Z")
 };
 
-export const JulPump = {
+export const JulPump: DateRange = {
   name: "JulPump",
   from: new Date("2018-07-10T00:00:00Z"),
   to: new Date("2018-07-30T00:00:00Z")
 };
 
-export const May = {
+export const May: DateRange = {
   name: "May",
   from: new Date("2018-05-01T00:00:00Z"),
   to: new Date("2018-06-01T00:00:00Z")
 };
 
-export const Jun = {
+export const Jun: DateRange = {
   name: "Jun",
   from: new Date("2018-06-01T00:00:00Z"),
   to: new Date("2018-07-01T00:00:00Z")
 };
 
-export const Jul = {
+export const Jul: DateRange = {
   name: "Jul",
   from: new Date("2018-07-01T00:00:00Z"),
   to: new Date("2018-08-01T00:00:00Z")
 };
 
-export const Aug = {
+export const Aug: DateRange = {
   name: "Aug",
   from: new Date("2018-08-01T00:00:00Z"),
   to: new Date("2018-09-01T00:00:00Z")
 };
 
-export const Sep = {
+export const Sep: DateRange = {
   name: "Sep",
   from: new Date("2018-09-01T00:00:00Z"),
   to: new Date("2018-10-01T00:00:00Z")
 };
 
-export const SepHalf = {
+export const SepHalf: DateRange = {
   name: "SepHalf",
   from: new Date("2018-09-01T00:00:00Z"),
   to: new Date("2018-09-15T00:00:00Z")
 };
 
-export const SepWeek = {
+export const SepWeek: DateRange = {
   name: "SepWeek",
   from: new Date("2018-09-08T00:00:00Z"),
   to: new Date("2018-09-15T00:00:00Z")

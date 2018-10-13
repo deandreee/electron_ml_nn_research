@@ -15,11 +15,15 @@ export const linregFX = (
   pctChange: PctChange,
   name: string
 ) => {
-  linreg(coinName, candlesActual, fnGetInd, pctChange._60m, `${name} vs 60m`);
-  linreg(coinName, candlesActual, fnGetInd, pctChange._120m, `${name} vs 120m`);
-  linreg(coinName, candlesActual, fnGetInd, pctChange._240m, `${name} vs 240m`);
-  linreg(coinName, candlesActual, fnGetInd, pctChange._480m, `${name} vs 480m`);
-  linreg(coinName, candlesActual, fnGetInd, pctChange._24h, `${name} vs 24h`);
+  return {
+    _60m: linreg(coinName, candlesActual, fnGetInd, pctChange._60m, `${name} vs 60m`),
+    _120m: linreg(coinName, candlesActual, fnGetInd, pctChange._120m, `${name} vs 120m`),
+    _240m: linreg(coinName, candlesActual, fnGetInd, pctChange._240m, `${name} vs 240m`),
+    _480m: linreg(coinName, candlesActual, fnGetInd, pctChange._480m, `${name} vs 480m`),
+    _1d: linreg(coinName, candlesActual, fnGetInd, pctChange._1d, `${name} vs 1d`),
+    _2d: linreg(coinName, candlesActual, fnGetInd, pctChange._2d, `${name} vs 2d`),
+    _7d: linreg(coinName, candlesActual, fnGetInd, pctChange._2d, `${name} vs 7d`)
+  };
 };
 
 export const linreg = (

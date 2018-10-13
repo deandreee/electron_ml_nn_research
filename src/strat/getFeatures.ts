@@ -359,4 +359,4 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplit = getFeaturesBest;
+export const getFeaturesSplit = getFeaturesBestCombo;

@@ -10,7 +10,9 @@ export interface PctChange {
   _120m: number[];
   _240m: number[];
   _480m: number[];
-  _24h: number[];
+  _1d: number[];
+  _2d: number[];
+  _7d: number[];
 }
 
 export interface CandlePctChange {
@@ -19,7 +21,9 @@ export interface CandlePctChange {
   _120m: number;
   _240m: number;
   _480m: number;
-  _24h: number;
+  _1d: number;
+  _2d: number;
+  _7d: number;
 }
 
 export interface Candle {
