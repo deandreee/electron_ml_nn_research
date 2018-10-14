@@ -103,15 +103,15 @@ interface FeatureSplit {
   fn: FnGetFeature;
 }
 
-export const getFeaturesSplitTest = (): FeatureSplit[] => {
+export const getTest = (): FeatureSplit[] => {
   return [
     {
-      name: "stochKD.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.k]
+      name: "stochKD60_14.k",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
     },
     {
-      name: "stochKD.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.d]
+      name: "stochKD60_14.d",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
     }
   ];
 };
@@ -124,7 +124,7 @@ export const getFeaturesBestCombo = (): FeatureSplit[] => {
         x.ind.lrc10_pred,
         x.close - x.ind.atr960,
         x.close - x.ind.mfi60_15,
-        x.close - x.ind.stochKD.k,
+        x.close - x.ind.stochKD60_14.k,
         x.ind.zlema60Fast - x.ind.zlema60Slow
       ]
     }
@@ -155,12 +155,12 @@ export const getFeaturesBest = (): FeatureSplit[] => {
       fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_30]
     },
     {
-      name: "stochKD.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.k]
+      name: "stochKD60_14.k",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
     },
     {
-      name: "stochKD.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.d]
+      name: "stochKD60_14.d",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
     },
     {
       name: "zlema60Fast - slow",
@@ -269,12 +269,12 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
       fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_60]
     },
     {
-      name: "stochKD.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.k]
+      name: "stochKD60_14.k",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
     },
     {
-      name: "stochKD.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD.d]
+      name: "stochKD60_14.d",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
     },
     {
       name: "bbands",
@@ -359,4 +359,34 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplit = getFeaturesBestCombo;
+export const getStochKD = (): FeatureSplit[] => {
+  return [
+    {
+      name: "stochKD60_14.k",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
+    },
+    {
+      name: "stochKD60_14.d",
+      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
+    }
+
+    // { name: "stochKD60_10.k", fn: x => [x.ind.stochKD60_10.k] },
+    // { name: "stochKD60_10.d", fn: x => [x.ind.stochKD60_10.d] },
+    // { name: "stochKD60_14.k", fn: x => [x.ind.stochKD60_14.k] },
+    // { name: "stochKD60_14.d", fn: x => [x.ind.stochKD60_14.d] },
+    // { name: "stochKD60_20.k", fn: x => [x.ind.stochKD60_20.k] },
+    // { name: "stochKD60_20.d", fn: x => [x.ind.stochKD60_20.d] },
+    // { name: "stochKD60_30.k", fn: x => [x.ind.stochKD60_30.k] },
+    // { name: "stochKD60_30.d", fn: x => [x.ind.stochKD60_30.d] },
+    // { name: "stochKD120_10.k", fn: x => [x.ind.stochKD120_10.k] },
+    // { name: "stochKD120_10.d", fn: x => [x.ind.stochKD120_10.d] },
+    // { name: "stochKD120_14.k", fn: x => [x.ind.stochKD120_14.k] },
+    // { name: "stochKD120_14.d", fn: x => [x.ind.stochKD120_14.d] },
+    // { name: "stochKD120_20.k", fn: x => [x.ind.stochKD120_20.k] },
+    // { name: "stochKD120_20.d", fn: x => [x.ind.stochKD120_20.d] },
+    // { name: "stochKD120_30.k", fn: x => [x.ind.stochKD120_30.k] },
+    // { name: "stochKD120_30.d", fn: x => [x.ind.stochKD120_30.d] }
+  ];
+};
+
+export const getFeaturesSplit = getStochKD;

@@ -33,7 +33,7 @@ const {
 // not really sure why 62 not 60, but there were problebs with MFI
 // probably something like RSI 14 ready on 15 or smth like that
 export const WARMUP_IND = 120 * 62; // => ind ready
-export const EXTENDED = 1500 * 7; // X days
+export const EXTENDED = 1500 * 10; // X days
 
 export interface LinRegResult {
   x: number[];
@@ -133,7 +133,14 @@ export const corrCalc = (coin: CoinData) => {
   const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
 
-  const stochKD = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
+  const stochKD60_10 = new XmBase(waveManager60, () => new StochKD({ period: 10, signalPeriod: 3 }));
+  const stochKD60_14 = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
+  const stochKD60_20 = new XmBase(waveManager60, () => new StochKD({ period: 20, signalPeriod: 3 }));
+  const stochKD60_30 = new XmBase(waveManager60, () => new StochKD({ period: 30, signalPeriod: 3 }));
+  const stochKD120_10 = new XmBase(waveManager120, () => new StochKD({ period: 10, signalPeriod: 3 }));
+  const stochKD120_14 = new XmBase(waveManager120, () => new StochKD({ period: 14, signalPeriod: 3 }));
+  const stochKD120_20 = new XmBase(waveManager120, () => new StochKD({ period: 20, signalPeriod: 3 }));
+  const stochKD120_30 = new XmBase(waveManager120, () => new StochKD({ period: 30, signalPeriod: 3 }));
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -202,7 +209,14 @@ export const corrCalc = (coin: CoinData) => {
       ifts10x15: ifts10x15.update(bigCandle10),
       ifts30x15: ifts30x15.update(bigCandle30),
       ifts60x15: ifts60x15.update(bigCandle60),
-      stochKD: stochKD.update(bigCandle60)
+      stochKD60_10: stochKD60_10.update(bigCandle60),
+      stochKD60_14: stochKD60_14.update(bigCandle60),
+      stochKD60_20: stochKD60_20.update(bigCandle60),
+      stochKD60_30: stochKD60_30.update(bigCandle60),
+      stochKD120_10: stochKD120_10.update(bigCandle120),
+      stochKD120_14: stochKD120_14.update(bigCandle120),
+      stochKD120_20: stochKD120_20.update(bigCandle120),
+      stochKD120_30: stochKD120_30.update(bigCandle120)
     };
 
     candle.ind.macdHistoLrc = macdHistoLrc.update(candle.ind.macd120 && candle.ind.macd120.histo);
@@ -235,7 +249,9 @@ export const corrCalc = (coin: CoinData) => {
       _480m: getAvgCandlePctChange(candles, i, i + 450, i + 500),
       _1d: getAvgCandlePctChange(candles, i, i + 1400, i + 1500),
       _2d: getAvgCandlePctChange(candles, i, i + 2860, i + 3000),
-      _7d: getAvgCandlePctChange(candles, i, i + 10060, i + 10100)
+      _4d: getAvgCandlePctChange(candles, i, i + 5740, i + 5780),
+      _7d: getAvgCandlePctChange(candles, i, i + 10060, i + 10100),
+      _10d: getAvgCandlePctChange(candles, i, i + 14380, i + 14420)
     };
   }
 
@@ -249,7 +265,9 @@ export const corrCalc = (coin: CoinData) => {
     _480m: candlesActual.map(x => x.pctChange._480m),
     _1d: candlesActual.map(x => x.pctChange._1d),
     _2d: candlesActual.map(x => x.pctChange._2d),
-    _7d: candlesActual.map(x => x.pctChange._7d)
+    _4d: candlesActual.map(x => x.pctChange._4d),
+    _7d: candlesActual.map(x => x.pctChange._7d),
+    _10d: candlesActual.map(x => x.pctChange._10d)
   };
 
   const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);

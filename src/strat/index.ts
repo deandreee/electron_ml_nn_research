@@ -23,7 +23,7 @@ import * as csvLogger from "./csvLogger";
 // @ts-ignore
 import * as csvLogPredictions from "./csvLogPredictions";
 // @ts-ignore
-import { getFeaturesSplit } from "./getFeatures";
+import { getFeaturesSplit } from "./mlGetFeatures";
 // @ts-ignore
 import { round2 } from "./utils";
 // @ts-ignore
@@ -42,8 +42,8 @@ interface Result {
 }
 
 export const runXG = async (): Promise<Result> => {
-  const ranges = [daterange.SepWeek];
-  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  // const ranges = [daterange.SepWeek];
+  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
 
@@ -54,6 +54,7 @@ export const runXG = async (): Promise<Result> => {
     log.start(x.name);
     const fileName = "output/temp.csv";
     // const fileName = "output/xg_7d_all_EOS.csv";
+    // const fileName = "output/xg_7d_stoch_BTC.csv";
     const { booster } = await mlXG.train(trainMonth, x.fn);
 
     for (let range of ranges) {

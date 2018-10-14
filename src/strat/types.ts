@@ -12,7 +12,9 @@ export interface PctChange {
   _480m: number[];
   _1d: number[];
   _2d: number[];
+  _4d: number[];
   _7d: number[];
+  _10d: number[];
 }
 
 export interface CandlePctChange {
@@ -23,7 +25,9 @@ export interface CandlePctChange {
   _480m: number;
   _1d: number;
   _2d: number;
+  _4d: number;
   _7d: number;
+  _10d: number;
 }
 
 export interface Candle {
@@ -163,7 +167,14 @@ export interface Indicators {
   ifts30x15?: number;
   ifts60x15?: number;
 
-  stochKD?: StochKD;
+  stochKD60_10?: StochKD;
+  stochKD60_14?: StochKD;
+  stochKD60_20?: StochKD;
+  stochKD60_30?: StochKD;
+  stochKD120_10?: StochKD;
+  stochKD120_14?: StochKD;
+  stochKD120_20?: StochKD;
+  stochKD120_30?: StochKD;
 }
 
 export type CsvCell = string | number;

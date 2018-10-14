@@ -1,7 +1,7 @@
 import * as regression from "regression";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { FnGetFeature } from "./getFeatures";
+import { FnGetFeature } from "./mlGetFeatures";
 import { CorrCandles } from "./corrCalc";
 import { round2 } from "./utils";
 import * as csvLog from "./csvLog";
