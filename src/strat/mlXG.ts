@@ -1,4 +1,5 @@
 import * as XGBoost_ from "ml-xgboost";
+// const XGBoost_ = require("ml-xgboost");
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "./getFeatures";

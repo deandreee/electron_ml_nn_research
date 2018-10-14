@@ -33,16 +33,30 @@ export class CandleBatcher2 {
     return calcCandle;
   };
 
+  copyCandle = (candle: Candle): Candle => {
+    return {
+      start: candle.start,
+      open: candle.open,
+      high: candle.high,
+      low: candle.low,
+      close: candle.close,
+      volume: candle.volume,
+      vwp: candle.vwp,
+      trades: candle.trades,
+      percentChange: candle.percentChange,
+      pctChange60m: candle.pctChange60m,
+      pctChange: candle.pctChange
+    };
+  };
+
   calculate = () => {
     if (this.smallCandles.length !== this.candleSize) {
       throw new Error(
-        `CandleBatcher2: smallCandles.length (${
-          this.smallCandles.length
-        }) not EQUAL to candleSize (${this.candleSize})`
+        `CandleBatcher2: smallCandles.length (${this.smallCandles.length}) not EQUAL to candleSize (${this.candleSize})`
       );
     }
 
-    let first = Object.assign({}, this.smallCandles[0]);
+    let first = this.copyCandle(this.smallCandles[0]);
 
     first.vwp = first.vwp * first.volume;
 

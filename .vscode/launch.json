@@ -12,8 +12,8 @@
       "program": "${workspaceFolder}/dist/main.js",
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-      "preLaunchTask": "webpack"
-      // "preLaunchTask": "tsc"
+      // "preLaunchTask": "webpack"
+      "preLaunchTask": "tsc"
     },
     {
       "type": "node",

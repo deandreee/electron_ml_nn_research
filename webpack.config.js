@@ -2,13 +2,18 @@
 // const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
+  // target: "electron-main",
   target: "electron-renderer",
+  // target: "web",
   mode: "development",
   entry: "./src/index.tsx",
   output: {
     filename: "bundle.js",
     path: __dirname + "/dist"
   },
+  // browser: {
+  //   fs: false
+  // },
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
@@ -30,16 +35,26 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
-      },
-      {
-        test: /\.wasm$/,
-        type: "webassembly/experimental"
       }
+      // {
+      //   test: /\.wasm$/,
+      //   loader: "wasm-loader",
+      //   type: "javascript/auto"
+      // }
+      // {
+      //   test: /\.wasm$/,
+      //   loaders: ["wasm-loader"]
+      // }
+      // {
+      //   test: /\.wasm$/,
+      //   type: "webassembly/experimental"
+      // }
       // {
       //   // test: /xgboost.wasm$/,
       //   test: /\.wasm$/,
       //   type: "javascript/auto" // ← !!
-      //   // loader: "file-loader",
+      //   // type: "webassembly/experimental"
+      //   // loader: "file-loader"
       //   // options: {
       //   //   publicPath: "dist/"
       //   // }
@@ -71,6 +86,7 @@ module.exports = {
     "react-dom": "ReactDOM",
     "better-sqlite3": `require("better-sqlite3")`
     // "ml-xgboost": `require("ml-xgboost")`
+    // libsvm: `require("libsvm")`
   }
 
   // plugins: [new webpack.ContextReplacementPlugin(/bindings$/, /^$/)]

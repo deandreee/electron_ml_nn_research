@@ -11,11 +11,11 @@ function createWindow() {
     frame: false,
     // titleBarStyle: "hiddenInset"
     backgroundColor: "#21202D",
-    icon: path.join(__dirname, "assets/b.jpg")
+    icon: path.join(__dirname, "../assets/b.jpg")
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, "../index.html"));
+  mainWindow.loadFile(path.join(__dirname, "./index.html"));
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

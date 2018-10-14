@@ -31,17 +31,17 @@ export class App extends React.Component {
     // const currentProp = "percentChange";
     const currentProp = "close";
 
-    const series = Object.keys(coins).map(k => {
-      return {
+    const series = [
+      {
         ...this.state.options.series[0],
-        color: coins[k].color || "white",
-        data: coins[k].candles.map(x => x && [x.start * 1000, x[currentProp]]),
-        name: k,
+        color: coins.BTC.color || "white",
+        data: coins.BTC.candles.map(x => x && [x.start * 1000, x[currentProp]]),
+        name: coins.BTC.name,
         large: true,
         sampling: "average",
         symbol: "none"
-      };
-    });
+      }
+    ];
 
     // const labelsFiltered = labelsPredicted
     //   .map((x, i) => ({ x, i }))
