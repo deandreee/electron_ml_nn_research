@@ -52,9 +52,10 @@ export const runXG = async (): Promise<Result> => {
   const featuresSplit = getFeaturesSplit();
   for (let x of featuresSplit) {
     log.start(x.name);
-    const fileName = "output/temp.csv";
+    // const fileName = "output/temp.csv";
     // const fileName = "output/xg_7d_all_EOS.csv";
-    // const fileName = "output/xg_7d_stoch_BTC.csv";
+    // const fileName = "output/xg_7d_all_BTC_REAL.csv";
+    const fileName = "output/xg_10d_bbands_BTC_REAL.csv";
     const { booster } = await mlXG.train(trainMonth, x.fn);
 
     for (let range of ranges) {

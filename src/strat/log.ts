@@ -21,6 +21,9 @@ export const timeEnd = (name: string) => {
   if (!start) {
     throw new Error(`Start time for ${name} not found`);
   }
+
+  delete times[name];
+
   const end = new Date().getTime();
 
   const elapsedSeconds = Math.round((end - start) / 1000);

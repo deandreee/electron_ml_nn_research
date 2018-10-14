@@ -125,7 +125,7 @@ export interface Indicators {
   mfi120_15?: number;
   mfi120_30?: number;
   mfi120_60?: number;
-  bbands?: BBands;
+
   macd30?: MACD;
   macd60?: MACD;
   macd60_PSAR?: PSAR;
@@ -175,6 +175,30 @@ export interface Indicators {
   stochKD120_14?: StochKD;
   stochKD120_20?: StochKD;
   stochKD120_30?: StochKD;
+
+  bbands60_10_1?: BBands;
+  bbands60_10_2?: BBands;
+  bbands60_10_3?: BBands;
+
+  bbands60_20_1?: BBands;
+  bbands60_20_2?: BBands;
+  bbands60_20_3?: BBands;
+
+  bbands60_30_1?: BBands;
+  bbands60_30_2?: BBands;
+  bbands60_30_3?: BBands;
+
+  bbands120_10_1?: BBands;
+  bbands120_10_2?: BBands;
+  bbands120_10_3?: BBands;
+
+  bbands120_20_1?: BBands;
+  bbands120_20_2?: BBands;
+  bbands120_20_3?: BBands;
+
+  bbands120_30_1?: BBands;
+  bbands120_30_2?: BBands;
+  bbands120_30_3?: BBands;
 }
 
 export type CsvCell = string | number;

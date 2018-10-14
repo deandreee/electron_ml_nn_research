@@ -2,21 +2,8 @@ import { CorrCandles } from "./corrCalc";
 import { Candle } from "./types";
 // import * as mlUtils from "./mlUtils";
 
-export const getBBands = (x: Candle, i: number, corrCandles: CorrCandles) => {
-  const bbandsNow = x.ind.bbands.upper - x.ind.bbands.lower;
-  const candlePrev = corrCandles.getPrev(i, 60);
-  const bbandsPrev = candlePrev.ind.bbands.upper - candlePrev.ind.bbands.lower;
-
-  // "-" better than "/"
-  // much better
-  // 60 ok 0.16 | 120 ok 0.18 | 240 ok 0.19 | 480 nok
-  //
-  return bbandsNow - bbandsPrev;
-};
-
 export const getFeatures = (corrCandles: CorrCandles) => {
   let features = corrCandles.candlesActual.map((x, i) => [
-    getBBands(x, i, corrCandles),
     x.ind.atr960 - x.ind.atr120,
     x.ind.rsi60x10,
     x.ind.rsi60x20,
@@ -107,11 +94,11 @@ export const getTest = (): FeatureSplit[] => {
   return [
     {
       name: "stochKD60_14.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.k]
     },
     {
       name: "stochKD60_14.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.d]
     }
   ];
 };
@@ -122,9 +109,9 @@ export const getFeaturesBestCombo = (): FeatureSplit[] => {
       name: "best-combo",
       fn: (x, i, corrCandles) => [
         x.ind.lrc10_pred,
-        x.close - x.ind.atr960,
-        x.close - x.ind.mfi60_15,
-        x.close - x.ind.stochKD60_14.k,
+        x.ind.atr960,
+        x.ind.mfi60_15,
+        x.ind.stochKD60_14.k,
         x.ind.zlema60Fast - x.ind.zlema60Slow
       ]
     }
@@ -136,31 +123,31 @@ export const getFeaturesBest = (): FeatureSplit[] => {
     { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
     {
       name: "atr960",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr960]
+      fn: (x, i, corrCandles) => [x.ind.atr960]
     },
     {
       name: "atr360",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr360]
+      fn: (x, i, corrCandles) => [x.ind.atr360]
     },
     {
       name: "atr60",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr60]
+      fn: (x, i, corrCandles) => [x.ind.atr60]
     },
     {
       name: "mfi60_15",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi60_15]
+      fn: (x, i, corrCandles) => [x.ind.mfi60_15]
     },
     {
       name: "mfi120_30",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_30]
+      fn: (x, i, corrCandles) => [x.ind.mfi120_30]
     },
     {
       name: "stochKD60_14.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.k]
     },
     {
       name: "stochKD60_14.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.d]
     },
     {
       name: "zlema60Fast - slow",
@@ -169,7 +156,7 @@ export const getFeaturesBest = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplitAll = (): FeatureSplit[] => {
+export const getAll = (): FeatureSplit[] => {
   return [
     { name: "macd30", fn: (x, i, corrCandles) => [x.ind.macd30.histo] },
     { name: "macd60", fn: (x, i, corrCandles) => [x.ind.macd60.histo] },
@@ -222,63 +209,63 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
 
     {
       name: "atr960",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr960]
+      fn: (x, i, corrCandles) => [x.ind.atr960]
     },
     {
       name: "atr720",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr720]
+      fn: (x, i, corrCandles) => [x.ind.atr720]
     },
     {
       name: "atr480",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr480]
+      fn: (x, i, corrCandles) => [x.ind.atr480]
     },
     {
       name: "atr360",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr360]
+      fn: (x, i, corrCandles) => [x.ind.atr360]
     },
     {
       name: "atr240",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr240]
+      fn: (x, i, corrCandles) => [x.ind.atr240]
     },
     {
       name: "atr120",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr120]
+      fn: (x, i, corrCandles) => [x.ind.atr120]
     },
     {
       name: "atr60",
-      fn: (x, i, corrCandles) => [x.close - x.ind.atr60]
+      fn: (x, i, corrCandles) => [x.ind.atr60]
     },
     {
       name: "mfi60_15",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi60_15]
+      fn: (x, i, corrCandles) => [x.ind.mfi60_15]
     },
     {
       name: "mfi60_30",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi60_30]
+      fn: (x, i, corrCandles) => [x.ind.mfi60_30]
     },
     {
       name: "mfi120_15",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_15]
+      fn: (x, i, corrCandles) => [x.ind.mfi120_15]
     },
     {
       name: "mfi120_30",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_30]
+      fn: (x, i, corrCandles) => [x.ind.mfi120_30]
     },
     {
       name: "mfi120_60",
-      fn: (x, i, corrCandles) => [x.close - x.ind.mfi120_60]
+      fn: (x, i, corrCandles) => [x.ind.mfi120_60]
     },
     {
       name: "stochKD60_14.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.k]
     },
     {
       name: "stochKD60_14.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
+      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.d]
     },
     {
-      name: "bbands",
-      fn: (x, i, corrCandles) => [x.ind.bbands.upper - x.ind.bbands.lower]
+      name: "bbands60_20_2",
+      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
     },
     {
       name: "rsi60x10",
@@ -349,44 +336,63 @@ export const getFeaturesSplitAll = (): FeatureSplit[] => {
       fn: (x, i, corrCandles) => [x.ind.ift30x15]
     },
     {
-      name: "ift60x15",
-      fn: (x, i, corrCandles) => [x.ind.ift60x15]
-    },
-    {
       name: "ift120x15",
       fn: (x, i, corrCandles) => [x.ind.ift120x15]
+    },
+    {
+      name: "close",
+      fn: (x, i, corrCandles) => [x.close]
     }
   ];
 };
 
 export const getStochKD = (): FeatureSplit[] => {
   return [
-    {
-      name: "stochKD60_14.k",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.k]
-    },
-    {
-      name: "stochKD60_14.d",
-      fn: (x, i, corrCandles) => [x.close - x.ind.stochKD60_14.d]
-    }
-
-    // { name: "stochKD60_10.k", fn: x => [x.ind.stochKD60_10.k] },
-    // { name: "stochKD60_10.d", fn: x => [x.ind.stochKD60_10.d] },
-    // { name: "stochKD60_14.k", fn: x => [x.ind.stochKD60_14.k] },
-    // { name: "stochKD60_14.d", fn: x => [x.ind.stochKD60_14.d] },
-    // { name: "stochKD60_20.k", fn: x => [x.ind.stochKD60_20.k] },
-    // { name: "stochKD60_20.d", fn: x => [x.ind.stochKD60_20.d] },
-    // { name: "stochKD60_30.k", fn: x => [x.ind.stochKD60_30.k] },
-    // { name: "stochKD60_30.d", fn: x => [x.ind.stochKD60_30.d] },
-    // { name: "stochKD120_10.k", fn: x => [x.ind.stochKD120_10.k] },
-    // { name: "stochKD120_10.d", fn: x => [x.ind.stochKD120_10.d] },
-    // { name: "stochKD120_14.k", fn: x => [x.ind.stochKD120_14.k] },
-    // { name: "stochKD120_14.d", fn: x => [x.ind.stochKD120_14.d] },
-    // { name: "stochKD120_20.k", fn: x => [x.ind.stochKD120_20.k] },
-    // { name: "stochKD120_20.d", fn: x => [x.ind.stochKD120_20.d] },
-    // { name: "stochKD120_30.k", fn: x => [x.ind.stochKD120_30.k] },
-    // { name: "stochKD120_30.d", fn: x => [x.ind.stochKD120_30.d] }
+    { name: "stochKD60_10.k", fn: x => [x.ind.stochKD60_10.k] },
+    { name: "stochKD60_10.d", fn: x => [x.ind.stochKD60_10.d] },
+    { name: "stochKD60_14.k", fn: x => [x.ind.stochKD60_14.k] },
+    { name: "stochKD60_14.d", fn: x => [x.ind.stochKD60_14.d] },
+    { name: "stochKD60_20.k", fn: x => [x.ind.stochKD60_20.k] },
+    { name: "stochKD60_20.d", fn: x => [x.ind.stochKD60_20.d] },
+    { name: "stochKD60_30.k", fn: x => [x.ind.stochKD60_30.k] },
+    { name: "stochKD60_30.d", fn: x => [x.ind.stochKD60_30.d] },
+    { name: "stochKD120_10.k", fn: x => [x.ind.stochKD120_10.k] },
+    { name: "stochKD120_10.d", fn: x => [x.ind.stochKD120_10.d] },
+    { name: "stochKD120_14.k", fn: x => [x.ind.stochKD120_14.k] },
+    { name: "stochKD120_14.d", fn: x => [x.ind.stochKD120_14.d] },
+    { name: "stochKD120_20.k", fn: x => [x.ind.stochKD120_20.k] },
+    { name: "stochKD120_20.d", fn: x => [x.ind.stochKD120_20.d] },
+    { name: "stochKD120_30.k", fn: x => [x.ind.stochKD120_30.k] },
+    { name: "stochKD120_30.d", fn: x => [x.ind.stochKD120_30.d] }
   ];
 };
 
-export const getFeaturesSplit = getStochKD;
+export const getBBands = (): FeatureSplit[] => {
+  return [
+    { name: "bbands60_10_1", fn: x => [x.ind.bbands60_10_1.upper - x.ind.bbands60_10_1.lower] },
+    { name: "bbands60_10_2", fn: x => [x.ind.bbands60_10_2.upper - x.ind.bbands60_10_2.lower] },
+    { name: "bbands60_10_3", fn: x => [x.ind.bbands60_10_3.upper - x.ind.bbands60_10_3.lower] },
+
+    { name: "bbands60_20_1", fn: x => [x.ind.bbands60_20_1.upper - x.ind.bbands60_20_1.lower] },
+    { name: "bbands60_20_2", fn: x => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower] },
+    { name: "bbands60_20_3", fn: x => [x.ind.bbands60_20_3.upper - x.ind.bbands60_20_3.lower] },
+
+    { name: "bbands60_30_1", fn: x => [x.ind.bbands60_30_1.upper - x.ind.bbands60_30_1.lower] },
+    { name: "bbands60_30_2", fn: x => [x.ind.bbands60_30_2.upper - x.ind.bbands60_30_2.lower] },
+    { name: "bbands60_30_3", fn: x => [x.ind.bbands60_30_3.upper - x.ind.bbands60_30_3.lower] },
+
+    { name: "bbands120_10_1", fn: x => [x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower] },
+    { name: "bbands120_10_2", fn: x => [x.ind.bbands120_10_2.upper - x.ind.bbands120_10_2.lower] },
+    { name: "bbands120_10_3", fn: x => [x.ind.bbands120_10_3.upper - x.ind.bbands120_10_3.lower] },
+
+    { name: "bbands120_20_1", fn: x => [x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower] },
+    { name: "bbands120_20_2", fn: x => [x.ind.bbands120_20_2.upper - x.ind.bbands120_20_2.lower] },
+    { name: "bbands120_20_3", fn: x => [x.ind.bbands120_20_3.upper - x.ind.bbands120_20_3.lower] },
+
+    { name: "bbands120_30_1", fn: x => [x.ind.bbands120_30_1.upper - x.ind.bbands120_30_1.lower] },
+    { name: "bbands120_30_2", fn: x => [x.ind.bbands120_30_2.upper - x.ind.bbands120_30_2.lower] },
+    { name: "bbands120_30_3", fn: x => [x.ind.bbands120_30_3.upper - x.ind.bbands120_30_3.lower] }
+  ];
+};
+
+export const getFeaturesSplit = getBBands;
