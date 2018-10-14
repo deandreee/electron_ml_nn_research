@@ -31,6 +31,7 @@ import { linregFX } from "./linreg";
 import { LABEL_NAME } from "./mlGetLabels";
 import { DateRange } from "./daterange";
 import * as log from "./log";
+import { padEnd } from "lodash";
 
 interface Result {
   coins: CoinList;
@@ -39,20 +40,23 @@ interface Result {
 }
 
 export const runXG = async (): Promise<Result> => {
-  // const ranges = [daterange.Jun];
-  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  const ranges = [daterange.SepWeek];
+  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
+  const trainMonth = months[ranges[0].name];
+
+  const linRegs: LinRegResult[] = [];
 
   const featuresSplit = getFeaturesSplit();
   for (let x of featuresSplit) {
     log.start(x.name);
     const fileName = "output/temp.csv";
     // const fileName = "output/xg_7d_all_EOS.csv";
-    const { booster } = await mlXG.train(months.Jun, x.fn);
+    const { booster } = await mlXG.train(trainMonth, x.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];
-      const { mse, r2, evalCorr } = await mlXG.predict(booster, corrCandles, x.fn);
+      const { mse, r2, evalCorr, labels, predicted } = await mlXG.predict(booster, corrCandles, x.fn);
       await csvLog.append(fileName, [
         new Date().toISOString(),
         corrCandles.coin.name,
@@ -64,6 +68,17 @@ export const runXG = async (): Promise<Result> => {
         round2(evalCorr.corr),
         round2(evalCorr.r2)
       ]);
+
+      console.log(padEnd(range.name, 10), padEnd("R2", 8), round2(r2));
+
+      linRegs.push({
+        x: labels,
+        y: predicted,
+        regEquation: [],
+        r2,
+        corr: evalCorr.corr,
+        name: range.name
+      });
     }
 
     booster.free();
@@ -71,12 +86,10 @@ export const runXG = async (): Promise<Result> => {
     log.end(x.name);
   }
 
-  // const labelsPredicted = predictNeataptic(candlesActual);
   const labelsPredicted: number[] = [];
-  const linRegs: any[] = [];
 
   return {
-    coins: { BTC: months.Jun.coin },
+    coins: { BTC: trainMonth.coin },
     labelsPredicted,
     linRegs
   };
@@ -90,28 +103,28 @@ export const runCorr = () => {
 };
 
 export const runSVM = () => {
-  // const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
-  // await csvLogger.append("output/svm_temp.csv", range.name, "120m", x.name, { results, results3s, results5s });
-  // const { labels, predicted } = await predict.predictSvmRegression(corrCandles, x.fn);
-  // await csvLogPredictions.append("output/lbl_vs_pred.csv", labels, predicted);
-  // const { labels, predicted } = await predict.predictNeataptic(corrCandles, x.fn);
-  // await csvLogPredictions.append("output/lbl_vs_pred_neat.csv", labels, predicted);
-  // const fileName = "output/svm_24h_best_2.csv";
-  // const { svm, mse, r2, gamma, cost } = await predict.predictSvmRegression(corrCandles, x.fn);
-  // await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
-  // {
-  //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Jul, x.fn);
-  //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
-  // }
-  // {
-  //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Aug, x.fn);
-  //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
-  // }
-  // {
-  //   const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Sep, x.fn);
-  //   await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
-  // }
-  // await mlLR.predict(corrCandles, x.fn);
+  const { results, results3s, results5s } = await predict.predictSvm(corrCandles, x.fn);
+  await csvLogger.append("output/svm_temp.csv", range.name, "120m", x.name, { results, results3s, results5s });
+  const { labels, predicted } = await predict.predictSvmRegression(corrCandles, x.fn);
+  await csvLogPredictions.append("output/lbl_vs_pred.csv", labels, predicted);
+  const { labels, predicted } = await predict.predictNeataptic(corrCandles, x.fn);
+  await csvLogPredictions.append("output/lbl_vs_pred_neat.csv", labels, predicted);
+  const fileName = "output/svm_24h_best_2.csv";
+  const { svm, mse, r2, gamma, cost } = await predict.predictSvmRegression(corrCandles, x.fn);
+  await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+  {
+    const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Jul, x.fn);
+    await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+  }
+  {
+    const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Aug, x.fn);
+    await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+  }
+  {
+    const { mse, r2, gamma, cost } = await predictNext(svm, dataranges.Sep, x.fn);
+    await csvLogger.appendReg(fileName, range.name, "24h", x.name, gamma, cost, mse, r2);
+  }
+  await mlLR.predict(corrCandles, x.fn);
 };
 
 export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => {

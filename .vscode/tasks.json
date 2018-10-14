@@ -11,6 +11,12 @@
       "showOutput": "always"
     },
     {
+      "taskName": "tsc",
+      "command": "tsc",
+      "isShellCommand": true,
+      "args": ["-p", "tsconfig.json"]
+    },
+    {
       "taskName": "tsc.be",
       "command": "tsc",
       "isShellCommand": true,

@@ -18,14 +18,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
 
-  plugins: [
-    // new MiniCssExtractPlugin({
-    //   // Options similar to the same options in webpackOptions.output
-    //   // both options are optional
-    //   filename: "[name].css",
-    //   chunkFilename: "[id].css"
-    // })
-  ],
+  plugins: [],
 
   module: {
     rules: [
@@ -37,7 +30,20 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.wasm$/,
+        type: "webassembly/experimental"
       }
+      // {
+      //   // test: /xgboost.wasm$/,
+      //   test: /\.wasm$/,
+      //   type: "javascript/auto" // ← !!
+      //   // loader: "file-loader",
+      //   // options: {
+      //   //   publicPath: "dist/"
+      //   // }
+      // }
       // {
       //   test: /\.css$/,
       //   use: [
@@ -64,6 +70,7 @@ module.exports = {
     react: "React",
     "react-dom": "ReactDOM",
     "better-sqlite3": `require("better-sqlite3")`
+    // "ml-xgboost": `require("ml-xgboost")`
   }
 
   // plugins: [new webpack.ContextReplacementPlugin(/bindings$/, /^$/)]

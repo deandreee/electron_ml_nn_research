@@ -156,7 +156,7 @@ export const evalRegMSE = (labels: number[], predicted: number[]) => {
   const errSum = calcSSE(labels, predicted);
   const mse = errSum / labels.length;
 
-  console.log(padEnd("MSE", 10), round2(mse));
+  // console.log(padEnd("MSE", 10), round2(mse));
 
   return { mse };
 };
@@ -170,7 +170,7 @@ export const evalRegR2 = (labels: number[], predicted: number[]) => {
   const sst = calcSST(labels);
   const r2 = 1 - sse / sst;
 
-  console.log(padEnd("R2", 10), round2(r2));
+  // console.log(padEnd("R2", 10), round2(r2));
 
   return { r2 };
 };
@@ -183,8 +183,8 @@ export const evalRegCorr = (labels: number[], predicted: number[]) => {
   const s2 = new Series(predicted);
   const corr = round2(s1.corr(s2));
 
-  console.log(padEnd("CORR/LR", 10), round2(corr));
-  console.log(padEnd("R2/LR", 10), round2(r2));
+  // console.log(padEnd("CORR/LR", 10), round2(corr));
+  // console.log(padEnd("R2/LR", 10), round2(r2));
 
   return { r2, corr };
 };
