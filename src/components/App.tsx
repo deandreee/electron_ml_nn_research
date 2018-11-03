@@ -1,14 +1,15 @@
 import * as React from "react";
-// import ReactEcharts from "echarts-for-react";
+import ReactEcharts from "echarts-for-react";
 import { EChartOption } from "echarts";
 import { options } from "./options";
 import * as strat from "../strat";
 import { LinRegResult } from "../strat/corrCalc";
 // import * as chartUtils from "./chartUtils";
 import { CoinList } from "../strat/types";
-// import { getLegend } from "./getLegend";
-// import { seriesInd } from "./series";
-import { CorrChart } from "./CorrChart";
+import { getLegend } from "./getLegend";
+import { seriesInd } from "./series";
+// import { CorrChart } from "./CorrChart";
+import styles from "./styles";
 
 interface State {
   isLoading: boolean;
@@ -58,21 +59,21 @@ export class App extends React.Component {
     //   large: true
     // };
 
-    // const seriesInd_ = seriesInd(currentProp, coins);
+    const seriesInd_ = seriesInd(currentProp, coins);
 
-    // const legend = getLegend(coins, seriesInd_);
+    const legend = getLegend(coins, seriesInd_);
 
     this.setState({
       options: {
         ...this.state.options,
-        // legend,
+        legend,
         series: [
-          ...series
+          ...series,
+          ...seriesInd_
 
           // ...seriesTrades(currentProp, coins),
           // ...seriesSignals(currentProp, coins),
           // seriesLabelsPredicted,
-          // ...seriesInd_
         ]
       },
       isLoading: false,
@@ -89,9 +90,10 @@ export class App extends React.Component {
   render() {
     return (
       <div style={this.style}>
-        {/* <ReactEcharts
+        {/**/}
+        <ReactEcharts
           option={this.state.options}
-          style={{ height: "300px", width: "100%" }}
+          style={{ height: "700px", width: "100%" }}
           notMerge={true}
           lazyUpdate={true}
           theme={"dark"}
@@ -101,15 +103,15 @@ export class App extends React.Component {
             color: styles.colors.primary,
             maskColor: styles.colors.background
           }}
-        /> */}
-        <div style={{ display: "flex" }}>
+        />
+        {/*<div style={{ display: "flex" }}>
           <div style={{ width: "48%" }}>{this.state.linRegs[0] && <CorrChart linReg={this.state.linRegs[0]} />}</div>
           <div style={{ width: "48%" }}>{this.state.linRegs[1] && <CorrChart linReg={this.state.linRegs[1]} />}</div>
         </div>
         <div style={{ display: "flex" }}>
           <div style={{ width: "48%" }}>{this.state.linRegs[2] && <CorrChart linReg={this.state.linRegs[2]} />}</div>
           <div style={{ width: "48%" }}>{this.state.linRegs[3] && <CorrChart linReg={this.state.linRegs[3]} />}</div>
-        </div>
+        </div> */}
         {/* <Profits coins={this.state.coins} /> */}
         {/* <Roundtrips coin={this.state.coins[config.leadCoin]} /> */}
       </div>

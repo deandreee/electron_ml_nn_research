@@ -179,6 +179,7 @@ export const corrCalc = (coin: CoinData) => {
     const bigCandle120 = waveManager120.update(candle);
 
     if (!bigCandle10 || !bigCandle30 || !bigCandle60 || !bigCandle120) {
+      candle.ind = {};
       continue;
     }
 

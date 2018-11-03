@@ -85,7 +85,8 @@ export const getFeatures = (corrCandles: CorrCandles) => {
 };
 
 export type FnGetFeature = (x: Candle, i: number, corrCandles: CorrCandles) => number[];
-interface FeatureSplit {
+
+export interface FeatureSplit {
   name: string;
   fn: FnGetFeature;
 }
@@ -263,9 +264,14 @@ export const getAll = (): FeatureSplit[] => {
       name: "stochKD60_14.d",
       fn: (x, i, corrCandles) => [x.ind.stochKD60_14.d]
     },
+    // this was the mistake before, leaving just the lower, but it brought the best result... oh, because it's closest to price ...
+    {
+      name: "bbands60_20_2_mistake",
+      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
+    },
     {
       name: "bbands60_20_2",
-      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
+      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
     },
     {
       name: "rsi60x10",
@@ -395,4 +401,4 @@ export const getBBands = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplit = getBBands;
+export const getFeaturesSplit = getAll;

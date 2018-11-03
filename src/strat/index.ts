@@ -23,7 +23,7 @@ import * as csvLogger from "./csvLogger";
 // @ts-ignore
 import * as csvLogPredictions from "./csvLogPredictions";
 // @ts-ignore
-import { getFeaturesSplit } from "./mlGetFeatures";
+import { getFeaturesSplit, FeatureSplit } from "./mlGetFeatures";
 // @ts-ignore
 import { round2 } from "./utils";
 // @ts-ignore
@@ -72,6 +72,65 @@ export const runXG = async (): Promise<Result> => {
         round2(evalCorr.corr),
         round2(evalCorr.r2)
       ]);
+
+      console.log(padEnd(range.name, 10), padEnd("R2", 8), round2(r2));
+
+      linRegs.push({
+        x: labels,
+        y: predicted,
+        regEquation: [],
+        r2,
+        corr: evalCorr.corr,
+        name: range.name
+      });
+    }
+
+    booster.free();
+
+    log.end(x.name);
+  }
+
+  const labelsPredicted: number[] = [];
+
+  return {
+    coins: { BTC: trainMonth.coin },
+    labelsPredicted,
+    linRegs
+  };
+};
+
+export const runXG_UI = async (): Promise<Result> => {
+  // const ranges = [daterange.SepWeek];
+  const ranges = [daterange.Sep];
+  const months = queryCorrCandlesMonths(Coins.BTC, ranges);
+  const trainMonth = months[ranges[0].name];
+
+  const linRegs: LinRegResult[] = [];
+
+  const features: FeatureSplit[] = [
+    { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
+    {
+      name: "bbands60_20_2_mistake",
+      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
+    },
+    {
+      name: "close",
+      fn: (x, i, corrCandles) => [x.close]
+    },
+    {
+      name: "bbands60_20_2",
+      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
+    }
+  ];
+
+  for (let x of features) {
+    log.start(x.name);
+
+    const { booster } = await mlXG.train(trainMonth, x.fn);
+
+    for (let range of ranges) {
+      const corrCandles = months[range.name];
+      const { r2, evalCorr, labels, predicted } = await mlXG.predict(booster, corrCandles, x.fn);
 
       console.log(padEnd(range.name, 10), padEnd("R2", 8), round2(r2));
 
@@ -163,7 +222,7 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 
 export const run = async () => {
   try {
-    return await runXG();
+    return await runXG_UI();
   } catch (err) {
     console.log(err);
     throw err;

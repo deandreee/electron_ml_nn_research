@@ -1,6 +1,7 @@
 import { CoinList, Candle, CandleProp } from "../../strat/types";
 import { config } from "../../strat/config";
 import { options } from "../options";
+import { EXTENDED } from "../../strat/corrCalc";
 
 const base = {
   ...options.series[0],
@@ -26,7 +27,7 @@ const data = (coins: CoinList, fn: fnGetIndValue) => {
 
 const hasIndicator = (coins: CoinList, fn: fnGetInd) => {
   const candles = coins[config.leadCoin].candles;
-  return fn(candles[candles.length - 1000]) !== undefined; // quick fix, not sure about the number
+  return fn(candles[candles.length - EXTENDED - 1]) !== undefined; // quick fix, not sure about the number
 };
 
 export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
@@ -220,14 +221,44 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
   if (hasIndicator(coins, x => x.pctChange60m)) {
     series.push({
       ...base,
-      type: "scatter",
-      symbol: flash,
-      symbolSize: 15,
       color: "red",
       name: "pctChange",
       data: coins[config.leadCoin].candles
         .filter(x => x.pctChange60m < -1)
         .map(x => [x.start * 1000, x.close + x.close * 0.005])
+    });
+  }
+
+  if (hasIndicator(coins, x => x.pctChange && x.pctChange._1d)) {
+    series.push({
+      ...base,
+      color: "green",
+      name: "pctChange_1d",
+      data: data(coins, x => x.pctChange && x.pctChange._1d),
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
+
+  if (hasIndicator(coins, x => x.pctChange && x.pctChange._4d)) {
+    series.push({
+      ...base,
+      color: "blue",
+      name: "pctChange_4d",
+      data: data(coins, x => x.pctChange && x.pctChange._4d),
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+  }
+
+  if (hasIndicator(coins, x => x.pctChange && x.pctChange._7d)) {
+    series.push({
+      ...base,
+      color: "red",
+      name: "pctChange_7d",
+      data: data(coins, x => x.pctChange && x.pctChange._7d),
+      xAxisIndex: 1,
+      yAxisIndex: 1
     });
   }
 
