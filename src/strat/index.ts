@@ -101,26 +101,27 @@ export const runXG = async (): Promise<Result> => {
 
 export const runXG_UI = async (): Promise<Result> => {
   // const ranges = [daterange.SepWeek];
-  const ranges = [daterange.Sep];
+  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  // const ranges = [daterange.Sep];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
 
   const features: FeatureSplit[] = [
-    { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
-    {
-      name: "bbands60_20_2_mistake",
-      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
-    },
+    // { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
+    // {
+    //   name: "bbands60_20_2_mistake",
+    //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
+    // },
     {
       name: "close",
       fn: (x, i, corrCandles) => [x.close]
-    },
-    {
-      name: "bbands60_20_2",
-      fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
     }
+    // {
+    //   name: "bbands60_20_2",
+    //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
+    // }
   ];
 
   for (let x of features) {
@@ -222,6 +223,7 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 
 export const run = async () => {
   try {
+    // return await runXG();
     return await runXG_UI();
   } catch (err) {
     console.log(err);

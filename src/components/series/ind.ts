@@ -217,7 +217,7 @@ export const seriesInd = (currentProp: CandleProp, coins: CoinList) => {
     });
   }
 
-  const flash = "path://M7,2V13H10V22L17,10H13L17,2H7Z";
+  // const flash = "path://M7,2V13H10V22L17,10H13L17,2H7Z";
   if (hasIndicator(coins, x => x.pctChange60m)) {
     series.push({
       ...base,
