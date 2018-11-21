@@ -92,9 +92,21 @@ export interface StochKD {
 
 export interface Indicators {
   rsi30x10?: number;
+  rsi30x20?: number;
+  rsi30x30?: number;
   rsi60x10?: number;
   rsi60x20?: number;
+  rsi60x30?: number;
   rsi120x10?: number;
+  rsi120x20?: number;
+  rsi120x30?: number;
+  rsi240x10?: number;
+  rsi240x20?: number;
+  rsi240x30?: number;
+  rsi480x10?: number;
+  rsi480x20?: number;
+  rsi480x30?: number;
+
   psar?: number;
   xmPsar?: number;
   hlTrueRange?: IndHlTrueRange;

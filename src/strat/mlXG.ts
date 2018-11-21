@@ -62,5 +62,5 @@ export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: Fn
   const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
   const evalCorr = mlEvaluate.evalRegCorr(labels, predicted);
 
-  return { booster, labels, predicted, mse, r2, evalCorr };
+  return { booster, features, labels, predicted, mse, r2, evalCorr };
 };

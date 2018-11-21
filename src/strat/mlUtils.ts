@@ -41,8 +41,13 @@ export const rescaleFeatures = (features: number[][]) => {
   const fCount = features[0].length; // small count like 5
   for (let fc = 0; fc < fCount; fc++) {
     // big length like 50k
+
     const min = Math.min(...features.map(x => x[fc]));
     const max = Math.max(...features.map(x => x[fc]));
+
+    // const min = 5000;
+    // const max = 10000;
+
     for (let row of features) {
       row![fc] = rescale(row![fc], min, max);
     }

@@ -55,7 +55,7 @@ export const runXG = async (): Promise<Result> => {
     // const fileName = "output/temp.csv";
     // const fileName = "output/xg_7d_all_EOS.csv";
     // const fileName = "output/xg_7d_all_BTC_REAL.csv";
-    const fileName = "output/xg_10d_bbands_BTC_REAL.csv";
+    const fileName = "output/xg_10d_rsi_BTC_REAL.csv";
     const { booster } = await mlXG.train(trainMonth, x.fn);
 
     for (let range of ranges) {
@@ -114,14 +114,18 @@ export const runXG_UI = async (): Promise<Result> => {
     //   name: "bbands60_20_2_mistake",
     //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
     // },
-    {
-      name: "close",
-      fn: (x, i, corrCandles) => [x.close]
-    }
+    // {
+    //   name: "close",
+    //   fn: (x, i, corrCandles) => [x.close]
+    // }
     // {
     //   name: "bbands60_20_2",
     //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
     // }
+    {
+      name: "rsi_combo",
+      fn: (x, i, corrCandles) => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi60x20, x.ind.rsi120x10]
+    }
   ];
 
   for (let x of features) {
@@ -136,6 +140,8 @@ export const runXG_UI = async (): Promise<Result> => {
       console.log(padEnd(range.name, 10), padEnd("R2", 8), round2(r2));
 
       linRegs.push({
+        // x: features.map(x => x[0]),
+        // y: labels,
         x: labels,
         y: predicted,
         regEquation: [],
@@ -223,8 +229,8 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 
 export const run = async () => {
   try {
-    // return await runXG();
-    return await runXG_UI();
+    return await runXG();
+    // return await runXG_UI();
   } catch (err) {
     console.log(err);
     throw err;
