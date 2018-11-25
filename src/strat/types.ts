@@ -231,7 +231,18 @@ export enum Coins {
   XLM = "XLM",
   LTC = "LTC",
   ADA = "ADA",
-  IOT = "IOT"
+  IOT = "IOT",
+  TRX = "TRX",
+  XMR = "XMR",
+  NEO = "NEO",
+  DASH = "DASH",
+  ETC = "ETC",
+  BNB = "BNB",
+  VEN = "VEN",
+  ZEC = "ZEC",
+  QTUM = "QTUM",
+  OMG = "OMG",
+  ZRX = "ZRX"
 }
 
 // export type CoinList = HashMap<Coins, CoinData>;

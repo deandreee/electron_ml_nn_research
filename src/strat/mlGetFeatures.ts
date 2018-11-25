@@ -423,7 +423,39 @@ export const getRSI = (): FeatureSplit[] => {
 
 export const getRSICombo = (): FeatureSplit[] => {
   return [
-    { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10, x.ind.rsi480x10] }
+    { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10, x.ind.rsi480x10] },
+    {
+      name: "rsi_combo_macd",
+      fn: x => [
+        x.ind.rsi30x10,
+        x.ind.rsi60x10,
+        x.ind.rsi120x10,
+        x.ind.rsi240x10,
+        x.ind.rsi480x10,
+        x.ind.macd30.histo,
+        x.ind.macd60.histo,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo
+      ]
+    },
+    {
+      name: "rsi_combo_macd_bbands",
+      fn: x => [
+        x.ind.rsi30x10,
+        x.ind.rsi60x10,
+        x.ind.rsi120x10,
+        x.ind.rsi240x10,
+        x.ind.rsi480x10,
+        x.ind.macd30.histo,
+        x.ind.macd60.histo,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo,
+        x.ind.bbands60_10_1.upper - x.ind.bbands60_10_1.lower,
+        x.ind.bbands60_20_1.upper - x.ind.bbands60_20_1.lower,
+        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower,
+        x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower
+      ]
+    }
   ];
 };
 

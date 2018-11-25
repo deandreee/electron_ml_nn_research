@@ -44,6 +44,9 @@ interface Result {
 export const runXG = async (): Promise<Result> => {
   // const ranges = [daterange.SepWeek];
   const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  // const ranges = [daterange.JunJul, daterange.Aug];
+  // const ranges = [daterange.JunJul, daterange.Aug, daterange.Sep, daterange.Oct];
+  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
 
@@ -101,7 +104,8 @@ export const runXG = async (): Promise<Result> => {
 
 export const runXG_UI = async (): Promise<Result> => {
   // const ranges = [daterange.SepWeek];
-  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
+  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug];
   // const ranges = [daterange.Sep];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
@@ -109,22 +113,38 @@ export const runXG_UI = async (): Promise<Result> => {
   const linRegs: LinRegResult[] = [];
 
   const features: FeatureSplit[] = [
-    // { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
+    // { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10, x.ind.rsi480x10] }
     // {
-    //   name: "bbands60_20_2_mistake",
-    //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.lower]
-    // },
-    // {
-    //   name: "close",
-    //   fn: (x, i, corrCandles) => [x.close]
-    // }
-    // {
-    //   name: "bbands60_20_2",
-    //   fn: (x, i, corrCandles) => [x.ind.bbands60_20_2.upper - x.ind.bbands60_20_2.lower]
+    //   name: "rsi_combo_macd",
+    //   fn: x => [
+    //     x.ind.rsi30x10,
+    //     x.ind.rsi60x10,
+    //     x.ind.rsi120x10,
+    //     x.ind.rsi240x10,
+    //     x.ind.rsi480x10,
+    //     x.ind.macd30.histo,
+    //     x.ind.macd60.histo,
+    //     x.ind.macd120.histo,
+    //     x.ind.macd240.histo
+    //   ]
     // }
     {
-      name: "rsi_combo",
-      fn: (x, i, corrCandles) => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi60x20, x.ind.rsi120x10]
+      name: "rsi_combo_macd_bbands",
+      fn: x => [
+        x.ind.rsi30x10,
+        x.ind.rsi60x10,
+        x.ind.rsi120x10,
+        x.ind.rsi240x10,
+        x.ind.rsi480x10,
+        x.ind.macd30.histo,
+        x.ind.macd60.histo,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo,
+        x.ind.bbands60_10_1.upper - x.ind.bbands60_10_1.lower,
+        x.ind.bbands60_20_1.upper - x.ind.bbands60_20_1.lower,
+        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower,
+        x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower
+      ]
     }
   ];
 
@@ -229,8 +249,8 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 
 export const run = async () => {
   try {
-    return await runXG();
-    // return await runXG_UI();
+    // return await runXG();
+    return await runXG_UI();
   } catch (err) {
     console.log(err);
     throw err;

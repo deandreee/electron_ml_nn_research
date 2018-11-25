@@ -29,7 +29,7 @@ const COIN_QUERIES: { [name: string]: CoinQuery } = {
   },
   BCC: {
     name: "BCC",
-    db: DB.KRAKEN,
+    db: DB.BINANCE,
     tableName: "candles_USDT_BCC",
     color: "#4cca47"
   },
