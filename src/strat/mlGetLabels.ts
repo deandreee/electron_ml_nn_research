@@ -1,4 +1,4 @@
-import { CorrCandles } from "./corrCalc";
+import { CorrCandles } from "./corr/CorrCandles";
 
 // export const LABEL_NAME = "_60m";
 // export const LABEL_NAME = "_120m";

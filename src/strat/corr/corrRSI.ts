@@ -1,7 +1,7 @@
-import { Candle } from "./types";
-import { linregFX } from "./linreg";
-import { linregSplitRSI } from "./linregSplitRSI";
-import { PctChange } from "./types";
+import { Candle } from "../types";
+import { linregFX } from "../linreg";
+import { linregSplitRSI } from "../linregSplitRSI";
+import { PctChange } from "../types";
 
 export const corrRSI = (coinName: string, candlesActual: Candle[], pctChange: PctChange) => {
   linregFX(coinName, candlesActual, x => x.ind.rsi60x10, pctChange, "RSI");

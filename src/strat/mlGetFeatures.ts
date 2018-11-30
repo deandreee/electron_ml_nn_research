@@ -1,4 +1,4 @@
-import { CorrCandles } from "./corrCalc";
+import { CorrCandles } from "./corr/CorrCandles";
 import { Candle } from "./types";
 // import * as mlUtils from "./mlUtils";
 

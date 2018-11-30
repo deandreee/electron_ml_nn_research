@@ -3,7 +3,7 @@ import * as XGBoost_ from "ml-xgboost";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "./mlGetFeatures";
-import { CorrCandles } from "./corrCalc";
+import { CorrCandles } from "./corr/CorrCandles";
 // import { round2 } from "./utils";
 import { mlGetLabels } from "./mlGetLabels";
 

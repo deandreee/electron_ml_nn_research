@@ -1,10 +1,11 @@
-import { Candle, PctChange, CoinData } from "./types";
+import { PctChange, CoinData } from "../types";
+import { getCandlePctChange } from "../utils";
+import { CorrCandles } from "./CorrCandles";
+import { trippleBarrier } from "./trippleBarrier";
 // @ts-ignore
-import { getCandlePctChange, getAvgCandlePctChange, getMaxCandlePctChange, getPctChange } from "./utils";
-// @ts-ignore
-const { XmBase, WaveManager, valueToOHLC } = require("../../../gekko-develop/strategies/utils");
+const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 
-const { MACD, RSI, BBANDS } = require("../../../gekko-develop/strategies/indicators");
+const { MACD, RSI, BBANDS } = require("../../../../gekko-develop/strategies/indicators");
 // const {
 //   LRC,
 //   VixFix,
@@ -344,45 +345,4 @@ export const corrCalc = (coin: CoinData) => {
   const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);
 
   return { corrCandles, pctChange };
-};
-
-export class CorrCandles {
-  coin: CoinData;
-  candles: Candle[];
-  candlesActual: Candle[];
-  WARMUP_IND: number;
-  EXTENDED: number;
-
-  constructor(coin: CoinData, candles: Candle[], candlesActual: Candle[], WARMUP_IND: number, EXTENDED: number) {
-    this.coin = coin;
-    this.candles = candles;
-    this.candlesActual = candlesActual;
-    this.WARMUP_IND = WARMUP_IND;
-    this.EXTENDED = this.EXTENDED;
-  }
-
-  // candles actual is used further, but we still need to see the diff n periods ago,
-  // so we look into full candles
-  getPrev = (curr: number, minus: number) => {
-    return this.candles[curr - minus + this.WARMUP_IND];
-  };
-}
-
-const trippleBarrier = (
-  candles: Candle[],
-  idxCurr: number,
-  stopLoss: number,
-  takeProfit: number,
-  lookAhead: number
-) => {
-  for (let i = idxCurr + 1; i < idxCurr + 1 + lookAhead; i++) {
-    const pctChange = getPctChange(candles[i].close, candles[idxCurr].close);
-    if (pctChange > takeProfit) {
-      return 2;
-    } else if (pctChange < stopLoss) {
-      return 0;
-    }
-  }
-
-  return 1; // no action
 };

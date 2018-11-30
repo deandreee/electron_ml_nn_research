@@ -1,6 +1,6 @@
-import { Candle } from "./types";
-import { linregFX } from "./linreg";
-import { PctChange } from "./types";
+import { Candle } from "../types";
+import { linregFX } from "../linreg";
+import { PctChange } from "../types";
 
 export const corrATR = (coinName: string, candlesActual: Candle[], pctChange: PctChange) => {
   linregFX(coinName, candlesActual, x => x.ind.atr60, pctChange, "ATR 60");

@@ -4,7 +4,7 @@ import * as brain from "brain.js";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { Candle } from "./types";
-import { CorrCandles } from "./corrCalc";
+import { CorrCandles } from "./corr/CorrCandles";
 import { round2 } from "./utils";
 import { FnGetFeature } from "./mlGetFeatures";
 

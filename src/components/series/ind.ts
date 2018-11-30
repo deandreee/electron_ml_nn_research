@@ -1,7 +1,7 @@
 import { CoinList, Candle, CandleProp } from "../../strat/types";
 import { config } from "../../strat/config";
 import { options } from "../options";
-import { EXTENDED } from "../../strat/corrCalc";
+import { EXTENDED } from "../../strat/corr/calc";
 
 const base = {
   ...options.series[0],
