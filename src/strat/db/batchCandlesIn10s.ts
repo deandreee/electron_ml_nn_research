@@ -1,6 +1,5 @@
-// import { CandleBatcher } from "../../utils/strats/utils/CandleBatcher2";
-import { CandleBatcher2 } from "../strats/utils/CandleBatcher2";
 import { Candle, CoinData } from "../types";
+const { CandleBatcher2 } = require("../../../../gekko-develop/strategies/utils");
 
 const CANDLE_SIZE = 10;
 
@@ -13,8 +12,8 @@ export const batchCandlesIn10s = (coin: CoinData) => {
     batcher.write([candles[i]]);
 
     // ask: could add partial last, but gekko removes it, so let's just keep like that
-    if (i % CANDLE_SIZE === 0) {
-      const bigCandle = batcher.calculate();
+    if ((i + 1) % CANDLE_SIZE === 0) {
+      const bigCandle = batcher.check();
       bigCandles.push(bigCandle);
     }
   }
