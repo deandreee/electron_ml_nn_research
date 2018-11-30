@@ -9,7 +9,7 @@ export const batchCandlesIn10s = (coin: CoinData) => {
   const candles = coin.candles;
 
   for (let i = 0; i < candles.length; i++) {
-    batcher.write([candles[i]]);
+    batcher.write(candles[i]);
 
     // ask: could add partial last, but gekko removes it, so let's just keep like that
     if ((i + 1) % CANDLE_SIZE === 0) {

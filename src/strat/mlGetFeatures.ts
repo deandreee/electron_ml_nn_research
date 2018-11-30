@@ -423,7 +423,7 @@ export const getRSI = (): FeatureSplit[] => {
 
 export const getRSICombo = (): FeatureSplit[] => {
   return [
-    { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10, x.ind.rsi480x10] },
+    { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10] },
     {
       name: "rsi_combo_macd",
       fn: x => [
