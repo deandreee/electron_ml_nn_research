@@ -18,16 +18,17 @@ export interface PctChange {
 }
 
 export interface CandlePctChange {
-  _10m: number;
-  _60m: number;
-  _120m: number;
-  _240m: number;
-  _480m: number;
-  _1d: number;
-  _2d: number;
-  _4d: number;
-  _7d: number;
-  _10d: number;
+  trippleBarrier?: number;
+  _10m?: number;
+  _60m?: number;
+  _120m?: number;
+  _240m?: number;
+  _480m?: number;
+  _1d?: number;
+  _2d?: number;
+  _4d?: number;
+  _7d?: number;
+  _10d?: number;
 }
 
 export interface Candle {
@@ -332,4 +333,19 @@ export interface RoundTripAction {
   date: Date;
   price: number;
   total: number;
+}
+
+export interface RunResult {
+  coins: CoinList;
+  labelsPredicted: number[];
+  linRegs: LinRegResult[];
+}
+
+export interface LinRegResult {
+  x: number[];
+  y: number[];
+  regEquation: number[];
+  r2: number;
+  corr: number;
+  name: string;
 }

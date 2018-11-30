@@ -5,8 +5,8 @@ import { run } from "./strat/index";
 import { marketMonth } from "./strat/marketMonth";
 
 try {
-  run();
-  // marketMonth();
+  // run();
+  marketMonth();
 } catch (err) {
   console.error(err);
 }

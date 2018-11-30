@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as strat from "../strat";
-import { LinRegResult } from "../strat/corrCalc";
-import { CoinList } from "../strat/types";
+import { CoinList, LinRegResult } from "../strat/types";
 // import { AppCharts } from "./AppCharts";
 import { AppCorr } from "./AppCorr";
 

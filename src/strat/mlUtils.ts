@@ -129,6 +129,10 @@ export const middlesample = (testData: TestData[], labelCount: NumberMap, max: n
   let res: TestData[] = [];
 
   for (let label in labelCount) {
+    if (labelCount[label] === 0) {
+      throw new Error("Can't middlesampele label count 0 for label: " + label);
+    }
+
     if (labelCount[label] >= max) {
       const reSamples = take(testData, Number(label), max);
       res = res.concat(reSamples);

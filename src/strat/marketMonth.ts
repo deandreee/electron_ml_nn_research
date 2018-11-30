@@ -4,7 +4,7 @@ import { queryCoin } from "./queryCoins";
 import { getPctChange } from "./utils";
 import { padEnd, padStart } from "lodash";
 
-const range = daterange.Jul;
+const range = daterange.NovDump;
 
 const getMin = (coin: CoinData) => {
   let min = Infinity;

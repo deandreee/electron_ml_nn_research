@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 import { EChartOption } from "echarts";
 import styles from "./styles";
 import { optionsCorr } from "./optionsCorr";
-import { LinRegResult } from "../strat/corrCalc";
+import { LinRegResult } from "../strat/types";
 import { round2 } from "../strat/utils";
 
 interface State {
@@ -28,12 +28,8 @@ export class CorrChart extends React.Component<Props, State> {
     const yMin = round2(Math.min.apply(null, this.props.linReg.y));
     const yMax = round2(Math.max.apply(null, this.props.linReg.y));
 
-    const regMin =
-      this.props.linReg.regEquation[0] * xMin +
-      this.props.linReg.regEquation[1];
-    const regMax =
-      this.props.linReg.regEquation[0] * xMax +
-      this.props.linReg.regEquation[1];
+    const regMin = this.props.linReg.regEquation[0] * xMin + this.props.linReg.regEquation[1];
+    const regMax = this.props.linReg.regEquation[0] * xMax + this.props.linReg.regEquation[1];
 
     this.setState({
       options: {
@@ -42,9 +38,7 @@ export class CorrChart extends React.Component<Props, State> {
         yAxis: { ...this.state.options.yAxis, min: yMin, max: yMax },
         title: {
           text: `${this.props.linReg.name}`,
-          subtext: `r2: ${this.props.linReg.r2} | corr: ${
-            this.props.linReg.corr
-          }`,
+          subtext: `r2: ${this.props.linReg.r2} | corr: ${this.props.linReg.corr}`,
           left: "center",
           textStyle: {
             fontSize: 10

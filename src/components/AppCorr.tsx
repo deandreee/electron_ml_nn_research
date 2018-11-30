@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LinRegResult } from "../strat/corrCalc";
+import { LinRegResult } from "../strat/types";
 import { CorrChart } from "./CorrChart";
 
 interface Props {

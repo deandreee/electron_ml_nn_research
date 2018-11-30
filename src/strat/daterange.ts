@@ -81,3 +81,9 @@ export const Oct: DateRange = {
   from: new Date("2018-10-01T00:00:00Z"),
   to: new Date("2018-11-01T00:00:00Z")
 };
+
+export const NovDump: DateRange = {
+  name: "NovDump",
+  from: new Date("2018-11-14T00:00:00Z"),
+  to: new Date("2018-11-26T00:00:00Z")
+};

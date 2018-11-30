@@ -1,31 +1,29 @@
 import { Candle, PctChange, CoinData } from "./types";
 // @ts-ignore
-import { getCandlePctChange, getAvgCandlePctChange, getMaxCandlePctChange } from "./utils";
-
+import { getCandlePctChange, getAvgCandlePctChange, getMaxCandlePctChange, getPctChange } from "./utils";
+// @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../gekko-develop/strategies/utils");
 
-const {
-  MACD,
-  RSI,
-  LRC,
-  BBANDS,
-  VixFix,
-  MFI,
-  ATR,
-  CCI,
-  PSAR_TI,
-  PSARProps,
-  ADX,
-  SMA,
-  LRCPred,
-  StochKD
-} = require("../../../gekko-develop/strategies/indicators");
-const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
+const { MACD, RSI, BBANDS } = require("../../../gekko-develop/strategies/indicators");
+// const {
+//   LRC,
+//   VixFix,
+//   MFI,
+//   ATR,
+//   CCI,
+//   PSAR_TI,
+//   PSARProps,
+//   ADX,
+//   SMA,
+//   LRCPred,
+//   StochKD
+// } = require("../../../gekko-develop/strategies/indicators");
+// const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
 
-const {
-  InverseFisherTransform,
-  InverseFisherTransformSmoothed
-} = require("../../../gekko-develop/strategies/indicators/ninja");
+// const {
+//   InverseFisherTransform,
+//   InverseFisherTransformSmoothed
+// } = require("../../../gekko-develop/strategies/indicators/ninja");
 
 // warmup = wait for first candle
 // skipstart = wait for ind to have enough
@@ -36,18 +34,9 @@ const {
 export const WARMUP_IND = 240 * 62; // => ind ready
 export const EXTENDED = 1500 * 10; // X days
 
-export interface LinRegResult {
-  x: number[];
-  y: number[];
-  regEquation: number[];
-  r2: number;
-  corr: number;
-  name: string;
-}
-
-const wHist = {
-  resultHistory: true
-};
+// const wHist = {
+//   resultHistory: true
+// };
 
 export const corrCalc = (coin: CoinData) => {
   const candles = coin.candles;
@@ -75,32 +64,32 @@ export const corrCalc = (coin: CoinData) => {
   const rsi480x20 = new XmBase(waveManager480, () => new RSI({ interval: 20 }));
   const rsi480x30 = new XmBase(waveManager480, () => new RSI({ interval: 30 }));
 
-  const vixFix30 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix60 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  // const vixFix30 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  // const vixFix60 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  // const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
 
-  const lrc1 = new LRC(480);
-  const lrc10 = new XmBase(waveManager10, () => new LRC(60));
-  const lrc30 = new XmBase(waveManager30, () => new LRC(30));
-  const lrc60 = new XmBase(waveManager60, () => new LRC(30));
-  const lrc120 = new XmBase(waveManager120, () => new LRC(30));
-  const lrc30_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
-  const lrc60_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
+  // const lrc1 = new LRC(480);
+  // const lrc10 = new XmBase(waveManager10, () => new LRC(60));
+  // const lrc30 = new XmBase(waveManager30, () => new LRC(30));
+  // const lrc60 = new XmBase(waveManager60, () => new LRC(30));
+  // const lrc120 = new XmBase(waveManager120, () => new LRC(30));
+  // const lrc30_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
+  // const lrc60_PSAR = new PSAR_TI(PSARProps._0_003, wHist);
 
-  const lrc1_pred = new LRCPred(60, wHist);
-  const lrc10_lrc = new LRC(60, wHist);
-  const lrc10_pred = new LRCPred(60, wHist);
+  // const lrc1_pred = new LRCPred(60, wHist);
+  // const lrc10_lrc = new LRC(60, wHist);
+  // const lrc10_pred = new LRCPred(60, wHist);
 
-  const zlema60Fast = new XmBase(waveManager120, () => new ZerolagHATEMA(20));
-  const zlema60Slow = new XmBase(waveManager120, () => new ZerolagHATEMA(60));
+  // const zlema60Fast = new XmBase(waveManager120, () => new ZerolagHATEMA(20));
+  // const zlema60Slow = new XmBase(waveManager120, () => new ZerolagHATEMA(60));
 
-  const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
-  const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
-  const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
+  // const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
+  // const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
+  // const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
 
-  const mfi120_15 = new XmBase(waveManager120, () => new MFI(15));
-  const mfi120_30 = new XmBase(waveManager120, () => new MFI(30));
-  const mfi120_60 = new XmBase(waveManager120, () => new MFI(60));
+  // const mfi120_15 = new XmBase(waveManager120, () => new MFI(15));
+  // const mfi120_30 = new XmBase(waveManager120, () => new MFI(30));
+  // const mfi120_60 = new XmBase(waveManager120, () => new MFI(60));
 
   const bbands60_10_1 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 10, NbDevUp: 1, NbDevDn: 1 }));
   const bbands60_10_2 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 10, NbDevUp: 2, NbDevDn: 2 }));
@@ -130,55 +119,55 @@ export const corrCalc = (coin: CoinData) => {
   const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd240 = new XmBase(waveManager240, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
-  const zerlagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  // const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  // const zerlagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
 
-  const macdHistoLrc = new XmBase(waveManager120, () => new LRC(12));
-  const macdHistoLrcSlow = new XmBase(waveManager120, () => new LRC(16));
+  // const macdHistoLrc = new XmBase(waveManager120, () => new LRC(12));
+  // const macdHistoLrcSlow = new XmBase(waveManager120, () => new LRC(16));
 
-  const atr60 = new ATR(60);
-  const atr120 = new ATR(120);
-  const atr240 = new ATR(240);
-  const atr360 = new ATR(360);
-  const atr480 = new ATR(480);
-  const atr720 = new ATR(720);
-  const atr960 = new ATR(960);
-  const cci = new XmBase(waveManager60, () => new CCI({ constant: 0.015, history: 120 }));
+  // const atr60 = new ATR(60);
+  // const atr120 = new ATR(120);
+  // const atr240 = new ATR(240);
+  // const atr360 = new ATR(360);
+  // const atr480 = new ATR(480);
+  // const atr720 = new ATR(720);
+  // const atr960 = new ATR(960);
+  // const cci = new XmBase(waveManager60, () => new CCI({ constant: 0.015, history: 120 }));
 
-  const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, wHist);
+  // const macd60_PSAR = new PSAR_TI(PSARProps._0_0001, wHist);
 
-  const macd60_ADX30 = new ADX(30, wHist);
-  const macd60_ADX60 = new ADX(60, wHist);
-  const macd60_ADX120 = new ADX(120, wHist);
+  // const macd60_ADX30 = new ADX(30, wHist);
+  // const macd60_ADX60 = new ADX(60, wHist);
+  // const macd60_ADX120 = new ADX(120, wHist);
 
-  const macd120_ADX30 = new ADX(30, wHist);
-  const macd120_ADX60 = new ADX(60, wHist);
-  const macd120_ADX120 = new ADX(120, wHist);
+  // const macd120_ADX30 = new ADX(30, wHist);
+  // const macd120_ADX60 = new ADX(60, wHist);
+  // const macd120_ADX120 = new ADX(120, wHist);
 
-  const volume60 = new SMA(60, wHist);
-  const volume120 = new SMA(120, wHist);
+  // const volume60 = new SMA(60, wHist);
+  // const volume120 = new SMA(120, wHist);
 
-  const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
-  const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
-  const ift60x15 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 15 }));
-  const ift10x15 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 15 }));
-  const ift30x15 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 15 }));
-  const ift120x15 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 15 }));
-  const ift10x30 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 30 }));
-  const ift60x30 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 30 }));
-  const ift120x30 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 30 }));
-  const ifts10x15 = new XmBase(waveManager10, () => new InverseFisherTransformSmoothed({ period: 15 }));
-  const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
-  const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
+  // const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
+  // const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
+  // const ift60x15 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 15 }));
+  // const ift10x15 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 15 }));
+  // const ift30x15 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 15 }));
+  // const ift120x15 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 15 }));
+  // const ift10x30 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 30 }));
+  // const ift60x30 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 30 }));
+  // const ift120x30 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 30 }));
+  // const ifts10x15 = new XmBase(waveManager10, () => new InverseFisherTransformSmoothed({ period: 15 }));
+  // const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
+  // const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
 
-  const stochKD60_10 = new XmBase(waveManager60, () => new StochKD({ period: 10, signalPeriod: 3 }));
-  const stochKD60_14 = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
-  const stochKD60_20 = new XmBase(waveManager60, () => new StochKD({ period: 20, signalPeriod: 3 }));
-  const stochKD60_30 = new XmBase(waveManager60, () => new StochKD({ period: 30, signalPeriod: 3 }));
-  const stochKD120_10 = new XmBase(waveManager120, () => new StochKD({ period: 10, signalPeriod: 3 }));
-  const stochKD120_14 = new XmBase(waveManager120, () => new StochKD({ period: 14, signalPeriod: 3 }));
-  const stochKD120_20 = new XmBase(waveManager120, () => new StochKD({ period: 20, signalPeriod: 3 }));
-  const stochKD120_30 = new XmBase(waveManager120, () => new StochKD({ period: 30, signalPeriod: 3 }));
+  // const stochKD60_10 = new XmBase(waveManager60, () => new StochKD({ period: 10, signalPeriod: 3 }));
+  // const stochKD60_14 = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
+  // const stochKD60_20 = new XmBase(waveManager60, () => new StochKD({ period: 20, signalPeriod: 3 }));
+  // const stochKD60_30 = new XmBase(waveManager60, () => new StochKD({ period: 30, signalPeriod: 3 }));
+  // const stochKD120_10 = new XmBase(waveManager120, () => new StochKD({ period: 10, signalPeriod: 3 }));
+  // const stochKD120_14 = new XmBase(waveManager120, () => new StochKD({ period: 14, signalPeriod: 3 }));
+  // const stochKD120_20 = new XmBase(waveManager120, () => new StochKD({ period: 20, signalPeriod: 3 }));
+  // const stochKD120_30 = new XmBase(waveManager120, () => new StochKD({ period: 30, signalPeriod: 3 }));
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -318,25 +307,22 @@ export const corrCalc = (coin: CoinData) => {
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
     candle.pctChange = {
-      _10m: getCandlePctChange(candles, i + 10, i),
-      _60m: getAvgCandlePctChange(candles, i, i + 50, i + 70),
-      _120m: getAvgCandlePctChange(candles, i, i + 100, i + 140),
-      _240m: getAvgCandlePctChange(candles, i, i + 220, i + 260),
-      _480m: getAvgCandlePctChange(candles, i, i + 450, i + 500),
+      trippleBarrier: trippleBarrier(candles, i, -2, 2, 700)
+      // _10m: getCandlePctChange(candles, i + 10, i),
+      // _60m: getAvgCandlePctChange(candles, i, i + 50, i + 70),
+      // _120m: getAvgCandlePctChange(candles, i, i + 100, i + 140),
+      // _240m: getAvgCandlePctChange(candles, i, i + 220, i + 260),
+      // _480m: getAvgCandlePctChange(candles, i, i + 450, i + 500),
       // _1d: getMaxCandlePctChange(candles, i, i + 1500),
-      _1d: getAvgCandlePctChange(candles, i, i + 1400, i + 1500),
-
+      // _1d: getAvgCandlePctChange(candles, i, i + 1400, i + 1500),
       // _2d: getMaxCandlePctChange(candles, i, i + 3000),
-      _2d: getAvgCandlePctChange(candles, i, i + 2860, i + 3000),
-
+      // _2d: getAvgCandlePctChange(candles, i, i + 2860, i + 3000),
       // _4d: getMaxCandlePctChange(candles, i, i + 5780),
-      _4d: getAvgCandlePctChange(candles, i, i + 5740, i + 5780),
-
+      // _4d: getAvgCandlePctChange(candles, i, i + 5740, i + 5780),
       // _7d: getMaxCandlePctChange(candles, i, i + 10100),
-      _7d: getAvgCandlePctChange(candles, i, i + 10060, i + 10100),
-
+      // _7d: getAvgCandlePctChange(candles, i, i + 10060, i + 10100),
       // _10d: getMaxCandlePctChange(candles, i, i + 14420)
-      _10d: getAvgCandlePctChange(candles, i, i + 14380, i + 14420)
+      // _10d: getAvgCandlePctChange(candles, i, i + 14380, i + 14420)
     };
   }
 
@@ -381,3 +367,22 @@ export class CorrCandles {
     return this.candles[curr - minus + this.WARMUP_IND];
   };
 }
+
+const trippleBarrier = (
+  candles: Candle[],
+  idxCurr: number,
+  stopLoss: number,
+  takeProfit: number,
+  lookAhead: number
+) => {
+  for (let i = idxCurr + 1; i < idxCurr + 1 + lookAhead; i++) {
+    const pctChange = getPctChange(candles[i].close, candles[idxCurr].close);
+    if (pctChange > takeProfit) {
+      return 2;
+    } else if (pctChange < stopLoss) {
+      return 0;
+    }
+  }
+
+  return 1; // no action
+};
