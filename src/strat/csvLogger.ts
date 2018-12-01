@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as csv from "csv";
-import { MlEvaluateResults } from "./mlEvaluate";
+import { MlEvaluateResults } from "./ml/mlEvaluate";
 import { fromCb, round2 } from "./utils";
 
 export const writeHeader = async (fileName: string) => {

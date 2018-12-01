@@ -21,8 +21,8 @@ import * as log from "../log";
 import { padEnd } from "lodash";
 
 // @ts-ignore
-import * as mlXG from "../mlXG";
-import * as mlXGClass from "../mlXGClass";
+import * as mlXG from "../ml/mlXG";
+import * as mlXGClass from "../ml/mlXGClass";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];

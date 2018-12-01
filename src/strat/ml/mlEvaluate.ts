@@ -1,6 +1,6 @@
 import { NumberMap } from "./mlUtils";
 import { padEnd, sum } from "lodash";
-import { avg, round2 } from "./utils";
+import { avg, round2 } from "../utils";
 import * as regression from "regression";
 import { Series } from "pandas-js";
 

@@ -2,12 +2,12 @@ import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
-import { getFeaturesSplit } from "../mlGetFeatures";
+import { getFeaturesSplit } from "../ml/mlGetFeatures";
 import { round2 } from "../utils";
 import * as log from "../log";
 import { padEnd } from "lodash";
 
-import * as mlXGClass from "../mlXGClass";
+import * as mlXGClass from "../ml/mlXGClass";
 
 export const runXGClass = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];

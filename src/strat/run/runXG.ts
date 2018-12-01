@@ -3,9 +3,9 @@ import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
 import * as csvLog from "../csvLog";
-import { getFeaturesSplit } from "../mlGetFeatures";
+import { getFeaturesSplit } from "../ml/mlGetFeatures";
 import { round2 } from "../utils";
-import { LABEL_NAME } from "../mlGetLabels";
+import { LABEL_NAME } from "../ml/mlGetLabels";
 import * as log from "../log";
 import { padEnd } from "lodash";
 

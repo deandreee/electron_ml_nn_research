@@ -2,9 +2,9 @@ import * as regression from "regression";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "./mlGetFeatures";
-import { CorrCandles } from "./corr/CorrCandles";
-import { round2 } from "./utils";
-import * as csvLog from "./csvLog";
+import { CorrCandles } from "../corr/CorrCandles";
+import { round2 } from "../utils";
+import * as csvLog from "../csvLog";
 
 const getLabels = (corrCandles: CorrCandles) => {
   return corrCandles.candlesActual.map(x => x.pctChange._1d);

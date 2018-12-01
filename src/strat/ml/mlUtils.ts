@@ -1,5 +1,5 @@
-import { round1 } from "./utils";
-import { rescale } from "./rescale";
+import { round1 } from "../utils";
+import { rescale } from "../rescale";
 import { shuffle, uniq } from "lodash";
 
 export const logLabels = (uniqueLabels: number[], labels: number[]) => {

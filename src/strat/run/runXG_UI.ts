@@ -1,7 +1,7 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
-import { FeatureSplit } from "../mlGetFeatures";
+import { FeatureSplit } from "../ml/mlGetFeatures";
 import { round2 } from "../utils";
 import * as log from "../log";
 import { padEnd } from "lodash";

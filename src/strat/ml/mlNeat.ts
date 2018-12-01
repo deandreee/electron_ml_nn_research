@@ -3,9 +3,9 @@ import * as synaptic from "synaptic";
 import * as brain from "brain.js";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { Candle } from "./types";
-import { CorrCandles } from "./corr/CorrCandles";
-import { round2 } from "./utils";
+import { Candle } from "../types";
+import { CorrCandles } from "../corr/CorrCandles";
+import { round2 } from "../utils";
 import { FnGetFeature } from "./mlGetFeatures";
 
 export const predictNeataptic = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
