@@ -26,7 +26,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const labelCount = mlUtils.countLabels(uniqueLabels, labels);
   mlUtils.logLabels(uniqueLabels, labels);
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.middlesample(testData, labelCount, 40000);
+  testData = mlUtils.middlesample(testData, labelCount, 500);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
@@ -36,15 +36,15 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const XGBoost = await XGBoost_;
   const booster = new XGBoost({
     booster: "gbtree",
-    objective: "multi:softmax", // not working this is classes
-    // objective: "reg:linear", // seems to be the
+    objective: "multi:softmax",
     max_depth: 5,
     eta: 0.1,
     min_child_weight: 1,
-    subsample: 0.5,
+    subsample: 1,
     colsample_bytree: 1,
     silent: 1,
-    iterations: 200,
+    iterations: 10,
+    // iterations: 10,
     num_class: uniqueLabels.length
   });
 

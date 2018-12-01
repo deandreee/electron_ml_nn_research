@@ -137,7 +137,7 @@ export const corrCalcBatched = (coin: CoinData) => {
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
     candle.pctChange = {
-      trippleBarrier: trippleBarrier(candles, i, -2, 2, 700)
+      trippleBarrier: trippleBarrier(candles, i, -2, 2, 140)
     };
   }
 

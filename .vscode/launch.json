@@ -21,7 +21,9 @@
       "runtimeVersion": "8.11.3",
       "name": "NODE",
       "program": "${workspaceFolder}/dist-be/go.js",
-      "preLaunchTask": "tsc.be"
+      "preLaunchTask": "tsc.be",
+      "args": ["--max-old-space-size=8192"]
+
       // "console": "integratedTerminal"
     },
     {
