@@ -6,7 +6,7 @@ import * as mlEvaluate from "./mlEvaluate";
 import { Candle } from "../types";
 import { CorrCandles } from "../corr/CorrCandles";
 import { round2 } from "../utils";
-import { FnGetFeature } from "./mlGetFeatures";
+import { FnGetFeature } from "../features";
 
 export const predictNeataptic = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));

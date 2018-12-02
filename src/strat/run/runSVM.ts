@@ -3,12 +3,12 @@ import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
 import * as csvLogPredictions from "../csvLogPredictions";
-import { getFeaturesSplit } from "../ml/mlGetFeatures";
 import { round2 } from "../utils";
 import * as log from "../log";
 import { padEnd } from "lodash";
 
 import * as predict from "../ml/ml";
+import * as features from "../features";
 
 export const runSVM = async (): Promise<RunResult> => {
   const ranges = [daterange.SepWeek];
@@ -18,7 +18,7 @@ export const runSVM = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = getFeaturesSplit();
+  const featuresSplit = features.getBBands();
   for (let x of featuresSplit) {
     for (let range of ranges) {
       log.start(x.name);

@@ -3,7 +3,7 @@ import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
 import * as csvLog from "../csvLog";
-import { getFeaturesSplit } from "../ml/mlGetFeatures";
+import * as features from "../features";
 import { round2 } from "../utils";
 import { LABEL_NAME } from "../ml/mlGetLabels";
 import * as log from "../log";
@@ -24,7 +24,7 @@ export const runXG = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = getFeaturesSplit();
+  const featuresSplit = features.getBBands();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";

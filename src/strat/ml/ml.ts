@@ -1,7 +1,7 @@
 import * as libsvm from "libsvm-js";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { FnGetFeature } from "./mlGetFeatures";
+import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { round2 } from "../utils";
 // import * as csvLog from "./csvLog";

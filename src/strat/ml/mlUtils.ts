@@ -9,6 +9,25 @@ export const logLabels = (uniqueLabels: number[], labels: number[]) => {
   }
 };
 
+export const logLabelsInline = (labelCount: NumberMap, avgLabelCount: number) => {
+  console.log(
+    "LABELS: ",
+    // @ts-ignore
+    Object.keys(labelCount).map(x => labelCount[x]),
+    " | Middlesample @ ",
+    avgLabelCount
+  );
+};
+
+export const sumLabels = (uniqueLabels: number[], labels: number[]) => {
+  let sum = 0;
+  for (let lbl of uniqueLabels) {
+    const count = labels.filter(x => x === lbl).length;
+    sum += count;
+  }
+  return sum;
+};
+
 export const logLabelsPlusMinus5 = (labels: number[]) => {
   for (let i = -5; i <= 5; i++) {
     const count = labels.filter(x => x === i).length;

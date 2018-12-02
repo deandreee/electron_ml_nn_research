@@ -2,7 +2,7 @@ import * as XGBoost_ from "ml-xgboost";
 // const XGBoost_ = require("ml-xgboost");
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
-import { FnGetFeature } from "./mlGetFeatures";
+import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 // import { round2 } from "./utils";
 import { mlGetLabels } from "./mlGetLabels";
@@ -25,9 +25,12 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   const labelCount = mlUtils.countLabels(uniqueLabels, labels);
-  mlUtils.logLabels(uniqueLabels, labels);
+  // mlUtils.logLabels(uniqueLabels, labels);
   // testData = mlUtils.middlesample(testData, labelCount, 500);
-  testData = mlUtils.middlesample(testData, labelCount, 3000);
+  const avgLabelCount = Math.round(mlUtils.sumLabels(uniqueLabels, labels) / uniqueLabels.length);
+  mlUtils.logLabelsInline(labelCount, avgLabelCount);
+
+  testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);

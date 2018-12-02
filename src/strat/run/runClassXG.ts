@@ -2,12 +2,12 @@ import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
-import { getFeaturesSplit } from "../ml/mlGetFeatures";
 import { round2 } from "../utils";
 import * as log from "../log";
 import { padEnd } from "lodash";
 
 import * as mlXGClass from "../ml/mlXGClass";
+import * as features from "../features";
 
 export const runXGClass = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
@@ -21,7 +21,7 @@ export const runXGClass = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = getFeaturesSplit();
+  const featuresSplit = features.getBBands();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";

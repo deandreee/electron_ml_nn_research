@@ -22,8 +22,8 @@ import { padEnd, maxBy, minBy } from "lodash";
 // @ts-ignore
 import * as mlXG from "../ml/mlXG";
 import * as mlXGClass from "../ml/mlXGClass";
-import { getFeaturesSplit } from "../ml/mlGetFeatures";
 import { CorrCandles } from "../corr/CorrCandles";
+import * as features from "../features";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
@@ -48,7 +48,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = getFeaturesSplit();
+  const featuresSplit = features.getMACD();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";
