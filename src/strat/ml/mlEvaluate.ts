@@ -45,9 +45,9 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
   const recallTotal = sum(objToArr(recall)) / uniqueLabels.length;
   const fScore = (2 * precisionTotal * recallTotal) / (precisionTotal + recallTotal);
 
-  console.log(padEnd("PRECISION_TOTAL", 20), round2(precisionTotal));
-  console.log(padEnd("RECALL_TOTAL", 20), round2(recallTotal));
-  console.log(padEnd("F_SCORE", 20), round2(fScore));
+  // console.log(padEnd("PRECISION_TOTAL", 20), round2(precisionTotal));
+  // console.log(padEnd("RECALL_TOTAL", 20), round2(recallTotal));
+  // console.log(padEnd("F_SCORE", 20), round2(fScore));
 
   return { fScore, precision, precisionTotal, recall, recallTotal };
 };

@@ -12,7 +12,7 @@ import * as mlXGClass from "../ml/mlXGClass";
 export const runXGClass = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
-  const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct];
+  const ranges = [daterange.JunJul, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct];
   // const ranges = [daterange.JunJul, daterange.Aug];
   // const ranges = [daterange.JunJul, daterange.Aug, daterange.Sep, daterange.Oct];
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug];

@@ -10,6 +10,12 @@ export const JunJul: DateRange = {
   to: new Date("2018-08-01T00:00:00Z")
 };
 
+export const JunJulAugSep: DateRange = {
+  name: "JunJulAugSep",
+  from: new Date("2018-06-01T00:00:00Z"),
+  to: new Date("2018-10-01T00:00:00Z")
+};
+
 export const JunJulAug: DateRange = {
   name: "JunJulAug",
   from: new Date("2018-06-01T00:00:00Z"),
@@ -52,6 +58,12 @@ export const Jul: DateRange = {
   to: new Date("2018-08-01T00:00:00Z")
 };
 
+export const AugSep: DateRange = {
+  name: "AugSep",
+  from: new Date("2018-08-01T00:00:00Z"),
+  to: new Date("2018-10-01T00:00:00Z")
+};
+
 export const Aug: DateRange = {
   name: "Aug",
   from: new Date("2018-08-01T00:00:00Z"),
@@ -80,6 +92,12 @@ export const Oct: DateRange = {
   name: "Oct",
   from: new Date("2018-10-01T00:00:00Z"),
   to: new Date("2018-11-01T00:00:00Z")
+};
+
+export const Nov: DateRange = {
+  name: "Nov",
+  from: new Date("2018-11-01T00:00:00Z"),
+  to: new Date("2018-12-01T00:00:00Z")
 };
 
 export const NovDump: DateRange = {

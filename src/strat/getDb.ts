@@ -48,18 +48,19 @@ export const getDb = (db: DB) => {
 
 export const dbQuery = (dbName: DB, tableName: string, coinName: string, from: Date, to: Date) => {
   const db = getDb(dbName);
-  return getCoinPercentDrop(db, tableName, coinName, from, to);
+  // return getCoinPercentDrop(db, tableName, coinName, from, to);
+  return query(db, tableName, from, to);
 };
 
-const getCoinPercentDrop = (db: Database, tableName: string, coinName: string, from: Date, to: Date) => {
-  const rows = query(db, tableName, from, to);
-  const max = Math.max(...rows.map(x => x.close));
-  for (let i = 0; i < rows.length; i++) {
-    const candle = rows[i];
-    rows[i].percentChange = Math.round((candle.close / max) * 1000) / 1000;
-  }
-  return rows;
-};
+// const getCoinPercentDrop = (db: Database, tableName: string, coinName: string, from: Date, to: Date) => {
+//   const rows = query(db, tableName, from, to);
+//   const max = Math.max(...rows.map(x => x.close));
+//   for (let i = 0; i < rows.length; i++) {
+//     const candle = rows[i];
+//     rows[i].percentChange = Math.round((candle.close / max) * 1000) / 1000;
+//   }
+//   return rows;
+// };
 
 const query = (db: Database, table: string, from: Date, to: Date): Candle[] => {
   const fromTs = from.getTime() / 1000;

@@ -138,6 +138,12 @@ export interface Indicators {
   mfi120_15?: number;
   mfi120_30?: number;
   mfi120_60?: number;
+  mfi240_15?: number;
+  mfi240_30?: number;
+  mfi240_60?: number;
+  mfi480_15?: number;
+  mfi480_30?: number;
+  mfi480_60?: number;
 
   macd30?: MACD;
   macd60?: MACD;

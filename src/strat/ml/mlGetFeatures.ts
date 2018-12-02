@@ -354,22 +354,14 @@ export const getAll = (): FeatureSplit[] => {
 
 export const getStochKD = (): FeatureSplit[] => {
   return [
-    { name: "stochKD60_10.k", fn: x => [x.ind.stochKD60_10.k] },
-    { name: "stochKD60_10.d", fn: x => [x.ind.stochKD60_10.d] },
-    { name: "stochKD60_14.k", fn: x => [x.ind.stochKD60_14.k] },
-    { name: "stochKD60_14.d", fn: x => [x.ind.stochKD60_14.d] },
-    { name: "stochKD60_20.k", fn: x => [x.ind.stochKD60_20.k] },
-    { name: "stochKD60_20.d", fn: x => [x.ind.stochKD60_20.d] },
-    { name: "stochKD60_30.k", fn: x => [x.ind.stochKD60_30.k] },
-    { name: "stochKD60_30.d", fn: x => [x.ind.stochKD60_30.d] },
-    { name: "stochKD120_10.k", fn: x => [x.ind.stochKD120_10.k] },
-    { name: "stochKD120_10.d", fn: x => [x.ind.stochKD120_10.d] },
-    { name: "stochKD120_14.k", fn: x => [x.ind.stochKD120_14.k] },
-    { name: "stochKD120_14.d", fn: x => [x.ind.stochKD120_14.d] },
-    { name: "stochKD120_20.k", fn: x => [x.ind.stochKD120_20.k] },
-    { name: "stochKD120_20.d", fn: x => [x.ind.stochKD120_20.d] },
-    { name: "stochKD120_30.k", fn: x => [x.ind.stochKD120_30.k] },
-    { name: "stochKD120_30.d", fn: x => [x.ind.stochKD120_30.d] }
+    { name: "stochKD60_10", fn: x => [x.ind.stochKD60_10.k, x.ind.stochKD60_10.d] },
+    { name: "stochKD60_14", fn: x => [x.ind.stochKD60_14.k, x.ind.stochKD60_14.d] },
+    { name: "stochKD60_20", fn: x => [x.ind.stochKD60_20.k, x.ind.stochKD60_20.d] },
+    { name: "stochKD60_30", fn: x => [x.ind.stochKD60_30.k, x.ind.stochKD60_30.d] },
+    { name: "stochKD120_10", fn: x => [x.ind.stochKD120_10.k, x.ind.stochKD120_10.d] },
+    { name: "stochKD120_14", fn: x => [x.ind.stochKD120_14.k, x.ind.stochKD120_14.d] },
+    { name: "stochKD120_20", fn: x => [x.ind.stochKD120_20.k, x.ind.stochKD120_20.d] },
+    { name: "stochKD120_30", fn: x => [x.ind.stochKD120_30.k, x.ind.stochKD120_30.d] }
   ];
 };
 
@@ -421,23 +413,257 @@ export const getRSI = (): FeatureSplit[] => {
   ];
 };
 
-export const getRSICombo = (): FeatureSplit[] => {
+export const getMACD = (): FeatureSplit[] => {
   return [
-    // { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10] }
-    // {
-    //   name: "rsi_combo_macd",
-    //   fn: x => [
-    //     x.ind.rsi30x10,
-    //     x.ind.rsi60x10,
-    //     x.ind.rsi120x10,
-    //     x.ind.rsi240x10,
-    //     x.ind.rsi480x10,
-    //     x.ind.macd30.histo,
-    //     x.ind.macd60.histo,
-    //     x.ind.macd120.histo,
-    //     x.ind.macd240.histo
-    //   ]
-    // }
+    { name: "macd30", fn: x => [x.ind.macd30.histo] },
+    { name: "macd60", fn: x => [x.ind.macd60.histo] },
+    { name: "macd120", fn: x => [x.ind.macd120.histo] },
+    { name: "macd240", fn: x => [x.ind.macd240.histo] }
+  ];
+};
+
+export const getMFI = (): FeatureSplit[] => {
+  return [
+    {
+      name: "mfi60_15",
+      fn: (x, i, corrCandles) => [x.ind.mfi60_15]
+    },
+    {
+      name: "mfi60_30",
+      fn: (x, i, corrCandles) => [x.ind.mfi60_30]
+    },
+    {
+      name: "mfi60_60",
+      fn: (x, i, corrCandles) => [x.ind.mfi60_60]
+    },
+    {
+      name: "mfi120_15",
+      fn: (x, i, corrCandles) => [x.ind.mfi120_15]
+    },
+    {
+      name: "mfi120_30",
+      fn: (x, i, corrCandles) => [x.ind.mfi120_30]
+    },
+    {
+      name: "mfi120_60",
+      fn: (x, i, corrCandles) => [x.ind.mfi120_60]
+    },
+    {
+      name: "mfi240_15",
+      fn: (x, i, corrCandles) => [x.ind.mfi240_15]
+    },
+    {
+      name: "mfi240_30",
+      fn: (x, i, corrCandles) => [x.ind.mfi240_30]
+    },
+    {
+      name: "mfi240_60",
+      fn: (x, i, corrCandles) => [x.ind.mfi240_60]
+    },
+    {
+      name: "mfi480_15",
+      fn: (x, i, corrCandles) => [x.ind.mfi480_15]
+    },
+    {
+      name: "mfi480_30",
+      fn: (x, i, corrCandles) => [x.ind.mfi480_30]
+    },
+    {
+      name: "mfi480_60",
+      fn: (x, i, corrCandles) => [x.ind.mfi480_60]
+    }
+  ];
+};
+
+export const getIFT = (): FeatureSplit[] => {
+  return [
+    {
+      name: "ift30x5",
+      fn: (x, i, corrCandles) => [x.ind.ift30x5]
+    },
+    {
+      name: "ift60x5",
+      fn: (x, i, corrCandles) => [x.ind.ift60x5]
+    },
+    {
+      name: "ift60x15",
+      fn: (x, i, corrCandles) => [x.ind.ift60x15]
+    },
+    {
+      name: "ift10x15",
+      fn: (x, i, corrCandles) => [x.ind.ift10x15]
+    },
+    {
+      name: "ift30x15",
+      fn: (x, i, corrCandles) => [x.ind.ift30x15]
+    },
+    {
+      name: "ift120x15",
+      fn: (x, i, corrCandles) => [x.ind.ift120x15]
+    },
+    {
+      name: "ift10x30",
+      fn: (x, i, corrCandles) => [x.ind.ift10x30]
+    },
+    {
+      name: "ift10x30",
+      fn: (x, i, corrCandles) => [x.ind.ift10x30]
+    },
+    {
+      name: "ift60x30",
+      fn: (x, i, corrCandles) => [x.ind.ift60x30]
+    },
+    {
+      name: "ift120x30",
+      fn: (x, i, corrCandles) => [x.ind.ift120x30]
+    },
+    {
+      name: "ifts10x15",
+      fn: (x, i, corrCandles) => [x.ind.ifts10x15]
+    },
+    {
+      name: "ifts30x15",
+      fn: (x, i, corrCandles) => [x.ind.ifts30x15]
+    },
+    {
+      name: "ifts60x15",
+      fn: (x, i, corrCandles) => [x.ind.ifts60x15]
+    }
+  ];
+};
+
+// -------------------- RUNNING macd60_ADX120 --------------------
+// AugSep     0.43  0.43  0.43
+// Jun        0.37  0.3   0.33
+// Jul        0.25  0.24  0.25
+// Aug        0.45  0.45  0.45
+// Sep        0.34  0.39  0.36
+// Oct        0.35  0.42  0.38
+// Nov        0.45  0.51  0.48
+
+export const getATR = (): FeatureSplit[] => {
+  return [
+    {
+      name: "atr60",
+      fn: (x, i, corrCandles) => [x.ind.atr60]
+    },
+    {
+      name: "atr120",
+      fn: (x, i, corrCandles) => [x.ind.atr120]
+    },
+    {
+      name: "atr240",
+      fn: (x, i, corrCandles) => [x.ind.atr240]
+    },
+    {
+      name: "atr360",
+      fn: (x, i, corrCandles) => [x.ind.atr360]
+    },
+    {
+      name: "atr480",
+      fn: (x, i, corrCandles) => [x.ind.atr480]
+    },
+    {
+      name: "atr720",
+      fn: (x, i, corrCandles) => [x.ind.atr720]
+    },
+    {
+      name: "atr960",
+      fn: (x, i, corrCandles) => [x.ind.atr960]
+    }
+  ];
+};
+
+export const getADX = (): FeatureSplit[] => {
+  return [
+    {
+      name: "macd60_ADX30",
+      fn: (x, i, corrCandles) => [x.ind.macd60_ADX30]
+    },
+    {
+      name: "macd60_ADX60",
+      fn: (x, i, corrCandles) => [x.ind.macd60_ADX60]
+    },
+    {
+      name: "macd60_ADX120",
+      fn: (x, i, corrCandles) => [x.ind.macd60_ADX120]
+    },
+    {
+      name: "macd120_ADX30",
+      fn: (x, i, corrCandles) => [x.ind.macd120_ADX30]
+    },
+    {
+      name: "macd120_ADX60",
+      fn: (x, i, corrCandles) => [x.ind.macd120_ADX60]
+    },
+    {
+      name: "macd120_ADX120",
+      fn: (x, i, corrCandles) => [x.ind.macd120_ADX120]
+    }
+  ];
+};
+
+export const getCombo = (): FeatureSplit[] => {
+  return [
+    { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10] },
+    { name: "rsi_combo_2", fn: x => [x.ind.rsi30x30, x.ind.rsi60x10, x.ind.rsi480x10] },
+    { name: "rsi_combo_2_mfi", fn: x => [x.ind.rsi30x30, x.ind.rsi60x10, x.ind.rsi480x10, x.ind.mfi60_15] },
+    {
+      name: "rsi_combo_2_mfi_stoch",
+      fn: x => [
+        x.ind.rsi30x30,
+        x.ind.rsi60x10,
+        x.ind.rsi480x10,
+        x.ind.mfi60_15,
+        x.ind.stochKD60_20.k,
+        x.ind.stochKD60_20.d
+      ]
+    },
+    {
+      name: "rsi_combo_3_mfi_stoch",
+      fn: x => [
+        x.ind.rsi240x20,
+        // x.ind.rsi240x30,
+        x.ind.rsi480x10,
+        // x.ind.rsi480x20,
+        x.ind.mfi60_15,
+        x.ind.stochKD60_20.k,
+        x.ind.stochKD60_20.d,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo
+      ]
+    },
+
+    {
+      name: "rsi_combo_3_mfi_stoch_macdadx",
+      fn: x => [
+        x.ind.rsi240x20,
+        // x.ind.rsi240x30,
+        x.ind.rsi480x10,
+        // x.ind.rsi480x20,
+        x.ind.mfi60_15,
+        x.ind.stochKD60_20.k,
+        x.ind.stochKD60_20.d,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo,
+        x.ind.macd60_ADX120
+      ]
+    },
+
+    {
+      name: "rsi_combo_macd",
+      fn: x => [
+        x.ind.rsi30x10,
+        x.ind.rsi60x10,
+        x.ind.rsi120x10,
+        x.ind.rsi240x10,
+        x.ind.rsi480x10,
+        x.ind.macd30.histo,
+        x.ind.macd60.histo,
+        x.ind.macd120.histo,
+        x.ind.macd240.histo
+      ]
+    },
     {
       name: "rsi_combo_macd_bbands",
       fn: x => [
@@ -459,4 +685,4 @@ export const getRSICombo = (): FeatureSplit[] => {
   ];
 };
 
-export const getFeaturesSplit = getRSICombo;
+export const getFeaturesSplit = getCombo;

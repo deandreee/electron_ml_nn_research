@@ -23,24 +23,29 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
 
+  let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   const labelCount = mlUtils.countLabels(uniqueLabels, labels);
   mlUtils.logLabels(uniqueLabels, labels);
-  let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.middlesample(testData, labelCount, 500);
+  // testData = mlUtils.middlesample(testData, labelCount, 500);
+  testData = mlUtils.middlesample(testData, labelCount, 3000);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
 
-  features = mlUtils.rescaleFeatures(features);
+  // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   const XGBoost = await XGBoost_;
   const booster = new XGBoost({
     booster: "gbtree",
     objective: "multi:softmax",
-    max_depth: 5,
-    eta: 0.1,
+    // max_depth: 20,
+    max_depth: 3,
+    // eta: 0.1,
+    eta: 0.01,
+    // gamma: 10,
     min_child_weight: 1,
-    subsample: 1,
+    // subsample: 1,
+    subsample: 0.5,
     colsample_bytree: 1,
     silent: 1,
     iterations: 10,
@@ -59,7 +64,7 @@ export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: Fn
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
 
-  features = mlUtils.rescaleFeatures(features);
+  // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   const predicted = booster.predict(features);
 
