@@ -48,7 +48,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = features.getMACD();
+  const featuresSplit = features.getVWAP();
+  // const featuresSplit = features.getBBands();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";

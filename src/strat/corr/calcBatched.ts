@@ -2,19 +2,20 @@ import { PctChange, CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./trippleBarrier";
+
+const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
-const { XmBase, BatchWaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
+const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR } = require("../../../../gekko-develop/strategies/indicators");
+const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR } = require(`${GEKKO}/indicators`);
 
-const {
-  InverseFisherTransform,
-  InverseFisherTransformSmoothed
-} = require("../../../../gekko-develop/strategies/indicators/ninja");
+const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
+
+const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
 export const CANDLE_SIZE = 10;
 export const WARMUP_IND = 480 * 62; // => ind ready
-export const EXTENDED = 1500 * 10; // => for pct change
+export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / CANDLE_SIZE;
 export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
 
@@ -131,6 +132,22 @@ export const corrCalcBatched = (coin: CoinData) => {
   const atr720 = new ATR(720);
   const atr960 = new ATR(960);
 
+  const vwap30_10 = new VWAP(10);
+  const vwap30_20 = new VWAP(20);
+  const vwap30_30 = new VWAP(30);
+
+  const vwap60_10 = new VWAP(10);
+  const vwap60_20 = new VWAP(20);
+  const vwap60_30 = new VWAP(30);
+
+  const vwap120_10 = new VWAP(10);
+  const vwap120_20 = new VWAP(20);
+  const vwap120_30 = new VWAP(30);
+
+  const vwap240_10 = new VWAP(10);
+  const vwap240_20 = new VWAP(20);
+  const vwap240_30 = new VWAP(30);
+
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
@@ -239,7 +256,23 @@ export const corrCalcBatched = (coin: CoinData) => {
       atr360: atr360.update(candle),
       atr480: atr480.update(candle),
       atr720: atr720.update(candle),
-      atr960: atr960.update(candle)
+      atr960: atr960.update(candle),
+
+      vwap30_10: vwap30_10.update(bigCandle30),
+      vwap30_20: vwap30_20.update(bigCandle30),
+      vwap30_30: vwap30_30.update(bigCandle30),
+
+      vwap60_10: vwap60_10.update(bigCandle60),
+      vwap60_20: vwap60_20.update(bigCandle60),
+      vwap60_30: vwap60_30.update(bigCandle60),
+
+      vwap120_10: vwap120_10.update(bigCandle120),
+      vwap120_20: vwap120_20.update(bigCandle120),
+      vwap120_30: vwap120_30.update(bigCandle120),
+
+      vwap240_10: vwap240_10.update(bigCandle240),
+      vwap240_20: vwap240_20.update(bigCandle240),
+      vwap240_30: vwap240_30.update(bigCandle240)
     };
 
     candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));

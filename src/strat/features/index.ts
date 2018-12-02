@@ -9,6 +9,7 @@ import { getMACDADX } from "./getMACDADX";
 import { getMFI } from "./getMFI";
 import { getRSI } from "./getRSI";
 import { getStochKD } from "./getStochKD";
+import { getVWAP } from "./getVWAP";
 
 export {
   FeatureSplit,
@@ -22,5 +23,6 @@ export {
   getMACDADX,
   getMFI,
   getRSI,
-  getStochKD
+  getStochKD,
+  getVWAP
 };

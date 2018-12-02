@@ -91,6 +91,11 @@ export interface StochKD {
   d: number;
 }
 
+export interface VWAP {
+  num: number;
+  den: number;
+}
+
 export interface Indicators {
   rsi30x10?: number;
   rsi30x20?: number;
@@ -218,6 +223,22 @@ export interface Indicators {
   bbands120_30_1?: BBands;
   bbands120_30_2?: BBands;
   bbands120_30_3?: BBands;
+
+  vwap30_10?: VWAP;
+  vwap30_20?: VWAP;
+  vwap30_30?: VWAP;
+
+  vwap60_10?: VWAP;
+  vwap60_20?: VWAP;
+  vwap60_30?: VWAP;
+
+  vwap120_10?: VWAP;
+  vwap120_20?: VWAP;
+  vwap120_30?: VWAP;
+
+  vwap240_10?: VWAP;
+  vwap240_20?: VWAP;
+  vwap240_30?: VWAP;
 }
 
 export type CsvCell = string | number;

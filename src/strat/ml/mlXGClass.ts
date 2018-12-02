@@ -51,8 +51,8 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
     subsample: 0.5,
     colsample_bytree: 1,
     silent: 1,
+    // iterations: 50,
     iterations: 10,
-    // iterations: 10,
     num_class: uniqueLabels.length
   });
 
