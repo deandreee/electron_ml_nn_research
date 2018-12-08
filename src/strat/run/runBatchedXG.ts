@@ -29,13 +29,13 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const ranges = [
-    daterange.AugSep,
+    // daterange.JunJulAugSep,
     daterange.Jun,
-    daterange.Jul,
-    daterange.Aug,
-    daterange.Sep,
-    daterange.Oct,
-    daterange.Nov
+    daterange.Jul
+    // daterange.Aug,
+    // daterange.Sep,
+    // daterange.Oct,
+    // daterange.Nov
   ];
   // const ranges = [daterange.JunJul, daterange.Aug];
   // const ranges = [daterange.JunJul, daterange.Aug, daterange.Sep, daterange.Oct];
@@ -47,9 +47,14 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
+  const predictions: Predictions = {
+    Jun: {},
+    Jul: {},
+    Nov: {}
+  };
 
-  const featuresSplit = features.getVWAP();
-  // const featuresSplit = features.getBBands();
+  const featuresSplit = features.getVixFix();
+  // const featuresSplit = features.getMFI();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";
@@ -67,7 +72,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       //   padEnd(new Date(corrCandles.candlesActual[corrCandles.candlesActual.length - 1].start * 1000).toISOString())
       // );
 
-      const { results } = await mlXGClass.predict(booster, corrCandles, x.fn);
+      const { results, predicted } = await mlXGClass.predict(booster, corrCandles, x.fn);
+      predictions[range.name][x.name] = predicted;
 
       console.log(
         padEnd(range.name, 10),
@@ -82,14 +88,20 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.end(x.name);
   }
 
-  const labelsPredicted: number[] = [];
-
   return {
-    coins: { BTC: trainMonth.coin },
-    labelsPredicted,
+    coin: months.Jul,
+    labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
 };
+
+interface Predictions {
+  [name: string]: PredictionMonth;
+}
+
+interface PredictionMonth {
+  [name: string]: number[];
+}
 
 const getIndMinMax = (candles: CorrCandles) => {
   {

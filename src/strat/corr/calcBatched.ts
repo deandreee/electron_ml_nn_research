@@ -7,14 +7,14 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR } = require(`${GEKKO}/indicators`);
+const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
 const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
 export const CANDLE_SIZE = 10;
-export const WARMUP_IND = 480 * 62; // => ind ready
+export const WARMUP_IND = 480 * 70; // => ind ready
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / CANDLE_SIZE;
 export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
@@ -116,13 +116,13 @@ export const corrCalcBatched = (coin: CoinData) => {
   const stochKD120_20 = new XmBase(waveManager120, () => new StochKD({ period: 20, signalPeriod: 3 }));
   const stochKD120_30 = new XmBase(waveManager120, () => new StochKD({ period: 30, signalPeriod: 3 }));
 
-  const macd60_ADX30 = new ADX(30, wHist);
-  const macd60_ADX60 = new ADX(60, wHist);
-  const macd60_ADX120 = new ADX(120, wHist);
+  const macd60_ADX30 = new XmBase(waveManager60, () => new ADX(30, wHist));
+  const macd60_ADX60 = new XmBase(waveManager60, () => new ADX(60, wHist));
+  const macd60_ADX120 = new XmBase(waveManager60, () => new ADX(120, wHist));
 
-  const macd120_ADX30 = new ADX(30, wHist);
-  const macd120_ADX60 = new ADX(60, wHist);
-  const macd120_ADX120 = new ADX(120, wHist);
+  const macd120_ADX30 = new XmBase(waveManager120, () => new ADX(30, wHist));
+  const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
+  const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
 
   const atr60 = new ATR(60);
   const atr120 = new ATR(120);
@@ -132,21 +132,35 @@ export const corrCalcBatched = (coin: CoinData) => {
   const atr720 = new ATR(720);
   const atr960 = new ATR(960);
 
-  const vwap30_10 = new VWAP(10);
-  const vwap30_20 = new VWAP(20);
-  const vwap30_30 = new VWAP(30);
+  const vwap30_10 = new XmBase(waveManager30, () => new VWAP(10));
+  const vwap30_20 = new XmBase(waveManager30, () => new VWAP(20));
+  const vwap30_30 = new XmBase(waveManager30, () => new VWAP(30));
 
-  const vwap60_10 = new VWAP(10);
-  const vwap60_20 = new VWAP(20);
-  const vwap60_30 = new VWAP(30);
+  const vwap60_10 = new XmBase(waveManager60, () => new VWAP(10));
+  const vwap60_20 = new XmBase(waveManager60, () => new VWAP(20));
+  const vwap60_30 = new XmBase(waveManager60, () => new VWAP(30));
 
-  const vwap120_10 = new VWAP(10);
-  const vwap120_20 = new VWAP(20);
-  const vwap120_30 = new VWAP(30);
+  const vwap120_10 = new XmBase(waveManager120, () => new VWAP(10));
+  const vwap120_20 = new XmBase(waveManager120, () => new VWAP(20));
+  const vwap120_30 = new XmBase(waveManager120, () => new VWAP(30));
 
-  const vwap240_10 = new VWAP(10);
-  const vwap240_20 = new VWAP(20);
-  const vwap240_30 = new VWAP(30);
+  const vwap240_10 = new XmBase(waveManager240, () => new VWAP(10));
+  const vwap240_20 = new XmBase(waveManager240, () => new VWAP(20));
+  const vwap240_30 = new XmBase(waveManager240, () => new VWAP(30));
+
+  const vixFix30 = new XmBase(waveManager30, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix60 = new XmBase(waveManager60, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix240 = new XmBase(waveManager240, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480 = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480_a = new XmBase(waveManager480, () => new VixFix({ pd: 25, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480_b = new XmBase(waveManager480, () => new VixFix({ pd: 30, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480_c = new XmBase(waveManager480, () => new VixFix({ pd: 15, bbl: 12, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480_d = new XmBase(waveManager480, () => new VixFix({ pd: 15, bbl: 10, mult: 2.0, lb: 50, ph: 0.85 }));
+  const vixFix480_e = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 3.0, lb: 50, ph: 0.85 }));
+  const vixFix480_f = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 1.5, lb: 50, ph: 0.85 }));
+  const vixFix480_g = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 }));
+  const vixFix480_h = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 }));
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -272,7 +286,21 @@ export const corrCalcBatched = (coin: CoinData) => {
 
       vwap240_10: vwap240_10.update(bigCandle240),
       vwap240_20: vwap240_20.update(bigCandle240),
-      vwap240_30: vwap240_30.update(bigCandle240)
+      vwap240_30: vwap240_30.update(bigCandle240),
+
+      vixFix30: vixFix30.update(bigCandle30),
+      vixFix60: vixFix60.update(bigCandle60),
+      vixFix120: vixFix120.update(bigCandle120),
+      vixFix240: vixFix240.update(bigCandle240),
+      vixFix480: vixFix480.update(bigCandle480),
+      vixFix480_a: vixFix480_a.update(bigCandle480),
+      vixFix480_b: vixFix480_b.update(bigCandle480),
+      vixFix480_c: vixFix480_c.update(bigCandle480),
+      vixFix480_d: vixFix480_d.update(bigCandle480),
+      vixFix480_e: vixFix480_e.update(bigCandle480),
+      vixFix480_f: vixFix480_f.update(bigCandle480),
+      vixFix480_g: vixFix480_g.update(bigCandle480),
+      vixFix480_h: vixFix480_h.update(bigCandle480)
     };
 
     candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
@@ -287,9 +315,9 @@ export const corrCalcBatched = (coin: CoinData) => {
 
     candle.pctChange = {
       // trippleBarrier: trippleBarrier(candles, i, -0.5, 0.5, 20) // ok
-      trippleBarrier: trippleBarrier(candles, i, -2, 2, 140)
+      // trippleBarrier: trippleBarrier(candles, i, -2, 2, 140)
       // trippleBarrier: trippleBarrier(candles, i, -1, 1, 50) // ok
-      // trippleBarrier: trippleBarrier(candles, i, -3, 3, 220) // also works
+      trippleBarrier: trippleBarrier(candles, i, -3, 3, 220) // also works
     };
   }
 

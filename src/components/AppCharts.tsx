@@ -1,21 +1,22 @@
 import * as React from "react";
 import ReactEcharts from "echarts-for-react";
-import { EChartOption } from "echarts";
+// import { EChartOption } from "echarts";
 import { options } from "./options";
 // import * as chartUtils from "./chartUtils";
-import { CoinList } from "../strat/types";
 import { getLegend } from "./getLegend";
-import { seriesInd } from "./series";
+import { seriesInd, seriesPredicted } from "./series";
 // import { CorrChart } from "./CorrChart";
 import styles from "./styles";
+import { CorrCandles } from "../strat/corr/CorrCandles";
 
 interface Props {
-  coins: CoinList;
+  coin: CorrCandles;
+  labelsPredicted: number[];
 }
 
 interface State {
-  isLoading: boolean;
-  options: EChartOption;
+  // isLoading: boolean;
+  // options: EChartOption;
 }
 
 export class AppCharts extends React.Component<Props, State> {
@@ -24,70 +25,53 @@ export class AppCharts extends React.Component<Props, State> {
     options: options
   };
 
-  componentWillMount() {
-    const { coins } = this.props;
+  render() {
+    const { coin, labelsPredicted } = this.props;
 
-    // const currentProp = "percentChange";
+    if (!coin) {
+      return "loading...";
+    }
+
     const currentProp = "close";
 
     const series = [
       {
-        ...this.state.options.series[0],
-        color: coins.BTC.color || "white",
-        data: coins.BTC.candles.map(x => x && [x.start * 1000, x[currentProp]]),
-        name: coins.BTC.name,
+        ...options.series[0],
+        color: coin.coin.color,
+        data: coin.candlesActual.map(x => x && [x.start * 1000, x[currentProp]]),
+        name: coin.coin.name,
         large: true,
         sampling: "average",
         symbol: "none"
       }
     ];
 
-    // const labelsFiltered = labelsPredicted
-    //   .map((x, i) => ({ x, i }))
-    //   .filter(x => x.x === 1);
+    const seriesInd_ = seriesInd(currentProp, coin);
+    const seriesPredicted_ = seriesPredicted(coin, labelsPredicted);
 
-    // const seriesLabelsPredicted = {
-    //   symbolSize: 5,
-    //   data: labelsFiltered.map(x => [
-    //     coins[config.leadCoin].candles[x.i].start * 1000,
-    //     coins[config.leadCoin].candles[x.i][currentProp]
-    //   ]),
-    //   color: "green",
-    //   type: "scatter",
-    //   large: true
-    // };
+    const legend = getLegend(coin, seriesInd_);
+    const optionsMod = {
+      ...options,
+      legend,
+      series: [
+        ...series,
+        ...seriesInd_,
 
-    const seriesInd_ = seriesInd(currentProp, coins);
+        // ...seriesTrades(currentProp, coins),
+        // ...seriesSignals(currentProp, coins),
+        ...seriesPredicted_
+      ]
+    };
 
-    const legend = getLegend(coins, seriesInd_);
-
-    this.setState({
-      options: {
-        ...this.state.options,
-        legend,
-        series: [
-          ...series,
-          ...seriesInd_
-
-          // ...seriesTrades(currentProp, coins),
-          // ...seriesSignals(currentProp, coins),
-          // seriesLabelsPredicted,
-        ]
-      },
-      isLoading: false
-    });
-  }
-
-  render() {
     return (
       <ReactEcharts
-        option={this.state.options}
+        option={optionsMod}
         style={{ height: "700px", width: "100%" }}
         notMerge={true}
         lazyUpdate={true}
         theme={"dark"}
         onEvents={{}}
-        showLoading={this.state.isLoading}
+        showLoading={false}
         loadingOption={{
           color: styles.colors.primary,
           maskColor: styles.colors.background

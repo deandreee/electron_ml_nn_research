@@ -1,4 +1,5 @@
 import { PaperTrader } from "./gekko/PaperTrader";
+import { CorrCandles } from "./corr/CorrCandles";
 
 export type Cb = (err: Error) => void;
 
@@ -116,9 +117,7 @@ export interface Indicators {
   psar?: number;
   xmPsar?: number;
   hlTrueRange?: IndHlTrueRange;
-  vixFix30?: number;
-  vixFix60?: number;
-  vixFix120?: number;
+
   zlema60Fast?: number;
   zlema60Slow?: number;
   hma?: number;
@@ -239,6 +238,20 @@ export interface Indicators {
   vwap240_10?: VWAP;
   vwap240_20?: VWAP;
   vwap240_30?: VWAP;
+
+  vixFix30?: number;
+  vixFix60?: number;
+  vixFix120?: number;
+  vixFix240?: number;
+  vixFix480?: number;
+  vixFix480_a?: number;
+  vixFix480_b?: number;
+  vixFix480_c?: number;
+  vixFix480_d?: number;
+  vixFix480_e?: number;
+  vixFix480_f?: number;
+  vixFix480_g?: number;
+  vixFix480_h?: number;
 }
 
 export type CsvCell = string | number;
@@ -363,7 +376,7 @@ export interface RoundTripAction {
 }
 
 export interface RunResult {
-  coins: CoinList;
+  coin: CorrCandles;
   labelsPredicted: number[];
   linRegs: LinRegResult[];
 }

@@ -96,6 +96,10 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower,
         x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower
       ]
+    },
+    {
+      name: "mfi_vixfix_rsi",
+      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix480]
     }
   ];
 };

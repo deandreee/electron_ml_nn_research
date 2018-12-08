@@ -1,12 +1,12 @@
-import { CoinList } from "../strat/types";
 import styles from "./styles";
+import { CorrCandles } from "../strat/corr/CorrCandles";
 
 interface Hash {
   [name: string]: boolean;
 }
 
-export const getLegend = (coins: CoinList, seriesInd: any) => {
-  let coinNames = Object.keys(coins);
+export const getLegend = (coin: CorrCandles, seriesInd: any) => {
+  let coinNames = [coin.coin.name];
   let indNames = seriesInd.map((x: any) => x.name);
 
   let legendSelected: Hash = {};

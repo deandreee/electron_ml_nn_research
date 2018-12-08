@@ -1,26 +1,30 @@
 import * as React from "react";
 import * as strat from "../strat";
-import { CoinList, LinRegResult } from "../strat/types";
-// import { AppCharts } from "./AppCharts";
-import { AppCorr } from "./AppCorr";
+import { LinRegResult } from "../strat/types";
+import { AppCharts } from "./AppCharts";
+import { CorrCandles } from "../strat/corr/CorrCandles";
+// import { AppCorr } from "./AppCorr";
 
 interface State {
-  coins: CoinList;
+  coin: CorrCandles;
   linRegs: LinRegResult[];
+  labelsPredicted: number[];
 }
 
 export class App extends React.Component {
   readonly state: State = {
-    coins: {},
-    linRegs: []
+    coin: null,
+    linRegs: [],
+    labelsPredicted: []
   };
 
   async componentWillMount() {
-    const { coins, linRegs } = await strat.run();
+    const { coin, linRegs, labelsPredicted } = await strat.run();
 
     this.setState({
-      coins,
-      linRegs
+      coin,
+      linRegs,
+      labelsPredicted
     });
   }
 
@@ -32,8 +36,8 @@ export class App extends React.Component {
   render() {
     return (
       <div style={this.style}>
-        {/* <AppCharts coins={this.state.coins} /> */}
-        <AppCorr linRegs={this.state.linRegs} />
+        <AppCharts coin={this.state.coin} labelsPredicted={this.state.labelsPredicted} />
+        {/* <AppCorr linRegs={this.state.linRegs} />*/}
       </div>
     );
   }

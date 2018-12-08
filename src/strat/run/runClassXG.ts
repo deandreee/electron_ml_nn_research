@@ -45,7 +45,7 @@ export const runXGClass = async (): Promise<RunResult> => {
   const labelsPredicted: number[] = [];
 
   return {
-    coins: { BTC: trainMonth.coin },
+    coin: trainMonth,
     labelsPredicted,
     linRegs
   };
