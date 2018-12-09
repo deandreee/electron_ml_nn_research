@@ -11,6 +11,7 @@ import { getRSI } from "./getRSI";
 import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix } from "./getVixFix";
+import { getTest } from "./getTest";
 
 export {
   FeatureSplit,
@@ -26,5 +27,6 @@ export {
   getRSI,
   getStochKD,
   getVWAP,
-  getVixFix
+  getVixFix,
+  getTest
 };

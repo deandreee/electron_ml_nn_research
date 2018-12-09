@@ -1,43 +1,18 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
-import * as daterange from "../daterange";
 
-// @ts-ignore
-import * as csvLog from "../csvLog";
-// @ts-ignore
-import * as csvLogger from "../csvLogger";
-// @ts-ignore
-import * as csvLogPredictions from "../csvLogPredictions";
-
-// @ts-ignore
 import { round2 } from "../utils";
-// @ts-ignore
-import { linregFX } from "../linreg";
-// @ts-ignore
-import { LABEL_NAME } from "../mlGetLabels";
+import { padEnd } from "lodash";
 import * as log from "../log";
-// @ts-ignore
-import { padEnd, maxBy, minBy } from "lodash";
 
-// @ts-ignore
-import * as mlXG from "../ml/mlXG";
-import * as mlXGClass from "../ml/mlXGClass";
+// import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = [
-    daterange.JunJulAugSep,
-    daterange.Jun,
-    daterange.Jul,
-    daterange.Aug,
-    daterange.Sep,
-    daterange.Oct,
-    daterange.Nov
-  ];
-
+  const ranges = runUtils.genRangesLast3_JunJulAugSep();
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
-
   const trainMonth = months[ranges[0].name];
 
   runUtils.getIndMinMax(trainMonth);
@@ -45,7 +20,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const featuresSplit = features.getVixFix();
+  // const featuresSplit = features.getCombo();
+  const featuresSplit = features.getTest();
   // const featuresSplit = features.getMFI();
   for (let x of featuresSplit) {
     log.start(x.name);

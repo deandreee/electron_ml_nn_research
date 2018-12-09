@@ -1,6 +1,7 @@
 import { CorrCandles } from "../corr/CorrCandles";
 import { minBy, maxBy, padEnd } from "lodash";
 import { round2 } from "../utils";
+import * as daterange from "../daterange";
 
 interface Predictions {
   [name: string]: PredictionMonth;
@@ -13,6 +14,7 @@ interface PredictionMonth {
 export const getPredictionsTemplate = () => {
   const predictions: Predictions = {
     JunJulAugSep: {},
+    AugSep: {},
     Jun: {},
     Jul: {},
     Aug: {},
@@ -63,4 +65,28 @@ export const getIndMinMax = (candles: CorrCandles) => {
       padEnd(round2(max.ind.macd240.histo).toString(), 5)
     );
   }
+};
+
+export const genRangesFull = () => {
+  return [
+    daterange.JunJulAugSep,
+    daterange.Jun,
+    daterange.Jul,
+    daterange.Aug,
+    daterange.Sep,
+    daterange.Oct,
+    daterange.Nov
+  ];
+};
+
+export const genRangesLast1_AugSep = () => {
+  return [daterange.AugSep, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct, daterange.Nov];
+};
+
+export const genRangesLast2_AugSepMini = () => {
+  return [daterange.AugSep, daterange.Oct, daterange.Nov];
+};
+
+export const genRangesLast3_JunJulAugSep = () => {
+  return [daterange.JunJulAugSep, daterange.Oct, daterange.Nov];
 };
