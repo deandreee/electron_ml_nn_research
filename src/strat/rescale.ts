@@ -14,9 +14,7 @@ export const rescaleArr0to1 = (arr: number[]): number[] => {
   const max = Math.max(...arr);
   const newMin = 0;
   const newMax = 1;
-  return arr.map(
-    value => ((newMax - newMin) / (max - min)) * (value - max) + newMax
-  );
+  return arr.map(value => ((newMax - newMin) / (max - min)) * (value - max) + newMax);
 };
 
 export const rescaleArrPlusMinus1 = (arr: number[]): number[] => {
@@ -24,9 +22,7 @@ export const rescaleArrPlusMinus1 = (arr: number[]): number[] => {
   const max = Math.max.apply(null, arr);
   const newMin = -1;
   const newMax = 1;
-  return arr.map(
-    value => ((newMax - newMin) / (max - min)) * (value - max) + newMax
-  );
+  return arr.map(value => ((newMax - newMin) / (max - min)) * (value - max) + newMax);
 };
 
 // from here https://github.com/mljs/libsvm/issues/14

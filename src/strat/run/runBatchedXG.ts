@@ -22,36 +22,28 @@ import { padEnd, maxBy, minBy } from "lodash";
 // @ts-ignore
 import * as mlXG from "../ml/mlXG";
 import * as mlXGClass from "../ml/mlXGClass";
-import { CorrCandles } from "../corr/CorrCandles";
 import * as features from "../features";
+import * as runUtils from "./runUtils";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  // const ranges = [daterange.SepWeek];
-  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const ranges = [
-    // daterange.JunJulAugSep,
+    daterange.JunJulAugSep,
     daterange.Jun,
-    daterange.Jul
-    // daterange.Aug,
-    // daterange.Sep,
-    // daterange.Oct,
-    // daterange.Nov
+    daterange.Jul,
+    daterange.Aug,
+    daterange.Sep,
+    daterange.Oct,
+    daterange.Nov
   ];
-  // const ranges = [daterange.JunJul, daterange.Aug];
-  // const ranges = [daterange.JunJul, daterange.Aug, daterange.Sep, daterange.Oct];
-  // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug];
+
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
 
   const trainMonth = months[ranges[0].name];
 
-  getIndMinMax(trainMonth);
+  runUtils.getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
-  const predictions: Predictions = {
-    Jun: {},
-    Jul: {},
-    Nov: {}
-  };
+  const predictions = runUtils.getPredictionsTemplate();
 
   const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
@@ -93,54 +85,4 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
-};
-
-interface Predictions {
-  [name: string]: PredictionMonth;
-}
-
-interface PredictionMonth {
-  [name: string]: number[];
-}
-
-const getIndMinMax = (candles: CorrCandles) => {
-  {
-    const min = minBy(candles.candlesActual, "ind.macd30.histo");
-    const max = maxBy(candles.candlesActual, "ind.macd30.histo");
-    console.log(
-      padEnd("macd30", 10),
-      padEnd(round2(min.ind.macd30.histo).toString(), 5),
-      padEnd(round2(max.ind.macd30.histo).toString(), 5)
-    );
-  }
-
-  {
-    const min = minBy(candles.candlesActual, "ind.macd60.histo");
-    const max = maxBy(candles.candlesActual, "ind.macd60.histo");
-    console.log(
-      padEnd("macd60", 10),
-      padEnd(round2(min.ind.macd60.histo).toString(), 5),
-      padEnd(round2(max.ind.macd60.histo).toString(), 5)
-    );
-  }
-
-  {
-    const min = minBy(candles.candlesActual, "ind.macd120.histo");
-    const max = maxBy(candles.candlesActual, "ind.macd120.histo");
-    console.log(
-      padEnd("macd120", 10),
-      padEnd(round2(min.ind.macd120.histo).toString(), 5),
-      padEnd(round2(max.ind.macd120.histo).toString(), 5)
-    );
-  }
-
-  {
-    const min = minBy(candles.candlesActual, "ind.macd240.histo");
-    const max = maxBy(candles.candlesActual, "ind.macd240.histo");
-    console.log(
-      padEnd("macd240", 10),
-      padEnd(round2(min.ind.macd240.histo).toString(), 5),
-      padEnd(round2(max.ind.macd240.histo).toString(), 5)
-    );
-  }
 };

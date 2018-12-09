@@ -33,7 +33,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
 
-  // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
+  features = mlUtils.rescaleFeatures(features);
 
   const net = new neataptic.architect.LSTM(1, 6, 1);
 
@@ -60,7 +60,7 @@ export const predict = (net: any, corrCandles: CorrCandles, fnGetFeature: FnGetF
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
 
-  // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
+  features = mlUtils.rescaleFeatures(features);
 
   const predicted = features.map(x => net.activate(x) as number[]).map(x => x[0]);
 
