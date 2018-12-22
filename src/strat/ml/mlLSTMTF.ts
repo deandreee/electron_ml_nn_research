@@ -6,6 +6,7 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
+import { splitFrames } from "./splitFrames";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -17,6 +18,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 };
 
 const uniqueLabels = [0, 1, 2];
+const BATCH_SIZE = 100;
 
 export const createModel = (featureCount: number) => {
   const model = tf.sequential();
@@ -28,7 +30,7 @@ export const createModel = (featureCount: number) => {
     // input_shape is supposed to be (timesteps, n_features). Remove the first dimension.
     // input_shape = (95000,360)
     // inputShape: [100, featureCount],
-    inputShape: [100, 4],
+    inputShape: [BATCH_SIZE, featureCount],
 
     // inputShape: [featureCount, 1],
     // inputShape: [featureCount],
@@ -70,21 +72,17 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 
   testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
 
-  features = testData.map(x => x.features).slice(0, 100);
-  labels = testData.map(x => x.label).slice(0, 100);
+  const trainBatches = splitFrames(features, labels, BATCH_SIZE);
 
   features = mlUtils.rescaleFeatures(features);
+  const featureCount = features[0].length;
 
-  const net = createModel(features[0].length);
+  const net = createModel(featureCount);
 
-  // const input = tf.tensor2d(features, [features.length, features[0].length]);
-  // const input = tf.tensor2d(features, [features.length, features[0].length]);
-  const input = tf.tensor3d([features], [1, features.length, features[0].length]);
-  // const input = features.map(x => tf.tensor(x));
-  // const output = tf.tensor2d(labels, [labels.length, 1]);
-  // const output = tf.tensor3d([labels.map(x => [x])]);
-  const output = tf.tensor2d([[25]]);
-  // const output = labels.map(x => tf.tensor(x));
+  const input = tf.tensor3d(trainBatches.map(x => x.features), [trainBatches.length, BATCH_SIZE, featureCount]);
+
+  // only take last, becaise with 100 with no overlaps we have just 44 samples
+  const output = tf.tensor2d(trainBatches.map(x => [x.labels[x.labels.length - 1]]), [trainBatches.length, 1]);
 
   await net.fit(input, output);
 
