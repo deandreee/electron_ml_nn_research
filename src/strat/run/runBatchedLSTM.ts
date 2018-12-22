@@ -15,8 +15,9 @@ import * as log from "../log";
 // @ts-ignore
 import { padEnd, maxBy, minBy } from "lodash";
 
-// import * as mlLSTMNeatapticClass from "../ml/mlLSTMNeatapticClass";
-import * as mlLSTMSynapticClass from "../ml/mlLSTMSynapticClass";
+// import * as mlLSTM from "../ml/mlLSTMNeatapticClass";
+// import * as mlLSTM from "../ml/mlLSTMSynapticClass";
+import * as mlLSTM from "../ml/mlLSTMTF";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 
@@ -52,7 +53,8 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
     // const fileName = "output/xg_7d_all_EOS.csv";
     // const fileName = "output/xg_7d_all_BTC_REAL.csv";
     // const fileName = "output/xg_10d_rsi_BTC_REAL.csv";
-    const { net } = await mlLSTMSynapticClass.train(trainMonth, x.fn);
+    // const { net } = await mlLSTMSynapticClass.train(trainMonth, x.fn);
+    const { net } = await mlLSTM.train(trainMonth, x.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];
@@ -63,7 +65,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
       //   padEnd(new Date(corrCandles.candlesActual[corrCandles.candlesActual.length - 1].start * 1000).toISOString())
       // );
 
-      const { results, predicted } = await mlLSTMSynapticClass.predict(net, corrCandles, x.fn);
+      const { results, predicted } = await mlLSTM.predict(net, corrCandles, x.fn);
       predictions[range.name][x.name] = predicted;
 
       console.log(

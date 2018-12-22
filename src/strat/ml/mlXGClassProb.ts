@@ -44,15 +44,15 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
     // max_depth: 20,
     max_depth: 5,
     // eta: 0.1,
-    eta: 0.5,
-    gamma: 10,
+    eta: 0.3, // default 0.3, range [0,1]
+    // gamma: 10,
     min_child_weight: 1,
     // subsample: 1,
     subsample: 0.5,
     colsample_bytree: 1,
     silent: 1,
     // iterations: 50,
-    iterations: 10,
+    iterations: 30,
     num_class: uniqueLabels.length
   });
 
@@ -69,27 +69,52 @@ export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: Fn
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
-  const predicted = booster.predict(features);
+  const predicted = booster.predict(features) as number[][];
 
-  console.log("PROB_35", JSON.stringify(getProbArr(predicted, 0.35)));
-  console.log("PROB_40", JSON.stringify(getProbArr(predicted, 0.4)));
-  console.log("PROB_50", JSON.stringify(getProbArr(predicted, 0.5)));
-  console.log("PROB_60", JSON.stringify(getProbArr(predicted, 0.6)));
-  console.log("PROB_80", JSON.stringify(getProbArr(predicted, 0.8)));
-  console.log("PROB_90", JSON.stringify(getProbArr(predicted, 0.9)));
+  // console.log("PROB_35", JSON.stringify(getProbArr(predicted, 0.35)));
+  // console.log("PROB_40", JSON.stringify(getProbArr(predicted, 0.4)));
+  // console.log("PROB_50", JSON.stringify(getProbArr(predicted, 0.5)));
+  // console.log("PROB_60", JSON.stringify(getProbArr(predicted, 0.6)));
+  // console.log("PROB_80", JSON.stringify(getProbArr(predicted, 0.8)));
+  // console.log("PROB_90", JSON.stringify(getProbArr(predicted, 0.9)));
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  const { xLabels, xPredicted } = getPredictionsOverX(labels, predicted, 0.5);
+  const results = mlEvaluate.evaluateResults(uniqueLabels, xLabels, xPredicted);
 
-  return { booster, features, labels, predicted, results };
+  return { booster, features, labels, predicted: xPredicted, results };
 };
 
-const getProbArr = (predicted: number[][], certainty: number) => {
-  const cert_0 = getProbCount(predicted, 0, certainty);
-  const cert_1 = getProbCount(predicted, 1, certainty);
-  const cert_2 = getProbCount(predicted, 2, certainty);
+export const getProbArr = (predicted: number[][], prob: number) => {
+  const cert_0 = getProbCount(predicted, 0, prob);
+  const cert_1 = getProbCount(predicted, 1, prob);
+  const cert_2 = getProbCount(predicted, 2, prob);
   return [cert_0, cert_1, cert_2];
 };
 
-const getProbCount = (predicted: number[][], label: number, certainty: number) => {
-  return predicted.filter((x: number[]) => x[label] > certainty).length;
+const getProbCount = (predicted: number[][], label: number, prob: number) => {
+  return predicted.filter((x: number[]) => x[label] > prob).length;
+};
+
+const getPredictionsOverX = (labels: number[], predicted: number[][], prob: number) => {
+  const xLabels = [];
+  const xPredicted = [];
+
+  for (let i = 0; i < predicted.length; i++) {
+    if (predicted[i][0] > prob) {
+      xLabels.push(labels[i]);
+      xPredicted.push(0);
+    }
+
+    if (predicted[i][1] > prob) {
+      xLabels.push(labels[i]);
+      xPredicted.push(1);
+    }
+
+    if (predicted[i][2] > prob) {
+      xLabels.push(labels[i]);
+      xPredicted.push(2);
+    }
+  }
+
+  return { xLabels, xPredicted };
 };
