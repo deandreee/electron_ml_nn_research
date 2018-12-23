@@ -6,7 +6,8 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
-import model from "./models/v5_Vanilla";
+// import model from "./models/v5_Vanilla";
+import model from "./models/v5_VanillaClass";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -27,9 +28,10 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 
   features = mlUtils.rescaleFeatures(features);
   const featureCount = features[0].length;
+  const labelCount = uniqueLabels.length;
 
-  const net = model.createModel(BATCH_SIZE, featureCount);
-  const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount);
+  const net = model.createModel(BATCH_SIZE, featureCount, labelCount);
+  const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
 
   await net.fit(tfInput, tfOutput, { epochs: 5, batchSize: 1 });
 
@@ -47,7 +49,9 @@ export const predict = async (net: tf.Sequential, corrCandles: CorrCandles, fnGe
 
   features = mlUtils.rescaleFeatures(features);
   const featureCount = features[0].length;
-  const { tfInput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount);
+  const labelCount = uniqueLabels.length;
+
+  const { tfInput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
   const output = trainBatches.map(x => x.labels[x.labels.length - 1]);
 
   const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());

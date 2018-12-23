@@ -1,5 +1,6 @@
 import * as tf from "@tensorflow/tfjs";
 import { TrainBatch } from "./splitFrames";
+import { ModelCompileConfig } from "@tensorflow/tfjs";
 
 export interface ModelInput {
   tfInput: tf.Tensor;
@@ -8,8 +9,14 @@ export interface ModelInput {
 }
 
 export interface ModelLSTM {
-  createModel: (batchSize: number, featureCount: number) => tf.Sequential;
-  getInput: (features: number[][], labels: number[], batchSize: number, featureCount: number) => ModelInput;
+  createModel: (batchSize: number, featureCount: number, labelCount: number) => tf.Sequential;
+  getInput: (
+    features: number[][],
+    labels: number[],
+    batchSize: number,
+    featureCount: number,
+    labelCount: number
+  ) => ModelInput;
 }
 
 export const mapLabel3d = (label: number) => {
@@ -27,7 +34,7 @@ export const mapLabel3d = (label: number) => {
 };
 
 // only take last, becaise with 100 with no overlaps we have just 44 samples
-export const formatOutput2d_WithShape = (trainBatches: TrainBatch[]) => {
+export const formatOutput2d_withShape = (trainBatches: TrainBatch[]) => {
   return tf.tensor2d(trainBatches.map(x => x.labels[x.labels.length - 1]), [trainBatches.length, 1]);
 };
 
@@ -35,10 +42,22 @@ export const formatOutput2d_withShape_asArray = (trainBatches: TrainBatch[]) => 
   return tf.tensor2d(trainBatches.map(x => [x.labels[x.labels.length - 1]]), [trainBatches.length, 1]);
 };
 
-export const formatOutput3d_oneZeroEncoded = (trainBatches: TrainBatch[], batchSize: number, labelCount: number) => {
+export const formatOutput3d_oneHotEncoded = (trainBatches: TrainBatch[], batchSize: number, labelCount: number) => {
   return tf.tensor3d(trainBatches.map(x => x.labels.map(x => mapLabel3d(x))), [
     trainBatches.length,
     batchSize,
     labelCount
   ]);
+};
+
+export const formatInput3d = (trainBatches: TrainBatch[], batchSize: number, featureCount: number) => {
+  return tf.tensor3d(trainBatches.map(x => x.features), [trainBatches.length, batchSize, featureCount]);
+};
+
+export const compileClassAdam = (): ModelCompileConfig => {
+  return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
+};
+
+export const compileRegSgd = (): ModelCompileConfig => {
+  return { loss: "meanSquaredError", optimizer: "sgd" };
 };

@@ -27,10 +27,10 @@ const model: ModelLSTM = {
     return model;
   },
 
-  getInput: (features: number[][], labels: number[], batchSize: number, featureCount: number) => {
+  getInput: (features: number[][], labels: number[], batchSize: number, featureCount: number, labelCount: number) => {
     const trainBatches = splitFrames(features, labels, batchSize);
     const tfInput = common.formatInput3d(trainBatches, batchSize, featureCount);
-    const tfOutput = common.formatOutput2d_withShape(trainBatches);
+    const tfOutput = common.formatOutput3d_oneHotEncoded(trainBatches, batchSize, labelCount);
     return { tfInput, tfOutput, trainBatches };
   }
 };
