@@ -1,4 +1,4 @@
-interface TrainBatch {
+export interface TrainBatch {
   features: number[][];
   labels: number[];
 }
