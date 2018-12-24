@@ -29,11 +29,11 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   const ranges = [
     // daterange.JunJulAugSep,
     daterange.Jun,
-    daterange.Jul
-    // daterange.Aug,
-    // daterange.Sep,
-    // daterange.Oct,
-    // daterange.Nov
+    daterange.Jul,
+    daterange.Aug,
+    daterange.Sep,
+    daterange.Oct,
+    daterange.Nov
   ];
   // const ranges = [daterange.JunJul, daterange.Aug];
   // const ranges = [daterange.JunJul, daterange.Aug, daterange.Sep, daterange.Oct];
@@ -45,8 +45,8 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  // const featuresSplit = features.getCombo();
-  const featuresSplit = features.getVixFix();
+  const featuresSplit = features.getCombo();
+  // const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
   for (let x of featuresSplit) {
     log.start(x.name);

@@ -9,7 +9,10 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
 // import model from "./models/v5_Vanilla";
 import model from "./models/v5_VanillaClass";
+// import model from "./models/v5_Stacked2Class";
+// import model from "./models/v5_Stacked3Class";
 import * as log from "../log";
+import { getClassWeights } from "./models/common";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -33,10 +36,14 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const labelCount = uniqueLabels.length;
 
   const net = model.createModel(BATCH_SIZE, featureCount, labelCount);
-  const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
+  const { tfInput, tfOutput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
+
+  const classWeights = getClassWeights(uniqueLabels, trainBatches);
 
   log.time("FIT");
-  await net.fit(tfInput, tfOutput, { epochs: 2, batchSize: 1 });
+  const batchSize: any = undefined;
+  // const batchSize = 32;
+  await net.fit(tfInput, tfOutput, { epochs: 20, batchSize, classWeight: classWeights });
   log.timeEnd("FIT");
 
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());

@@ -1,6 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import { TrainBatch } from "./splitFrames";
 import { ModelCompileConfig } from "@tensorflow/tfjs";
+import { countLabels } from "../mlUtils";
 
 export interface ModelInput {
   tfInput: tf.Tensor;
@@ -61,8 +62,13 @@ export const formatInput3d = (trainBatches: TrainBatch[], batchSize: number, fea
   return tf.tensor3d(trainBatches.map(x => x.features), [trainBatches.length, batchSize, featureCount]);
 };
 
+// https://keras.io/optimizers/
 export const compileClassAdam = (): ModelCompileConfig => {
-  return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
+  const lr = 0.1;
+  const beta1 = 0.9;
+  const beta2 = 0.999;
+  const optimizer = new tf.AdamOptimizer(lr, beta1, beta2);
+  return { loss: "categoricalCrossentropy", optimizer, metrics: ["acc"] };
 };
 
 export const compileRegSgd = (): ModelCompileConfig => {
@@ -77,4 +83,22 @@ export const decodeSoftmaxPrediciton = async (tfPrediction: tf.Tensor, sampleCou
   const rs = tf.reshape(tfPrediction, [sampleCount, 3]);
   const max = tf.argMax(rs, 1);
   return await toArray(max);
+};
+
+export const getClassWeights = (uniqueLabels: number[], trainBatches: TrainBatch[]) => {
+  const lastLabels = trainBatches.map(x => x.labels[x.labels.length - 1]);
+  // logLabels([0, 1, 2], lastLabels);
+  const countMap = countLabels(uniqueLabels, lastLabels);
+
+  let mul = 1;
+  for (let x of uniqueLabels) {
+    mul *= countMap[x];
+  }
+
+  let weights: { [classIndex: string]: number } = {};
+  for (let x of uniqueLabels) {
+    weights[x] = mul / countMap[x];
+  }
+
+  return weights;
 };

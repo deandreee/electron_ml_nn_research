@@ -13,7 +13,7 @@ const model: ModelLSTM = {
 
     model.add(
       tf.layers.lstm({
-        units: 8,
+        units: 2,
         inputShape: [batchSize, featureCount]
       })
     );
@@ -29,8 +29,8 @@ const model: ModelLSTM = {
 
   getInput: (features: number[][], labels: number[], batchSize: number, featureCount: number, labelCount: number) => {
     const trainBatches = splitFrames(features, labels, batchSize);
-    const tfInput = common.formatInput3d(trainBatches, batchSize, featureCount);
 
+    const tfInput = common.formatInput3d(trainBatches, batchSize, featureCount);
     const tfOutput = common.formatOutput2d_oneHotEncoded(trainBatches, batchSize, labelCount);
 
     return { tfInput, tfOutput, trainBatches };
