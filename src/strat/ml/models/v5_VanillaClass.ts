@@ -20,9 +20,9 @@ const model: ModelLSTM = {
 
     model.add(tf.layers.dense({ units: labelCount, activation: "softmax" }));
 
-    model.compile(common.compileRegSgd());
+    model.compile(common.compileClassAdam());
 
-    console.log(model.summary());
+    // console.log(model.summary());
 
     return model;
   },
@@ -30,8 +30,14 @@ const model: ModelLSTM = {
   getInput: (features: number[][], labels: number[], batchSize: number, featureCount: number, labelCount: number) => {
     const trainBatches = splitFrames(features, labels, batchSize);
     const tfInput = common.formatInput3d(trainBatches, batchSize, featureCount);
-    const tfOutput = common.formatOutput3d_oneHotEncoded(trainBatches, batchSize, labelCount);
+
+    const tfOutput = common.formatOutput2d_oneHotEncoded(trainBatches, batchSize, labelCount);
+
     return { tfInput, tfOutput, trainBatches };
+  },
+
+  decodePrediction: async (tfPrediction: tf.Tensor, sampleCount: number) => {
+    return common.decodeSoftmaxPrediciton(tfPrediction, sampleCount);
   }
 };
 

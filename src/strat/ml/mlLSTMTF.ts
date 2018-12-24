@@ -1,5 +1,6 @@
 import * as tf from "@tensorflow/tfjs";
-require("@tensorflow/tfjs-node"); // just add the binding
+// import "@tensorflow/tfjs-node"; // just add the binding
+// import "@tensorflow/tfjs-node-gpu"; // just add the binding
 
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
@@ -8,6 +9,7 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
 // import model from "./models/v5_Vanilla";
 import model from "./models/v5_VanillaClass";
+import * as log from "../log";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -19,7 +21,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 };
 
 const uniqueLabels = [0, 1, 2];
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 20;
 
 export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
@@ -33,7 +35,9 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const net = model.createModel(BATCH_SIZE, featureCount, labelCount);
   const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
 
-  await net.fit(tfInput, tfOutput, { epochs: 5, batchSize: 1 });
+  log.time("FIT");
+  await net.fit(tfInput, tfOutput, { epochs: 2, batchSize: 1 });
+  log.timeEnd("FIT");
 
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
   // console.log(predicted[0]);
@@ -54,7 +58,13 @@ export const predict = async (net: tf.Sequential, corrCandles: CorrCandles, fnGe
   const { tfInput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
   const output = trainBatches.map(x => x.labels[x.labels.length - 1]);
 
-  const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
+  const tfPredicted = await (net.predict(tfInput) as tf.Tensor<tf.Rank>);
+  const predicted = await model.decodePrediction(tfPredicted, trainBatches.length);
+  // const predicted = await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data();
+  // const predicted2 = tf.reshape(predicted, [trainBatches.length, labelCount]);
+  // const predicted3 = tf.argMax(predicted2);
+  // const predicted4 = Array.from(predicted3);
+
   const results = mlEvaluate.evaluateResults(uniqueLabels, output, predicted);
 
   return { net, features, labels, predicted, results };

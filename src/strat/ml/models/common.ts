@@ -17,6 +17,7 @@ export interface ModelLSTM {
     featureCount: number,
     labelCount: number
   ) => ModelInput;
+  decodePrediction: (tfPrediction: tf.Tensor, sampleCount: number) => Promise<number[]>;
 }
 
 export const mapLabel3d = (label: number) => {
@@ -42,6 +43,12 @@ export const formatOutput2d_withShape_asArray = (trainBatches: TrainBatch[]) => 
   return tf.tensor2d(trainBatches.map(x => [x.labels[x.labels.length - 1]]), [trainBatches.length, 1]);
 };
 
+// just take the last from labels
+export const formatOutput2d_oneHotEncoded = (trainBatches: TrainBatch[], batchSize: number, labelCount: number) => {
+  const output = trainBatches.map(x => mapLabel3d(x.labels[x.labels.length - 1]));
+  return tf.tensor2d(output, [trainBatches.length, labelCount]);
+};
+
 export const formatOutput3d_oneHotEncoded = (trainBatches: TrainBatch[], batchSize: number, labelCount: number) => {
   return tf.tensor3d(trainBatches.map(x => x.labels.map(x => mapLabel3d(x))), [
     trainBatches.length,
@@ -60,4 +67,14 @@ export const compileClassAdam = (): ModelCompileConfig => {
 
 export const compileRegSgd = (): ModelCompileConfig => {
   return { loss: "meanSquaredError", optimizer: "sgd" };
+};
+
+export const toArray = async (tensor: tf.Tensor) => {
+  return Array.from(await tensor.data());
+};
+
+export const decodeSoftmaxPrediciton = async (tfPrediction: tf.Tensor, sampleCount: number) => {
+  const rs = tf.reshape(tfPrediction, [sampleCount, 3]);
+  const max = tf.argMax(rs, 1);
+  return await toArray(max);
 };

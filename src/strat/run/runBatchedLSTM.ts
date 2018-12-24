@@ -45,7 +45,8 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const featuresSplit = features.getCombo();
+  // const featuresSplit = features.getCombo();
+  const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
   for (let x of featuresSplit) {
     log.start(x.name);

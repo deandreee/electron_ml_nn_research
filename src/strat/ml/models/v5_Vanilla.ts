@@ -32,6 +32,10 @@ const model: ModelLSTM = {
     const tfInput = common.formatInput3d(trainBatches, batchSize, featureCount);
     const tfOutput = common.formatOutput2d_withShape(trainBatches);
     return { tfInput, tfOutput, trainBatches };
+  },
+
+  decodePrediction: async (tfPrediction: tf.Tensor, sampleCount: number) => {
+    return Promise.resolve([]);
   }
 };
 
