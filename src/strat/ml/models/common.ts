@@ -64,11 +64,19 @@ export const formatInput3d = (trainBatches: TrainBatch[], batchSize: number, fea
 
 // https://keras.io/optimizers/
 export const compileClassAdam = (): ModelCompileConfig => {
-  const lr = 0.1;
+  const lr = 0.2;
   const beta1 = 0.9;
   const beta2 = 0.999;
   const optimizer = new tf.AdamOptimizer(lr, beta1, beta2);
   return { loss: "categoricalCrossentropy", optimizer, metrics: ["acc"] };
+  // return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
+};
+
+export const compileClassSgd = (): ModelCompileConfig => {
+  const lr = 0.2;
+  const optimizer = new tf.SGDOptimizer(lr);
+  return { loss: "categoricalCrossentropy", optimizer, metrics: ["acc"] };
+  // return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
 };
 
 export const compileRegSgd = (): ModelCompileConfig => {

@@ -73,7 +73,8 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
         padEnd(range.name, 10),
         padEnd(round2(results.precisionTotal).toString(), 5),
         padEnd(round2(results.recallTotal).toString(), 5),
-        padEnd(round2(results.fScore).toString(), 5)
+        padEnd(round2(results.fScore).toString(), 5),
+        padEnd(round2(results.hitRate).toString(), 5)
       );
     }
 

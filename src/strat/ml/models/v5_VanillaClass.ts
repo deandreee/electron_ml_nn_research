@@ -13,14 +13,16 @@ const model: ModelLSTM = {
 
     model.add(
       tf.layers.lstm({
-        units: 2,
+        // units: featureCount,
+        units: 4,
         inputShape: [batchSize, featureCount]
       })
     );
 
     model.add(tf.layers.dense({ units: labelCount, activation: "softmax" }));
 
-    model.compile(common.compileClassAdam());
+    // model.compile(common.compileClassAdam());
+    model.compile(common.compileClassSgd());
 
     // console.log(model.summary());
 

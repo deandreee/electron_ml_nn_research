@@ -24,7 +24,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 };
 
 const uniqueLabels = [0, 1, 2];
-const BATCH_SIZE = 20;
+const BATCH_SIZE = 10;
 
 export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
@@ -43,7 +43,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   log.time("FIT");
   const batchSize: any = undefined;
   // const batchSize = 32;
-  await net.fit(tfInput, tfOutput, { epochs: 20, batchSize, classWeight: classWeights });
+  await net.fit(tfInput, tfOutput, { epochs: 50, batchSize, classWeight: classWeights });
   log.timeEnd("FIT");
 
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
