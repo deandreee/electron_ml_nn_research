@@ -75,7 +75,7 @@ export class MinMaxScaler {
   }
 
   getHardcodedMinMax(indicator: string) {
-    const hardcoded_0_100 = ["rsi", "mfi"];
+    const hardcoded_0_100 = ["rsi"];
 
     for (let x of hardcoded_0_100) {
       if (indicator.startsWith(x)) {

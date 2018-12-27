@@ -13,6 +13,7 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};
   let hitCount = 0;
+  let bigErrorsCount = 0; // 1 -> -1 and otherwise
 
   for (let x of uniqueLabels) {
     truePositives[x] = 0;
@@ -29,6 +30,12 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
     } else {
       falsePositives[output[i]]++; // is, but but have not been
       falseNegatives[input[i]]++; // should have been, but is not
+    }
+
+    if (input[i] === 0 && output[i] === 2) {
+      bigErrorsCount++;
+    } else if (input[i] === 2 && output[i] === 0) {
+      bigErrorsCount++;
     }
   }
 
@@ -49,12 +56,13 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
 
   // my custom, simply % of correct
   const hitRate = hitCount / input.length;
+  const bigErrorsReverse = 1 - bigErrorsCount / input.length;
 
   // console.log(padEnd("PRECISION_TOTAL", 20), round2(precisionTotal));
   // console.log(padEnd("RECALL_TOTAL", 20), round2(recallTotal));
   // console.log(padEnd("F_SCORE", 20), round2(fScore));
 
-  return { fScore, precision, precisionTotal, recall, recallTotal, hitRate };
+  return { fScore, precision, precisionTotal, recall, recallTotal, hitRate, bigErrorsReverse };
 };
 
 const objToArr = (o: any) => {
