@@ -8,7 +8,20 @@ import { Series } from "pandas-js";
 // * Recall/Sensitivity: how many relevant instances are selected.
 // * F1 score: harmonic mean of precision and recall.
 
-export const evaluateResults = (uniqueLabels: number[], labels: number[], predicted: number[]) => {
+export interface EvalResults {
+  fScore: number;
+  precision: NumberMap;
+  precisionTotal: number;
+  recall: NumberMap;
+  recallTotal: number;
+  hitRate: number;
+  bigErrorsReverse: number;
+  zeroHitRate: string;
+  oneHitRate: string;
+  twoHitRate: string;
+}
+
+export const evaluateResults = (uniqueLabels: number[], labels: number[], predicted: number[]): EvalResults => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};

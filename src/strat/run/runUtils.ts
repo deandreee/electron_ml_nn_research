@@ -15,6 +15,7 @@ export const getPredictionsTemplate = () => {
   const predictions: Predictions = {
     JunJulAugSep: {},
     AugSep: {},
+    JunJul: {},
     Jun: {},
     Jul: {},
     Aug: {},

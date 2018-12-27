@@ -2,12 +2,7 @@ import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 
-// @ts-ignore
 import * as csvLog from "../csvLog";
-// @ts-ignore
-import * as csvLogger from "../csvLogger";
-// @ts-ignore
-import * as csvLogPredictions from "../csvLogPredictions";
 
 // @ts-ignore
 import { round2 } from "../utils";
@@ -20,6 +15,7 @@ import { padEnd, maxBy, minBy } from "lodash";
 import * as mlLSTM from "../ml/mlLSTMTF";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
+import { EvalResults } from "../ml/mlEvaluate";
 
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
 
@@ -28,9 +24,12 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const ranges = [
     // daterange.JunJulAugSep,
-    daterange.Jul, // more balanced
+    // daterange.Aug, // bad bad results, everything goes to single label
+    daterange.JunJul, // also good balance
 
     daterange.Jun,
+    daterange.Jul, // more balanced
+
     daterange.Aug,
     daterange.Sep,
     daterange.Oct,
@@ -92,4 +91,33 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
     labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
+};
+
+export const write = async (
+  coinName: string,
+  rangeName: string,
+  labelName: string,
+  featureName: string,
+  results: EvalResults
+) => {
+  const fileName = "output/lstm_.csv";
+
+  if (!csvLog.exists(fileName)) {
+  }
+
+  await csvLog.append(fileName, [
+    new Date().toISOString(),
+    coinName,
+    rangeName,
+    labelName,
+    featureName,
+    round2(results.precisionTotal),
+    round2(results.recallTotal),
+    round2(results.fScore),
+    round2(results.hitRate),
+    round2(results.bigErrorsReverse),
+    results.zeroHitRate,
+    results.oneHitRate,
+    results.twoHitRate
+  ]);
 };

@@ -14,7 +14,7 @@ const model: ModelLSTM = {
     model.add(
       tf.layers.lstm({
         // units: featureCount,
-        units: 8,
+        units: 4,
         inputShape: [batchSize, featureCount]
       })
     );

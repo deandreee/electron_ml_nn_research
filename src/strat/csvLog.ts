@@ -2,6 +2,10 @@ import * as fs from "fs";
 import * as csv from "csv";
 import { fromCb } from "./utils";
 
+export const exists = async (fileName: string) => {
+  return await fromCb(cb => fs.exists(fileName, cb));
+};
+
 export const appendVertical = async (fileName: string, row: number[]) => {
   const rows = row.map(x => [x]);
   let str = await fromCb(cb => csv.stringify(rows, cb));

@@ -65,7 +65,7 @@ export const formatInput3d = (trainBatches: TrainBatch[], batchSize: number, fea
 
 // https://keras.io/optimizers/
 export const compileClassAdam = (): ModelCompileConfig => {
-  const lr = 0.2;
+  const lr = 0.001;
   const beta1 = 0.9;
   const beta2 = 0.999;
   const optimizer = new tf.AdamOptimizer(lr, beta1, beta2);

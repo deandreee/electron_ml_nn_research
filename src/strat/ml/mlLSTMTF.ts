@@ -46,8 +46,8 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 
   log.time("FIT");
   const batchSize: any = undefined;
-  // const batchSize = 32;
-  await net.fit(tfInput, tfOutput, { epochs: 10, batchSize, classWeight });
+  // const batchSize = 10;
+  await net.fit(tfInput, tfOutput, { epochs: 20, batchSize, classWeight });
   log.timeEnd("FIT");
 
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
