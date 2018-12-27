@@ -6,7 +6,11 @@ export interface TrainBatch {
 export const splitFrames = (features: number[][], labels: number[], batchSize: number) => {
   const batches: TrainBatch[] = [];
 
-  for (let i = 0; i < features.length; i += batchSize) {
+  // ask: change this
+  // const stepLength = batchSize;
+  const stepLength = 10;
+
+  for (let i = 0; i < features.length; i += stepLength) {
     if (i + batchSize < features.length) {
       const from = i;
       const to = i + batchSize;

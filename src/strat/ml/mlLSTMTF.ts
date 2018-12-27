@@ -25,7 +25,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 };
 
 const uniqueLabels = [0, 1, 2];
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 50;
 
 export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
