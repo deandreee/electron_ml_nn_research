@@ -28,7 +28,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   // mlUtils.logLabels(uniqueLabels, labels);
   // testData = mlUtils.middlesample(testData, labelCount, 500);
   const avgLabelCount = Math.round(mlUtils.sumLabels(uniqueLabels, labels) / uniqueLabels.length);
-  mlUtils.logLabelsInline(labelCount, avgLabelCount);
+  // mlUtils.logLabelsInline(labelCount, avgLabelCount);
 
   testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
 
@@ -46,7 +46,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
     // eta: 0.1,
     eta: 0.01,
     // gamma: 10,
-    min_child_weight: 1,
+    // min_child_weight: 1,
     // subsample: 1,
     subsample: 0.5,
     colsample_bytree: 1,

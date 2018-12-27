@@ -91,3 +91,7 @@ export const genRangesLast2_AugSepMini = () => {
 export const genRangesLast3_JunJulAugSep = () => {
   return [daterange.JunJulAugSep, daterange.Oct, daterange.Nov];
 };
+
+export const genRanges_TrainJunJul = () => {
+  return [daterange.JunJul, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct, daterange.Nov];
+};
