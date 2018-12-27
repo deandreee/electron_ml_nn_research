@@ -13,6 +13,7 @@ import model from "./models/v5_VanillaClass";
 // import model from "./models/v5_Stacked3Class";
 import * as log from "../log";
 import { getClassWeights } from "./models/common";
+import { MinMaxScaler } from "../features/MinMaxScaler";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -31,7 +32,9 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
 
-  features = mlUtils.rescaleFeatures(features);
+  const minMaxScaler = new MinMaxScaler(fnGetFeature);
+  features = minMaxScaler.scaleInitial(features);
+
   const featureCount = features[0].length;
   const labelCount = uniqueLabels.length;
 
@@ -49,16 +52,22 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
   // console.log(predicted[0]);
 
-  return { net, features, labels };
+  return { net, features, labels, minMaxScaler };
 };
 
 // let's not complicate, just go full cycle, getting features/labels is fast anyway
-export const predict = async (net: tf.Sequential, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const predict = async (
+  net: tf.Sequential,
+  corrCandles: CorrCandles,
+  fnGetFeature: FnGetFeature,
+  minMaxScaler: MinMaxScaler
+) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
 
-  features = mlUtils.rescaleFeatures(features);
+  features = minMaxScaler.scale(features);
+
   const featureCount = features[0].length;
   const labelCount = uniqueLabels.length;
 

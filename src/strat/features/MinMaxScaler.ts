@@ -1,4 +1,4 @@
-import { FeatureSplit } from ".";
+import { FnGetFeature } from ".";
 import { minBy, maxBy } from "lodash";
 import { rescale } from "../rescale";
 
@@ -12,12 +12,12 @@ interface MinMaxMap {
 }
 
 export class MinMaxScaler {
-  featureSplit: FeatureSplit;
+  fnGetFeature: FnGetFeature;
   indicators: string[];
   minMaxMap: MinMaxMap;
 
-  constructor(featureSplit: FeatureSplit) {
-    this.featureSplit = featureSplit;
+  constructor(fnGetFeature: FnGetFeature) {
+    this.fnGetFeature = fnGetFeature;
   }
 
   // scale for training set, can only be called single time
@@ -75,7 +75,7 @@ export class MinMaxScaler {
   }
 
   getHardcodedMinMax(indicator: string) {
-    const hardcoded_0_100 = ["rsi"];
+    const hardcoded_0_100 = ["rsi", "mfi"];
 
     for (let x of hardcoded_0_100) {
       if (indicator.startsWith(x)) {
@@ -86,7 +86,7 @@ export class MinMaxScaler {
   }
 
   getIndicatorNames() {
-    let fn = this.featureSplit.fn.toString();
+    let fn = this.fnGetFeature.toString();
     fn = fn.replace("x => [", "");
     fn = fn.replace("]", "");
     const indicators = fn
