@@ -8,7 +8,7 @@ import { Series } from "pandas-js";
 // * Recall/Sensitivity: how many relevant instances are selected.
 // * F1 score: harmonic mean of precision and recall.
 
-export const evaluateResults = (uniqueLabels: number[], input: number[], output: number[]) => {
+export const evaluateResults = (uniqueLabels: number[], labels: number[], predicted: number[]) => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};
@@ -21,20 +21,20 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
     falseNegatives[x] = 0;
   }
 
-  for (let i = 0; i < input.length; i++) {
-    const label = input[i];
+  for (let i = 0; i < labels.length; i++) {
+    const label = labels[i];
 
-    if (input[i] === output[i]) {
+    if (labels[i] === predicted[i]) {
       truePositives[label]++;
       hitCount++;
     } else {
-      falsePositives[output[i]]++; // is, but but have not been
-      falseNegatives[input[i]]++; // should have been, but is not
+      falsePositives[predicted[i]]++; // is, but but have not been
+      falseNegatives[labels[i]]++; // should have been, but is not
     }
 
-    if (input[i] === 0 && output[i] === 2) {
+    if (labels[i] === 0 && predicted[i] === 2) {
       bigErrorsCount++;
-    } else if (input[i] === 2 && output[i] === 0) {
+    } else if (labels[i] === 2 && predicted[i] === 0) {
       bigErrorsCount++;
     }
   }
@@ -55,14 +55,37 @@ export const evaluateResults = (uniqueLabels: number[], input: number[], output:
   const fScore = (2 * precisionTotal * recallTotal) / (precisionTotal + recallTotal);
 
   // my custom, simply % of correct
-  const hitRate = hitCount / input.length;
-  const bigErrorsReverse = 1 - bigErrorsCount / input.length;
+  const hitRate = hitCount / labels.length;
+  const bigErrorsReverse = 1 - bigErrorsCount / labels.length;
+
+  const zeroLabels = labels.filter(x => x === 0).length;
+  const zeroPredicted = predicted.filter(x => x === 0).length;
+  const zeroHitRate = `${zeroPredicted}/${zeroLabels}`;
+
+  const oneLabels = labels.filter(x => x === 1).length;
+  const onePredicted = predicted.filter(x => x === 1).length;
+  const oneHitRate = `${onePredicted}/${oneLabels}`;
+
+  const twoLabels = labels.filter(x => x === 2).length;
+  const twoPredicted = predicted.filter(x => x === 2).length;
+  const twoHitRate = `${twoPredicted}/${twoLabels}`;
 
   // console.log(padEnd("PRECISION_TOTAL", 20), round2(precisionTotal));
   // console.log(padEnd("RECALL_TOTAL", 20), round2(recallTotal));
   // console.log(padEnd("F_SCORE", 20), round2(fScore));
 
-  return { fScore, precision, precisionTotal, recall, recallTotal, hitRate, bigErrorsReverse };
+  return {
+    fScore,
+    precision,
+    precisionTotal,
+    recall,
+    recallTotal,
+    hitRate,
+    bigErrorsReverse,
+    zeroHitRate,
+    oneHitRate,
+    twoHitRate
+  };
 };
 
 const objToArr = (o: any) => {

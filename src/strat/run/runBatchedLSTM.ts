@@ -27,7 +27,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const ranges = [
-    daterange.JunJulAugSep,
+    // daterange.JunJulAugSep,
     daterange.Jun,
     daterange.Jul,
     daterange.Aug,
@@ -76,7 +76,10 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
         padEnd(round2(results.recallTotal).toString(), 5),
         padEnd(round2(results.fScore).toString(), 5),
         padEnd(round2(results.hitRate).toString(), 5),
-        padEnd(round2(results.bigErrorsReverse).toString(), 5)
+        padEnd(round2(results.bigErrorsReverse).toString(), 5),
+        padEnd(results.zeroHitRate, 10),
+        padEnd(results.oneHitRate, 10),
+        padEnd(results.twoHitRate, 10)
       );
     }
 

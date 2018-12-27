@@ -12,7 +12,7 @@ import model from "./models/v5_VanillaClass";
 // import model from "./models/v5_Stacked2Class";
 // import model from "./models/v5_Stacked3Class";
 import * as log from "../log";
-import { getClassWeights } from "./models/common";
+// import { getClassWeights } from "./models/common";
 import { MinMaxScaler } from "../features/MinMaxScaler";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -39,14 +39,15 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const labelCount = uniqueLabels.length;
 
   const net = model.createModel(BATCH_SIZE, featureCount, labelCount);
-  const { tfInput, tfOutput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
+  const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
 
-  const classWeights = getClassWeights(uniqueLabels, trainBatches);
+  // const classWeight = getClassWeights(uniqueLabels, trainBatches);
+  const classWeight: any = undefined;
 
   log.time("FIT");
   const batchSize: any = undefined;
   // const batchSize = 32;
-  await net.fit(tfInput, tfOutput, { epochs: 50, batchSize, classWeight: classWeights });
+  await net.fit(tfInput, tfOutput, { epochs: 10, batchSize, classWeight });
   log.timeEnd("FIT");
 
   // const predicted = Array.from(await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data());
@@ -72,16 +73,12 @@ export const predict = async (
   const labelCount = uniqueLabels.length;
 
   const { tfInput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
-  const output = trainBatches.map(x => x.labels[x.labels.length - 1]);
+  const labelsLast = trainBatches.map(x => x.labels[x.labels.length - 1]);
 
   const tfPredicted = await (net.predict(tfInput) as tf.Tensor<tf.Rank>);
   const predicted = await model.decodePrediction(tfPredicted, trainBatches.length);
-  // const predicted = await (net.predict(tfInput) as tf.Tensor<tf.Rank>).data();
-  // const predicted2 = tf.reshape(predicted, [trainBatches.length, labelCount]);
-  // const predicted3 = tf.argMax(predicted2);
-  // const predicted4 = Array.from(predicted3);
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, output, predicted);
+  const results = mlEvaluate.evaluateResults(uniqueLabels, labelsLast, predicted);
 
   return { net, features, labels, predicted, results };
 };

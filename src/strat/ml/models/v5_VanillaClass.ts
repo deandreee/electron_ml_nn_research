@@ -21,8 +21,8 @@ const model: ModelLSTM = {
 
     model.add(tf.layers.dense({ units: labelCount, activation: "softmax" }));
 
-    // model.compile(common.compileClassAdam());
-    model.compile(common.compileClassSgd());
+    model.compile(common.compileClassAdam());
+    // model.compile(common.compileClassSgd());
 
     // console.log(model.summary());
 
