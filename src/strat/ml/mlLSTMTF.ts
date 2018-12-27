@@ -12,7 +12,7 @@ import model from "./models/v5_VanillaClass";
 // import model from "./models/v5_Stacked2Class";
 // import model from "./models/v5_Stacked3Class";
 import * as log from "../log";
-// import { getClassWeights } from "./models/common";
+import { getClassWeights } from "./models/common";
 import { MinMaxScaler } from "../features/MinMaxScaler";
 
 export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -25,7 +25,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 };
 
 const uniqueLabels = [0, 1, 2];
-const BATCH_SIZE = 10;
+const BATCH_SIZE = 100;
 
 export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
@@ -39,10 +39,10 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   const labelCount = uniqueLabels.length;
 
   const net = model.createModel(BATCH_SIZE, featureCount, labelCount);
-  const { tfInput, tfOutput } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
+  const { tfInput, tfOutput, trainBatches } = model.getInput(features, labels, BATCH_SIZE, featureCount, labelCount);
 
-  // const classWeight = getClassWeights(uniqueLabels, trainBatches);
-  const classWeight: any = undefined;
+  const classWeight = getClassWeights(uniqueLabels, trainBatches);
+  // const classWeight: any = undefined;
 
   log.time("FIT");
   const batchSize: any = undefined;

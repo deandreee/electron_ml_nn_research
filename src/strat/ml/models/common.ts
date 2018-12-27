@@ -2,6 +2,7 @@ import * as tf from "@tensorflow/tfjs";
 import { TrainBatch } from "./splitFrames";
 import { ModelCompileConfig } from "@tensorflow/tfjs";
 import { countLabels } from "../mlUtils";
+import { round2 } from "../../utils";
 
 export interface ModelInput {
   tfInput: tf.Tensor;
@@ -98,14 +99,16 @@ export const getClassWeights = (uniqueLabels: number[], trainBatches: TrainBatch
   // logLabels([0, 1, 2], lastLabels);
   const countMap = countLabels(uniqueLabels, lastLabels);
 
-  let mul = 1;
+  let max = 0;
   for (let x of uniqueLabels) {
-    mul *= countMap[x];
+    if (countMap[x] > max) {
+      max = countMap[x];
+    }
   }
 
   let weights: { [classIndex: string]: number } = {};
   for (let x of uniqueLabels) {
-    weights[x] = mul / countMap[x];
+    weights[x] = round2(max / countMap[x]);
   }
 
   return weights;
