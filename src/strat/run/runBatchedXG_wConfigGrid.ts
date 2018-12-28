@@ -11,7 +11,7 @@ import { logConsole, logFile } from "./logClassResults";
 import * as log from "../log";
 
 const featureName = "combo_single_each";
-const fileName = `output/runBatchedXG_wConfigGrid/${featureName}.csv`;
+const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {

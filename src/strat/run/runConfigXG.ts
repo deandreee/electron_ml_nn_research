@@ -1,3 +1,8 @@
+export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE";
+
+// let's keep this const for now
+export const TRIPPLE_BARRIER_LABEL: TrippleBarrierLabel = "TWO";
+
 export interface RunConfigXG {
   idx: number;
   max_depth: number; // 3;

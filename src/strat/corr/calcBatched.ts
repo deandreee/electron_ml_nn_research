@@ -2,6 +2,7 @@ import { PctChange, CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./trippleBarrier";
+import { TRIPPLE_BARRIER_LABEL } from "../run/runConfigXG";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -21,6 +22,26 @@ export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
 
 const wHist = {
   resultHistory: true
+};
+
+const getTrippleBarrierConfig = () => {
+  if (TRIPPLE_BARRIER_LABEL === "PT_FIVE") {
+    return { stopLoss: -0.5, takeProfit: 0.5, lookAhead: 20 };
+  }
+
+  if (TRIPPLE_BARRIER_LABEL === "ONE") {
+    return { stopLoss: -1, takeProfit: 1, lookAhead: 50 };
+  }
+
+  if (TRIPPLE_BARRIER_LABEL === "TWO") {
+    return { stopLoss: -2, takeProfit: 2, lookAhead: 140 };
+  }
+
+  if (TRIPPLE_BARRIER_LABEL === "THREE") {
+    return { stopLoss: -3, takeProfit: 3, lookAhead: 220 };
+  }
+
+  throw new Error(`getTrippleBarrierConfig: Label ${TRIPPLE_BARRIER_LABEL} not found`);
 };
 
 export const corrCalcBatched = (coin: CoinData) => {
@@ -313,11 +334,10 @@ export const corrCalcBatched = (coin: CoinData) => {
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
+    const tbCfg = getTrippleBarrierConfig();
+
     candle.pctChange = {
-      // trippleBarrier: trippleBarrier(candles, i, -0.5, 0.5, 20) // ok
-      // trippleBarrier: trippleBarrier(candles, i, -2, 2, 140) // ok at least for Jul
-      // trippleBarrier: trippleBarrier(candles, i, -1, 1, 50) // ok
-      trippleBarrier: trippleBarrier(candles, i, -3, 3, 220) // also works
+      trippleBarrier: trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
     };
   }
 
