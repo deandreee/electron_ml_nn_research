@@ -18,15 +18,14 @@ export const logConsole = (rangeName: string, results: EvalResults) => {
 };
 
 export const logFile = async (
+  fileName: string,
   coinName: string,
   rangeName: string,
   labelName: string,
   featureName: string,
   results: EvalResults
 ) => {
-  const fileName = "output/lstm_.csv";
-
-  if (!csvLog.exists(fileName)) {
+  if (!(await csvLog.exists(fileName))) {
     await logFileHeader(fileName);
   }
 
@@ -43,7 +42,13 @@ export const logFile = async (
     round2(results.bigErrorsReverse),
     results.zeroHitRate,
     results.oneHitRate,
-    results.twoHitRate
+    results.twoHitRate,
+    round2(results.precision[0]),
+    round2(results.recall[0]),
+    round2(results.precision[1]),
+    round2(results.recall[1]),
+    round2(results.precision[2]),
+    round2(results.recall[2])
   ]);
 };
 
@@ -61,6 +66,12 @@ const logFileHeader = async (fileName: string) => {
     "BIG_ERR_REV",
     "ZERO_HITRATE",
     "ONE_HITRATE",
-    "TWO_HITRATE"
+    "TWO_HITRATE",
+    "PREC_ZERO",
+    "RECALL_ZERO",
+    "PREC_ONE",
+    "RECALL_ONE",
+    "PREC_TWO",
+    "RECALL_TWO"
   ]);
 };

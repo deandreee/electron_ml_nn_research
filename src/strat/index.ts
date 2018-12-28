@@ -1,5 +1,6 @@
-import { runBatchedXG } from "./run/runBatchedXG";
+// import { runBatchedXG } from "./run/runBatchedXG";
 // import { runBatchedLSTM } from "./run/runBatchedLSTM";
+import { runBatchedXG } from "./run/runBatchedXG_wConfigGrid";
 
 export const run = async () => {
   try {

@@ -8,6 +8,7 @@ import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole } from "./logClassResults";
+import { runConfigXG } from "./runConfigXG";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_TrainJunJul();
@@ -25,7 +26,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   for (let x of featuresSplit) {
     log.start(x.name);
-    const { booster } = await mlXGClass.train(trainMonth, x.fn);
+    const { booster } = await mlXGClass.train(runConfigXG, trainMonth, x.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];

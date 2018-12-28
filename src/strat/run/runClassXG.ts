@@ -8,6 +8,7 @@ import { padEnd } from "lodash";
 
 import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
+import { runConfigXG } from "./runConfigXG";
 
 export const runXGClass = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
@@ -28,7 +29,7 @@ export const runXGClass = async (): Promise<RunResult> => {
     // const fileName = "output/xg_7d_all_EOS.csv";
     // const fileName = "output/xg_7d_all_BTC_REAL.csv";
     // const fileName = "output/xg_10d_rsi_BTC_REAL.csv";
-    const { booster } = await mlXGClass.train(trainMonth, x.fn);
+    const { booster } = await mlXGClass.train(runConfigXG, trainMonth, x.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];

@@ -6,10 +6,11 @@ import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 // import { round2 } from "./utils";
 import { mlGetLabels } from "./mlGetLabels";
+import { RunConfigXG } from "../run/runConfigXG";
 
-export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
-    return await train_(corrCandles, fnGetFeature);
+    return await train_(runConfigXG, corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
     throw new Error(err);
@@ -18,7 +19,7 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 
 const uniqueLabels = [0, 1, 2];
 
-export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles);
@@ -42,9 +43,9 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
     booster: "gbtree",
     objective: "multi:softmax",
     // max_depth: 20,
-    max_depth: 3,
+    max_depth: runConfigXG.max_depth || 3,
     // eta: 0.1,
-    eta: 0.01,
+    eta: runConfigXG.max_depth || 0.01,
     // gamma: 10,
     // min_child_weight: 1,
     // subsample: 1,
