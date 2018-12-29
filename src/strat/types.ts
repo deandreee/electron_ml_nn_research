@@ -98,7 +98,13 @@ export interface VWAP {
   den: number;
 }
 
-export interface Indicators2 {
+interface WavesIndEMAxOCC {
+  x120: IndEMAxOCC;
+  x240: IndEMAxOCC;
+  x480: IndEMAxOCC;
+}
+
+export interface Indicators {
   rsi30x10?: number;
   rsi30x20?: number;
   rsi30x30?: number;
@@ -258,9 +264,9 @@ export interface Indicators2 {
   vixFix480_f?: number;
   vixFix480_g?: number;
   vixFix480_h?: number;
-}
 
-export type Indicators = Indicators2 & IndEMAxOCC;
+  emaOCC?: WavesIndEMAxOCC;
+}
 
 export type CsvCell = string | number;
 

@@ -1,80 +1,59 @@
-import { XmBase, EMA, WaveManagers, BigCandles } from "./gekko";
+import { XmBase, EMA, WaveManager } from "./gekko";
+import { Candle } from "../types";
 
 export interface IndEMAxOCC {
-  emaOpen240_5?: number;
-  emaClose240_5?: number;
-  emaOCC240_5?: number;
-
-  emaOpen240_10?: number;
-  emaClose240_10?: number;
-  emaOCC240_10?: number;
-
-  emaOpen240_20?: number;
-  emaClose240_20?: number;
-  emaOCC240_20?: number;
-
-  emaOpen240_30?: number;
-  emaClose240_30?: number;
-  emaOCC240_30?: number;
+  emaOCC_5?: number;
+  emaOCC_10?: number;
+  emaOCC_20?: number;
+  emaOCC_30?: number;
 }
 
 export class EMAxOCC {
-  emaOpen240_5: any;
-  emaClose240_5: any;
-  emaOpen240_10: any;
-  emaClose240_10: any;
-  emaOpen240_20: any;
-  emaClose240_20: any;
-  emaOpen240_30: any;
-  emaClose240_30: any;
+  emaOpen_5: any;
+  emaClose_5: any;
+  emaOpen_10: any;
+  emaClose_10: any;
+  emaOpen_20: any;
+  emaClose_20: any;
+  emaOpen_30: any;
+  emaClose_30: any;
 
-  constructor(waveManagers: WaveManagers) {
-    this.emaOpen240_5 = new XmBase(waveManagers.x240, () => new EMA(5));
-    this.emaClose240_5 = new XmBase(waveManagers.x240, () => new EMA(5));
+  constructor(waveManager: WaveManager) {
+    this.emaOpen_5 = new XmBase(waveManager, () => new EMA(5));
+    this.emaClose_5 = new XmBase(waveManager, () => new EMA(5));
 
-    this.emaOpen240_10 = new XmBase(waveManagers.x240, () => new EMA(10));
-    this.emaClose240_10 = new XmBase(waveManagers.x240, () => new EMA(10));
+    this.emaOpen_10 = new XmBase(waveManager, () => new EMA(10));
+    this.emaClose_10 = new XmBase(waveManager, () => new EMA(10));
 
-    this.emaOpen240_20 = new XmBase(waveManagers.x240, () => new EMA(20));
-    this.emaClose240_20 = new XmBase(waveManagers.x240, () => new EMA(20));
+    this.emaOpen_20 = new XmBase(waveManager, () => new EMA(20));
+    this.emaClose_20 = new XmBase(waveManager, () => new EMA(20));
 
-    this.emaOpen240_30 = new XmBase(waveManagers.x240, () => new EMA(30));
-    this.emaClose240_30 = new XmBase(waveManagers.x240, () => new EMA(30));
+    this.emaOpen_30 = new XmBase(waveManager, () => new EMA(30));
+    this.emaClose_30 = new XmBase(waveManager, () => new EMA(30));
   }
 
-  update(bigCandles: BigCandles): IndEMAxOCC {
-    const emaOpen240_5 = this.emaOpen240_5.update(bigCandles.x240.open);
-    const emaClose240_5 = this.emaClose240_5.update(bigCandles.x240.close);
-    const emaOCC240_5 = emaClose240_5 - emaOpen240_5;
+  update(bigCandle: Candle): IndEMAxOCC {
+    const emaOpen_5 = this.emaOpen_5.update(bigCandle.open);
+    const emaClose_5 = this.emaClose_5.update(bigCandle.close);
+    const emaOCC_5 = emaClose_5 - emaOpen_5;
 
-    const emaOpen240_10 = this.emaOpen240_10.update(bigCandles.x240.open);
-    const emaClose240_10 = this.emaClose240_10.update(bigCandles.x240.close);
-    const emaOCC240_10 = emaClose240_10 - emaOpen240_10;
+    const emaOpen_10 = this.emaOpen_10.update(bigCandle.open);
+    const emaClose_10 = this.emaClose_10.update(bigCandle.close);
+    const emaOCC_10 = emaClose_10 - emaOpen_10;
 
-    const emaOpen240_20 = this.emaOpen240_20.update(bigCandles.x240.open);
-    const emaClose240_20 = this.emaClose240_20.update(bigCandles.x240.close);
-    const emaOCC240_20 = emaClose240_20 - emaOpen240_20;
+    const emaOpen_20 = this.emaOpen_20.update(bigCandle.open);
+    const emaClose_20 = this.emaClose_20.update(bigCandle.close);
+    const emaOCC_20 = emaClose_20 - emaOpen_20;
 
-    const emaOpen240_30 = this.emaOpen240_30.update(bigCandles.x240.open);
-    const emaClose240_30 = this.emaClose240_30.update(bigCandles.x240.close);
-    const emaOCC240_30 = emaClose240_30 - emaOpen240_30;
+    const emaOpen_30 = this.emaOpen_30.update(bigCandle.open);
+    const emaClose_30 = this.emaClose_30.update(bigCandle.close);
+    const emaOCC_30 = emaClose_30 - emaOpen_30;
 
     return {
-      emaOpen240_5,
-      emaClose240_5,
-      emaOCC240_5,
-
-      emaOpen240_10,
-      emaClose240_10,
-      emaOCC240_10,
-
-      emaOpen240_20,
-      emaClose240_20,
-      emaOCC240_20,
-
-      emaOpen240_30,
-      emaClose240_30,
-      emaOCC240_30
+      emaOCC_5,
+      emaOCC_10,
+      emaOCC_20,
+      emaOCC_30
     };
   }
 }
