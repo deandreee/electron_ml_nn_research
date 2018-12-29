@@ -10,11 +10,15 @@ import * as runUtils from "./runUtils";
 import { logConsole, logFile } from "./logClassResults";
 import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 
+const ranges = runUtils.genRangesFull();
 const featureName = "ALL";
-const fileName = `output/runBatchedXG_all/${featureName}_[lbl=${TRIPPLE_BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_all/${featureName} [ train ${
+  ranges[0].name
+} ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_TrainJunJul();
+  // const ranges = runUtils.genRanges_TrainJunJul();
+
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
 

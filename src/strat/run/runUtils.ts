@@ -82,7 +82,8 @@ export const genRangesFull = () => {
     train(daterange.Aug),
     train(daterange.Sep),
     daterange.Oct,
-    daterange.Nov
+    daterange.Nov,
+    daterange.Dec
   ];
 };
 

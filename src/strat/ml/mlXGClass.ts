@@ -25,12 +25,11 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
   let labels = mlGetLabels(corrCandles);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
+
+  // middlesample
   const labelCount = mlUtils.countLabels(uniqueLabels, labels);
-  // mlUtils.logLabels(uniqueLabels, labels);
-  // testData = mlUtils.middlesample(testData, labelCount, 500);
   const avgLabelCount = Math.round(mlUtils.sumLabels(uniqueLabels, labels) / uniqueLabels.length);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
-
   testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
 
   features = testData.map(x => x.features);
