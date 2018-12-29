@@ -1,5 +1,6 @@
 import { PaperTrader } from "./gekko/PaperTrader";
 import { CorrCandles } from "./corr/CorrCandles";
+import { IndEMAxOCC } from "./indicators/occ";
 
 export type Cb = (err: Error) => void;
 
@@ -97,7 +98,7 @@ export interface VWAP {
   den: number;
 }
 
-export interface Indicators {
+export interface Indicators2 {
   rsi30x10?: number;
   rsi30x20?: number;
   rsi30x30?: number;
@@ -154,10 +155,15 @@ export interface Indicators {
   macd60_PSAR?: PSAR;
   macd120?: MACD;
   macd240?: MACD;
+
+  zerolagMacd30?: MACD;
+  zerolagMacd60?: MACD;
+  zerolagMacd120?: MACD;
+  zerolagMacd240?: MACD;
+
   macdHistoLrc?: number;
   macdHistoLrcSlow?: number;
-  zerlagMacd60?: MACD;
-  zerlagMacd120?: MACD;
+
   macd60_ADX30?: number;
   macd60_ADX60?: number;
   macd60_ADX120?: number;
@@ -253,6 +259,8 @@ export interface Indicators {
   vixFix480_g?: number;
   vixFix480_h?: number;
 }
+
+export type Indicators = Indicators2 & IndEMAxOCC;
 
 export type CsvCell = string | number;
 

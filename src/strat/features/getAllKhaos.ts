@@ -128,14 +128,7 @@ export const getAllKhaos = (): FeatureSplit[] => {
       name: "rsi120x10",
       fn: (x, i, corrCandles) => [x.ind.rsi120x10]
     },
-    {
-      name: "zerlagMacd60",
-      fn: (x, i, corrCandles) => [x.ind.zerlagMacd60.histo]
-    },
-    {
-      name: "zerlagMacd120",
-      fn: (x, i, corrCandles) => [x.ind.zerlagMacd120.histo]
-    },
+
     {
       name: "cci",
       fn: (x, i, corrCandles) => [x.ind.cci]

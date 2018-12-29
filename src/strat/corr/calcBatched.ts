@@ -3,6 +3,8 @@ import { PctChange, CoinData } from "../types";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./trippleBarrier";
 import { TRIPPLE_BARRIER_LABEL } from "../run/runConfigXG";
+import { EMAxOCC } from "../indicators/occ";
+import { WaveManager, WaveManagers, BigCandles } from "../indicators/gekko";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -12,7 +14,7 @@ const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
-const { VWAP } = require(`${GEKKO}/indicators/lizard`);
+const { VWAP, ZerolagMACD } = require(`${GEKKO}/indicators/lizard`);
 
 export const CANDLE_SIZE = 10;
 export const WARMUP_IND = 480 * 70; // => ind ready
@@ -51,12 +53,21 @@ const getTrippleBarrierConfig = () => {
 export const corrCalcBatched = (coin: CoinData) => {
   const candles = coin.candles;
 
-  const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE);
-  const waveManager30 = new BatchWaveManager(30, CANDLE_SIZE);
-  const waveManager60 = new BatchWaveManager(60, CANDLE_SIZE);
-  const waveManager120 = new BatchWaveManager(120, CANDLE_SIZE);
-  const waveManager240 = new BatchWaveManager(240, CANDLE_SIZE);
-  const waveManager480 = new BatchWaveManager(480, CANDLE_SIZE);
+  const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;
+  const waveManager30 = new BatchWaveManager(30, CANDLE_SIZE) as WaveManager;
+  const waveManager60 = new BatchWaveManager(60, CANDLE_SIZE) as WaveManager;
+  const waveManager120 = new BatchWaveManager(120, CANDLE_SIZE) as WaveManager;
+  const waveManager240 = new BatchWaveManager(240, CANDLE_SIZE) as WaveManager;
+  const waveManager480 = new BatchWaveManager(480, CANDLE_SIZE) as WaveManager;
+
+  const waveManagers: WaveManagers = {
+    x10: waveManager10,
+    x30: waveManager30,
+    x60: waveManager60,
+    x120: waveManager120,
+    x240: waveManager240,
+    x480: waveManager480
+  };
 
   const rsi30x10 = new XmBase(waveManager30, () => new RSI({ interval: 10 }));
   const rsi30x20 = new XmBase(waveManager30, () => new RSI({ interval: 20 }));
@@ -102,6 +113,11 @@ export const corrCalcBatched = (coin: CoinData) => {
   const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd240 = new XmBase(waveManager240, () => new MACD({ short: 12, long: 26, signal: 9 }));
+
+  const zerolagMacd30 = new XmBase(waveManager30, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  const zerolagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  const zerolagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
+  const zerolagMacd240 = new XmBase(waveManager240, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
 
   const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
   const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
@@ -187,6 +203,8 @@ export const corrCalcBatched = (coin: CoinData) => {
   const vixFix480_g = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 }));
   const vixFix480_h = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 }));
 
+  const emaOCC = new EMAxOCC(waveManagers);
+
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
@@ -202,6 +220,15 @@ export const corrCalcBatched = (coin: CoinData) => {
     const bigCandle120 = waveManager120.update(candle);
     const bigCandle240 = waveManager240.update(candle);
     const bigCandle480 = waveManager480.update(candle);
+
+    const bigCandles: BigCandles = {
+      x10: bigCandle10,
+      x30: bigCandle30,
+      x60: bigCandle60,
+      x120: bigCandle120,
+      x240: bigCandle240,
+      x480: bigCandle480
+    };
 
     if (!bigCandle10 || !bigCandle30 || !bigCandle60 || !bigCandle120 || !bigCandle240 || !bigCandle480) {
       candle.ind = {};
@@ -229,6 +256,11 @@ export const corrCalcBatched = (coin: CoinData) => {
       macd60: macd60.update(bigCandle60.close),
       macd120: macd120.update(bigCandle120.close),
       macd240: macd240.update(bigCandle240.close),
+
+      zerolagMacd30: zerolagMacd30.update(bigCandle30),
+      zerolagMacd60: zerolagMacd60.update(bigCandle60),
+      zerolagMacd120: zerolagMacd120.update(bigCandle120),
+      zerolagMacd240: zerolagMacd240.update(bigCandle240),
 
       bbands60_10_1: bbands60_10_1.update(bigCandle60.close),
       bbands60_10_2: bbands60_10_2.update(bigCandle60.close),
@@ -325,7 +357,9 @@ export const corrCalcBatched = (coin: CoinData) => {
       vixFix480_e: vixFix480_e.update(bigCandle480),
       vixFix480_f: vixFix480_f.update(bigCandle480),
       vixFix480_g: vixFix480_g.update(bigCandle480),
-      vixFix480_h: vixFix480_h.update(bigCandle480)
+      vixFix480_h: vixFix480_h.update(bigCandle480),
+
+      ...emaOCC.update(bigCandles)
     };
 
     candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));

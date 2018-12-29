@@ -12,6 +12,7 @@ import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix } from "./getVixFix";
 import { getTest } from "./getTest";
+import { getOCC } from "./getOCC";
 
 const getAll = () => {
   return [
@@ -44,5 +45,6 @@ export {
   getStochKD,
   getVWAP,
   getVixFix,
-  getTest
+  getTest,
+  getOCC
 };

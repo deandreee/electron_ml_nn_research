@@ -17,12 +17,8 @@ const fileName = `output/runBatchedXG_all/${featureName} [ train ${
 } ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  // const ranges = runUtils.genRanges_TrainJunJul();
-
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
-
-  runUtils.getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
