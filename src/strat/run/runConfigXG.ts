@@ -1,7 +1,7 @@
-export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE";
+export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
 // let's keep this const for now
-export const TRIPPLE_BARRIER_LABEL: TrippleBarrierLabel = "TWO";
+export const TRIPPLE_BARRIER_LABEL: TrippleBarrierLabel = "FIVE";
 
 export interface RunConfigXG {
   [prop: string]: number;
@@ -83,4 +83,18 @@ export const getName = (cfg: RunConfigXG) => {
   return `${cfg.idx}::: eta ${cfg.eta} | gamma ${cfg.gamma} | dpt ${cfg.max_depth} | child ${
     cfg.min_child_weight
   } | sub ${cfg.subsample} | it ${cfg.iterations}`;
+};
+
+// one of the best in GA tests
+// IDX	ETA	GAMMA	MAX_DEPTH	MIN_CHILD_WEIGHT	SUBSAMPLE	ITERATIONS
+// 437	0.3	3	3	5	0.3	5
+
+export const runConfigXG2 = {
+  idx: -2,
+  eta: 0.3,
+  gamma: 3,
+  max_depth: 3,
+  min_child_weight: 5,
+  subsample: 0.3,
+  iterations: 5
 };

@@ -2,6 +2,7 @@ export interface DateRange {
   name: string;
   from: Date;
   to: Date;
+  isTrain?: boolean;
 }
 
 export const JunJul: DateRange = {

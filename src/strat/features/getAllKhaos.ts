@@ -1,6 +1,6 @@
 import { FeatureSplit } from "./FeatureSplit";
 
-export const getAll = (): FeatureSplit[] => {
+export const getAllKhaos = (): FeatureSplit[] => {
   return [
     { name: "macd30", fn: (x, i, corrCandles) => [x.ind.macd30.histo] },
     { name: "macd60", fn: (x, i, corrCandles) => [x.ind.macd60.histo] },

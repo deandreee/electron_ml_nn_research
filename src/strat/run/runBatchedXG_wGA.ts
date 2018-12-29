@@ -11,13 +11,14 @@ import { logConsole, logFile } from "./logClassResults";
 import * as log from "../log";
 
 import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
+import { sum } from "lodash";
 
 const featureName = "combo_single_each";
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_FastMiniTest();
+  const ranges = runUtils.genRanges_TrainJunJul();
   const months = queryCorrCandlesMonthsBatched(coin, ranges);
   const trainMonth = months[ranges[0].name];
 
@@ -31,13 +32,16 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
 
-    const allResults = [];
+    const fScores = [];
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
       const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
       predictions[range.name][feature.name] = predicted;
-      allResults.push(results);
+
+      if (!range.isTrain) {
+        fScores.push(results.fScore);
+      }
 
       logConsole(range.name, results);
       await logFile(
@@ -55,7 +59,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     booster.free();
 
-    return allResults[1].fScore;
+    return sum(fScores) / fScores.length;
   };
 
   const genetic = new CustomGenetic(gaConfig, userData, fnFitness);

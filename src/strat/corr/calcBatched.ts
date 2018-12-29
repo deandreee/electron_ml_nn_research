@@ -41,6 +41,10 @@ const getTrippleBarrierConfig = () => {
     return { stopLoss: -3, takeProfit: 3, lookAhead: 220 };
   }
 
+  if (TRIPPLE_BARRIER_LABEL === "FIVE") {
+    return { stopLoss: -5, takeProfit: 5, lookAhead: 500 };
+  }
+
   throw new Error(`getTrippleBarrierConfig: Label ${TRIPPLE_BARRIER_LABEL} not found`);
 };
 

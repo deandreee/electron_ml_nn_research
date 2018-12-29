@@ -7,8 +7,11 @@ import * as mlXGClass from "../ml/mlXGClass";
 // import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole } from "./logClassResults";
-import { runConfigXG2 } from "./runConfigXG";
+import { logConsole, logFile } from "./logClassResults";
+import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
+
+const featureName = "ALL";
+const fileName = `output/runBatchedXG_all/${featureName}_[lbl=${TRIPPLE_BARRIER_LABEL}].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_TrainJunJul();
@@ -20,28 +23,25 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  // const featuresSplit = features.getCombo();
-  // const featuresSplit = features.getTest();
-  // const featuresSplit = features.getMFI();
-  // const featuresSplit = features.getATR();
-  const featuresSplit = features.getATR();
+  const featuresSplit = features.getAll();
 
-  for (let x of featuresSplit) {
-    log.start(x.name);
-    const { booster } = await mlXGClass.train(runConfigXG2, trainMonth, x.fn);
+  for (let feature of featuresSplit) {
+    log.start(feature.name);
+    const { booster } = await mlXGClass.train(runConfigXG2, trainMonth, feature.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
-      const { results, predicted } = await mlXGClass.predict(booster, corrCandles, x.fn);
-      predictions[range.name][x.name] = predicted;
+      const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
+      predictions[range.name][feature.name] = predicted;
 
       logConsole(range.name, results);
+      await logFile(fileName, runConfigXG2, Coins.BTC, range.name, TRIPPLE_BARRIER_LABEL, feature.name, results);
     }
 
     booster.free();
 
-    log.end(x.name);
+    log.end(feature.name);
   }
 
   return {

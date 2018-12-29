@@ -1,7 +1,8 @@
 // import { runBatchedXG } from "./run/runBatchedXG";
 // import { runBatchedLSTM } from "./run/runBatchedLSTM";
 // import { runBatchedXG } from "./run/runBatchedXG_wConfigGrid";
-import { runBatchedXG } from "./run/runBatchedXG_wGA";
+// import { runBatchedXG } from "./run/runBatchedXG_wGA";
+import { runBatchedXG } from "./run/runBatchedXG_all";
 
 export const run = async () => {
   try {

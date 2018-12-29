@@ -22,7 +22,8 @@ export const getPredictionsTemplate = () => {
     Aug: {},
     Sep: {},
     Oct: {},
-    Nov: {}
+    Nov: {},
+    Dec: {}
   };
   return predictions;
 };
@@ -69,13 +70,17 @@ export const getIndMinMax = (candles: CorrCandles) => {
   }
 };
 
+const train = (range: daterange.DateRange) => {
+  return { ...range, isTrain: true };
+};
+
 export const genRangesFull = () => {
   return [
-    daterange.JunJulAugSep,
-    daterange.Jun,
-    daterange.Jul,
-    daterange.Aug,
-    daterange.Sep,
+    train(daterange.JunJulAugSep),
+    train(daterange.Jun),
+    train(daterange.Jul),
+    train(daterange.Aug),
+    train(daterange.Sep),
     daterange.Oct,
     daterange.Nov
   ];
@@ -86,22 +91,30 @@ export const genRanges_FastMiniTest = () => {
 };
 
 export const genRangesLast1_AugSep = () => {
-  return [daterange.AugSep, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct, daterange.Nov];
+  return [
+    train(daterange.AugSep),
+    daterange.Jun,
+    daterange.Jul,
+    train(daterange.Aug),
+    train(daterange.Sep),
+    daterange.Oct,
+    daterange.Nov
+  ];
 };
 
 export const genRangesLast2_AugSepMini = () => {
-  return [daterange.AugSep, daterange.Oct, daterange.Nov];
+  return [train(daterange.AugSep), daterange.Oct, daterange.Nov];
 };
 
 export const genRangesLast3_JunJulAugSep = () => {
-  return [daterange.JunJulAugSep, daterange.Oct, daterange.Nov];
+  return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov];
 };
 
 export const genRanges_TrainJunJul = () => {
   return [
-    daterange.JunJul,
-    daterange.Jun,
-    daterange.Jul,
+    train(daterange.JunJul),
+    train(daterange.Jun),
+    train(daterange.Jul),
     daterange.Aug,
     daterange.Sep,
     daterange.Oct,
