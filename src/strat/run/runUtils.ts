@@ -16,6 +16,7 @@ export const getPredictionsTemplate = () => {
     JunJulAugSep: {},
     AugSep: {},
     JunJul: {},
+    NovDump: {},
     Jun: {},
     Jul: {},
     Aug: {},
@@ -80,6 +81,10 @@ export const genRangesFull = () => {
   ];
 };
 
+export const genRanges_FastMiniTest = () => {
+  return [daterange.NovDump, daterange.Jun];
+};
+
 export const genRangesLast1_AugSep = () => {
   return [daterange.AugSep, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct, daterange.Nov];
 };
@@ -93,5 +98,14 @@ export const genRangesLast3_JunJulAugSep = () => {
 };
 
 export const genRanges_TrainJunJul = () => {
-  return [daterange.JunJul, daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep, daterange.Oct, daterange.Nov];
+  return [
+    daterange.JunJul,
+    daterange.Jun,
+    daterange.Jul,
+    daterange.Aug,
+    daterange.Sep,
+    daterange.Oct,
+    daterange.Nov,
+    daterange.Dec
+  ];
 };

@@ -35,6 +35,7 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
+    "@glavin001/genetic-js": "^0.2.1",
     "@tensorflow/tfjs": "^0.14.1",
     "@tensorflow/tfjs-node": "^0.1.21",
     "@tensorflow/tfjs-node-gpu": "^0.2.1",
@@ -55,6 +56,7 @@
     "echarts-for-react": "^2.0.14",
     "electron": "^2.0.10",
     "electron-rebuild": "^1.8.2",
+    "genetic-js": "^0.1.14",
     "kalmanjs": "^1.0.0-beta",
     "libsvm-js": "^0.2.1",
     "limdu": "^0.9.4",

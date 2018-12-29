@@ -2,6 +2,7 @@ import { padEnd } from "lodash";
 import { round2 } from "../utils";
 import { EvalResults } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
+import { RunConfigXG } from "./runConfigXG";
 
 export const logConsole = (rangeName: string, results: EvalResults) => {
   console.log(
@@ -19,6 +20,7 @@ export const logConsole = (rangeName: string, results: EvalResults) => {
 
 export const logFile = async (
   fileName: string,
+  runConfig: RunConfigXG,
   coinName: string,
   rangeName: string,
   labelName: string,
@@ -35,6 +37,13 @@ export const logFile = async (
     rangeName,
     labelName,
     featureName,
+    runConfig.idx,
+    runConfig.eta,
+    runConfig.gamma,
+    runConfig.max_depth,
+    runConfig.min_child_weight,
+    runConfig.subsample,
+    runConfig.iterations,
     round2(results.precisionTotal),
     round2(results.recallTotal),
     round2(results.fScore),
@@ -59,6 +68,13 @@ const logFileHeader = async (fileName: string) => {
     "RANGE",
     "LABEL",
     "FEATURE",
+    "IDX",
+    "ETA",
+    "GAMMA",
+    "MAX_DEPTH",
+    "MIN_CHILD_WEIGHT",
+    "SUBSAMPLE",
+    "ITERATIONS",
     "PREC_TOTAL",
     "RECALL_TOTAL",
     "FSCORE",

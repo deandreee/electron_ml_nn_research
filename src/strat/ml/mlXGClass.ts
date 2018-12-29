@@ -42,18 +42,14 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
   const booster = new XGBoost({
     booster: "gbtree",
     objective: "multi:softmax",
-    // max_depth: 20,
+    eta: runConfigXG.eta || 0.3,
+    gamma: runConfigXG.gamma || 0,
     max_depth: runConfigXG.max_depth || 3,
-    // eta: 0.1,
-    eta: runConfigXG.max_depth || 0.01,
-    // gamma: 10,
-    // min_child_weight: 1,
-    // subsample: 1,
-    subsample: 0.5,
-    colsample_bytree: 1,
-    silent: 1,
-    // iterations: 50,
-    iterations: 10,
+    min_child_weight: runConfigXG.min_child_weight || 1,
+    subsample: runConfigXG.subsample || 0.5,
+    iterations: runConfigXG.iterations || 10,
+
+    verbosity: 1, // 0 (silent), 1 (warning), 2 (info), 3 (debug).
     num_class: uniqueLabels.length
   });
 

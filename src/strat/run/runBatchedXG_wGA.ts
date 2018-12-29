@@ -10,35 +10,34 @@ import * as runConfigXG from "./runConfigXG";
 import { logConsole, logFile } from "./logClassResults";
 import * as log from "../log";
 
+import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
+
 const featureName = "combo_single_each";
-const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_TrainJunJul();
+  const ranges = runUtils.genRanges_FastMiniTest();
   const months = queryCorrCandlesMonthsBatched(coin, ranges);
   const trainMonth = months[ranges[0].name];
-
-  runUtils.getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
   const feature = features.getCombo().find(x => x.name === featureName);
 
-  const runConfigs = runConfigXG.getConfigGrid();
-  console.log(`RUN CONFIGS ::: ${runConfigs.length}`);
-
-  for (let runConfig of runConfigs) {
-    log.start(runConfigXG.getName(runConfig));
+  const fnFitness = async (runConfig: runConfigXG.RunConfigXG) => {
+    log.start(runConfigXG.getName(runConfig), true);
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
 
+    const allResults = [];
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
       const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
       predictions[range.name][feature.name] = predicted;
+      allResults.push(results);
 
       logConsole(range.name, results);
       await logFile(
@@ -52,10 +51,15 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       );
     }
 
-    log.end(runConfigXG.getName(runConfig));
+    log.end(runConfigXG.getName(runConfig), true);
 
     booster.free();
-  }
+
+    return allResults[1].fScore;
+  };
+
+  const genetic = new CustomGenetic(gaConfig, userData, fnFitness);
+  genetic.evolve();
 
   return {
     coin: months.Jul,

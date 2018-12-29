@@ -1,24 +1,26 @@
-export const start = (name: string) => {
-  time(name);
-  console.log(`-------------------- RUNNING ${name} --------------------`);
+import { pad } from "lodash";
+
+export const start = (name: string, noThrow?: boolean) => {
+  time(name, noThrow);
+  console.log(pad(` RUNNING ${name} `, 100, "="));
 };
 
-export const end = (name: string) => {
-  timeEnd(name);
+export const end = (name: string, noThrow?: boolean) => {
+  timeEnd(name, noThrow);
 };
 
 const times: { [name: string]: number } = {};
-export const time = (name: string) => {
-  if (times[name]) {
+export const time = (name: string, noThrow?: boolean) => {
+  if (times[name] && !noThrow) {
     throw new Error(`Time for ${name} already running`);
   }
 
   times[name] = new Date().getTime();
 };
 
-export const timeEnd = (name: string) => {
+export const timeEnd = (name: string, noThrow?: boolean) => {
   const start = times[name];
-  if (!start) {
+  if (!start && !noThrow) {
     throw new Error(`Start time for ${name} not found`);
   }
 
@@ -27,5 +29,5 @@ export const timeEnd = (name: string) => {
   const end = new Date().getTime();
 
   const elapsedSeconds = Math.round((end - start) / 1000);
-  console.log(`-------------------- TIME ${name}:     ${elapsedSeconds}s -------------------- `);
+  console.log(pad(`TIME ${name}:     ${elapsedSeconds}s`, 100, "="));
 };

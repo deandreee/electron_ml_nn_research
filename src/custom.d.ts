@@ -14,3 +14,4 @@ declare module "indicators";
 declare module "ml-performance";
 declare module "csv";
 declare module "ml-xgboost";
+declare module "genetic-js";
