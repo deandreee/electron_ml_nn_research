@@ -119,15 +119,6 @@ interface WavesIndT3MACD {
   x480: IndT3MACD;
 }
 
-interface WavesIndZerolagT3 {
-  [prop: string]: IndZerolagT3;
-  x30: IndZerolagT3;
-  x60: IndZerolagT3;
-  x120: IndZerolagT3;
-  x240: IndZerolagT3;
-  x480: IndZerolagT3;
-}
-
 export interface Indicators {
   rsi30x10?: number;
   rsi30x20?: number;
@@ -291,8 +282,7 @@ export interface Indicators {
 
   emaOCC?: WavesIndEMAxOCC;
   t3Macd?: WavesIndT3MACD;
-  zerolagT3?: WavesIndZerolagT3;
-
+  zerolagT3?: IndTimeframes<IndZerolagT3>;
   lrc?: IndTimeframes<IndLRC>;
 }
 

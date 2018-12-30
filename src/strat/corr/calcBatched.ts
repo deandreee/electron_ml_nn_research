@@ -219,12 +219,7 @@ export const corrCalcBatched = (coin: CoinData) => {
   const t3Macd240 = new T3MACD(waveManager240);
   const t3Macd480 = new T3MACD(waveManager480);
 
-  const zerolagT3x30 = new ZerolagT3(waveManager30);
-  const zerolagT3x60 = new ZerolagT3(waveManager60);
-  const zerolagT3x120 = new ZerolagT3(waveManager120);
-  const zerolagT3x240 = new ZerolagT3(waveManager240);
-  const zerolagT3x480 = new ZerolagT3(waveManager480);
-
+  const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
   const lrc = new IndTimeframeGroup(LRC, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
@@ -397,14 +392,7 @@ export const corrCalcBatched = (coin: CoinData) => {
         x480: t3Macd480.update(bigCandle480)
       },
 
-      zerolagT3: {
-        x30: zerolagT3x30.update(bigCandle30),
-        x60: zerolagT3x60.update(bigCandle60),
-        x120: zerolagT3x120.update(bigCandle120),
-        x240: zerolagT3x240.update(bigCandle240),
-        x480: zerolagT3x480.update(bigCandle480)
-      },
-
+      zerolagT3: zerolagT3.update(bigCandles),
       lrc: lrc.update(bigCandles)
     };
 
