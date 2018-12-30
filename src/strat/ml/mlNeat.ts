@@ -40,7 +40,7 @@ export const predictNeataptic = async (corrCandles: CorrCandles, fnGetFeature: F
 };
 
 export const predictSynaptic = (candlesActual: Candle[]) => {
-  let features = candlesActual.map(x => [x.ind.macd60.histo, x.ind.macd120.histo, x.ind.rsi60x10]);
+  let features = candlesActual.map(x => [x.ind.macd.x60.sig9.histo, x.ind.macd.x120.sig9.histo, x.ind.rsi60x10]);
   let labels = candlesActual.map(x => x.pctChange._240m);
 
   features = mlUtils.rescaleFeatures(features);

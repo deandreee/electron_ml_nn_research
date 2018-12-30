@@ -2,34 +2,6 @@ import { FeatureSplit } from "./FeatureSplit";
 
 export const getAllKhaos = (): FeatureSplit[] => {
   return [
-    { name: "macd30", fn: (x, i, corrCandles) => [x.ind.macd30.histo] },
-    { name: "macd60", fn: (x, i, corrCandles) => [x.ind.macd60.histo] },
-    { name: "macd120", fn: (x, i, corrCandles) => [x.ind.macd120.histo] },
-    { name: "lrc10_pred", fn: (x, i, corrCandles) => [x.ind.lrc10_pred] },
-    {
-      name: "macd60 vs 120m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 120).ind.macd60.histo]
-    },
-    {
-      name: "macd60 vs 240m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 240).ind.macd60.histo]
-    },
-    {
-      name: "macd60 vs 480m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 480).ind.macd60.histo]
-    },
-    {
-      name: "macd60 vs 720m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 720).ind.macd60.histo]
-    },
-    {
-      name: "macd60 vs 960m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 960).ind.macd60.histo]
-    },
-    {
-      name: "macd60 vs 1500m",
-      fn: (x, i, corrCandles) => [x.ind.macd60.histo - corrCandles.getPrev(i, 1500).ind.macd60.histo]
-    },
     {
       name: "atr960 / atr120",
       fn: (x, i, corrCandles) => [x.ind.atr960 / x.ind.atr120]

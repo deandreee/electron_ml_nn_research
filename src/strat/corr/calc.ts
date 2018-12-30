@@ -5,7 +5,7 @@ import { trippleBarrier } from "./trippleBarrier";
 // @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 
-const { MACD, RSI, BBANDS } = require("../../../../gekko-develop/strategies/indicators");
+const { RSI, BBANDS } = require("../../../../gekko-develop/strategies/indicators");
 // const {
 //   LRC,
 //   VixFix,
@@ -116,10 +116,6 @@ export const corrCalc = (coin: CoinData) => {
   const bbands120_30_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
   const bbands120_30_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
 
-  const macd30 = new XmBase(waveManager30, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd240 = new XmBase(waveManager240, () => new MACD({ short: 12, long: 26, signal: 9 }));
   // const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
   // const zerlagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
 
@@ -224,10 +220,7 @@ export const corrCalc = (coin: CoinData) => {
       // mfi120_15: mfi120_15.update(bigCandle120),
       // mfi120_30: mfi120_30.update(bigCandle120),
       // mfi120_60: mfi120_60.update(bigCandle120),
-      macd30: macd30.update(bigCandle30.close),
-      macd60: macd60.update(bigCandle60.close),
-      macd120: macd120.update(bigCandle120.close),
-      macd240: macd240.update(bigCandle240.close),
+
       // zerlagMacd60: zerlagMacd60.update(bigCandle60),
       // zerlagMacd120: zerlagMacd120.update(bigCandle120),
       // atr60: atr60.update(candle),

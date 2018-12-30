@@ -25,10 +25,10 @@ describe("featureSplit", () => {
   });
 
   test("getIndicatorNames | with point", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd30.histo];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x60.sig9.histo];
     const minMaxScaler = new MinMaxScaler(featureSplit);
     const indicators = minMaxScaler.getIndicatorNames();
-    expect(indicators).toEqual(["macd30.histo"]);
+    expect(indicators).toEqual(["macd.x60.sig9.histo"]);
   });
 
   test("getIndicatorNames | comment", () => {
@@ -89,7 +89,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | macd | 0 -> 10", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd120.histo];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -100,7 +100,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | macd | -100 -> 100", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd120.histo];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -111,7 +111,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | macd | 1 -> 5", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd120.histo];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -122,7 +122,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | macd | rsi", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd120.histo, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi120x10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -133,7 +133,7 @@ describe("featureSplit", () => {
   });
 
   test("scale | macd | rsi", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd120.histo, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi120x10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 

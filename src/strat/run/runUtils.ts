@@ -34,8 +34,8 @@ export const getIndMinMax = (candles: CorrCandles) => {
     const max = maxBy(candles.candlesActual, "ind.macd30.histo");
     console.log(
       padEnd("macd30", 10),
-      padEnd(round2(min.ind.macd30.histo).toString(), 5),
-      padEnd(round2(max.ind.macd30.histo).toString(), 5)
+      padEnd(round2(min.ind.macd.x30.sig9.histo).toString(), 5),
+      padEnd(round2(max.ind.macd.x30.sig9.histo).toString(), 5)
     );
   }
 
@@ -44,8 +44,8 @@ export const getIndMinMax = (candles: CorrCandles) => {
     const max = maxBy(candles.candlesActual, "ind.macd60.histo");
     console.log(
       padEnd("macd60", 10),
-      padEnd(round2(min.ind.macd60.histo).toString(), 5),
-      padEnd(round2(max.ind.macd60.histo).toString(), 5)
+      padEnd(round2(min.ind.macd.x60.sig9.histo).toString(), 5),
+      padEnd(round2(max.ind.macd.x60.sig9.histo).toString(), 5)
     );
   }
 
@@ -54,8 +54,8 @@ export const getIndMinMax = (candles: CorrCandles) => {
     const max = maxBy(candles.candlesActual, "ind.macd120.histo");
     console.log(
       padEnd("macd120", 10),
-      padEnd(round2(min.ind.macd120.histo).toString(), 5),
-      padEnd(round2(max.ind.macd120.histo).toString(), 5)
+      padEnd(round2(min.ind.macd.x120.sig9.histo).toString(), 5),
+      padEnd(round2(max.ind.macd.x120.sig9.histo).toString(), 5)
     );
   }
 
@@ -64,8 +64,8 @@ export const getIndMinMax = (candles: CorrCandles) => {
     const max = maxBy(candles.candlesActual, "ind.macd240.histo");
     console.log(
       padEnd("macd240", 10),
-      padEnd(round2(min.ind.macd240.histo).toString(), 5),
-      padEnd(round2(max.ind.macd240.histo).toString(), 5)
+      padEnd(round2(min.ind.macd.x240.sig9.histo).toString(), 5),
+      padEnd(round2(max.ind.macd.x240.sig9.histo).toString(), 5)
     );
   }
 };

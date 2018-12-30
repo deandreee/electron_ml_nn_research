@@ -114,11 +114,6 @@ export const corrCalcBatched = (coin: CoinData) => {
   const bbands120_30_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
   const bbands120_30_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
 
-  const macd30 = new XmBase(waveManager30, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd60 = new XmBase(waveManager60, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
-  const macd240 = new XmBase(waveManager240, () => new MACD({ short: 12, long: 26, signal: 9 }));
-
   const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
   const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
   const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
@@ -207,6 +202,8 @@ export const corrCalcBatched = (coin: CoinData) => {
   const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
   const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
   const lrc = new IndTimeframeGroup(LRC, waveManagers);
+
+  const macd = new IndTimeframeGroup(MACD, waveManagers);
   const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
@@ -255,11 +252,6 @@ export const corrCalcBatched = (coin: CoinData) => {
       rsi480x10: rsi480x10.update(bigCandle480),
       rsi480x20: rsi480x20.update(bigCandle480),
       rsi480x30: rsi480x30.update(bigCandle480),
-
-      macd30: macd30.update(bigCandle30.close),
-      macd60: macd60.update(bigCandle60.close),
-      macd120: macd120.update(bigCandle120.close),
-      macd240: macd240.update(bigCandle240.close),
 
       bbands60_10_1: bbands60_10_1.update(bigCandle60.close),
       bbands60_10_2: bbands60_10_2.update(bigCandle60.close),
@@ -362,16 +354,30 @@ export const corrCalcBatched = (coin: CoinData) => {
       t3Macd: t3Macd.update(bigCandles),
       zerolagT3: zerolagT3.update(bigCandles),
       lrc: lrc.update(bigCandles),
+
+      macd: macd.update(bigCandles),
       zerolagMACD: zerolagMACD.update(bigCandles)
     };
 
-    candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
-    candle.ind.macd60_ADX60 = macd60_ADX60.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
-    candle.ind.macd60_ADX120 = macd60_ADX120.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));
+    candle.ind.macd60_ADX30 = macd60_ADX30.update(
+      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    );
+    candle.ind.macd60_ADX60 = macd60_ADX60.update(
+      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    );
+    candle.ind.macd60_ADX120 = macd60_ADX120.update(
+      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    );
 
-    candle.ind.macd120_ADX30 = macd120_ADX30.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
-    candle.ind.macd120_ADX60 = macd120_ADX60.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
-    candle.ind.macd120_ADX120 = macd120_ADX120.update(valueToOHLC(candle.ind.macd120 && candle.ind.macd120.histo));
+    candle.ind.macd120_ADX30 = macd120_ADX30.update(
+      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    );
+    candle.ind.macd120_ADX60 = macd120_ADX60.update(
+      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    );
+    candle.ind.macd120_ADX120 = macd120_ADX120.update(
+      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    );
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 

@@ -6,6 +6,7 @@ import { IndZerolagT3 } from "./indicators/ZerolagT3";
 import { IndTimeframes } from "./indicators/IndTimeframeGroup";
 import { IndLRC } from "./indicators/LRC";
 import { IndZerolagMACD } from "./indicators/ZerolagMACD";
+import { IndMACD } from "./indicators/MACD";
 
 export type Cb = (err: Error) => void;
 
@@ -81,7 +82,7 @@ export interface BBands {
   lower: number;
 }
 
-export interface MACD {
+export interface MACDValue {
   signal: number;
   diff: number;
   histo: number;
@@ -155,11 +156,7 @@ export interface Indicators {
   mfi480_30?: number;
   mfi480_60?: number;
 
-  macd30?: MACD;
-  macd60?: MACD;
   macd60_PSAR?: PSAR;
-  macd120?: MACD;
-  macd240?: MACD;
 
   macdHistoLrc?: number;
   macdHistoLrcSlow?: number;
@@ -263,6 +260,8 @@ export interface Indicators {
   t3Macd?: IndTimeframes<IndT3MACD>;
   zerolagT3?: IndTimeframes<IndZerolagT3>;
   lrc?: IndTimeframes<IndLRC>;
+
+  macd?: IndTimeframes<IndMACD>;
   zerolagMACD?: IndTimeframes<IndZerolagMACD>;
 }
 

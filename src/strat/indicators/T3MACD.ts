@@ -1,8 +1,8 @@
 import { XmBase, T3MACD as _T3MACD, WaveManager } from "./gekko";
-import { Candle, MACD } from "../types";
+import { Candle, MACDValue } from "../types";
 
 export interface IndT3MACD {
-  t3Macd?: MACD;
+  t3Macd?: MACDValue;
 }
 
 export class T3MACD {
