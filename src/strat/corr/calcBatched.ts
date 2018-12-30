@@ -7,6 +7,7 @@ import { EMAxOCC } from "../indicators/EMAxOCC";
 import { T3MACD } from "../indicators/T3MACD";
 import { ZerolagT3 } from "../indicators/ZerolagT3";
 import { ZerolagMACD } from "../indicators/ZerolagMACD";
+import { MACD } from "../indicators/MACD";
 import { LRC } from "../indicators/LRC";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -15,7 +16,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/indicators`);
+const { RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 

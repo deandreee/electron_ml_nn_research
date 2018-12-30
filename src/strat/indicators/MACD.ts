@@ -27,10 +27,10 @@ export class MACD {
 
   update(bigCandle: Candle): IndMACD {
     return {
-      sig5: this.sig5.update(bigCandle),
-      sig9: this.sig9.update(bigCandle),
-      sig2_10: this.sig2_10.update(bigCandle),
-      sig2_16: this.sig2_16.update(bigCandle)
+      sig5: this.sig5.update(bigCandle.close),
+      sig9: this.sig9.update(bigCandle.close),
+      sig2_10: this.sig2_10.update(bigCandle.close),
+      sig2_16: this.sig2_16.update(bigCandle.close)
     };
   }
 }
