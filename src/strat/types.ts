@@ -102,23 +102,6 @@ export interface VWAP {
   den: number;
 }
 
-interface WavesIndEMAxOCC {
-  x30: IndEMAxOCC;
-  x60: IndEMAxOCC;
-  x120: IndEMAxOCC;
-  x240: IndEMAxOCC;
-  x480: IndEMAxOCC;
-}
-
-interface WavesIndT3MACD {
-  [prop: string]: IndT3MACD;
-  x30: IndT3MACD;
-  x60: IndT3MACD;
-  x120: IndT3MACD;
-  x240: IndT3MACD;
-  x480: IndT3MACD;
-}
-
 export interface Indicators {
   rsi30x10?: number;
   rsi30x20?: number;
@@ -280,8 +263,8 @@ export interface Indicators {
   vixFix480_g?: number;
   vixFix480_h?: number;
 
-  emaOCC?: WavesIndEMAxOCC;
-  t3Macd?: WavesIndT3MACD;
+  emaOCC?: IndTimeframes<IndEMAxOCC>;
+  t3Macd?: IndTimeframes<IndT3MACD>;
   zerolagT3?: IndTimeframes<IndZerolagT3>;
   lrc?: IndTimeframes<IndLRC>;
 }

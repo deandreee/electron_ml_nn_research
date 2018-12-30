@@ -207,18 +207,8 @@ export const corrCalcBatched = (coin: CoinData) => {
   const vixFix480_g = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 }));
   const vixFix480_h = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 }));
 
-  const emaOCC30 = new EMAxOCC(waveManager30);
-  const emaOCC60 = new EMAxOCC(waveManager60);
-  const emaOCC120 = new EMAxOCC(waveManager120);
-  const emaOCC240 = new EMAxOCC(waveManager240);
-  const emaOCC480 = new EMAxOCC(waveManager480);
-
-  const t3Macd30 = new T3MACD(waveManager30);
-  const t3Macd60 = new T3MACD(waveManager60);
-  const t3Macd120 = new T3MACD(waveManager120);
-  const t3Macd240 = new T3MACD(waveManager240);
-  const t3Macd480 = new T3MACD(waveManager480);
-
+  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
+  const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
   const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
   const lrc = new IndTimeframeGroup(LRC, waveManagers);
 
@@ -376,22 +366,8 @@ export const corrCalcBatched = (coin: CoinData) => {
       vixFix480_g: vixFix480_g.update(bigCandle480),
       vixFix480_h: vixFix480_h.update(bigCandle480),
 
-      emaOCC: {
-        x30: emaOCC30.update(bigCandle30),
-        x60: emaOCC60.update(bigCandle60),
-        x120: emaOCC120.update(bigCandle120),
-        x240: emaOCC240.update(bigCandle240),
-        x480: emaOCC480.update(bigCandle480)
-      },
-
-      t3Macd: {
-        x30: t3Macd30.update(bigCandle30),
-        x60: t3Macd60.update(bigCandle60),
-        x120: t3Macd120.update(bigCandle120),
-        x240: t3Macd240.update(bigCandle240),
-        x480: t3Macd480.update(bigCandle480)
-      },
-
+      emaOCC: emaOCC.update(bigCandles),
+      t3Macd: t3Macd.update(bigCandles),
       zerolagT3: zerolagT3.update(bigCandles),
       lrc: lrc.update(bigCandles)
     };
