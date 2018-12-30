@@ -14,6 +14,7 @@ import { getVixFix } from "./getVixFix";
 import { getTest } from "./getTest";
 import { getOCC } from "./getOCC";
 import { getT3MACD } from "./getT3MACD";
+import { getZerolagT3 } from "./getZerolagT3";
 
 const getAll = () => {
   return [
@@ -48,5 +49,6 @@ export {
   getVixFix,
   getTest,
   getOCC,
-  getT3MACD
+  getT3MACD,
+  getZerolagT3
 };

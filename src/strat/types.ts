@@ -2,6 +2,7 @@ import { PaperTrader } from "./gekko/PaperTrader";
 import { CorrCandles } from "./corr/CorrCandles";
 import { IndEMAxOCC } from "./indicators/EMAxOCC";
 import { IndT3MACD } from "./indicators/T3MACD";
+import { IndZerolagT3 } from "./indicators/ZerolagT3";
 
 export type Cb = (err: Error) => void;
 
@@ -114,6 +115,15 @@ interface WavesIndT3MACD {
   x120: IndT3MACD;
   x240: IndT3MACD;
   x480: IndT3MACD;
+}
+
+interface WavesIndZerolagT3 {
+  [prop: string]: IndZerolagT3;
+  x30: IndZerolagT3;
+  x60: IndZerolagT3;
+  x120: IndZerolagT3;
+  x240: IndZerolagT3;
+  x480: IndZerolagT3;
 }
 
 export interface Indicators {
@@ -279,6 +289,7 @@ export interface Indicators {
 
   emaOCC?: WavesIndEMAxOCC;
   t3Macd?: WavesIndT3MACD;
+  zerolagT3?: WavesIndZerolagT3;
 }
 
 export type CsvCell = string | number;

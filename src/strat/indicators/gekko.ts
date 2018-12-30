@@ -6,7 +6,12 @@ const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix, EMA } = require(`${GEKKO}/indicators`);
 
-const { InverseFisherTransform, InverseFisherTransformSmoothed, T3MACD } = require(`${GEKKO}/indicators/ninja`);
+const {
+  InverseFisherTransform,
+  InverseFisherTransformSmoothed,
+  T3MACD,
+  ZerolagT3
+} = require(`${GEKKO}/indicators/ninja`);
 
 const { VWAP, ZerolagMACD } = require(`${GEKKO}/indicators/lizard`);
 
@@ -49,5 +54,6 @@ export {
   InverseFisherTransformSmoothed,
   VWAP,
   ZerolagMACD,
-  T3MACD
+  T3MACD,
+  ZerolagT3
 };
