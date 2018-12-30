@@ -3,6 +3,8 @@ import { CorrCandles } from "./corr/CorrCandles";
 import { IndEMAxOCC } from "./indicators/EMAxOCC";
 import { IndT3MACD } from "./indicators/T3MACD";
 import { IndZerolagT3 } from "./indicators/ZerolagT3";
+import { IndTimeframes } from "./indicators/IndTimeframeGroup";
+import { IndLRC } from "./indicators/LRC";
 
 export type Cb = (err: Error) => void;
 
@@ -67,7 +69,7 @@ export interface IndChannel {
   down: number;
 }
 
-export interface IndLRC {
+export interface IndLRCValue {
   slope: number;
   intercept: number;
   result: number;
@@ -150,9 +152,9 @@ export interface Indicators {
   zlema60Fast?: number;
   zlema60Slow?: number;
   hma?: number;
-  lrc1?: IndLRC;
-  lrc10?: IndLRC;
-  lrc30?: IndLRC;
+  lrc1?: IndLRCValue;
+  lrc10?: IndLRCValue;
+  lrc30?: IndLRCValue;
   lrc60?: number;
   lrc120?: number;
   lrc240?: number;
@@ -290,6 +292,8 @@ export interface Indicators {
   emaOCC?: WavesIndEMAxOCC;
   t3Macd?: WavesIndT3MACD;
   zerolagT3?: WavesIndZerolagT3;
+
+  lrc?: IndTimeframes<IndLRC>;
 }
 
 export type CsvCell = string | number;
