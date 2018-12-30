@@ -114,22 +114,22 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.vixFix30)) {
+  if (hasIndicator(coin, x => x.ind.vixFix.x30.a)) {
     series.push({
       ...base,
       color: "red",
-      data: data(coin, x => x.ind.vixFix30),
+      data: data(coin, x => x.ind.vixFix.x30.a),
       name: "vixFix30",
       xAxisIndex: 1,
       yAxisIndex: 1
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.vixFix60)) {
+  if (hasIndicator(coin, x => x.ind.vixFix.x60.a)) {
     series.push({
       ...base,
       color: "red",
-      data: data(coin, x => x.ind.vixFix60),
+      data: data(coin, x => x.ind.vixFix.x60.a),
       name: "vixFix60",
       xAxisIndex: 1,
       yAxisIndex: 1

@@ -20,7 +20,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const featuresSplit = features.getMACD();
+  const featuresSplit = features.getVixFix();
 
   for (let x of featuresSplit) {
     log.start(x.name);

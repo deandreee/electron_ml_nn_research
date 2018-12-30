@@ -7,6 +7,7 @@ import { IndTimeframes } from "./indicators/IndTimeframeGroup";
 import { IndLRC } from "./indicators/LRC";
 import { IndZerolagMACD } from "./indicators/ZerolagMACD";
 import { IndMACD } from "./indicators/MACD";
+import { IndVixFix } from "./indicators/VixFix";
 
 export type Cb = (err: Error) => void;
 
@@ -242,20 +243,6 @@ export interface Indicators {
   vwap240_20?: VWAP;
   vwap240_30?: VWAP;
 
-  vixFix30?: number;
-  vixFix60?: number;
-  vixFix120?: number;
-  vixFix240?: number;
-  vixFix480?: number;
-  vixFix480_a?: number;
-  vixFix480_b?: number;
-  vixFix480_c?: number;
-  vixFix480_d?: number;
-  vixFix480_e?: number;
-  vixFix480_f?: number;
-  vixFix480_g?: number;
-  vixFix480_h?: number;
-
   emaOCC?: IndTimeframes<IndEMAxOCC>;
   t3Macd?: IndTimeframes<IndT3MACD>;
   zerolagT3?: IndTimeframes<IndZerolagT3>;
@@ -263,6 +250,8 @@ export interface Indicators {
 
   macd?: IndTimeframes<IndMACD>;
   zerolagMACD?: IndTimeframes<IndZerolagMACD>;
+
+  vixFix?: IndTimeframes<IndVixFix>;
 }
 
 export type CsvCell = string | number;

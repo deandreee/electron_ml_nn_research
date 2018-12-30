@@ -5,13 +5,13 @@ export const getTest = (): FeatureSplit[] => {
     {
       name: "vixFixCombo",
       fn: x => [
-        x.ind.vixFix30,
-        x.ind.vixFix60,
-        x.ind.vixFix120,
-        x.ind.vixFix240,
-        x.ind.vixFix480,
-        x.ind.vixFix480_a,
-        x.ind.vixFix480_d
+        x.ind.vixFix.x30.a,
+        x.ind.vixFix.x60.a,
+        x.ind.vixFix.x120.a,
+        x.ind.vixFix.x240.a,
+        x.ind.vixFix.x480.a,
+        x.ind.vixFix.x480.b,
+        x.ind.vixFix.x480.e
       ]
     }
   ];

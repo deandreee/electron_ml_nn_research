@@ -9,6 +9,7 @@ import { ZerolagT3 } from "../indicators/ZerolagT3";
 import { ZerolagMACD } from "../indicators/ZerolagMACD";
 import { MACD } from "../indicators/MACD";
 import { LRC } from "../indicators/LRC";
+import { VixFix } from "../indicators/VixFix";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 
@@ -16,7 +17,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/indicators`);
+const { RSI, BBANDS, MFI, StochKD, ADX, ATR } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
@@ -185,20 +186,6 @@ export const corrCalcBatched = (coin: CoinData) => {
   const vwap240_20 = new XmBase(waveManager240, () => new VWAP(20));
   const vwap240_30 = new XmBase(waveManager240, () => new VWAP(30));
 
-  const vixFix30 = new XmBase(waveManager30, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix60 = new XmBase(waveManager60, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix120 = new XmBase(waveManager120, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix240 = new XmBase(waveManager240, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480 = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480_a = new XmBase(waveManager480, () => new VixFix({ pd: 25, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480_b = new XmBase(waveManager480, () => new VixFix({ pd: 30, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480_c = new XmBase(waveManager480, () => new VixFix({ pd: 15, bbl: 12, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480_d = new XmBase(waveManager480, () => new VixFix({ pd: 15, bbl: 10, mult: 2.0, lb: 50, ph: 0.85 }));
-  const vixFix480_e = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 3.0, lb: 50, ph: 0.85 }));
-  const vixFix480_f = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 1.5, lb: 50, ph: 0.85 }));
-  const vixFix480_g = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 }));
-  const vixFix480_h = new XmBase(waveManager480, () => new VixFix({ pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 }));
-
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
   const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
   const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
@@ -206,6 +193,7 @@ export const corrCalcBatched = (coin: CoinData) => {
 
   const macd = new IndTimeframeGroup(MACD, waveManagers);
   const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers);
+  const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -337,27 +325,15 @@ export const corrCalcBatched = (coin: CoinData) => {
       vwap240_20: vwap240_20.update(bigCandle240),
       vwap240_30: vwap240_30.update(bigCandle240),
 
-      vixFix30: vixFix30.update(bigCandle30),
-      vixFix60: vixFix60.update(bigCandle60),
-      vixFix120: vixFix120.update(bigCandle120),
-      vixFix240: vixFix240.update(bigCandle240),
-      vixFix480: vixFix480.update(bigCandle480),
-      vixFix480_a: vixFix480_a.update(bigCandle480),
-      vixFix480_b: vixFix480_b.update(bigCandle480),
-      vixFix480_c: vixFix480_c.update(bigCandle480),
-      vixFix480_d: vixFix480_d.update(bigCandle480),
-      vixFix480_e: vixFix480_e.update(bigCandle480),
-      vixFix480_f: vixFix480_f.update(bigCandle480),
-      vixFix480_g: vixFix480_g.update(bigCandle480),
-      vixFix480_h: vixFix480_h.update(bigCandle480),
-
       emaOCC: emaOCC.update(bigCandles),
       t3Macd: t3Macd.update(bigCandles),
       zerolagT3: zerolagT3.update(bigCandles),
       lrc: lrc.update(bigCandles),
 
       macd: macd.update(bigCandles),
-      zerolagMACD: zerolagMACD.update(bigCandles)
+      zerolagMACD: zerolagMACD.update(bigCandles),
+
+      vixFix: vixFix.update(bigCandles)
     };
 
     candle.ind.macd60_ADX30 = macd60_ADX30.update(

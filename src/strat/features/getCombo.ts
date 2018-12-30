@@ -99,20 +99,20 @@ export const getCombo = (): FeatureSplit[] => {
     },
     {
       name: "mfi_vixfix_rsi",
-      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix480]
+      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a]
     },
     {
       name: "mfi_vixfix_rsi_bbands",
       fn: x => [
         x.ind.rsi240x20,
         x.ind.mfi480_60,
-        x.ind.vixFix480,
+        x.ind.vixFix.x480.a,
         x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower
       ]
     },
     {
       name: "mfi_vixfix_rsi_stoch",
-      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix480, x.ind.stochKD60_20.k]
+      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a, x.ind.stochKD60_20.k]
     }
   ];
 };

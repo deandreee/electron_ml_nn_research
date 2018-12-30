@@ -8,7 +8,7 @@ export const pricesXAhead = (candlesActual: Candle[], candlesActualExtended: Can
   const pricesXhAheadSeries = new Series(pricesXhAhead);
 
   const rsi = new Series(candlesActual.map(x => x.ind.rsi60x10));
-  const vixFix60 = new Series(candlesActual.map(x => x.ind.vixFix60));
+  const vixFix60 = new Series(candlesActual.map(x => x.ind.vixFix.x60.a));
   const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60));
   const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120));
   const lrc240_ = new Series(candlesActual.map(x => x.ind.lrc240));
