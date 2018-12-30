@@ -6,6 +6,7 @@ export interface IndEMAxOCC {
   emaOCC_10?: number;
   emaOCC_20?: number;
   emaOCC_30?: number;
+  emaOCC_40?: number;
 }
 
 export class EMAxOCC {
@@ -17,6 +18,8 @@ export class EMAxOCC {
   emaClose_20: any;
   emaOpen_30: any;
   emaClose_30: any;
+  emaOpen_40: any;
+  emaClose_40: any;
 
   constructor(waveManager: WaveManager) {
     this.emaOpen_5 = new XmBase(waveManager, () => new EMA(5));
@@ -30,6 +33,9 @@ export class EMAxOCC {
 
     this.emaOpen_30 = new XmBase(waveManager, () => new EMA(30));
     this.emaClose_30 = new XmBase(waveManager, () => new EMA(30));
+
+    this.emaOpen_40 = new XmBase(waveManager, () => new EMA(40));
+    this.emaClose_40 = new XmBase(waveManager, () => new EMA(40));
   }
 
   update(bigCandle: Candle): IndEMAxOCC {
@@ -49,11 +55,16 @@ export class EMAxOCC {
     const emaClose_30 = this.emaClose_30.update(bigCandle.close);
     const emaOCC_30 = emaClose_30 - emaOpen_30;
 
+    const emaOpen_40 = this.emaOpen_40.update(bigCandle.open);
+    const emaClose_40 = this.emaClose_40.update(bigCandle.close);
+    const emaOCC_40 = emaClose_40 - emaOpen_40;
+
     return {
       emaOCC_5,
       emaOCC_10,
       emaOCC_20,
-      emaOCC_30
+      emaOCC_30,
+      emaOCC_40
     };
   }
 }

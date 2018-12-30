@@ -1,6 +1,7 @@
 import { PaperTrader } from "./gekko/PaperTrader";
 import { CorrCandles } from "./corr/CorrCandles";
-import { IndEMAxOCC } from "./indicators/occ";
+import { IndEMAxOCC } from "./indicators/EMAxOCC";
+import { IndT3MACD } from "./indicators/T3MACD";
 
 export type Cb = (err: Error) => void;
 
@@ -99,9 +100,20 @@ export interface VWAP {
 }
 
 interface WavesIndEMAxOCC {
+  x30: IndEMAxOCC;
+  x60: IndEMAxOCC;
   x120: IndEMAxOCC;
   x240: IndEMAxOCC;
   x480: IndEMAxOCC;
+}
+
+interface WavesIndT3MACD {
+  [prop: string]: IndT3MACD;
+  x30: IndT3MACD;
+  x60: IndT3MACD;
+  x120: IndT3MACD;
+  x240: IndT3MACD;
+  x480: IndT3MACD;
 }
 
 export interface Indicators {
@@ -266,6 +278,7 @@ export interface Indicators {
   vixFix480_h?: number;
 
   emaOCC?: WavesIndEMAxOCC;
+  t3Macd?: WavesIndT3MACD;
 }
 
 export type CsvCell = string | number;
