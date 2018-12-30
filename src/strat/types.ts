@@ -5,6 +5,7 @@ import { IndT3MACD } from "./indicators/T3MACD";
 import { IndZerolagT3 } from "./indicators/ZerolagT3";
 import { IndTimeframes } from "./indicators/IndTimeframeGroup";
 import { IndLRC } from "./indicators/LRC";
+import { IndZerolagMACD } from "./indicators/ZerolagMACD";
 
 export type Cb = (err: Error) => void;
 
@@ -160,11 +161,6 @@ export interface Indicators {
   macd120?: MACD;
   macd240?: MACD;
 
-  zerolagMacd30?: MACD;
-  zerolagMacd60?: MACD;
-  zerolagMacd120?: MACD;
-  zerolagMacd240?: MACD;
-
   macdHistoLrc?: number;
   macdHistoLrcSlow?: number;
 
@@ -267,6 +263,7 @@ export interface Indicators {
   t3Macd?: IndTimeframes<IndT3MACD>;
   zerolagT3?: IndTimeframes<IndZerolagT3>;
   lrc?: IndTimeframes<IndLRC>;
+  zerolagMACD?: IndTimeframes<IndZerolagMACD>;
 }
 
 export type CsvCell = string | number;

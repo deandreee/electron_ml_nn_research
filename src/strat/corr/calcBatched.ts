@@ -6,6 +6,7 @@ import { TRIPPLE_BARRIER_LABEL } from "../run/runConfigXG";
 import { EMAxOCC } from "../indicators/EMAxOCC";
 import { T3MACD } from "../indicators/T3MACD";
 import { ZerolagT3 } from "../indicators/ZerolagT3";
+import { ZerolagMACD } from "../indicators/ZerolagMACD";
 import { LRC } from "../indicators/LRC";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -18,7 +19,7 @@ const { MACD, RSI, BBANDS, MFI, StochKD, ADX, ATR, VixFix } = require(`${GEKKO}/
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
-const { VWAP, ZerolagMACD } = require(`${GEKKO}/indicators/lizard`);
+const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
 export const CANDLE_SIZE = 10;
 export const WARMUP_IND = 480 * 70; // => ind ready
@@ -118,11 +119,6 @@ export const corrCalcBatched = (coin: CoinData) => {
   const macd120 = new XmBase(waveManager120, () => new MACD({ short: 12, long: 26, signal: 9 }));
   const macd240 = new XmBase(waveManager240, () => new MACD({ short: 12, long: 26, signal: 9 }));
 
-  const zerolagMacd30 = new XmBase(waveManager30, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
-  const zerolagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
-  const zerolagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
-  const zerolagMacd240 = new XmBase(waveManager240, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
-
   const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
   const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
   const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
@@ -211,6 +207,7 @@ export const corrCalcBatched = (coin: CoinData) => {
   const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
   const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
   const lrc = new IndTimeframeGroup(LRC, waveManagers);
+  const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -263,11 +260,6 @@ export const corrCalcBatched = (coin: CoinData) => {
       macd60: macd60.update(bigCandle60.close),
       macd120: macd120.update(bigCandle120.close),
       macd240: macd240.update(bigCandle240.close),
-
-      zerolagMacd30: zerolagMacd30.update(bigCandle30),
-      zerolagMacd60: zerolagMacd60.update(bigCandle60),
-      zerolagMacd120: zerolagMacd120.update(bigCandle120),
-      zerolagMacd240: zerolagMacd240.update(bigCandle240),
 
       bbands60_10_1: bbands60_10_1.update(bigCandle60.close),
       bbands60_10_2: bbands60_10_2.update(bigCandle60.close),
@@ -369,7 +361,8 @@ export const corrCalcBatched = (coin: CoinData) => {
       emaOCC: emaOCC.update(bigCandles),
       t3Macd: t3Macd.update(bigCandles),
       zerolagT3: zerolagT3.update(bigCandles),
-      lrc: lrc.update(bigCandles)
+      lrc: lrc.update(bigCandles),
+      zerolagMACD: zerolagMACD.update(bigCandles)
     };
 
     candle.ind.macd60_ADX30 = macd60_ADX30.update(valueToOHLC(candle.ind.macd60 && candle.ind.macd60.histo));

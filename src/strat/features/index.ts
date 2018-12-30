@@ -16,6 +16,7 @@ import { getOCC } from "./getOCC";
 import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC } from "./getLRC";
+import { getZerolagMACD } from "./getZerolagMACD";
 
 const getAll = () => {
   return [
@@ -52,5 +53,6 @@ export {
   getOCC,
   getT3MACD,
   getZerolagT3,
-  getLRC
+  getLRC,
+  getZerolagMACD
 };
