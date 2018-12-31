@@ -12,6 +12,7 @@ import { LRC } from "../indicators/LRC";
 import { VixFix } from "../indicators/VixFix";
 import { StochKD } from "../indicators/StochKD";
 import { MFI } from "../indicators/MFI";
+import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
@@ -21,7 +22,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { RSI, ADX, ATR } = require(`${GEKKO}/indicators`);
+const { ADX, ATR } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
@@ -80,22 +81,7 @@ export const corrCalcBatched = (coin: CoinData) => {
     x480: waveManager480
   };
 
-  const rsi30x10 = new XmBase(waveManager30, () => new RSI({ interval: 10 }));
-  const rsi30x20 = new XmBase(waveManager30, () => new RSI({ interval: 20 }));
-  const rsi30x30 = new XmBase(waveManager30, () => new RSI({ interval: 30 }));
-  const rsi60x10 = new XmBase(waveManager60, () => new RSI({ interval: 10 }));
-  const rsi60x20 = new XmBase(waveManager60, () => new RSI({ interval: 20 }));
-  const rsi60x30 = new XmBase(waveManager60, () => new RSI({ interval: 30 }));
-  const rsi120x10 = new XmBase(waveManager120, () => new RSI({ interval: 10 }));
-  const rsi120x20 = new XmBase(waveManager120, () => new RSI({ interval: 20 }));
-  const rsi120x30 = new XmBase(waveManager120, () => new RSI({ interval: 30 }));
-  const rsi240x10 = new XmBase(waveManager240, () => new RSI({ interval: 10 }));
-  const rsi240x20 = new XmBase(waveManager240, () => new RSI({ interval: 20 }));
-  const rsi240x30 = new XmBase(waveManager240, () => new RSI({ interval: 30 }));
-  const rsi480x10 = new XmBase(waveManager480, () => new RSI({ interval: 10 }));
-  const rsi480x20 = new XmBase(waveManager480, () => new RSI({ interval: 20 }));
-  const rsi480x30 = new XmBase(waveManager480, () => new RSI({ interval: 30 }));
-
+  const rsi = new IndTimeframeGroup(RSI, waveManagers);
   const bbands = new IndTimeframeGroup(BBands, waveManagers);
   const mfi = new IndTimeframeGroup(MFI, waveManagers);
 
@@ -185,22 +171,7 @@ export const corrCalcBatched = (coin: CoinData) => {
     }
 
     candle.ind = {
-      rsi30x10: rsi30x10.update(bigCandle30),
-      rsi30x20: rsi30x20.update(bigCandle30),
-      rsi30x30: rsi30x30.update(bigCandle30),
-      rsi60x10: rsi60x10.update(bigCandle60),
-      rsi60x20: rsi60x20.update(bigCandle60),
-      rsi60x30: rsi60x30.update(bigCandle60),
-      rsi120x10: rsi120x10.update(bigCandle120),
-      rsi120x20: rsi120x20.update(bigCandle120),
-      rsi120x30: rsi120x30.update(bigCandle120),
-      rsi240x10: rsi240x10.update(bigCandle240),
-      rsi240x20: rsi240x20.update(bigCandle240),
-      rsi240x30: rsi240x30.update(bigCandle240),
-      rsi480x10: rsi480x10.update(bigCandle480),
-      rsi480x20: rsi480x20.update(bigCandle480),
-      rsi480x30: rsi480x30.update(bigCandle480),
-
+      rsi: rsi.update(bigCandles),
       bbands: bbands.update(bigCandles),
       mfi: mfi.update(bigCandles),
 

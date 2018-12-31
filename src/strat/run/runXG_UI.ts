@@ -38,11 +38,11 @@ export const runXG_UI = async (): Promise<RunResult> => {
     {
       name: "rsi_combo_macd_bbands",
       fn: x => [
-        x.ind.rsi30x10,
-        x.ind.rsi60x10,
-        x.ind.rsi120x10,
-        x.ind.rsi240x10,
-        x.ind.rsi480x10,
+        x.ind.rsi.x30.p10,
+        x.ind.rsi.x60.p10,
+        x.ind.rsi.x120.p10,
+        x.ind.rsi.x240.p10,
+        x.ind.rsi.x480.p10,
         x.ind.macd.x30.sig9.histo,
         x.ind.macd.x60.sig9.histo,
         x.ind.macd.x120.sig9.histo,

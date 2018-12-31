@@ -4,7 +4,7 @@ import { round1 } from "../utils";
 
 describe("featureSplit", () => {
   test("getIndicatorNames | single", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.rsi30x10];
+    const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10];
     const minMaxScaler = new MinMaxScaler(featureSplit);
     const indicators = minMaxScaler.getIndicatorNames();
     expect(indicators).toEqual(["rsi30x10"]);
@@ -12,11 +12,11 @@ describe("featureSplit", () => {
 
   test("getIndicatorNames | multiple", () => {
     const featureSplit: FnGetFeature = x => [
-      x.ind.rsi30x10,
-      x.ind.rsi60x10,
-      x.ind.rsi120x10,
-      x.ind.rsi240x10,
-      x.ind.rsi480x10
+      x.ind.rsi.x30.p10,
+      x.ind.rsi.x60.p10,
+      x.ind.rsi.x120.p10,
+      x.ind.rsi.x240.p10,
+      x.ind.rsi.x480.p10
     ];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
@@ -33,9 +33,9 @@ describe("featureSplit", () => {
 
   test("getIndicatorNames | comment", () => {
     const featureSplit: FnGetFeature = x => [
-      x.ind.rsi30x10,
+      x.ind.rsi.x30.p10,
       // x.ind.rsi60x10,
-      x.ind.rsi120x10
+      x.ind.rsi.x120.p10
     ];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
@@ -44,7 +44,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | feature count too much", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.rsi30x10, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10, x.ind.rsi.x120.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -55,7 +55,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | feature count not enough", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.rsi30x10, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10, x.ind.rsi.x120.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -66,7 +66,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | called 2x", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.rsi30x10];
+    const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -78,7 +78,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | rsi", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.rsi30x10];
+    const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -122,7 +122,7 @@ describe("featureSplit", () => {
   });
 
   test("scaleInitial | macd | rsi", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi.x120.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 
@@ -133,7 +133,7 @@ describe("featureSplit", () => {
   });
 
   test("scale | macd | rsi", () => {
-    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi120x10];
+    const featureSplit: FnGetFeature = x => [x.ind.macd.x120.sig9.histo, x.ind.rsi.x120.p10];
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
 

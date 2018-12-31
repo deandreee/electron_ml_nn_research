@@ -256,7 +256,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.rsi60x10)) {
+  if (hasIndicator(coin, x => x.ind.rsi.x60.p10)) {
     series.push({
       ...base,
       // type: "scatter",
@@ -266,7 +266,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       // data: data(coins, x => x.ind.rsi),
       data: coin.candlesActual
         // .filter(x => x && x.ind.rsi > 80)
-        .map(x => x && [x.start * 1000, x.ind.rsi60x10 > 80 ? x.ind.rsi60x10 : null]),
+        .map(x => x && [x.start * 1000, x.ind.rsi.x60.p10 > 80 ? x.ind.rsi.x60.p10 : null]),
       name: "RSI",
       xAxisIndex: 1,
       yAxisIndex: 1

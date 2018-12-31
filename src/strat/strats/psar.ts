@@ -12,10 +12,10 @@ let stoplossCooldown = 0;
 const hasRsiBeen = (coins: CoinList, i: number, iBefore: number, rsi: number, comparison: "gt" | "lt") => {
   const candles = coins[config.leadCoin].candles.slice(iBefore, i);
   for (let x of candles) {
-    if (comparison === "gt" && x.ind.rsi60x10 > rsi) {
+    if (comparison === "gt" && x.ind.rsi.x60.p10 > rsi) {
       return true;
     }
-    if (comparison === "lt" && x.ind.rsi60x10 < rsi) {
+    if (comparison === "lt" && x.ind.rsi.x60.p10 < rsi) {
       return true;
     }
   }

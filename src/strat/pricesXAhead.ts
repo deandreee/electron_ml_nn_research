@@ -7,7 +7,7 @@ export const pricesXAhead = (candlesActual: Candle[], candlesActualExtended: Can
   const pricesXhAhead = candlesActual.map((x, i) => candlesActualExtended[i + 240].close);
   const pricesXhAheadSeries = new Series(pricesXhAhead);
 
-  const rsi = new Series(candlesActual.map(x => x.ind.rsi60x10));
+  const rsi = new Series(candlesActual.map(x => x.ind.rsi.x60.p10));
   const vixFix60 = new Series(candlesActual.map(x => x.ind.vixFix.x60.a));
   const lrc60_ = new Series(candlesActual.map(x => x.ind.lrc60));
   const lrc120_ = new Series(candlesActual.map(x => x.ind.lrc120));
@@ -32,7 +32,7 @@ export const pricesXAhead = (candlesActual: Candle[], candlesActualExtended: Can
   }
 
   {
-    const result = regression.linear(candlesActual.map(x => x.ind.rsi60x10).map((x, i) => [x, pricesXhAhead[i]]));
+    const result = regression.linear(candlesActual.map(x => x.ind.rsi.x60.p10).map((x, i) => [x, pricesXhAhead[i]]));
 
     console.log("regression rsi", result.string, "r2", result.r2);
   }

@@ -62,19 +62,6 @@ export const getAllKhaos = (): FeatureSplit[] => {
     },
 
     {
-      name: "rsi60x10",
-      fn: (x, i, corrCandles) => [x.ind.rsi60x10]
-    },
-    {
-      name: "rsi60x20",
-      fn: (x, i, corrCandles) => [x.ind.rsi60x20]
-    },
-    {
-      name: "rsi120x10",
-      fn: (x, i, corrCandles) => [x.ind.rsi120x10]
-    },
-
-    {
       name: "cci",
       fn: (x, i, corrCandles) => [x.ind.cci]
     },
