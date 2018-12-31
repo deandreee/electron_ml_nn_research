@@ -4,6 +4,7 @@ import { getATR } from "./getATR";
 import { getBBands } from "./getBBands";
 import { getCombo } from "./getCombo";
 import { getIFT } from "./getIFT";
+import { getIFTS } from "./getIFTS";
 import { getMACD } from "./getMACD";
 import { getMACDADX } from "./getMACDADX";
 import { getMFI } from "./getMFI";
@@ -42,6 +43,7 @@ export {
   getBBands,
   getCombo,
   getIFT,
+  getIFTS,
   getMACD,
   getMACDADX,
   getMFI,

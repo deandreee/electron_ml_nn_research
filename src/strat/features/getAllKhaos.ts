@@ -102,18 +102,6 @@ export const getAllKhaos = (): FeatureSplit[] => {
       fn: (x, i, corrCandles) => [x.ind.zlema60Fast - x.ind.zlema60Slow]
     },
     {
-      name: "ift60x15",
-      fn: (x, i, corrCandles) => [x.ind.ift60x15]
-    },
-    {
-      name: "ift30x15",
-      fn: (x, i, corrCandles) => [x.ind.ift30x15]
-    },
-    {
-      name: "ift120x15",
-      fn: (x, i, corrCandles) => [x.ind.ift120x15]
-    },
-    {
       name: "close",
       fn: (x, i, corrCandles) => [x.close]
     }

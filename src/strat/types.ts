@@ -12,6 +12,8 @@ import { IndStochKD } from "./indicators/StochKD";
 import { IndMFI } from "./indicators/MFI";
 import { IndBBands } from "./indicators/BBands";
 import { IndRSI } from "./indicators/RSI";
+import { IndIFT } from "./indicators/IFT";
+import { IndIFTS } from "./indicators/IFTS";
 
 export type Cb = (err: Error) => void;
 
@@ -160,19 +162,8 @@ export interface Indicators {
   volume60?: number;
   volume120?: number;
 
-  ift30x5?: number;
-  ift60x5?: number;
-  ift60x15?: number;
-  ift10x15?: number;
-  ift30x15?: number;
-  ift120x15?: number;
-  ift10x30?: number;
-  ift60x30?: number;
-  ift120x30?: number;
-
-  ifts10x15?: number;
-  ifts30x15?: number;
-  ifts60x15?: number;
+  ift?: IndTimeframes<IndIFT>;
+  ifts?: IndTimeframes<IndIFTS>;
 
   stochKD?: IndTimeframes<IndStochKD>;
   bbands?: IndTimeframes<IndBBands>;

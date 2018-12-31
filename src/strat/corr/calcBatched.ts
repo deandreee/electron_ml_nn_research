@@ -14,6 +14,8 @@ import { StochKD } from "../indicators/StochKD";
 import { MFI } from "../indicators/MFI";
 import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
+// import { IFT } from "../indicators/IFT";
+// import { IFTS } from "../indicators/IFTS";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -23,8 +25,6 @@ const GEKKO = "../../../../gekko-develop/strategies";
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const { ADX, ATR } = require(`${GEKKO}/indicators`);
-
-const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
 const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
@@ -84,19 +84,9 @@ export const corrCalcBatched = (coin: CoinData) => {
   const rsi = new IndTimeframeGroup(RSI, waveManagers);
   const bbands = new IndTimeframeGroup(BBands, waveManagers);
   const mfi = new IndTimeframeGroup(MFI, waveManagers);
+  // const ift = new IndTimeframeGroup(IFT, waveManagers);
+  // const ifts = new IndTimeframeGroup(IFTS, waveManagers);
 
-  const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
-  const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
-  const ift60x15 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 15 }));
-  const ift10x15 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 15 }));
-  const ift30x15 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 15 }));
-  const ift120x15 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 15 }));
-  const ift10x30 = new XmBase(waveManager10, () => new InverseFisherTransform({ period: 30 }));
-  const ift60x30 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 30 }));
-  const ift120x30 = new XmBase(waveManager120, () => new InverseFisherTransform({ period: 30 }));
-  const ifts10x15 = new XmBase(waveManager10, () => new InverseFisherTransformSmoothed({ period: 15 }));
-  const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
-  const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const macd60_ADX30 = new XmBase(waveManager60, () => new ADX(30, wHist));
   const macd60_ADX60 = new XmBase(waveManager60, () => new ADX(60, wHist));
   const macd60_ADX120 = new XmBase(waveManager60, () => new ADX(120, wHist));
@@ -175,18 +165,9 @@ export const corrCalcBatched = (coin: CoinData) => {
       bbands: bbands.update(bigCandles),
       mfi: mfi.update(bigCandles),
 
-      ift30x5: ift30x5.update(bigCandle30),
-      ift60x5: ift60x5.update(bigCandle60),
-      ift60x15: ift60x15.update(bigCandle60),
-      ift10x15: ift10x15.update(bigCandle10),
-      ift30x15: ift30x15.update(bigCandle30),
-      ift120x15: ift120x15.update(bigCandle120),
-      ift10x30: ift10x30.update(bigCandle10),
-      ift60x30: ift60x30.update(bigCandle60),
-      ift120x30: ift120x30.update(bigCandle120),
-      ifts10x15: ifts10x15.update(bigCandle10),
-      ifts30x15: ifts30x15.update(bigCandle30),
-      ifts60x15: ifts60x15.update(bigCandle60),
+      // disable, super slow
+      // ift: ift.update(bigCandles),
+      // ifts: ifts.update(bigCandles),
 
       stochKD: stochKD.update(bigCandles),
 
