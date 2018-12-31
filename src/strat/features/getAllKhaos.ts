@@ -73,11 +73,11 @@ export const getAllKhaos = (): FeatureSplit[] => {
     },
     {
       name: "stochKD60_14.k",
-      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.k]
+      fn: (x, i, corrCandles) => [x.ind.stochKD.x60.p14.k]
     },
     {
       name: "stochKD60_14.d",
-      fn: (x, i, corrCandles) => [x.ind.stochKD60_14.d]
+      fn: (x, i, corrCandles) => [x.ind.stochKD.x60.p14.d]
     },
     // this was the mistake before, leaving just the lower, but it brought the best result... oh, because it's closest to price ...
     {

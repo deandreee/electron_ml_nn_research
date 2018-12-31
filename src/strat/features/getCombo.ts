@@ -12,8 +12,8 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.rsi60x10,
         x.ind.rsi480x10,
         x.ind.mfi60_15,
-        x.ind.stochKD60_20.k,
-        x.ind.stochKD60_20.d
+        x.ind.stochKD.x60.p20.k,
+        x.ind.stochKD.x60.p20.d
       ]
     },
     {
@@ -24,8 +24,8 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.rsi480x10,
         // x.ind.rsi480x20,
         x.ind.mfi60_15,
-        x.ind.stochKD60_20.k,
-        x.ind.stochKD60_20.d,
+        x.ind.stochKD.x60.p20.k,
+        x.ind.stochKD.x60.p20.d,
         x.ind.macd.x120.sig9.histo,
         x.ind.macd.x240.sig9.histo
       ]
@@ -39,8 +39,8 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.rsi480x10,
         // x.ind.rsi480x20,
         x.ind.mfi60_15,
-        x.ind.stochKD60_20.k,
-        x.ind.stochKD60_20.d,
+        x.ind.stochKD.x60.p20.k,
+        x.ind.stochKD.x60.p20.d,
         x.ind.macd.x120.sig9.histo,
         x.ind.macd.x240.sig9.histo,
         x.ind.macd60_ADX120
@@ -55,7 +55,7 @@ export const getCombo = (): FeatureSplit[] => {
         // x.ind.rsi480x10,
         // x.ind.rsi480x20,
         x.ind.mfi60_15,
-        x.ind.stochKD60_20.k - x.ind.stochKD60_20.d,
+        x.ind.stochKD.x60.p20.k - x.ind.stochKD.x60.p20.d,
         // ,
         // x.ind.macd120.histo,
         // x.ind.macd240.histo,
@@ -112,7 +112,7 @@ export const getCombo = (): FeatureSplit[] => {
     },
     {
       name: "mfi_vixfix_rsi_stoch",
-      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a, x.ind.stochKD60_20.k]
+      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a, x.ind.stochKD.x60.p20.k]
     }
   ];
 };

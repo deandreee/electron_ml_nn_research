@@ -8,6 +8,7 @@ import { IndLRC } from "./indicators/LRC";
 import { IndZerolagMACD } from "./indicators/ZerolagMACD";
 import { IndMACD } from "./indicators/MACD";
 import { IndVixFix } from "./indicators/VixFix";
+import { IndStochKD } from "./indicators/StochKD";
 
 export type Cb = (err: Error) => void;
 
@@ -95,7 +96,7 @@ export interface PSAR {
   trendLength: number;
 }
 
-export interface StochKD {
+export interface StochKDValue {
   k: number;
   d: number;
 }
@@ -194,14 +195,7 @@ export interface Indicators {
   ifts30x15?: number;
   ifts60x15?: number;
 
-  stochKD60_10?: StochKD;
-  stochKD60_14?: StochKD;
-  stochKD60_20?: StochKD;
-  stochKD60_30?: StochKD;
-  stochKD120_10?: StochKD;
-  stochKD120_14?: StochKD;
-  stochKD120_20?: StochKD;
-  stochKD120_30?: StochKD;
+  stochKD?: IndTimeframes<IndStochKD>;
 
   bbands60_10_1?: BBands;
   bbands60_10_2?: BBands;

@@ -10,6 +10,7 @@ import { ZerolagMACD } from "../indicators/ZerolagMACD";
 import { MACD } from "../indicators/MACD";
 import { LRC } from "../indicators/LRC";
 import { VixFix } from "../indicators/VixFix";
+import { StochKD } from "../indicators/StochKD";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 
@@ -17,7 +18,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { RSI, BBANDS, MFI, StochKD, ADX, ATR } = require(`${GEKKO}/indicators`);
+const { RSI, BBANDS, MFI, ADX, ATR } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
@@ -145,15 +146,6 @@ export const corrCalcBatched = (coin: CoinData) => {
   const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
 
-  const stochKD60_10 = new XmBase(waveManager60, () => new StochKD({ period: 10, signalPeriod: 3 }));
-  const stochKD60_14 = new XmBase(waveManager60, () => new StochKD({ period: 14, signalPeriod: 3 }));
-  const stochKD60_20 = new XmBase(waveManager60, () => new StochKD({ period: 20, signalPeriod: 3 }));
-  const stochKD60_30 = new XmBase(waveManager60, () => new StochKD({ period: 30, signalPeriod: 3 }));
-  const stochKD120_10 = new XmBase(waveManager120, () => new StochKD({ period: 10, signalPeriod: 3 }));
-  const stochKD120_14 = new XmBase(waveManager120, () => new StochKD({ period: 14, signalPeriod: 3 }));
-  const stochKD120_20 = new XmBase(waveManager120, () => new StochKD({ period: 20, signalPeriod: 3 }));
-  const stochKD120_30 = new XmBase(waveManager120, () => new StochKD({ period: 30, signalPeriod: 3 }));
-
   const macd60_ADX30 = new XmBase(waveManager60, () => new ADX(30, wHist));
   const macd60_ADX60 = new XmBase(waveManager60, () => new ADX(60, wHist));
   const macd60_ADX120 = new XmBase(waveManager60, () => new ADX(120, wHist));
@@ -185,6 +177,8 @@ export const corrCalcBatched = (coin: CoinData) => {
   const vwap240_10 = new XmBase(waveManager240, () => new VWAP(10));
   const vwap240_20 = new XmBase(waveManager240, () => new VWAP(20));
   const vwap240_30 = new XmBase(waveManager240, () => new VWAP(30));
+
+  const stochKD = new IndTimeframeGroup(StochKD, waveManagers);
 
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
   const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
@@ -292,14 +286,7 @@ export const corrCalcBatched = (coin: CoinData) => {
       ifts30x15: ifts30x15.update(bigCandle30),
       ifts60x15: ifts60x15.update(bigCandle60),
 
-      stochKD60_10: stochKD60_10.update(bigCandle60),
-      stochKD60_14: stochKD60_14.update(bigCandle60),
-      stochKD60_20: stochKD60_20.update(bigCandle60),
-      stochKD60_30: stochKD60_30.update(bigCandle60),
-      stochKD120_10: stochKD120_10.update(bigCandle120),
-      stochKD120_14: stochKD120_14.update(bigCandle120),
-      stochKD120_20: stochKD120_20.update(bigCandle120),
-      stochKD120_30: stochKD120_30.update(bigCandle120),
+      stochKD: stochKD.update(bigCandles),
 
       atr60: atr60.update(candle),
       atr120: atr120.update(candle),
