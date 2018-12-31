@@ -46,11 +46,7 @@ export const runXG_UI = async (): Promise<RunResult> => {
         x.ind.macd.x30.sig9.histo,
         x.ind.macd.x60.sig9.histo,
         x.ind.macd.x120.sig9.histo,
-        x.ind.macd.x240.sig9.histo,
-        x.ind.bbands60_10_1.upper - x.ind.bbands60_10_1.lower,
-        x.ind.bbands60_20_1.upper - x.ind.bbands60_20_1.lower,
-        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower,
-        x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower
+        x.ind.macd.x240.sig9.histo
       ]
     }
   ];

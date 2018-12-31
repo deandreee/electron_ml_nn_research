@@ -4,14 +4,14 @@ export const getCombo = (): FeatureSplit[] => {
   return [
     { name: "rsi_combo", fn: x => [x.ind.rsi30x10, x.ind.rsi60x10, x.ind.rsi120x10, x.ind.rsi240x10] },
     { name: "rsi_combo_2", fn: x => [x.ind.rsi30x30, x.ind.rsi60x10, x.ind.rsi480x10] },
-    { name: "rsi_combo_2_mfi", fn: x => [x.ind.rsi30x30, x.ind.rsi60x10, x.ind.rsi480x10, x.ind.mfi60_15] },
+    { name: "rsi_combo_2_mfi", fn: x => [x.ind.rsi30x30, x.ind.rsi60x10, x.ind.rsi480x10, x.ind.mfi.x60.p15] },
     {
       name: "rsi_combo_2_mfi_stoch",
       fn: x => [
         x.ind.rsi30x30,
         x.ind.rsi60x10,
         x.ind.rsi480x10,
-        x.ind.mfi60_15,
+        x.ind.mfi.x60.p15,
         x.ind.stochKD.x60.p20.k,
         x.ind.stochKD.x60.p20.d
       ]
@@ -23,7 +23,7 @@ export const getCombo = (): FeatureSplit[] => {
         // x.ind.rsi240x30,
         x.ind.rsi480x10,
         // x.ind.rsi480x20,
-        x.ind.mfi60_15,
+        x.ind.mfi.x60.p15,
         x.ind.stochKD.x60.p20.k,
         x.ind.stochKD.x60.p20.d,
         x.ind.macd.x120.sig9.histo,
@@ -38,7 +38,7 @@ export const getCombo = (): FeatureSplit[] => {
         // x.ind.rsi240x30,
         x.ind.rsi480x10,
         // x.ind.rsi480x20,
-        x.ind.mfi60_15,
+        x.ind.mfi.x60.p15,
         x.ind.stochKD.x60.p20.k,
         x.ind.stochKD.x60.p20.d,
         x.ind.macd.x120.sig9.histo,
@@ -54,14 +54,14 @@ export const getCombo = (): FeatureSplit[] => {
         // x.ind.rsi240x30,
         // x.ind.rsi480x10,
         // x.ind.rsi480x20,
-        x.ind.mfi60_15,
+        x.ind.mfi.x60.p15,
         x.ind.stochKD.x60.p20.k - x.ind.stochKD.x60.p20.d,
         // ,
         // x.ind.macd120.histo,
         // x.ind.macd240.histo,
         x.ind.macd.x60.sig9.histo,
         x.ind.macd60_ADX120,
-        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower
+        x.ind.bbands.x120.p10_dev1.upper - x.ind.bbands.x120.p10_dev1.lower
       ]
     },
 
@@ -91,28 +91,28 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.macd.x60.sig9.histo,
         x.ind.macd.x120.sig9.histo,
         x.ind.macd.x240.sig9.histo,
-        x.ind.bbands60_10_1.upper - x.ind.bbands60_10_1.lower,
-        x.ind.bbands60_20_1.upper - x.ind.bbands60_20_1.lower,
-        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower,
-        x.ind.bbands120_20_1.upper - x.ind.bbands120_20_1.lower
+        x.ind.bbands.x60.p10_dev1.upper - x.ind.bbands.x60.p10_dev1.lower,
+        x.ind.bbands.x60.p20_dev1.upper - x.ind.bbands.x60.p20_dev1.lower,
+        x.ind.bbands.x120.p10_dev1.upper - x.ind.bbands.x120.p10_dev1.lower,
+        x.ind.bbands.x120.p20_dev1.upper - x.ind.bbands.x120.p20_dev1.lower
       ]
     },
     {
       name: "mfi_vixfix_rsi",
-      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a]
+      fn: x => [x.ind.rsi240x20, x.ind.mfi.x480.p60, x.ind.vixFix.x480.a]
     },
     {
       name: "mfi_vixfix_rsi_bbands",
       fn: x => [
         x.ind.rsi240x20,
-        x.ind.mfi480_60,
+        x.ind.mfi.x480.p60,
         x.ind.vixFix.x480.a,
-        x.ind.bbands120_10_1.upper - x.ind.bbands120_10_1.lower
+        x.ind.bbands.x120.p10_dev1.upper - x.ind.bbands.x120.p10_dev1.lower
       ]
     },
     {
       name: "mfi_vixfix_rsi_stoch",
-      fn: x => [x.ind.rsi240x20, x.ind.mfi480_60, x.ind.vixFix.x480.a, x.ind.stochKD.x60.p20.k]
+      fn: x => [x.ind.rsi240x20, x.ind.mfi.x480.p60, x.ind.vixFix.x480.a, x.ind.stochKD.x60.p20.k]
     }
   ];
 };

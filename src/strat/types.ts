@@ -10,6 +10,7 @@ import { IndMACD } from "./indicators/MACD";
 import { IndVixFix } from "./indicators/VixFix";
 import { IndStochKD } from "./indicators/StochKD";
 import { IndMFI } from "./indicators/MFI";
+import { IndBBands } from "./indicators/BBands";
 
 export type Cb = (err: Error) => void;
 
@@ -80,7 +81,7 @@ export interface IndLRCValue {
   result: number;
 }
 
-export interface BBands {
+export interface BBandsValue {
   upper: number;
   lower: number;
 }
@@ -187,30 +188,7 @@ export interface Indicators {
   ifts60x15?: number;
 
   stochKD?: IndTimeframes<IndStochKD>;
-
-  bbands60_10_1?: BBands;
-  bbands60_10_2?: BBands;
-  bbands60_10_3?: BBands;
-
-  bbands60_20_1?: BBands;
-  bbands60_20_2?: BBands;
-  bbands60_20_3?: BBands;
-
-  bbands60_30_1?: BBands;
-  bbands60_30_2?: BBands;
-  bbands60_30_3?: BBands;
-
-  bbands120_10_1?: BBands;
-  bbands120_10_2?: BBands;
-  bbands120_10_3?: BBands;
-
-  bbands120_20_1?: BBands;
-  bbands120_20_2?: BBands;
-  bbands120_20_3?: BBands;
-
-  bbands120_30_1?: BBands;
-  bbands120_30_2?: BBands;
-  bbands120_30_3?: BBands;
+  bbands?: IndTimeframes<IndBBands>;
 
   vwap30_10?: VWAP;
   vwap30_20?: VWAP;

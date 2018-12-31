@@ -5,7 +5,7 @@ import { trippleBarrier } from "./trippleBarrier";
 // @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 
-const { RSI, BBANDS } = require("../../../../gekko-develop/strategies/indicators");
+const { RSI } = require("../../../../gekko-develop/strategies/indicators");
 // const {
 //   LRC,
 //   VixFix,
@@ -91,30 +91,6 @@ export const corrCalc = (coin: CoinData) => {
   // const mfi120_15 = new XmBase(waveManager120, () => new MFI(15));
   // const mfi120_30 = new XmBase(waveManager120, () => new MFI(30));
   // const mfi120_60 = new XmBase(waveManager120, () => new MFI(60));
-
-  const bbands60_10_1 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 10, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands60_10_2 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 10, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands60_10_3 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 10, NbDevUp: 3, NbDevDn: 3 }));
-
-  const bbands60_20_1 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands60_20_2 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands60_20_3 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 20, NbDevUp: 3, NbDevDn: 3 }));
-
-  const bbands60_30_1 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 30, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands60_30_2 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands60_30_3 = new XmBase(waveManager60, () => new BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
-
-  const bbands120_10_1 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 10, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands120_10_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 10, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands120_10_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 10, NbDevUp: 3, NbDevDn: 3 }));
-
-  const bbands120_20_1 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 20, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands120_20_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands120_20_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 20, NbDevUp: 3, NbDevDn: 3 }));
-
-  const bbands120_30_1 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 1, NbDevDn: 1 }));
-  const bbands120_30_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
-  const bbands120_30_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
 
   // const zerlagMacd60 = new XmBase(waveManager60, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
   // const zerlagMacd120 = new XmBase(waveManager120, () => new ZerolagMACD({ short: 12, long: 26, signal: 9 }));
@@ -202,7 +178,7 @@ export const corrCalc = (coin: CoinData) => {
       rsi240x30: rsi240x30.update(bigCandle240),
       rsi480x10: rsi480x10.update(bigCandle480),
       rsi480x20: rsi480x20.update(bigCandle480),
-      rsi480x30: rsi480x30.update(bigCandle480),
+      rsi480x30: rsi480x30.update(bigCandle480)
 
       // vixFix30: vixFix30.update(bigCandle30),
       // vixFix60: vixFix60.update(bigCandle60),
@@ -253,29 +229,6 @@ export const corrCalc = (coin: CoinData) => {
       // stochKD120_14: stochKD120_14.update(bigCandle120),
       // stochKD120_20: stochKD120_20.update(bigCandle120),
       // stochKD120_30: stochKD120_30.update(bigCandle120),
-      bbands60_10_1: bbands60_10_1.update(bigCandle60.close),
-      bbands60_10_2: bbands60_10_2.update(bigCandle60.close),
-      bbands60_10_3: bbands60_10_3.update(bigCandle60.close),
-
-      bbands60_20_1: bbands60_20_1.update(bigCandle60.close),
-      bbands60_20_2: bbands60_20_2.update(bigCandle60.close),
-      bbands60_20_3: bbands60_20_3.update(bigCandle60.close),
-
-      bbands60_30_1: bbands60_30_1.update(bigCandle60.close),
-      bbands60_30_2: bbands60_30_2.update(bigCandle60.close),
-      bbands60_30_3: bbands60_30_3.update(bigCandle60.close),
-
-      bbands120_10_1: bbands120_10_1.update(bigCandle120.close),
-      bbands120_10_2: bbands120_10_2.update(bigCandle120.close),
-      bbands120_10_3: bbands120_10_3.update(bigCandle120.close),
-
-      bbands120_20_1: bbands120_20_1.update(bigCandle120.close),
-      bbands120_20_2: bbands120_20_2.update(bigCandle120.close),
-      bbands120_20_3: bbands120_20_3.update(bigCandle120.close),
-
-      bbands120_30_1: bbands120_30_1.update(bigCandle120.close),
-      bbands120_30_2: bbands120_30_2.update(bigCandle120.close),
-      bbands120_30_3: bbands120_30_3.update(bigCandle120.close)
     };
 
     // candle.ind.macdHistoLrc = macdHistoLrc.update(candle.ind.macd120 && candle.ind.macd120.histo);
