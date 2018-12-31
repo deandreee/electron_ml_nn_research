@@ -9,6 +9,7 @@ import { IndZerolagMACD } from "./indicators/ZerolagMACD";
 import { IndMACD } from "./indicators/MACD";
 import { IndVixFix } from "./indicators/VixFix";
 import { IndStochKD } from "./indicators/StochKD";
+import { IndMFI } from "./indicators/MFI";
 
 export type Cb = (err: Error) => void;
 
@@ -145,18 +146,8 @@ export interface Indicators {
   xmTwiggs?: number;
   kalman?: number;
   aroon?: IndChannel;
-  mfi60_15?: number;
-  mfi60_30?: number;
-  mfi60_60?: number;
-  mfi120_15?: number;
-  mfi120_30?: number;
-  mfi120_60?: number;
-  mfi240_15?: number;
-  mfi240_30?: number;
-  mfi240_60?: number;
-  mfi480_15?: number;
-  mfi480_30?: number;
-  mfi480_60?: number;
+
+  mfi?: IndTimeframes<IndMFI>;
 
   macd60_PSAR?: PSAR;
 

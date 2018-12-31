@@ -20,7 +20,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const featuresSplit = features.getStochKD();
+  const featuresSplit = features.getMFI();
 
   for (let x of featuresSplit) {
     log.start(x.name);

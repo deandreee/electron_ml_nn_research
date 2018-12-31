@@ -11,6 +11,7 @@ import { MACD } from "../indicators/MACD";
 import { LRC } from "../indicators/LRC";
 import { VixFix } from "../indicators/VixFix";
 import { StochKD } from "../indicators/StochKD";
+import { MFI } from "../indicators/MFI";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 
@@ -18,7 +19,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { RSI, BBANDS, MFI, ADX, ATR } = require(`${GEKKO}/indicators`);
+const { RSI, BBANDS, ADX, ATR } = require(`${GEKKO}/indicators`);
 
 const { InverseFisherTransform, InverseFisherTransformSmoothed } = require(`${GEKKO}/indicators/ninja`);
 
@@ -117,22 +118,7 @@ export const corrCalcBatched = (coin: CoinData) => {
   const bbands120_30_2 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
   const bbands120_30_3 = new XmBase(waveManager120, () => new BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
 
-  const mfi60_15 = new XmBase(waveManager60, () => new MFI(15));
-  const mfi60_30 = new XmBase(waveManager60, () => new MFI(30));
-  const mfi60_60 = new XmBase(waveManager60, () => new MFI(60));
-
-  const mfi120_15 = new XmBase(waveManager120, () => new MFI(15));
-  const mfi120_30 = new XmBase(waveManager120, () => new MFI(30));
-  const mfi120_60 = new XmBase(waveManager120, () => new MFI(60));
-
-  const mfi240_15 = new XmBase(waveManager240, () => new MFI(15));
-  const mfi240_30 = new XmBase(waveManager240, () => new MFI(30));
-  const mfi240_60 = new XmBase(waveManager240, () => new MFI(60));
-
-  const mfi480_15 = new XmBase(waveManager480, () => new MFI(15));
-  const mfi480_30 = new XmBase(waveManager480, () => new MFI(30));
-  const mfi480_60 = new XmBase(waveManager480, () => new MFI(60));
-
+  const mfi = new IndTimeframeGroup(MFI, waveManagers);
   const ift30x5 = new XmBase(waveManager30, () => new InverseFisherTransform({ period: 5 }));
   const ift60x5 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 5 }));
   const ift60x15 = new XmBase(waveManager60, () => new InverseFisherTransform({ period: 15 }));
@@ -145,7 +131,6 @@ export const corrCalcBatched = (coin: CoinData) => {
   const ifts10x15 = new XmBase(waveManager10, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts30x15 = new XmBase(waveManager30, () => new InverseFisherTransformSmoothed({ period: 15 }));
   const ifts60x15 = new XmBase(waveManager60, () => new InverseFisherTransformSmoothed({ period: 15 }));
-
   const macd60_ADX30 = new XmBase(waveManager60, () => new ADX(30, wHist));
   const macd60_ADX60 = new XmBase(waveManager60, () => new ADX(60, wHist));
   const macd60_ADX120 = new XmBase(waveManager60, () => new ADX(120, wHist));
@@ -260,18 +245,7 @@ export const corrCalcBatched = (coin: CoinData) => {
       bbands120_30_2: bbands120_30_2.update(bigCandle120.close),
       bbands120_30_3: bbands120_30_3.update(bigCandle120.close),
 
-      mfi60_15: mfi60_15.update(bigCandle60),
-      mfi60_30: mfi60_30.update(bigCandle60),
-      mfi60_60: mfi60_60.update(bigCandle60),
-      mfi120_15: mfi120_15.update(bigCandle120),
-      mfi120_30: mfi120_30.update(bigCandle120),
-      mfi120_60: mfi120_60.update(bigCandle120),
-      mfi240_15: mfi240_15.update(bigCandle240),
-      mfi240_30: mfi240_30.update(bigCandle240),
-      mfi240_60: mfi240_60.update(bigCandle240),
-      mfi480_15: mfi480_15.update(bigCandle480),
-      mfi480_30: mfi480_30.update(bigCandle480),
-      mfi480_60: mfi480_60.update(bigCandle480),
+      mfi: mfi.update(bigCandles),
 
       ift30x5: ift30x5.update(bigCandle30),
       ift60x5: ift60x5.update(bigCandle60),
