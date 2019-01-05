@@ -5,6 +5,24 @@ export interface DateRange {
   isTrain?: boolean;
 }
 
+export const Jan: DateRange = {
+  name: "Jan",
+  from: new Date("2018-01-01T00:00:00Z"),
+  to: new Date("2018-02-01T00:00:00Z")
+};
+
+export const Feb: DateRange = {
+  name: "Feb",
+  from: new Date("2018-02-01T00:00:00Z"),
+  to: new Date("2018-03-01T00:00:00Z")
+};
+
+export const Mar: DateRange = {
+  name: "Mar",
+  from: new Date("2018-03-01T00:00:00Z"),
+  to: new Date("2018-04-01T00:00:00Z")
+};
+
 export const JunJul: DateRange = {
   name: "JunJul",
   from: new Date("2018-06-01T00:00:00Z"),
@@ -110,5 +128,5 @@ export const NovDump: DateRange = {
 export const Dec: DateRange = {
   name: "Dec",
   from: new Date("2018-12-01T00:00:00Z"),
-  to: new Date("2018-12-28T00:00:00Z")
+  to: new Date("2019-01-01T00:00:00Z")
 };

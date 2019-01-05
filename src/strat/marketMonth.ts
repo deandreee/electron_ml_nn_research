@@ -2,9 +2,10 @@ import { Coins, CoinData } from "./types";
 import * as daterange from "./daterange";
 import { queryCoin } from "./queryCoins";
 import { getPctChange } from "./utils";
+// @ts-ignore
 import { padEnd, padStart } from "lodash";
 
-const range = daterange.NovDump;
+const range = daterange.Dec;
 
 const getMin = (coin: CoinData) => {
   let min = Infinity;
@@ -32,7 +33,7 @@ export const marketMonth = () => {
     Coins.BTC,
     Coins.ETH,
     Coins.XRP,
-    Coins.BCC,
+    // Coins.BCC,
     Coins.EOS,
     Coins.XLM,
     Coins.LTC,
@@ -60,10 +61,23 @@ const getResultForCoin = (coinName: Coins) => {
   const coin = queryCoin(coinName, range.from, range.to);
 
   if (coin.candles.length === 0) {
-    console.log("no candles for " + coinName);
+    // console.log("no candles for " + coinName);
+    console.log(0);
     return;
   }
 
+  // logFull(coin);
+  logSmall(coin);
+};
+
+export const logSmall = (coin: CoinData) => {
+  const start = coin.candles[0].open;
+  const end = coin.candles[coin.candles.length - 1].close;
+  const pctChange = Math.round(getPctChange(end, start));
+  console.log(pctChange);
+};
+
+export const logFull = (coin: CoinData) => {
   const start = coin.candles[0].open;
   const end = coin.candles[coin.candles.length - 1].close;
   //   const third = Math.floor(coin.candles.length / 3);
@@ -78,7 +92,7 @@ const getResultForCoin = (coinName: Coins) => {
   const pctChangeMin = Math.round(getPctChange(min, start));
   const pctChangeMax = Math.round(getPctChange(max, start));
   console.log(
-    padEnd(coinName, 5),
+    // padEnd(coinName, 5),
     padStart(pctChangeMin.toString(), 5),
     padStart(pctChangeMax.toString(), 5),
     padStart(pctChange.toString(), 5)

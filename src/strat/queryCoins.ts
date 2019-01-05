@@ -9,10 +9,17 @@ interface CoinQuery {
 }
 
 const COIN_QUERIES: { [name: string]: CoinQuery } = {
+  // switch to binance because empty/missing between Nov4 and Nov14
+  // BTC: {
+  //   name: "BTC",
+  //   db: DB.KRAKEN,
+  //   tableName: "candles_USD_XBT",
+  //   color: "#F7931A"
+  // },
   BTC: {
     name: "BTC",
-    db: DB.KRAKEN,
-    tableName: "candles_USD_XBT",
+    db: DB.BINANCE,
+    tableName: "candles_USDT_BTC",
     color: "#F7931A"
   },
   ETH: {

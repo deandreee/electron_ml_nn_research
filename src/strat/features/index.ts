@@ -2,6 +2,7 @@ import { FeatureSplit, FnGetFeature } from "./FeatureSplit";
 import { getAllKhaos } from "./getAllKhaos";
 import { getATR } from "./getATR";
 import { getBBands } from "./getBBands";
+import { getBBandsVsPrice } from "./getBBandsVsPrice";
 import { getCombo } from "./getCombo";
 import { getIFT } from "./getIFT";
 import { getIFTS } from "./getIFTS";
@@ -23,14 +24,19 @@ const getAll = () => {
   return [
     ...getATR(),
     ...getBBands(),
-    ...getIFT(),
+    ...getBBandsVsPrice(),
     ...getMACD(),
     ...getMACDADX(),
     ...getMFI(),
     ...getRSI(),
     ...getStochKD(),
     ...getVWAP(),
-    ...getVixFix()
+    ...getVixFix(),
+    ...getOCC(),
+    ...getT3MACD(),
+    ...getZerolagT3(),
+    ...getLRC(),
+    ...getZerolagMACD()
   ];
 };
 
@@ -56,5 +62,6 @@ export {
   getT3MACD,
   getZerolagT3,
   getLRC,
-  getZerolagMACD
+  getZerolagMACD,
+  getBBandsVsPrice
 };
