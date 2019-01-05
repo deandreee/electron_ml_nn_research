@@ -1,6 +1,6 @@
 import { padEnd } from "lodash";
 import { round2 } from "../utils";
-import { EvalResults } from "../ml/mlEvaluate";
+import { EvalResults, HitRate } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
 import { RunConfigXG } from "./runConfigXG";
 
@@ -12,10 +12,14 @@ export const logConsole = (rangeName: string, results: EvalResults) => {
     padEnd(round2(results.fScore).toString(), 5),
     padEnd(round2(results.hitRate).toString(), 5),
     padEnd(round2(results.bigErrorsReverse).toString(), 5),
-    padEnd(results.zeroHitRate, 10),
-    padEnd(results.oneHitRate, 10),
-    padEnd(results.twoHitRate, 10)
+    padEnd(formatHitRate(results.zeroHitRate), 10),
+    padEnd(formatHitRate(results.oneHitRate), 10),
+    padEnd(formatHitRate(results.twoHitRate), 10)
   );
+};
+
+const formatHitRate = (hitRate: HitRate) => {
+  return `${hitRate.predicted}/${hitRate.actual}`;
 };
 
 export const logFile = async (
@@ -49,9 +53,9 @@ export const logFile = async (
     round2(results.fScore),
     round2(results.hitRate),
     round2(results.bigErrorsReverse),
-    results.zeroHitRate,
-    results.oneHitRate,
-    results.twoHitRate,
+    formatHitRate(results.zeroHitRate),
+    formatHitRate(results.oneHitRate),
+    formatHitRate(results.twoHitRate),
     round2(results.precision[0]),
     round2(results.recall[0]),
     round2(results.precision[1]),

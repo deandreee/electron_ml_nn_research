@@ -1,4 +1,6 @@
 import { FeatureSplit } from "./FeatureSplit";
+import { getBBandsVsPriceFeature } from "./getBBandsVsPrice";
+import { getBBandsUpperMinusLower } from "./getBBands";
 
 export const getCombo = (): FeatureSplit[] => {
   return [
@@ -113,6 +115,115 @@ export const getCombo = (): FeatureSplit[] => {
     {
       name: "mfi_vixfix_rsi_stoch",
       fn: x => [x.ind.rsi.x240.p20, x.ind.mfi.x480.p60, x.ind.vixFix.x480.a, x.ind.stochKD.x60.p20.k]
+    },
+
+    {
+      name: "PT_FIVE_OPT_x4",
+      fn: x => [x.ind.atr60, x.ind.vixFix.x120.b, x.ind.vwap240_20.den, x.ind.macd.x240.sig9.histo]
+    },
+
+    {
+      name: "PT_FIVE_OPT_x8",
+      fn: x => [
+        x.ind.atr60,
+        x.ind.vixFix.x120.b,
+        x.ind.vwap240_20.den,
+        x.ind.macd.x240.sig9.histo,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x240.p30_dev2, x.close),
+        x.ind.emaOCC.x240.emaOCC_30,
+        x.ind.zerolagT3.x60.p10
+      ]
+    },
+
+    {
+      name: "ONE_OPT_x4",
+      fn: x => [x.ind.vwap240_10.den, x.ind.vixFix.x120.b, x.ind.macd.x480.sig2_10.histo, x.ind.lrc.x480.p45]
+    },
+
+    {
+      name: "ONE_OPT_x8",
+      fn: x => [
+        x.ind.vwap240_10.den,
+        x.ind.vixFix.x120.b,
+        x.ind.macd.x480.sig2_10.histo,
+        x.ind.lrc.x480.p45,
+        x.ind.macd120_ADX120,
+        x.ind.vwap30_30.den,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x240.p10_dev1, x.close)
+      ]
+    },
+
+    {
+      name: "TWO_OPT_x4",
+      fn: x => [
+        x.ind.vixFix.x480.d,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        getBBandsUpperMinusLower(x.ind.bbands.x240.p10_dev1),
+        x.ind.zerolagT3.x30.p60
+      ]
+    },
+
+    {
+      name: "TWO_OPT_x8",
+      fn: x => [
+        x.ind.vixFix.x480.d,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        getBBandsUpperMinusLower(x.ind.bbands.x240.p10_dev1),
+        x.ind.zerolagT3.x30.p60,
+        x.ind.atr720,
+        x.ind.lrc.x240.p30,
+        x.ind.macd.x120.sig9.histo,
+        x.ind.rsi.x480.p30
+      ]
+    },
+
+    {
+      name: "THREE_OPT_x4",
+      fn: x => [
+        x.ind.vixFix.x480.a,
+        x.ind.atr720,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x60.p10_dev3, x.close),
+        x.ind.atr480
+      ]
+    },
+
+    {
+      name: "THREE_OPT_x8",
+      fn: x => [
+        x.ind.vixFix.x480.a,
+        x.ind.atr720,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x60.p10_dev3, x.close),
+        x.ind.atr480,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        x.ind.rsi.x480.p30,
+        x.ind.emaOCC.x480.emaOCC_30
+      ]
+    },
+
+    {
+      name: "FIVE_OPT_x4",
+      fn: x => [
+        x.ind.vixFix.x480.a,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x120.p20_dev3, x.close),
+        x.ind.vixFix.x240.b,
+        x.ind.mfi.x480.p20
+      ]
+    },
+
+    {
+      name: "FIVE_OPT_x8",
+      fn: x => [
+        x.ind.vixFix.x480.a,
+        ...getBBandsVsPriceFeature(x.ind.bbands.x120.p20_dev3, x.close),
+        x.ind.vixFix.x240.b,
+        x.ind.mfi.x480.p20,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        x.ind.vwap240_20.den,
+        x.ind.zerolagMACD.x120.sig2_16.histo,
+        x.ind.mfi.x60.p60
+      ]
     }
   ];
 };

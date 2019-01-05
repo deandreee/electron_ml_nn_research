@@ -16,9 +16,9 @@ export interface EvalResults {
   recallTotal: number;
   hitRate: number;
   bigErrorsReverse: number;
-  zeroHitRate: string;
-  oneHitRate: string;
-  twoHitRate: string;
+  zeroHitRate: HitRate;
+  oneHitRate: HitRate;
+  twoHitRate: HitRate;
 }
 
 export const evaluateResults = (uniqueLabels: number[], labels: number[], predicted: number[]): EvalResults => {
@@ -73,15 +73,15 @@ export const evaluateResults = (uniqueLabels: number[], labels: number[], predic
 
   const zeroLabels = labels.filter(x => x === 0).length;
   const zeroPredicted = predicted.filter(x => x === 0).length;
-  const zeroHitRate = `${zeroPredicted}/${zeroLabels}`;
+  const zeroHitRate = { actual: zeroLabels, predicted: zeroPredicted };
 
   const oneLabels = labels.filter(x => x === 1).length;
   const onePredicted = predicted.filter(x => x === 1).length;
-  const oneHitRate = `${onePredicted}/${oneLabels}`;
+  const oneHitRate = { actual: oneLabels, predicted: onePredicted };
 
   const twoLabels = labels.filter(x => x === 2).length;
   const twoPredicted = predicted.filter(x => x === 2).length;
-  const twoHitRate = `${twoPredicted}/${twoLabels}`;
+  const twoHitRate = { actual: twoLabels, predicted: twoPredicted };
 
   // console.log(padEnd("PRECISION_TOTAL", 20), round2(precisionTotal));
   // console.log(padEnd("RECALL_TOTAL", 20), round2(recallTotal));
@@ -100,6 +100,11 @@ export const evaluateResults = (uniqueLabels: number[], labels: number[], predic
     twoHitRate
   };
 };
+
+export interface HitRate {
+  actual: number;
+  predicted: number;
+}
 
 const objToArr = (o: any) => {
   return Object.keys(o).map(x => o[x]);

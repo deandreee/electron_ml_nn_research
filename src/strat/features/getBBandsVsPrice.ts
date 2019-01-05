@@ -1,5 +1,6 @@
 import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
+import { BBandsValue } from "../types";
 
 export const getBBandsVsPrice = (): FeatureSplit[] => {
   const timeframes = ["x30", "x60", "x120", "x240", "x480"];
@@ -21,10 +22,14 @@ export const getBBandsVsPrice = (): FeatureSplit[] => {
         ps.map(p => [
           {
             name: `${tf}.bbands_vs_price.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.bbands[tf][p].upper - x.close, x.close - x.ind.bbands[tf][p].lower]
+            fn: (x, i, corrCandles) => getBBandsVsPriceFeature(x.ind.bbands[tf][p], x.close)
           } as FeatureSplit
         ])
       );
     })
   );
+};
+
+export const getBBandsVsPriceFeature = (value: BBandsValue, close: number) => {
+  return [value.upper - close, close - value.lower];
 };

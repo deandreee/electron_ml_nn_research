@@ -29,6 +29,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.start(feature.name);
     const { booster } = await mlXGClass.train(runConfigXG2, trainMonth, feature.fn);
 
+    const resultsForAvg = [];
+
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
@@ -37,9 +39,17 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
       logConsole(range.name, results);
       await logFile(fileName, runConfigXG2, Coins.BTC, range.name, TRIPPLE_BARRIER_LABEL, feature.name, results);
+
+      if (!range.isTrain) {
+        resultsForAvg.push(results);
+      }
     }
 
     booster.free();
+
+    const avgResults = runUtils.calcAvgResults(resultsForAvg);
+    logConsole("AVG", avgResults);
+    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", TRIPPLE_BARRIER_LABEL, feature.name, avgResults);
 
     log.end(feature.name);
   }

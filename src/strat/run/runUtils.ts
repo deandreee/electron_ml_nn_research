@@ -1,7 +1,8 @@
 import { CorrCandles } from "../corr/CorrCandles";
-import { minBy, maxBy, padEnd } from "lodash";
+import { minBy, maxBy, padEnd, meanBy, sumBy } from "lodash";
 import { round2 } from "../utils";
 import * as daterange from "../daterange";
+import { EvalResults } from "../ml/mlEvaluate";
 
 interface Predictions {
   [name: string]: PredictionMonth;
@@ -122,4 +123,38 @@ export const genRanges_TrainJunJul = () => {
     daterange.Nov,
     daterange.Dec
   ];
+};
+
+export const calcAvgResults = (results: EvalResults[]) => {
+  const avg: EvalResults = {
+    fScore: meanBy(results, x => x.fScore),
+    precision: {
+      0: meanBy(results, x => x.precision[0]),
+      1: meanBy(results, x => x.precision[1]),
+      2: meanBy(results, x => x.precision[2])
+    },
+    precisionTotal: meanBy(results, x => x.precisionTotal),
+    recall: {
+      0: meanBy(results, x => x.recall[0]),
+      1: meanBy(results, x => x.recall[1]),
+      2: meanBy(results, x => x.recall[2])
+    },
+    recallTotal: meanBy(results, x => x.recallTotal),
+    hitRate: meanBy(results, x => x.hitRate),
+    bigErrorsReverse: meanBy(results, x => x.bigErrorsReverse),
+    zeroHitRate: {
+      predicted: sumBy(results, x => x.zeroHitRate.predicted),
+      actual: sumBy(results, x => x.zeroHitRate.actual)
+    },
+    oneHitRate: {
+      predicted: sumBy(results, x => x.oneHitRate.predicted),
+      actual: sumBy(results, x => x.oneHitRate.actual)
+    },
+    twoHitRate: {
+      predicted: sumBy(results, x => x.twoHitRate.predicted),
+      actual: sumBy(results, x => x.twoHitRate.actual)
+    }
+  };
+
+  return avg;
 };
