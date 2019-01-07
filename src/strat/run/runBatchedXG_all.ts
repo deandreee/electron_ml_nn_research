@@ -11,7 +11,8 @@ import { logConsole, logFile } from "./logClassResults";
 import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 
 const ranges = runUtils.genRangesFull();
-const featureName = "ALL";
+// const featureName: string = "ALL";
+const featureName: string = "COMBO";
 const fileName = `output/runBatchedXG_all/${featureName} [ train ${
   ranges[0].name
 } ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
@@ -23,7 +24,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const featuresSplit = features.getAll();
+  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAll();
 
   for (let feature of featuresSplit) {
     log.start(feature.name);

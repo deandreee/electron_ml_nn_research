@@ -8,8 +8,10 @@ import { DateRange } from "../daterange";
 import * as log from "../log";
 import { batchCandlesIn10s } from "../db/batchCandlesIn10s";
 
+export type CorrCandleMonths = { [range: string]: CorrCandles };
+
 export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => {
-  const corrCandleMonths: { [range: string]: CorrCandles } = {};
+  const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {
     log.start(`query ${range.name}`);
@@ -24,7 +26,7 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 };
 
 export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange[]) => {
-  const corrCandleMonths: { [range: string]: CorrCandles } = {};
+  const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {
     log.start(`query ${range.name}`);

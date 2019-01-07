@@ -1,7 +1,7 @@
 export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
 // let's keep this const for now
-export const TRIPPLE_BARRIER_LABEL: TrippleBarrierLabel = "FIVE";
+export const TRIPPLE_BARRIER_LABEL: TrippleBarrierLabel = "PT_FIVE";
 
 export interface RunConfigXG {
   [prop: string]: number;
