@@ -2,6 +2,7 @@ import { XmBase, EMA, WaveManager } from "./gekko";
 import { Candle } from "../types";
 
 export interface IndEMAxOCC {
+  [p: string]: number;
   emaOCC_5?: number;
   emaOCC_10?: number;
   emaOCC_20?: number;

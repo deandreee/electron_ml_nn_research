@@ -7,6 +7,7 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { DateRange } from "../daterange";
 import * as log from "../log";
 import { batchCandlesIn10s } from "../db/batchCandlesIn10s";
+import * as calcBatchedProb from "../corr/calcBatchedProb";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
 
@@ -25,7 +26,7 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
   return corrCandleMonths;
 };
 
-export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange[]) => {
+export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange[], prob?: boolean) => {
   const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {
@@ -36,7 +37,8 @@ export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange
 
     batchCandlesIn10s(coin);
 
-    const { corrCandles } = calcBatched.corrCalcBatched(coin);
+    const { corrCandles } = !prob ? calcBatched.corrCalcBatched(coin) : calcBatchedProb.corrCalcBatchedProb(coin);
+
     corrCandleMonths[range.name] = corrCandles;
     log.end(`query ${range.name}`);
   }

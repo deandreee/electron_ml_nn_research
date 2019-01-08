@@ -1,11 +1,13 @@
 import { CoinData } from "../types";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig } from "./trippleBarrier";
-import { EMAxOCC } from "../indicators/EMAxOCC";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import * as corrUtils from "./utils";
+
+import { EMAxOCC } from "../indicators/EMAxOCC";
+import { VixFix } from "../indicators/VixFix";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 const { BatchWaveManager } = require(`${GEKKO}/utils`);
@@ -36,6 +38,7 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
   };
 
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
+  const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -68,7 +71,8 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
     }
 
     candle.ind = {
-      emaOCC: emaOCC.update(bigCandles)
+      emaOCC: emaOCC.update(bigCandles),
+      vixFix: vixFix.update(bigCandles)
     };
 
     const tbCfg = getTrippleBarrierConfig();
