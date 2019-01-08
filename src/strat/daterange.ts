@@ -130,3 +130,9 @@ export const Dec: DateRange = {
   from: new Date("2018-12-01T00:00:00Z"),
   to: new Date("2019-01-01T00:00:00Z")
 };
+
+export const JunDec: DateRange = {
+  name: "JunDec",
+  from: new Date("2018-06-01T00:00:00Z"),
+  to: new Date("2019-01-01T00:00:00Z")
+};

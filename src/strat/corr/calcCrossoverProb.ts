@@ -1,8 +1,9 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { NumberMap } from "../ml/mlUtils";
-import { padEnd } from "lodash";
+import { padEnd, minBy, maxBy } from "lodash";
 import { round2 } from "../utils";
+import { CorrCandles } from "./CorrCandles";
 
 const timeframes = ["x30", "x60", "x120", "x240", "x480"];
 // const ps = ["emaOCC_5", "emaOCC_10", "emaOCC_20", "emaOCC_30", "emaOCC_40"];
@@ -25,53 +26,77 @@ const formatTP = (t: string, p: string) => {
 export const cProb = (months: CorrCandleMonths, ranges: DateRange[]) => {
   const probs = createProbsObj();
 
-  for (let range of ranges) {
-    const corrCandles = months[range.name];
+  const corrCandles = months[ranges[0].name];
 
-    console.log("candlesActual.length", corrCandles.candlesActual.length);
+  console.log("candlesActual.length", corrCandles.candlesActual.length);
+  // minMax(corrCandles);
 
-    for (let i = 1; i < corrCandles.candlesActual.length; i++) {
-      const curr = corrCandles.candlesActual[i];
-      // const prev = corrCandles.candlesActual[i - 1];
+  for (let t of timeframes) {
+    for (let p of ps) {
+      const { max } = getMinMax(corrCandles, t, p);
+      const max80 = max * 0.9; // 80 percent
 
-      for (let t of timeframes) {
-        for (let p of ps) {
-          // detect crossover
-          //   if (curr.ind.emaOCC[t][p] > 0 && prev.ind.emaOCC[t][p] < 0) {
-          // if (curr.ind.emaOCC[t][p] < 0 && prev.ind.emaOCC[t][p] > 0) {
-          //   probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
-          //   // console.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
-          // }
+      for (let i = 1; i < corrCandles.candlesActual.length; i++) {
+        const curr = corrCandles.candlesActual[i];
+        // const prev = corrCandles.candlesActual[i - 1];
 
-          if (curr.ind.vixFix[t][p] > 80) {
-            probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
-            // console.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
-          }
+        // detect crossover
+        //   if (curr.ind.emaOCC[t][p] > 0 && prev.ind.emaOCC[t][p] < 0) {
+        // if (curr.ind.emaOCC[t][p] < 0 && prev.ind.emaOCC[t][p] > 0) {
+        //   probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
+        //   // console.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
+        // }
+        // const min = minBy(
+        if (curr.ind.vixFix[t][p] > max80) {
+          probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
+          //   // coole.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
         }
       }
     }
+  }
 
-    for (let t of timeframes) {
-      for (let p of ps) {
-        const tp = formatTP(t, p);
+  for (let t of timeframes) {
+    for (let p of ps) {
+      const tp = formatTP(t, p);
 
-        const sum = probs[tp][0] + probs[tp][1] + probs[tp][2];
-        const p0 = round2(probs[tp][0] / sum);
-        const p1 = round2(probs[tp][1] / sum);
-        const p2 = round2(probs[tp][2] / sum);
+      const sum = probs[tp][0] + probs[tp][1] + probs[tp][2];
+      const p0 = round2(probs[tp][0] / sum);
+      const p1 = round2(probs[tp][1] / sum);
+      const p2 = round2(probs[tp][2] / sum);
 
-        const ovr = `${probs[tp][0]}/${probs[tp][1]}/${probs[tp][2]}`;
+      const ovr = `${probs[tp][0]}/${probs[tp][1]}/${probs[tp][2]}`;
 
-        if (p0 > 0.5 || p1 > 0.5 || p2 > 0.5) {
-          console.log(
-            padEnd(tp, 20),
-            padEnd(p0.toString(), 5),
-            padEnd(p1.toString(), 5),
-            padEnd(p2.toString(), 5),
-            padEnd(ovr, 5)
-          );
-        }
+      if (p0 > 0.6 || p1 > 0.6 || p2 > 0.6) {
+        console.log(
+          padEnd(tp, 20),
+          padEnd(p0.toString(), 5),
+          padEnd(p1.toString(), 5),
+          padEnd(p2.toString(), 5),
+          padEnd(ovr, 5)
+        );
       }
+    }
+  }
+};
+
+const getMinMax = (corrCandles: CorrCandles, t: string, p: string) => {
+  const min = minBy(corrCandles.candlesActual, x => x.ind.vixFix[t][p]);
+  const max = maxBy(corrCandles.candlesActual, x => x.ind.vixFix[t][p]);
+
+  return { min: min.ind.vixFix[t][p], max: max.ind.vixFix[t][p] };
+};
+
+export const minMax = (corrCandles: CorrCandles) => {
+  for (let t of timeframes) {
+    for (let p of ps) {
+      const min = minBy(corrCandles.candlesActual, x => x.ind.vixFix[t][p]);
+      const max = maxBy(corrCandles.candlesActual, x => x.ind.vixFix[t][p]);
+
+      console.log(
+        `vixFix.${t}.${p}`,
+        padEnd(round2(min.ind.vixFix[t][p]).toString(), 5),
+        padEnd(round2(max.ind.vixFix[t][p]).toString(), 5)
+      );
     }
   }
 };
