@@ -1,4 +1,4 @@
-import { XmBase, BBANDS as _BBANDS, WaveManager } from "./gekko";
+import { XmBase, BBands as _BBands, WaveManager } from "./gekko";
 import { Candle, BBandsValue } from "../types";
 
 export interface IndBBands {
@@ -26,17 +26,17 @@ export class BBands {
   p30_dev3: any;
 
   constructor(waveManager: WaveManager) {
-    this.p10_dev1 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 10, NbDevUp: 1, NbDevDn: 1 }));
-    this.p10_dev2 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 10, NbDevUp: 2, NbDevDn: 2 }));
-    this.p10_dev3 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 10, NbDevUp: 3, NbDevDn: 3 }));
+    this.p10_dev1 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 10, NbDevUp: 1, NbDevDn: 1 }));
+    this.p10_dev2 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 10, NbDevUp: 2, NbDevDn: 2 }));
+    this.p10_dev3 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 10, NbDevUp: 3, NbDevDn: 3 }));
 
-    this.p20_dev1 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 20, NbDevUp: 1, NbDevDn: 1 }));
-    this.p20_dev2 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
-    this.p20_dev3 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 20, NbDevUp: 3, NbDevDn: 3 }));
+    this.p20_dev1 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 20, NbDevUp: 1, NbDevDn: 1 }));
+    this.p20_dev2 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 20, NbDevUp: 2, NbDevDn: 2 }));
+    this.p20_dev3 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 20, NbDevUp: 3, NbDevDn: 3 }));
 
-    this.p30_dev1 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 30, NbDevUp: 1, NbDevDn: 1 }));
-    this.p30_dev2 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
-    this.p30_dev3 = new XmBase(waveManager, () => new _BBANDS({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
+    this.p30_dev1 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 30, NbDevUp: 1, NbDevDn: 1 }));
+    this.p30_dev2 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 30, NbDevUp: 2, NbDevDn: 2 }));
+    this.p30_dev3 = new XmBase(waveManager, () => new _BBands({ TimePeriod: 30, NbDevUp: 3, NbDevDn: 3 }));
   }
 
   update(bigCandle: Candle): IndBBands {

@@ -8,7 +8,7 @@ export const writeHeader = async (fileName: string) => {
 
   let data = [columns];
   let str = await fromCb(cb => csv.stringify(data, cb));
-  await fromCb(cb => fs.appendFile(fileName, str, cb));
+  return await fromCb(cb => fs.appendFile(fileName, str, cb));
 };
 
 interface AppendProps {

@@ -15,3 +15,5 @@ declare module "ml-performance";
 declare module "csv";
 declare module "ml-xgboost";
 declare module "genetic-js";
+declare module "gauss";
+declare module "stats-percentile";

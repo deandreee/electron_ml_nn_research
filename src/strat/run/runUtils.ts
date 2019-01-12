@@ -129,6 +129,10 @@ export const genRanges_JunDec = () => {
   return [train(daterange.JunDec)];
 };
 
+export const genRanges_SepWeek = () => {
+  return [train(daterange.SepWeek)];
+};
+
 export const calcAvgResults = (results: EvalResults[]) => {
   const avg: EvalResults = {
     fScore: meanBy(results, x => x.fScore),

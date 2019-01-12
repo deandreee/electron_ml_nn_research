@@ -94,3 +94,16 @@ export const fromCb = (cb: Cb) => {
     }
   });
 };
+
+// 1st arg is value not err :/
+export const fromCbGauss = (cb: Cb) => {
+  return new Promise((resolve, reject) => {
+    try {
+      cb((value: any) => {
+        resolve(value);
+      });
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
