@@ -4,7 +4,9 @@ import { BBandsValue, Candle } from "../types";
 
 export const indName = "BBands";
 
-export const getInd = (candle: Candle, t: string, p: string) => {
+export type GetIndValBBands = (candle: Candle, t: string, p: string) => BBandsValue;
+
+export const getInd: GetIndValBBands = (candle: Candle, t: string, p: string) => {
   return candle.ind.bbands[t][p];
 };
 
