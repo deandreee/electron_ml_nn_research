@@ -78,10 +78,20 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
       bbands: bbands.update(bigCandles)
     };
 
-    const tbCfg = getTrippleBarrierConfig();
+    const ptFive = getTrippleBarrierConfig("PT_FIVE");
+    const one = getTrippleBarrierConfig("ONE");
+    const two = getTrippleBarrierConfig("TWO");
+    const three = getTrippleBarrierConfig("THREE");
+    const five = getTrippleBarrierConfig("FIVE");
 
     candle.pctChange = {
-      trippleBarrier: trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
+      trippleBarriers: {
+        ptFive: trippleBarrier(candles, i, ptFive.stopLoss, ptFive.takeProfit, ptFive.lookAhead),
+        one: trippleBarrier(candles, i, one.stopLoss, one.takeProfit, one.lookAhead),
+        two: trippleBarrier(candles, i, two.stopLoss, two.takeProfit, two.lookAhead),
+        three: trippleBarrier(candles, i, three.stopLoss, three.takeProfit, three.lookAhead),
+        five: trippleBarrier(candles, i, five.stopLoss, five.takeProfit, five.lookAhead)
+      }
     };
   }
 

@@ -1,7 +1,7 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { NumberMap } from "../ml/mlUtils";
-import { padEnd, minBy, maxBy } from "lodash";
+import { padEnd, minBy, maxBy, sumBy } from "lodash";
 import { round2 } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 // import * as gauss from "gauss";
@@ -9,18 +9,23 @@ import * as percentile from "stats-percentile";
 // import { indName, getInd, timeframes, ps } from "../features/getVixFix";
 import { indName, getInd, timeframes, ps } from "../features/getBBands";
 
+const tbLabels = ["ptFive", "one", "two", "three", "five"];
+
 const createProbsObj = () => {
   const probs: { [ind: string]: NumberMap } = {};
-  for (let t of timeframes) {
-    for (let p of ps) {
-      probs[formatTP(t, p)] = { 0: 0, 1: 0, 2: 0 };
+
+  for (let lbl of tbLabels) {
+    for (let t of timeframes) {
+      for (let p of ps) {
+        probs[formatTP(lbl, t, p)] = { 0: 0, 1: 0, 2: 0 };
+      }
     }
   }
   return probs;
 };
 
-const formatTP = (t: string, p: string) => {
-  return `${t}.${p}`;
+const formatTP = (lbl: string, t: string, p: string) => {
+  return `${padEnd(lbl, 7)} | ${t}.${p}`;
 };
 
 export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
@@ -29,6 +34,7 @@ export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
   const corrCandles = months[ranges[0].name];
 
   console.log("candlesActual.length", corrCandles.candlesActual.length);
+  logTrippleBarrierStats(corrCandles);
   // minMax(corrCandles);
 
   for (let t of timeframes) {
@@ -58,40 +64,70 @@ export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
         // }
         // const min = minBy(
 
-        // vixFix ...
+        // bbands
         const indCurr = getInd(curr, t, p);
         const indPrev = getInd(prev, t, p);
-        if (indPrev.lower > curr.close && indCurr.lower < curr.close) {
-          probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
-          //   // coole.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
-        }
 
-        // bbands
+        for (let lbl of tbLabels) {
+          // hit lower
+          if (prev.close > indPrev.lower && curr.close < indCurr.lower) {
+            probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
+            //   // coole.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
+          }
+
+          // hit upper
+          // if (prev.close < indPrev.upper && curr.close > indCurr.upper) {
+          //   probs[formatTP(t, p)][curr.pctChange.trippleBarrier]++;
+          //   //   // coole.log(`emaOCC cross, trippleBarrier: ${curr.pctChange.trippleBarrier}`);
+          // }
+        }
       }
     }
   }
 
-  for (let t of timeframes) {
-    for (let p of ps) {
-      const tp = formatTP(t, p);
+  for (let lbl of tbLabels) {
+    for (let t of timeframes) {
+      for (let p of ps) {
+        const tp = formatTP(lbl, t, p);
 
-      const sum = probs[tp][0] + probs[tp][1] + probs[tp][2];
-      const p0 = round2(probs[tp][0] / sum);
-      const p1 = round2(probs[tp][1] / sum);
-      const p2 = round2(probs[tp][2] / sum);
+        const sum = probs[tp][0] + probs[tp][1] + probs[tp][2];
+        const p0 = round2(probs[tp][0] / sum);
+        const p1 = round2(probs[tp][1] / sum);
+        const p2 = round2(probs[tp][2] / sum);
 
-      const ovr = `${probs[tp][0]}/${probs[tp][1]}/${probs[tp][2]}`;
+        const ovr = `${probs[tp][0]}/${probs[tp][1]}/${probs[tp][2]}`;
 
-      if (p0 > 0.6 || p1 > 0.6 || p2 > 0.6) {
-        console.log(
-          padEnd(tp, 20),
-          padEnd(p0.toString(), 5),
-          padEnd(p1.toString(), 5),
-          padEnd(p2.toString(), 5),
-          padEnd(ovr, 5)
-        );
+        // const threshold = 0.5;
+        const threshold = 0.6;
+        if (p0 > threshold || p1 > threshold || p2 > threshold) {
+          console.log(
+            padEnd(tp, 30),
+            padEnd(p0.toString(), 5),
+            padEnd(p1.toString(), 5),
+            padEnd(p2.toString(), 5),
+            padEnd(ovr, 5)
+          );
+        }
       }
     }
+  }
+};
+
+export const logTrippleBarrierStats = (corrCandles: CorrCandles) => {
+  for (let lbl of tbLabels) {
+    const lbls = corrCandles.candlesActual.map(x => x.pctChange.trippleBarriers[lbl]);
+    const zeroes = sumBy(lbls, x => (x === 0 ? 1 : 0));
+    const ones = sumBy(lbls, x => (x === 1 ? 1 : 0));
+    const twos = sumBy(lbls, x => (x === 2 ? 1 : 0));
+
+    console.log(
+      padEnd("LBL STATS", 10),
+      padEnd(lbl, 7),
+      padEnd(lbls.length.toString(), 10),
+      padEnd(zeroes.toString(), 5),
+      padEnd(ones.toString(), 5),
+      padEnd(twos.toString(), 5)
+    );
   }
 };
 

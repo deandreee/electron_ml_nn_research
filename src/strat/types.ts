@@ -32,8 +32,18 @@ export interface PctChange {
   _10d: number[];
 }
 
+export interface TrippleBarriers {
+  [x: string]: number;
+  ptFive: number;
+  one: number;
+  two: number;
+  three: number;
+  five: number;
+}
+
 export interface CandlePctChange {
   trippleBarrier?: number;
+  trippleBarriers?: TrippleBarriers;
   _10m?: number;
   _60m?: number;
   _120m?: number;
