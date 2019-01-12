@@ -97,7 +97,7 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
 
   const candlesActual = candles.filter((x, i) => !(i < WARMUP_IND_COUNT || i >= candles.length - EXTENDED_COUNT));
   const pctChange = corrUtils.getPctChange(candlesActual);
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND_COUNT, EXTENDED);
 
   return { corrCandles, pctChange };
 };

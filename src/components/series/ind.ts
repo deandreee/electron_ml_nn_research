@@ -1,6 +1,6 @@
 import { Candle, CandleProp } from "../../strat/types";
 import { options } from "../options";
-import { EXTENDED_COUNT } from "../../strat/corr/calcBatched";
+// import { EXTENDED_COUNT } from "../../strat/corr/calcBatched";
 import { CorrCandles } from "../../strat/corr/CorrCandles";
 
 const base = {
@@ -18,6 +18,15 @@ const baseDotted = {
   }
 };
 
+const baseScatter = {
+  ...base,
+  symbol: "pin", // https://ecomfe.github.io/echarts-doc/public/en/option.html#series-scatter.symbol
+  large: true,
+  sampling: "average",
+  type: "scatter",
+  symbolSize: 2
+};
+
 type fnGetInd = (x: Candle) => any;
 type fnGetIndValue = (x: Candle) => number;
 
@@ -27,7 +36,8 @@ const data = (coin: CorrCandles, fn: fnGetIndValue) => {
 
 const hasIndicator = (coin: CorrCandles, fn: fnGetInd) => {
   const candles = coin.candlesActual;
-  return fn(candles[candles.length - EXTENDED_COUNT - 1]) !== undefined; // quick fix, not sure about the number
+  // return fn(candles[candles.length - EXTENDED_COUNT - 1]) !== undefined; // quick fix, not sure about the number
+  return fn(candles[candles.length - 1]) !== undefined; // quick fix, not sure about the number
 };
 
 export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
@@ -114,7 +124,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.vixFix.x30.a)) {
+  if (hasIndicator(coin, x => x.ind.vixFix)) {
     series.push({
       ...base,
       color: "red",
@@ -125,7 +135,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.vixFix.x60.a)) {
+  if (hasIndicator(coin, x => x.ind.vixFix)) {
     series.push({
       ...base,
       color: "red",
@@ -256,7 +266,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.rsi.x60.p10)) {
+  if (hasIndicator(coin, x => x.ind.rsi)) {
     series.push({
       ...base,
       // type: "scatter",
@@ -270,6 +280,76 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       name: "RSI",
       xAxisIndex: 1,
       yAxisIndex: 1
+    });
+  }
+
+  if (hasIndicator(coin, x => x.pctChange.trippleBarriers)) {
+    series.push({
+      ...baseScatter,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.two === 2 ? x.close : null]),
+      name: "TPB_TWO"
+    });
+
+    series.push({
+      ...baseScatter,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.two === 0 ? x.close : null]),
+      name: "TPB_TWO"
+    });
+
+    series.push({
+      ...baseScatter,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.five === 2 ? x.close : null]),
+      name: "TPB_FIVE"
+    });
+
+    series.push({
+      ...baseScatter,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.five === 0 ? x.close : null]),
+      name: "TPB_FIVE"
+    });
+  }
+
+  if (hasIndicator(coin, x => x.ind.bbands)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.bbands.x120.p30_dev3.lower]),
+      name: "bbands.x120.p30_dev3"
+    });
+
+    series.push({
+      ...base,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.bbands.x120.p30_dev3.upper]),
+      name: "bbands.x120.p30_dev3"
+    });
+
+    series.push({
+      ...baseScatter,
+      color: "green",
+      symbol: "arrow",
+      symbolSize: 10,
+      data: coin.candlesActual.map((x, i) => {
+        if (!x) {
+          return null;
+        }
+        const prev = coin.getPrev(i, 1);
+        const curr = x;
+
+        const indPrev = prev.ind.bbands.x120.p30_dev3;
+        const indCurr = curr.ind.bbands.x120.p30_dev3;
+
+        // hit lower
+        if (prev.close > indPrev.lower && curr.close < indCurr.lower) {
+          return [x.start * 1000, indCurr.lower];
+        }
+        return null;
+      }),
+      name: "bbands.x120.p30_dev3[HIT]"
     });
   }
 

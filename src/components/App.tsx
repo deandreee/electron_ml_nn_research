@@ -37,7 +37,7 @@ export class App extends React.Component {
     return (
       <div style={this.style}>
         <AppCharts coin={this.state.coin} labelsPredicted={this.state.labelsPredicted} />
-        {/* <AppCorr linRegs={this.state.linRegs} />*/}
+        {/* <AppCorr linRegs={this.state.linRegs} /> */}
       </div>
     );
   }

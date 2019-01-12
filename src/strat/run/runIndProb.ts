@@ -15,7 +15,7 @@ export const runIndProb = async (): Promise<RunResult> => {
   await calcCrossoverProb.cProb(months, ranges);
 
   return {
-    coin: months.Jul,
+    coin: months[ranges[0].name],
     labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
