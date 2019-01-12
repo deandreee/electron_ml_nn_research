@@ -85,7 +85,7 @@ export const minMax = (
   }
 };
 
-export const logProbs = (probs: Probs, timeframes: string[], ps: string[]) => {
+export const logProbs = (probs: Probs, timeframes: string[], ps: string[], threshold: number = 0.6) => {
   for (let lbl of tbLabels) {
     for (let t of timeframes) {
       for (let p of ps) {
@@ -99,7 +99,7 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[]) => {
         const ovr = `${probs[tp][0]}/${probs[tp][1]}/${probs[tp][2]}`;
 
         // const threshold = 0.5;
-        const threshold = 0.6;
+        // const threshold = 0.6;
         if (p0 > threshold || p1 > threshold || p2 > threshold) {
           console.log(
             padEnd(tp, 30),
