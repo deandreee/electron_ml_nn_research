@@ -4,7 +4,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { MACD, RSI, BBands, MFI, StochKD, ADX, ATR, VixFix, EMA, LRC } = require(`${GEKKO}/indicators`);
+const { MACD, RSI, BBands, MFI, StochKD, ADX, ATR, VixFix, EMA, LRC, KeltnerChannels } = require(`${GEKKO}/indicators`);
 
 const {
   InverseFisherTransform,
@@ -56,5 +56,6 @@ export {
   ZerolagMACD,
   T3MACD,
   ZerolagT3,
-  LRC
+  LRC,
+  KeltnerChannels
 };

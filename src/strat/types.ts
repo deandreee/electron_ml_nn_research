@@ -14,6 +14,7 @@ import { IndBBands } from "./indicators/BBands";
 import { IndRSI } from "./indicators/RSI";
 import { IndIFT } from "./indicators/IFT";
 import { IndIFTS } from "./indicators/IFTS";
+import { IndKeltner } from "./indicators/Keltner";
 
 export type Cb = (err: Error) => void;
 
@@ -94,7 +95,7 @@ export interface IndLRCValue {
   result: number;
 }
 
-export interface BBandsValue {
+export interface UpperLowerValue {
   upper: number;
   lower: number;
 }
@@ -177,6 +178,7 @@ export interface Indicators {
 
   stochKD?: IndTimeframes<IndStochKD>;
   bbands?: IndTimeframes<IndBBands>;
+  keltner?: IndTimeframes<IndKeltner>;
 
   vwap30_10?: VWAP;
   vwap30_20?: VWAP;

@@ -3,8 +3,9 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as runUtils from "./runUtils";
 
 // import * as calcCrossoverProb from "../corr/calcCrossoverProb";
-import { probsBBands } from "../evtProb/evtBBands";
+// import { probsBBands } from "../evtProb/evtBBands";
 // import { probsOCC } from "../evtProb/evtOCC";
+import { calcProb } from "../evtProb/evtKeltner";
 
 export const runIndProb = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
@@ -14,7 +15,7 @@ export const runIndProb = async (): Promise<RunResult> => {
   // const ranges = runUtils.genRanges_SepWeek();
   // const ranges = runUtils.genRangesLast3_JunJulAugSep();
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, true);
-  await probsBBands(months, ranges);
+  await calcProb(months, ranges);
 
   return {
     coin: months[ranges[0].name],

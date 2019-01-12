@@ -1,20 +1,20 @@
 import { XmBase, BBands as _BBands, WaveManager } from "./gekko";
-import { Candle, BBandsValue } from "../types";
+import { Candle, UpperLowerValue } from "../types";
 
 export interface IndBBands {
-  [p: string]: BBandsValue;
-  p10_dev1: BBandsValue;
-  p10_dev2: BBandsValue;
-  p10_dev3: BBandsValue;
-  p15_dev1: BBandsValue;
-  p15_dev2: BBandsValue;
-  p15_dev3: BBandsValue;
-  p20_dev1: BBandsValue;
-  p20_dev2: BBandsValue;
-  p20_dev3: BBandsValue;
-  p30_dev1: BBandsValue;
-  p30_dev2: BBandsValue;
-  p30_dev3: BBandsValue;
+  [p: string]: UpperLowerValue;
+  p10_dev1: UpperLowerValue;
+  p10_dev2: UpperLowerValue;
+  p10_dev3: UpperLowerValue;
+  p15_dev1: UpperLowerValue;
+  p15_dev2: UpperLowerValue;
+  p15_dev3: UpperLowerValue;
+  p20_dev1: UpperLowerValue;
+  p20_dev2: UpperLowerValue;
+  p20_dev3: UpperLowerValue;
+  p30_dev1: UpperLowerValue;
+  p30_dev2: UpperLowerValue;
+  p30_dev3: UpperLowerValue;
 }
 
 export class BBands {

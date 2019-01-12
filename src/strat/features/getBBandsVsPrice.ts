@@ -1,6 +1,6 @@
 import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
-import { BBandsValue } from "../types";
+import { UpperLowerValue } from "../types";
 
 export const getBBandsVsPrice = (): FeatureSplit[] => {
   const timeframes = ["x30", "x60", "x120", "x240", "x480"];
@@ -30,6 +30,6 @@ export const getBBandsVsPrice = (): FeatureSplit[] => {
   );
 };
 
-export const getBBandsVsPriceFeature = (value: BBandsValue, close: number) => {
+export const getBBandsVsPriceFeature = (value: UpperLowerValue, close: number) => {
   return [value.upper - close, close - value.lower];
 };
