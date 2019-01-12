@@ -11,7 +11,23 @@ export const getInd: GetIndValBBands = (candle: Candle, t: string, p: string) =>
 };
 
 export const timeframes = ["x30", "x60", "x120", "x240", "x480"];
-export const ps = ["p20_10_1", "p20_10_2", "p20_10_3"];
+export const ps = [
+  "p10_10_1",
+  "p10_10_2",
+  "p10_10_3",
+
+  "p20_10_1",
+  "p20_10_2",
+  "p20_10_3",
+
+  "p20_20_1",
+  "p20_20_2",
+  "p20_20_3",
+
+  "p30_15_1",
+  "p30_15_2",
+  "p30_15_3"
+];
 
 export const getKeltner = (): FeatureSplit[] => {
   return flatten(
