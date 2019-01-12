@@ -4,8 +4,10 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { GetIndVal } from "../features/common";
 import * as percentile from "stats-percentile";
 import { round2 } from "../utils";
+import { TrippleBarrierLabel } from "../run/runConfigXG";
+import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
 
-const tbLabels = ["ptFive", "one", "two", "three", "five"];
+export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
 
 export interface Probs {
   [ind: string]: NumberMap;
@@ -14,7 +16,7 @@ export interface Probs {
 export const createProbsObj = (timeframes: string[], ps: string[]): Probs => {
   const probs: { [ind: string]: NumberMap } = {};
 
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     for (let t of timeframes) {
       for (let p of ps) {
         probs[formatTP(lbl, t, p)] = { 0: 0, 1: 0, 2: 0 };
@@ -29,7 +31,7 @@ export const formatTP = (lbl: string, t: string, p: string) => {
 };
 
 export const logTrippleBarrierStats = (corrCandles: CorrCandles) => {
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     const lbls = corrCandles.candlesActual.map(x => x.pctChange.trippleBarriers[lbl]);
     const zeroes = sumBy(lbls, x => (x === 0 ? 1 : 0));
     const ones = sumBy(lbls, x => (x === 1 ? 1 : 0));
@@ -86,7 +88,7 @@ export const minMax = (
 };
 
 export const logProbs = (probs: Probs, timeframes: string[], ps: string[], threshold: number = 0.6) => {
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     for (let t of timeframes) {
       for (let p of ps) {
         const tp = formatTP(lbl, t, p);
@@ -112,4 +114,8 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[], thres
       }
     }
   }
+};
+
+export const getLookAhead = (lbl: TrippleBarrierLabel) => {
+  return getTrippleBarrierConfig(lbl).lookAhead;
 };

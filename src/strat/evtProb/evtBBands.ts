@@ -1,11 +1,7 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { getInd, timeframes, ps } from "../features/getBBands";
-import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs } from "./common";
-import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
-// import { TrippleBarrierLabel } from "../run/runConfigXG";
-
-const tbLabels = ["ptFive", "one", "two", "three", "five"];
+import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
 
 export const probsBBands = async (months: CorrCandleMonths, ranges: DateRange[]) => {
   const probs = createProbsObj(timeframes, ps);
@@ -15,7 +11,7 @@ export const probsBBands = async (months: CorrCandleMonths, ranges: DateRange[])
 
   for (let t of timeframes) {
     for (let p of ps) {
-      for (let lbl of tbLabels) {
+      for (let lbl of TPB_LABELS) {
         for (let i = 1; i < corrCandles.candlesActual.length; i++) {
           const curr = corrCandles.candlesActual[i];
           // const prev = corrCandles.candlesActual[i - 1];
@@ -30,9 +26,7 @@ export const probsBBands = async (months: CorrCandleMonths, ranges: DateRange[])
             // because of lookAhead cooldown, don't have to compare anymore
             probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
 
-            // const lblCfg = getTrippleBarrierConfig(lbl as TrippleBarrierLabel);
-            const lblCfg = getTrippleBarrierConfig("THREE");
-            i += lblCfg.lookAhead; // should be more fair
+            i += getLookAhead(lbl); // should be more fair
           }
         }
       }

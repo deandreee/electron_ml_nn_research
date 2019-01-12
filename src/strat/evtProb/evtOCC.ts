@@ -1,12 +1,7 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { getInd, timeframes, ps } from "../features/getOCC";
-import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs } from "./common";
-import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
-// import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
-// import { TrippleBarrierLabel } from "../run/runConfigXG";
-
-const tbLabels = ["ptFive", "one", "two", "three", "five"];
+import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
 
 export const probsOCC = async (months: CorrCandleMonths, ranges: DateRange[]) => {
   const probs = createProbsObj(timeframes, ps);
@@ -16,7 +11,7 @@ export const probsOCC = async (months: CorrCandleMonths, ranges: DateRange[]) =>
 
   for (let t of timeframes) {
     for (let p of ps) {
-      for (let lbl of tbLabels) {
+      for (let lbl of TPB_LABELS) {
         for (let i = 1; i < corrCandles.candlesActual.length; i++) {
           const curr = corrCandles.candlesActual[i];
           // const prev = corrCandles.candlesActual[i - 1];
@@ -28,8 +23,7 @@ export const probsOCC = async (months: CorrCandleMonths, ranges: DateRange[]) =>
           if (indCurr > 0) {
             probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
 
-            const lblCfg = getTrippleBarrierConfig("THREE");
-            i += lblCfg.lookAhead; // should be more fair
+            i += getLookAhead(lbl); // should be more fair
           }
         }
       }

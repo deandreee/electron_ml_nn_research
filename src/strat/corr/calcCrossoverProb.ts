@@ -8,13 +8,12 @@ import { CorrCandles } from "./CorrCandles";
 import * as percentile from "stats-percentile";
 // import { indName, getInd, timeframes, ps } from "../features/getVixFix";
 import { indName, getInd, timeframes, ps } from "../features/getBBands";
-
-const tbLabels = ["ptFive", "one", "two", "three", "five"];
+import { TPB_LABELS } from "../evtProb/common";
 
 const createProbsObj = () => {
   const probs: { [ind: string]: NumberMap } = {};
 
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     for (let t of timeframes) {
       for (let p of ps) {
         probs[formatTP(lbl, t, p)] = { 0: 0, 1: 0, 2: 0 };
@@ -68,7 +67,7 @@ export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
         const indCurr = getInd(curr, t, p);
         const indPrev = getInd(prev, t, p);
 
-        for (let lbl of tbLabels) {
+        for (let lbl of TPB_LABELS) {
           // hit lower
           if (prev.close > indPrev.lower && curr.close < indCurr.lower) {
             probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
@@ -85,7 +84,7 @@ export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
     }
   }
 
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     for (let t of timeframes) {
       for (let p of ps) {
         const tp = formatTP(lbl, t, p);
@@ -114,7 +113,7 @@ export const cProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
 };
 
 export const logTrippleBarrierStats = (corrCandles: CorrCandles) => {
-  for (let lbl of tbLabels) {
+  for (let lbl of TPB_LABELS) {
     const lbls = corrCandles.candlesActual.map(x => x.pctChange.trippleBarriers[lbl]);
     const zeroes = sumBy(lbls, x => (x === 0 ? 1 : 0));
     const ones = sumBy(lbls, x => (x === 1 ? 1 : 0));

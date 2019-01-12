@@ -287,28 +287,28 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     series.push({
       ...baseScatter,
       color: "green",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.two === 2 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.TWO === 2 ? x.close : null]),
       name: "TPB_TWO"
     });
 
     series.push({
       ...baseScatter,
       color: "red",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.two === 0 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.TWO === 0 ? x.close : null]),
       name: "TPB_TWO"
     });
 
     series.push({
       ...baseScatter,
       color: "green",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.five === 2 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.FIVE === 2 ? x.close : null]),
       name: "TPB_FIVE"
     });
 
     series.push({
       ...baseScatter,
       color: "red",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.five === 0 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarriers.FIVE === 0 ? x.close : null]),
       name: "TPB_FIVE"
     });
   }

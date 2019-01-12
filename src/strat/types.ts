@@ -34,11 +34,11 @@ export interface PctChange {
 
 export interface TrippleBarriers {
   [x: string]: number;
-  ptFive: number;
-  one: number;
-  two: number;
-  three: number;
-  five: number;
+  PT_FIVE: number;
+  ONE: number;
+  TWO: number;
+  THREE: number;
+  FIVE: number;
 }
 
 export interface CandlePctChange {
