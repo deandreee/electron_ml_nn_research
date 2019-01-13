@@ -1,6 +1,9 @@
 import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
 import { UpperLowerValue } from "../types";
+import { P_BBands } from "../indicators/BBands";
+
+export const indName = "bbands_vs_price";
 
 export const getBBandsVsPrice = (): FeatureSplit[] => {
   const timeframes = ["x30", "x60", "x120", "x240", "x480"];
@@ -21,8 +24,8 @@ export const getBBandsVsPrice = (): FeatureSplit[] => {
       return flatten(
         ps.map(p => [
           {
-            name: `${tf}.bbands_vs_price.${p}`,
-            fn: (x, i, corrCandles) => getBBandsVsPriceFeature(x.ind.bbands[tf][p], x.close)
+            name: `${tf}.${indName}.${p}`,
+            fn: (x, i, corrCandles) => getBBandsVsPriceFeature(x.ind.bbands[tf][p as P_BBands], x.close)
           } as FeatureSplit
         ])
       );

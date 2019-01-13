@@ -2,6 +2,7 @@ import { FeatureSplit, FnGetFeature } from "./FeatureSplit";
 import { getAllKhaos } from "./getAllKhaos";
 import { getATR } from "./getATR";
 import { getBBands } from "./getBBands";
+import { getBBandsUpperLower } from "./getBBandsUpperLower";
 import { getBBandsVsPrice } from "./getBBandsVsPrice";
 import { getCombo } from "./getCombo";
 import { getIFT } from "./getIFT";
@@ -47,6 +48,8 @@ export {
   getAllKhaos,
   getATR,
   getBBands,
+  getBBandsUpperLower,
+  getBBandsVsPrice,
   getCombo,
   getIFT,
   getIFTS,
@@ -62,6 +65,5 @@ export {
   getT3MACD,
   getZerolagT3,
   getLRC,
-  getZerolagMACD,
-  getBBandsVsPrice
+  getZerolagMACD
 };

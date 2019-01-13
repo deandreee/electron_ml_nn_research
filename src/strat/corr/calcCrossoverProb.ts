@@ -7,8 +7,9 @@ import { CorrCandles } from "./CorrCandles";
 // import * as gauss from "gauss";
 import * as percentile from "stats-percentile";
 // import { indName, getInd, timeframes, ps } from "../features/getVixFix";
-import { indName, getInd, timeframes, ps } from "../features/getBBands";
+import { indName, getInd, ps } from "../features/getBBands";
 import { TPB_LABELS } from "../evtProb/common";
+import { timeframes } from "../features/common";
 
 const createProbsObj = () => {
   const probs: { [ind: string]: NumberMap } = {};

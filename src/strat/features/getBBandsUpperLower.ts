@@ -3,7 +3,7 @@ import { Candle, UpperLowerValue } from "../types";
 import { FnGetFeaturesInXm, getFeatureSplit, timeframes } from "./common";
 import { BBands, P_BBands } from "../indicators/BBands";
 
-export const indName = "bbands";
+export const indName = "bbands_upper_lower";
 
 export const getInd = (candle: Candle, t: string, p: string) => {
   return candle.ind.bbands[t][p as P_BBands];
@@ -12,10 +12,10 @@ export const getInd = (candle: Candle, t: string, p: string) => {
 export const ps = BBands.getPS();
 
 const getF: FnGetFeaturesInXm = (x, i, corrCandles, t, p) => {
-  return [x.ind.bbands[t][p as P_BBands].upper, x.ind.bbands[t][p as P_BBands].lower];
+  return [getBBandsUpperMinusLower(x.ind.bbands[t][p as P_BBands])];
 };
 
-export const getBBands = (): FeatureSplit[] => {
+export const getBBandsUpperLower = (): FeatureSplit[] => {
   return getFeatureSplit(indName, timeframes, ps, getF);
 };
 
