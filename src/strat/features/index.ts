@@ -18,6 +18,7 @@ import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC } from "./getLRC";
 import { getZerolagMACD } from "./getZerolagMACD";
+import { getKST, getKSTandPrice } from "./getKST";
 
 const getAll = () => {
   return [
@@ -64,5 +65,7 @@ export {
   getT3MACD,
   getZerolagT3,
   getLRC,
-  getZerolagMACD
+  getZerolagMACD,
+  getKST,
+  getKSTandPrice
 };

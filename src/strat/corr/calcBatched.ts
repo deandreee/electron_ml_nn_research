@@ -13,6 +13,7 @@ import { StochKD } from "../indicators/StochKD";
 import { MFI } from "../indicators/MFI";
 import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
+import { KST } from "../indicators/KST";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
 
@@ -107,6 +108,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers);
   const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
 
+  const kst = new IndTimeframeGroup(KST, waveManagers);
+
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
@@ -180,7 +183,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
       macd: shouldCalc(featuresSplit, "macd") ? macd.update(bigCandles) : null,
       zerolagMACD: shouldCalc(featuresSplit, "zerolagMACD") ? zerolagMACD.update(bigCandles) : null,
 
-      vixFix: shouldCalc(featuresSplit, "vixFix") ? vixFix.update(bigCandles) : null
+      vixFix: shouldCalc(featuresSplit, "vixFix") ? vixFix.update(bigCandles) : null,
+
+      kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null
     };
 
     if (shouldCalc(featuresSplit, "macd_adx")) {

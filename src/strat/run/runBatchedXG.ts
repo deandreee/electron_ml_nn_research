@@ -12,7 +12,7 @@ import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
 const ranges = runUtils.genRanges_TrainJunJul();
-const featuresSplit = features.getBBands();
+const featuresSplit = features.getKSTandPrice();
 
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
   ranges[0].name
