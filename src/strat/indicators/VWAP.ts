@@ -27,7 +27,7 @@ export class VWAP {
   }
 
   createXm = (waveManager: WaveManager, settings: any) => {
-    return new XmBase(waveManager, () => new _VWAP(settings));
+    return new XmBase(waveManager, () => new _VWAP(settings.period));
   };
 
   update(bigCandle: Candle): IndVWAP {

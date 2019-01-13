@@ -3,7 +3,7 @@ import { Candle } from "../types";
 import { P_ATR, ATR } from "../indicators/ATR";
 import { getFeatureSplitPsOnly } from "./common";
 
-export const indName = "ATR";
+export const indName = "atr";
 
 export const getInd = (candle: Candle, t: string, p: string) => {
   return candle.ind.atr[p as P_ATR];

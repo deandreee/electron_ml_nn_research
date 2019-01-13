@@ -3,7 +3,7 @@ import { Candle } from "../types";
 import { P_VWAP, VWAP } from "../indicators/VWAP";
 import { getFeatureSplit, timeframes } from "./common";
 
-export const indName = "VWAP";
+export const indName = "vwap";
 
 export const getInd = (candle: Candle, t: string, p: string) => {
   return candle.ind.vwap[t][p as P_VWAP];

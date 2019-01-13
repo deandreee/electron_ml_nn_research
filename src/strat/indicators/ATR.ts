@@ -15,15 +15,15 @@ export class ATR {
 
   constructor(waveManager: WaveManager) {
     const settings: IndSettings = {
-      atr60: { period: 60 },
-      atr120: { period: 120 },
-      atr240: { period: 240 },
-      atr360: { period: 360 },
-      atr480: { period: 480 },
-      atr720: { period: 720 },
-      atr960: { period: 960 },
-      atr1440: { period: 1440 },
-      atr2880: { period: 2880 }
+      p60: { period: 60 },
+      p120: { period: 120 },
+      p240: { period: 240 },
+      p360: { period: 360 },
+      p480: { period: 480 },
+      p720: { period: 720 },
+      p960: { period: 960 },
+      p1440: { period: 1440 },
+      p2880: { period: 2880 }
     };
 
     this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));
