@@ -1,6 +1,5 @@
 import { FeatureSplit } from "./FeatureSplit";
-import { getBBandsVsPriceFeature } from "./getBBandsVsPrice";
-import { getBBandsUpperMinusLower } from "./getBBands";
+import { getUpperMinusLower, getVsPrice } from "./getBBands";
 
 export const getCombo = (): FeatureSplit[] => {
   return [
@@ -130,7 +129,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.vwap240_20.den,
         x.ind.macd.x240.sig9.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x240.p30_dev2, x.close),
+        ...getVsPrice(x.ind.bbands.x240.p30_dev2, x.close),
         x.ind.emaOCC.x240.emaOCC_30,
         x.ind.zerolagT3.x60.p10
       ]
@@ -151,7 +150,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.macd120_ADX120,
         x.ind.vwap30_30.den,
         x.ind.zerolagMACD.x480.sig2_16.histo,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x240.p10_dev1, x.close)
+        ...getVsPrice(x.ind.bbands.x240.p10_dev1, x.close)
       ]
     },
 
@@ -160,7 +159,7 @@ export const getCombo = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x480.d,
         x.ind.zerolagMACD.x480.sig2_16.histo,
-        getBBandsUpperMinusLower(x.ind.bbands.x240.p10_dev1),
+        getUpperMinusLower(x.ind.bbands.x240.p10_dev1),
         x.ind.zerolagT3.x30.p60
       ]
     },
@@ -170,7 +169,7 @@ export const getCombo = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x480.d,
         x.ind.zerolagMACD.x480.sig2_16.histo,
-        getBBandsUpperMinusLower(x.ind.bbands.x240.p10_dev1),
+        getUpperMinusLower(x.ind.bbands.x240.p10_dev1),
         x.ind.zerolagT3.x30.p60,
         x.ind.atr720,
         x.ind.lrc.x240.p30,
@@ -181,12 +180,7 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "THREE_OPT_x4",
-      fn: x => [
-        x.ind.vixFix.x480.a,
-        x.ind.atr720,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x60.p10_dev3, x.close),
-        x.ind.atr480
-      ]
+      fn: x => [x.ind.vixFix.x480.a, x.ind.atr720, ...getVsPrice(x.ind.bbands.x60.p10_dev3, x.close), x.ind.atr480]
     },
 
     {
@@ -194,7 +188,7 @@ export const getCombo = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x480.a,
         x.ind.atr720,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x60.p10_dev3, x.close),
+        ...getVsPrice(x.ind.bbands.x60.p10_dev3, x.close),
         x.ind.atr480,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.rsi.x480.p30,
@@ -206,7 +200,7 @@ export const getCombo = (): FeatureSplit[] => {
       name: "FIVE_OPT_x4",
       fn: x => [
         x.ind.vixFix.x480.a,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x120.p20_dev3, x.close),
+        ...getVsPrice(x.ind.bbands.x120.p20_dev3, x.close),
         x.ind.vixFix.x240.b,
         x.ind.mfi.x480.p20
       ]
@@ -216,7 +210,7 @@ export const getCombo = (): FeatureSplit[] => {
       name: "FIVE_OPT_x8",
       fn: x => [
         x.ind.vixFix.x480.a,
-        ...getBBandsVsPriceFeature(x.ind.bbands.x120.p20_dev3, x.close),
+        ...getVsPrice(x.ind.bbands.x120.p20_dev3, x.close),
         x.ind.vixFix.x240.b,
         x.ind.mfi.x480.p20,
         x.ind.zerolagMACD.x480.sig2_16.histo,
