@@ -18,6 +18,7 @@ import { IndKeltner } from "./indicators/Keltner";
 import { IndChandelierExit } from "./indicators/ChandelierExit";
 import { IndKST } from "./indicators/KST";
 import { IndATR } from "./indicators/ATR";
+import { IndVWAP } from "./indicators/VWAP";
 
 export type Cb = (err: Error) => void;
 
@@ -120,7 +121,7 @@ export interface StochKDValue {
   d: number;
 }
 
-export interface VWAP {
+export interface VWAPValue {
   num: number;
   den: number;
 }
@@ -164,13 +165,7 @@ export interface Indicators {
   macd120_ADX30?: number;
   macd120_ADX60?: number;
   macd120_ADX120?: number;
-  atr60?: number;
-  atr120?: number;
-  atr240?: number;
-  atr360?: number;
-  atr480?: number;
-  atr720?: number;
-  atr960?: number;
+
   cci?: number;
 
   volume60?: number;
@@ -185,22 +180,7 @@ export interface Indicators {
   chandelierExit?: IndTimeframes<IndChandelierExit>;
   kst?: IndTimeframes<IndKST>;
   atr?: IndATR;
-
-  vwap30_10?: VWAP;
-  vwap30_20?: VWAP;
-  vwap30_30?: VWAP;
-
-  vwap60_10?: VWAP;
-  vwap60_20?: VWAP;
-  vwap60_30?: VWAP;
-
-  vwap120_10?: VWAP;
-  vwap120_20?: VWAP;
-  vwap120_30?: VWAP;
-
-  vwap240_10?: VWAP;
-  vwap240_20?: VWAP;
-  vwap240_30?: VWAP;
+  vwap?: IndTimeframes<IndVWAP>;
 
   emaOCC?: IndTimeframes<IndEMAxOCC>;
   t3Macd?: IndTimeframes<IndT3MACD>;

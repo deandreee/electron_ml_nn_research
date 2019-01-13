@@ -15,6 +15,7 @@ import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
 import { KST } from "../indicators/KST";
 import { ATR } from "../indicators/ATR";
+import { VWAP } from "../indicators/VWAP";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
 
@@ -28,8 +29,6 @@ const GEKKO = "../../../../gekko-develop/strategies";
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const { ADX } = require(`${GEKKO}/indicators`);
-
-const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
 export const CANDLE_SIZE = 10;
 export const WARMUP_IND = 480 * 70; // => ind ready
@@ -74,22 +73,6 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
   const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
 
-  const vwap30_10 = new XmBase(waveManager30, () => new VWAP(10));
-  const vwap30_20 = new XmBase(waveManager30, () => new VWAP(20));
-  const vwap30_30 = new XmBase(waveManager30, () => new VWAP(30));
-
-  const vwap60_10 = new XmBase(waveManager60, () => new VWAP(10));
-  const vwap60_20 = new XmBase(waveManager60, () => new VWAP(20));
-  const vwap60_30 = new XmBase(waveManager60, () => new VWAP(30));
-
-  const vwap120_10 = new XmBase(waveManager120, () => new VWAP(10));
-  const vwap120_20 = new XmBase(waveManager120, () => new VWAP(20));
-  const vwap120_30 = new XmBase(waveManager120, () => new VWAP(30));
-
-  const vwap240_10 = new XmBase(waveManager240, () => new VWAP(10));
-  const vwap240_20 = new XmBase(waveManager240, () => new VWAP(20));
-  const vwap240_30 = new XmBase(waveManager240, () => new VWAP(30));
-
   const stochKD = new IndTimeframeGroup(StochKD, waveManagers);
 
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
@@ -104,6 +87,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const kst = new IndTimeframeGroup(KST, waveManagers);
 
   const atr = new ATR(waveManagers.x10);
+
+  const vwap = new IndTimeframeGroup(VWAP, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -146,23 +131,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
 
       stochKD: shouldCalc(featuresSplit, "stoch") ? stochKD.update(bigCandles) : null,
 
-      atr: atr.update(bigCandles.x10),
-
-      vwap30_10: vwap30_10.update(bigCandle30),
-      vwap30_20: vwap30_20.update(bigCandle30),
-      vwap30_30: vwap30_30.update(bigCandle30),
-
-      vwap60_10: vwap60_10.update(bigCandle60),
-      vwap60_20: vwap60_20.update(bigCandle60),
-      vwap60_30: vwap60_30.update(bigCandle60),
-
-      vwap120_10: vwap120_10.update(bigCandle120),
-      vwap120_20: vwap120_20.update(bigCandle120),
-      vwap120_30: vwap120_30.update(bigCandle120),
-
-      vwap240_10: vwap240_10.update(bigCandle240),
-      vwap240_20: vwap240_20.update(bigCandle240),
-      vwap240_30: vwap240_30.update(bigCandle240),
+      atr: shouldCalc(featuresSplit, "atr") ? atr.update(bigCandles.x10) : null,
+      vwap: shouldCalc(featuresSplit, "vwap") ? vwap.update(bigCandles) : null,
 
       emaOCC: shouldCalc(featuresSplit, "emaOCC") ? emaOCC.update(bigCandles) : null,
       t3Macd: shouldCalc(featuresSplit, "t3Macd") ? t3Macd.update(bigCandles) : null,

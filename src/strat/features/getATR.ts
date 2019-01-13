@@ -1,34 +1,18 @@
 import { FeatureSplit } from "./FeatureSplit";
+import { Candle } from "../types";
+import { P_ATR, ATR } from "../indicators/ATR";
+import { getFeatureSplitPsOnly } from "./common";
+
+export const indName = "ATR";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.atr[p as P_ATR];
+};
+
+export const ps = ATR.getPS();
 
 export const getATR = (): FeatureSplit[] => {
-  return [
-    {
-      name: "atr60",
-      fn: (x, i, corrCandles) => [x.ind.atr60]
-    },
-    {
-      name: "atr120",
-      fn: (x, i, corrCandles) => [x.ind.atr120]
-    },
-    {
-      name: "atr240",
-      fn: (x, i, corrCandles) => [x.ind.atr240]
-    },
-    {
-      name: "atr360",
-      fn: (x, i, corrCandles) => [x.ind.atr360]
-    },
-    {
-      name: "atr480",
-      fn: (x, i, corrCandles) => [x.ind.atr480]
-    },
-    {
-      name: "atr720",
-      fn: (x, i, corrCandles) => [x.ind.atr720]
-    },
-    {
-      name: "atr960",
-      fn: (x, i, corrCandles) => [x.ind.atr960]
-    }
-  ];
+  return getFeatureSplitPsOnly(indName, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.atr[p as P_ATR], x.ind.atr[p as P_ATR]];
+  });
 };

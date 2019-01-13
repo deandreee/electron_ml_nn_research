@@ -1,21 +1,18 @@
 import { FeatureSplit } from "./FeatureSplit";
+import { Candle } from "../types";
+import { P_VWAP, VWAP } from "../indicators/VWAP";
+import { getFeatureSplit, timeframes } from "./common";
+
+export const indName = "VWAP";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.vwap[t][p as P_VWAP];
+};
+
+export const ps = VWAP.getPS();
 
 export const getVWAP = (): FeatureSplit[] => {
-  return [
-    { name: "vwap30_10", fn: x => [x.ind.vwap30_10.den] },
-    { name: "vwap30_20", fn: x => [x.ind.vwap30_20.den] },
-    { name: "vwap30_30", fn: x => [x.ind.vwap30_30.den] },
-
-    { name: "vwap60_10", fn: x => [x.ind.vwap60_10.den] },
-    { name: "vwap60_20", fn: x => [x.ind.vwap60_20.den] },
-    { name: "vwap60_30", fn: x => [x.ind.vwap60_30.den] },
-
-    { name: "vwap120_10", fn: x => [x.ind.vwap120_10.den] },
-    { name: "vwap120_10", fn: x => [x.ind.vwap120_10.den] },
-    { name: "vwap120_30", fn: x => [x.ind.vwap120_30.den] },
-
-    { name: "vwap240_10", fn: x => [x.ind.vwap240_10.den] },
-    { name: "vwap240_20", fn: x => [x.ind.vwap240_20.den] },
-    { name: "vwap240_30", fn: x => [x.ind.vwap240_30.den] }
-  ];
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.vwap[t][p as P_VWAP].den, x.ind.vwap[t][p as P_VWAP].num];
+  });
 };

@@ -118,15 +118,15 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "PT_FIVE_OPT_x4",
-      fn: x => [x.ind.atr60, x.ind.vixFix.x120.b, x.ind.vwap240_20.den, x.ind.macd.x240.sig9.histo]
+      fn: x => [x.ind.atr.p60, x.ind.vixFix.x120.b, x.ind.vwap.x240.p20.den, x.ind.macd.x240.sig9.histo]
     },
 
     {
       name: "PT_FIVE_OPT_x8",
       fn: x => [
-        x.ind.atr60,
+        x.ind.atr.p60,
         x.ind.vixFix.x120.b,
-        x.ind.vwap240_20.den,
+        x.ind.vwap.x240.p20.den,
         x.ind.macd.x240.sig9.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         ...getVsPrice(x.ind.bbands.x240.p30_dev2, x.close),
@@ -137,18 +137,18 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "ONE_OPT_x4",
-      fn: x => [x.ind.vwap240_10.den, x.ind.vixFix.x120.b, x.ind.macd.x480.sig2_10.histo, x.ind.lrc.x480.p45]
+      fn: x => [x.ind.vwap.x24.p10.den, x.ind.vixFix.x120.b, x.ind.macd.x480.sig2_10.histo, x.ind.lrc.x480.p45]
     },
 
     {
       name: "ONE_OPT_x8",
       fn: x => [
-        x.ind.vwap240_10.den,
+        x.ind.vwap.x240.p10.den,
         x.ind.vixFix.x120.b,
         x.ind.macd.x480.sig2_10.histo,
         x.ind.lrc.x480.p45,
         x.ind.macd120_ADX120,
-        x.ind.vwap30_30.den,
+        x.ind.vwap.x30.p30.den,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         ...getVsPrice(x.ind.bbands.x240.p10_dev1, x.close)
       ]
@@ -171,7 +171,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.zerolagMACD.x480.sig2_16.histo,
         getUpperMinusLower(x.ind.bbands.x240.p10_dev1),
         x.ind.zerolagT3.x30.p60,
-        x.ind.atr720,
+        x.ind.atr.p720,
         x.ind.lrc.x240.p30,
         x.ind.macd.x120.sig9.histo,
         x.ind.rsi.x480.p30
@@ -180,16 +180,16 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "THREE_OPT_x4",
-      fn: x => [x.ind.vixFix.x480.a, x.ind.atr720, ...getVsPrice(x.ind.bbands.x60.p10_dev3, x.close), x.ind.atr480]
+      fn: x => [x.ind.vixFix.x480.a, x.ind.atr.p720, ...getVsPrice(x.ind.bbands.x60.p10_dev3, x.close), x.ind.atr.p480]
     },
 
     {
       name: "THREE_OPT_x8",
       fn: x => [
         x.ind.vixFix.x480.a,
-        x.ind.atr720,
+        x.ind.atr.p720,
         ...getVsPrice(x.ind.bbands.x60.p10_dev3, x.close),
-        x.ind.atr480,
+        x.ind.atr.p480,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.rsi.x480.p30,
         x.ind.emaOCC.x480.emaOCC_30
@@ -214,7 +214,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.vixFix.x240.b,
         x.ind.mfi.x480.p20,
         x.ind.zerolagMACD.x480.sig2_16.histo,
-        x.ind.vwap240_20.den,
+        x.ind.vwap.x240.p20.den,
         x.ind.zerolagMACD.x120.sig2_16.histo,
         x.ind.mfi.x60.p60
       ]

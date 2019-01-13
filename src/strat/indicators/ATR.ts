@@ -2,7 +2,7 @@ import { XmBase, ATR as _ATR, WaveManager } from "./gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 
-export type P_ATR = "atr60" | "atr120" | "atr240" | "atr360" | "atr480" | "atr720" | "atr960" | "atr1440" | "atr2880";
+export type P_ATR = "p60" | "p120" | "p240" | "p360" | "p480" | "p720" | "p960" | "p1440" | "p2880";
 
 export type IndATR = { [p in P_ATR]: number };
 

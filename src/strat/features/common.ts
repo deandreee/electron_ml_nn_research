@@ -28,3 +28,7 @@ export const getFeatureSplit = (
     })
   );
 };
+
+export const getFeatureSplitPsOnly = (name: string, ps: string[], fn: FnGetFeaturesInXm): FeatureSplit[] => {
+  return getFeatureSplit(name, [""], ps, fn);
+};

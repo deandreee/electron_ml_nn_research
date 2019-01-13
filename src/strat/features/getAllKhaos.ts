@@ -4,11 +4,11 @@ export const getAllKhaos = (): FeatureSplit[] => {
   return [
     {
       name: "atr960 / atr120",
-      fn: (x, i, corrCandles) => [x.ind.atr960 / x.ind.atr120]
+      fn: (x, i, corrCandles) => [x.ind.atr.p960 / x.ind.atr.p120]
     },
     {
       name: "atr960 - atr120",
-      fn: (x, i, corrCandles) => [x.ind.atr960 - x.ind.atr120]
+      fn: (x, i, corrCandles) => [x.ind.atr.p960 - x.ind.atr.p120]
     },
     {
       name: "close - lrc60_PSAR",
@@ -25,31 +25,31 @@ export const getAllKhaos = (): FeatureSplit[] => {
 
     {
       name: "atr960",
-      fn: (x, i, corrCandles) => [x.ind.atr960]
+      fn: (x, i, corrCandles) => [x.ind.atr.p960]
     },
     {
       name: "atr720",
-      fn: (x, i, corrCandles) => [x.ind.atr720]
+      fn: (x, i, corrCandles) => [x.ind.atr.p720]
     },
     {
       name: "atr480",
-      fn: (x, i, corrCandles) => [x.ind.atr480]
+      fn: (x, i, corrCandles) => [x.ind.atr.p480]
     },
     {
       name: "atr360",
-      fn: (x, i, corrCandles) => [x.ind.atr360]
+      fn: (x, i, corrCandles) => [x.ind.atr.p360]
     },
     {
       name: "atr240",
-      fn: (x, i, corrCandles) => [x.ind.atr240]
+      fn: (x, i, corrCandles) => [x.ind.atr.p240]
     },
     {
       name: "atr120",
-      fn: (x, i, corrCandles) => [x.ind.atr120]
+      fn: (x, i, corrCandles) => [x.ind.atr.p120]
     },
     {
       name: "atr60",
-      fn: (x, i, corrCandles) => [x.ind.atr60]
+      fn: (x, i, corrCandles) => [x.ind.atr.p60]
     },
 
     {
