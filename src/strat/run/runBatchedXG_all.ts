@@ -18,13 +18,13 @@ const fileName = `output/runBatchedXG_all/${featureName} [ train ${
 } ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
+  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAll();
+
+  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
-
-  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAll();
 
   for (let feature of featuresSplit) {
     log.start(feature.name);

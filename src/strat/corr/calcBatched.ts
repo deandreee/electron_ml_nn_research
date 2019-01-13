@@ -18,6 +18,8 @@ import { BBands } from "../indicators/BBands";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
+import { FeatureSplit } from "../features";
+import { shouldCalc } from "./utils";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -37,7 +39,7 @@ const wHist = {
   resultHistory: true
 };
 
-export const corrCalcBatched = (coin: CoinData) => {
+export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
 
   const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;
@@ -136,15 +138,15 @@ export const corrCalcBatched = (coin: CoinData) => {
     }
 
     candle.ind = {
-      rsi: rsi.update(bigCandles),
-      bbands: bbands.update(bigCandles),
-      mfi: mfi.update(bigCandles),
+      rsi: shouldCalc(featuresSplit, "rsi") ? rsi.update(bigCandles) : null,
+      bbands: shouldCalc(featuresSplit, "bbands") ? bbands.update(bigCandles) : null,
+      mfi: shouldCalc(featuresSplit, "mfi") ? mfi.update(bigCandles) : null,
 
       // disable, super slow
       // ift: ift.update(bigCandles),
       // ifts: ifts.update(bigCandles),
 
-      stochKD: stochKD.update(bigCandles),
+      stochKD: shouldCalc(featuresSplit, "stoch") ? stochKD.update(bigCandles) : null,
 
       atr60: atr60.update(candle),
       atr120: atr120.update(candle),
@@ -170,36 +172,38 @@ export const corrCalcBatched = (coin: CoinData) => {
       vwap240_20: vwap240_20.update(bigCandle240),
       vwap240_30: vwap240_30.update(bigCandle240),
 
-      emaOCC: emaOCC.update(bigCandles),
-      t3Macd: t3Macd.update(bigCandles),
-      zerolagT3: zerolagT3.update(bigCandles),
-      lrc: lrc.update(bigCandles),
+      emaOCC: shouldCalc(featuresSplit, "emaOCC") ? emaOCC.update(bigCandles) : null,
+      t3Macd: shouldCalc(featuresSplit, "t3Macd") ? t3Macd.update(bigCandles) : null,
+      zerolagT3: shouldCalc(featuresSplit, "zerolagT3") ? zerolagT3.update(bigCandles) : null,
+      lrc: shouldCalc(featuresSplit, "lrc") ? lrc.update(bigCandles) : null,
 
-      macd: macd.update(bigCandles),
-      zerolagMACD: zerolagMACD.update(bigCandles),
+      macd: shouldCalc(featuresSplit, "macd") ? macd.update(bigCandles) : null,
+      zerolagMACD: shouldCalc(featuresSplit, "zerolagMACD") ? zerolagMACD.update(bigCandles) : null,
 
-      vixFix: vixFix.update(bigCandles)
+      vixFix: shouldCalc(featuresSplit, "vixFix") ? vixFix.update(bigCandles) : null
     };
 
-    candle.ind.macd60_ADX30 = macd60_ADX30.update(
-      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-    );
-    candle.ind.macd60_ADX60 = macd60_ADX60.update(
-      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-    );
-    candle.ind.macd60_ADX120 = macd60_ADX120.update(
-      valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-    );
+    if (shouldCalc(featuresSplit, "macd_adx")) {
+      candle.ind.macd60_ADX30 = macd60_ADX30.update(
+        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+      );
+      candle.ind.macd60_ADX60 = macd60_ADX60.update(
+        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+      );
+      candle.ind.macd60_ADX120 = macd60_ADX120.update(
+        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+      );
 
-    candle.ind.macd120_ADX30 = macd120_ADX30.update(
-      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-    );
-    candle.ind.macd120_ADX60 = macd120_ADX60.update(
-      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-    );
-    candle.ind.macd120_ADX120 = macd120_ADX120.update(
-      valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-    );
+      candle.ind.macd120_ADX30 = macd120_ADX30.update(
+        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+      );
+      candle.ind.macd120_ADX60 = macd120_ADX60.update(
+        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+      );
+      candle.ind.macd120_ADX120 = macd120_ADX120.update(
+        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+      );
+    }
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 

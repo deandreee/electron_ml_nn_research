@@ -12,16 +12,17 @@ import { runConfigXG2 } from "./runConfigXG";
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_TrainJunJul();
+
+  const featuresSplit = features.getBBandsVsPrice();
+
   // const ranges = runUtils.genRangesLast3_JunJulAugSep();
-  const months = queryCorrCandlesMonthsBatched(Coins.XRP, ranges);
+  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
   const trainMonth = months[ranges[0].name];
 
-  runUtils.getIndMinMax(trainMonth);
+  // runUtils.getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
-
-  const featuresSplit = features.getBBandsVsPrice();
 
   for (let x of featuresSplit) {
     log.start(x.name);

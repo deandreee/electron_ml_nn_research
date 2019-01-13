@@ -16,7 +16,9 @@ export const runIndProb = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_JunDec();
   // const ranges = runUtils.genRanges_SepWeek();
   // const ranges = runUtils.genRangesLast3_JunJulAugSep();
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, true);
+  // TODO: add required
+  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, [] as any[], true);
+
   await calcProb(months, ranges);
 
   return {

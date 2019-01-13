@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as strat from "../strat";
+import { run } from "../strat/run";
 import { LinRegResult } from "../strat/types";
 import { AppCharts } from "./AppCharts";
 import { CorrCandles } from "../strat/corr/CorrCandles";
@@ -19,7 +19,7 @@ export class App extends React.Component {
   };
 
   async componentWillMount() {
-    const { coin, linRegs, labelsPredicted } = await strat.run();
+    const { coin, linRegs, labelsPredicted } = await run();
 
     this.setState({
       coin,

@@ -1,4 +1,5 @@
 import { Candle, PctChange } from "../types";
+import { FeatureSplit } from "../features";
 
 export const getPctChange = (candlesActual: Candle[]) => {
   const pctChange: PctChange = {
@@ -14,4 +15,14 @@ export const getPctChange = (candlesActual: Candle[]) => {
     _10d: candlesActual.map(x => x.pctChange._10d)
   };
   return pctChange;
+};
+
+export const shouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
+  const names = featuresSplit.map(x => x.name.toLowerCase());
+  for (let x of names) {
+    if (x.indexOf(name) >= 0) {
+      return true;
+    }
+  }
+  return false;
 };

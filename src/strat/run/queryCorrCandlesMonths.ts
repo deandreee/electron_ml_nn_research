@@ -8,6 +8,7 @@ import { DateRange } from "../daterange";
 import * as log from "../log";
 import { batchCandlesIn10s } from "../db/batchCandlesIn10s";
 import * as calcBatchedProb from "../corr/calcBatchedProb";
+import { FeatureSplit } from "../features";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
 
@@ -26,7 +27,12 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
   return corrCandleMonths;
 };
 
-export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange[], prob?: boolean) => {
+export const queryCorrCandlesMonthsBatched = (
+  coinName: Coins,
+  ranges: DateRange[],
+  featuresSplit: FeatureSplit[],
+  prob?: boolean
+) => {
   const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {
@@ -37,7 +43,9 @@ export const queryCorrCandlesMonthsBatched = (coinName: Coins, ranges: DateRange
 
     batchCandlesIn10s(coin);
 
-    const { corrCandles } = !prob ? calcBatched.corrCalcBatched(coin) : calcBatchedProb.corrCalcBatchedProb(coin);
+    const { corrCandles } = !prob
+      ? calcBatched.corrCalcBatched(coin, featuresSplit)
+      : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
     log.end(`query ${range.name}`);

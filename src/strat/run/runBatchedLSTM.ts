@@ -28,17 +28,17 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
     daterange.Nov
   ];
 
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges);
+  const featuresSplit = features.getCombo();
+  // const featuresSplit = features.getTest();
+  // const featuresSplit = features.getVixFix();
+  // const featuresSplit = features.getMFI();
+
+  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
 
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
-
-  const featuresSplit = features.getCombo();
-  // const featuresSplit = features.getTest();
-  // const featuresSplit = features.getVixFix();
-  // const featuresSplit = features.getMFI();
 
   for (let x of featuresSplit) {
     log.start(x.name);

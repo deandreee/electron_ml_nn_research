@@ -18,14 +18,14 @@ const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIP
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
+  const feature = features.getCombo().find(x => x.name === featureName);
+
   const ranges = runUtils.genRanges_TrainJunJul();
-  const months = queryCorrCandlesMonthsBatched(coin, ranges);
+  const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
-
-  const feature = features.getCombo().find(x => x.name === featureName);
 
   const fnFitness = async (runConfig: runConfigXG.RunConfigXG) => {
     log.start(runConfigXG.getName(runConfig), true);

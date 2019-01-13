@@ -14,6 +14,7 @@ import { BBands } from "../indicators/BBands";
 import { Keltner } from "../indicators/Keltner";
 import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
+import { FeatureSplit } from "../features";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 const { BatchWaveManager } = require(`${GEKKO}/utils`);
@@ -24,7 +25,7 @@ export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / CANDLE_SIZE;
 export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
 
-export const corrCalcBatchedProb = (coin: CoinData) => {
+export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
 
   const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;

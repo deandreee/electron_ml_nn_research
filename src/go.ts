@@ -1,5 +1,5 @@
 // @ts-ignore
-import { run } from "./strat/index";
+import { run } from "./strat/run";
 // import { config } from "./strat/config";
 // @ts-ignore
 // import { marketMonth } from "./strat/marketMonth";

@@ -15,16 +15,16 @@ const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfi
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
+  const feature = features.getCombo().find(x => x.name === featureName);
+
   const ranges = runUtils.genRanges_TrainJunJul();
-  const months = queryCorrCandlesMonthsBatched(coin, ranges);
+  const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 
-  runUtils.getIndMinMax(trainMonth);
+  // runUtils.getIndMinMax(trainMonth);
 
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
-
-  const feature = features.getCombo().find(x => x.name === featureName);
 
   const runConfigs = runConfigXG.getConfigGrid();
   console.log(`RUN CONFIGS ::: ${runConfigs.length}`);
