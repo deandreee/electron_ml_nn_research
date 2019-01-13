@@ -6,6 +6,7 @@ import * as percentile from "stats-percentile";
 import { round2 } from "../utils";
 import { TrippleBarrierLabel } from "../run/runConfigXG";
 import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
+import { Candle } from "../types";
 
 export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
 
@@ -118,4 +119,43 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[], thres
 
 export const getLookAhead = (lbl: TrippleBarrierLabel) => {
   return getTrippleBarrierConfig(lbl).lookAhead;
+};
+
+// retuns hit or miss
+export type FnProb = (curr: Candle, prev: Candle, indCurr: any, indPrev: any) => boolean;
+
+export type FnGetInd = (candle: Candle, t: string, p: string) => any;
+
+export const loop = async (
+  corrCandles: CorrCandles,
+  timeframes: string[],
+  ps: string[],
+  getInd: FnGetInd,
+  fn: FnProb
+) => {
+  const probs = createProbsObj(timeframes, ps);
+
+  logTrippleBarrierStats(corrCandles);
+
+  for (let t of timeframes) {
+    for (let p of ps) {
+      for (let lbl of TPB_LABELS) {
+        for (let i = 1; i < corrCandles.candlesActual.length; i++) {
+          const curr = corrCandles.candlesActual[i];
+          const prev = corrCandles.candlesActual[i - 1];
+
+          const indCurr = getInd(curr, t, p);
+          const indPrev = getInd(prev, t, p);
+
+          //  buy
+          if (fn(curr, prev, indCurr, indPrev)) {
+            probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
+            i += getLookAhead(lbl); // should be more fair
+          }
+        }
+      }
+    }
+  }
+
+  logProbs(probs, timeframes, ps, 0);
 };
