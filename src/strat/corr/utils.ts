@@ -20,7 +20,7 @@ export const getPctChange = (candlesActual: Candle[]) => {
 export const shouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
   const names = featuresSplit.map(x => x.name.toLowerCase());
   for (let x of names) {
-    if (x.indexOf(name) >= 0) {
+    if (x.indexOf(name.toLowerCase()) >= 0) {
       return true;
     }
   }

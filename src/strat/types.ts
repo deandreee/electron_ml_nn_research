@@ -19,6 +19,7 @@ import { IndChandelierExit } from "./indicators/ChandelierExit";
 import { IndKST } from "./indicators/KST";
 import { IndATR } from "./indicators/ATR";
 import { IndVWAP } from "./indicators/VWAP";
+import { IndWilliamsR } from "./indicators/WilliamsR";
 
 export type Cb = (err: Error) => void;
 
@@ -181,6 +182,7 @@ export interface Indicators {
   kst?: IndTimeframes<IndKST>;
   atr?: IndATR;
   vwap?: IndTimeframes<IndVWAP>;
+  williamsR?: IndTimeframes<IndWilliamsR>;
 
   emaOCC?: IndTimeframes<IndEMAxOCC>;
   t3Macd?: IndTimeframes<IndT3MACD>;

@@ -17,7 +17,8 @@ const {
   LRC,
   KeltnerChannels,
   ChandelierExit,
-  KST
+  KST,
+  WilliamsR
 } = require(`${GEKKO}/indicators`);
 
 const {
@@ -73,5 +74,6 @@ export {
   LRC,
   KeltnerChannels,
   ChandelierExit,
-  KST
+  KST,
+  WilliamsR
 };

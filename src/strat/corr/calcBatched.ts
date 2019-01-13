@@ -2,6 +2,8 @@ import { PctChange, CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig } from "./trippleBarrier";
+// import { IFT } from "../indicators/IFT";
+// import { IFTS } from "../indicators/IFTS";
 import { EMAxOCC } from "../indicators/EMAxOCC";
 import { T3MACD } from "../indicators/T3MACD";
 import { ZerolagT3 } from "../indicators/ZerolagT3";
@@ -16,8 +18,7 @@ import { BBands } from "../indicators/BBands";
 import { KST } from "../indicators/KST";
 import { ATR } from "../indicators/ATR";
 import { VWAP } from "../indicators/VWAP";
-// import { IFT } from "../indicators/IFT";
-// import { IFTS } from "../indicators/IFTS";
+import { WilliamsR } from "../indicators/WilliamsR";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -89,6 +90,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const atr = new ATR(waveManagers.x10);
 
   const vwap = new IndTimeframeGroup(VWAP, waveManagers);
+  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -144,7 +146,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
 
       vixFix: shouldCalc(featuresSplit, "vixFix") ? vixFix.update(bigCandles) : null,
 
-      kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null
+      kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null,
+      williamsR: shouldCalc(featuresSplit, "williamsr") ? williamsR.update(bigCandles) : null
     };
 
     if (shouldCalc(featuresSplit, "macd_adx")) {

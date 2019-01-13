@@ -92,6 +92,27 @@ export const rescaleRow = (labels: number[]) => {
   return res;
 };
 
+export const getNaNCount = (row: number[]) => {
+  let count = 0;
+  for (let x of row) {
+    if (isNaN(x)) {
+      count++;
+    }
+
+    if (x === undefined) {
+      count++;
+    }
+
+    if (x === null) {
+      count++;
+    }
+  }
+
+  if (count > 0) {
+    console.log("NaN", count);
+  }
+};
+
 export const sanityCheckRow = (row: number[]) => {
   for (let x of row) {
     sanityCheck(x);
