@@ -126,11 +126,16 @@ export type FnProb = (curr: Candle, prev: Candle, indCurr: any, indPrev: any) =>
 
 export type FnGetInd = (candle: Candle, t: string, p: string) => any;
 
+// type LoopOpts = {
+//   withMax: number;
+// };
+
 export const loop = async (
   corrCandles: CorrCandles,
   timeframes: string[],
   ps: string[],
   getInd: FnGetInd,
+  // opts: LoopOpts,
   fn: FnProb
 ) => {
   const probs = createProbsObj(timeframes, ps);

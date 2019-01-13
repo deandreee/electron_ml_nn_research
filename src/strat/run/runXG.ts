@@ -24,7 +24,7 @@ export const runXG = async (): Promise<RunResult> => {
 
   const linRegs: LinRegResult[] = [];
 
-  const featuresSplit = features.getBBands();
+  const featuresSplit = features.getATR();
   for (let x of featuresSplit) {
     log.start(x.name);
     // const fileName = "output/temp.csv";

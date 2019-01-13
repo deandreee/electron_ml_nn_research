@@ -14,6 +14,7 @@ import { MFI } from "../indicators/MFI";
 import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
 import { KST } from "../indicators/KST";
+import { ATR } from "../indicators/ATR";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
 
@@ -26,7 +27,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { ADX, ATR } = require(`${GEKKO}/indicators`);
+const { ADX } = require(`${GEKKO}/indicators`);
 
 const { VWAP } = require(`${GEKKO}/indicators/lizard`);
 
@@ -73,14 +74,6 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
   const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
 
-  const atr60 = new ATR(60);
-  const atr120 = new ATR(120);
-  const atr240 = new ATR(240);
-  const atr360 = new ATR(360);
-  const atr480 = new ATR(480);
-  const atr720 = new ATR(720);
-  const atr960 = new ATR(960);
-
   const vwap30_10 = new XmBase(waveManager30, () => new VWAP(10));
   const vwap30_20 = new XmBase(waveManager30, () => new VWAP(20));
   const vwap30_30 = new XmBase(waveManager30, () => new VWAP(30));
@@ -109,6 +102,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
 
   const kst = new IndTimeframeGroup(KST, waveManagers);
+
+  const atr = new ATR(waveManagers.x10);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -151,13 +146,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
 
       stochKD: shouldCalc(featuresSplit, "stoch") ? stochKD.update(bigCandles) : null,
 
-      atr60: atr60.update(candle),
-      atr120: atr120.update(candle),
-      atr240: atr240.update(candle),
-      atr360: atr360.update(candle),
-      atr480: atr480.update(candle),
-      atr720: atr720.update(candle),
-      atr960: atr960.update(candle),
+      atr: atr.update(bigCandles.x10),
 
       vwap30_10: vwap30_10.update(bigCandle30),
       vwap30_20: vwap30_20.update(bigCandle30),

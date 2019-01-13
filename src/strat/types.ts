@@ -17,6 +17,7 @@ import { IndIFTS } from "./indicators/IFTS";
 import { IndKeltner } from "./indicators/Keltner";
 import { IndChandelierExit } from "./indicators/ChandelierExit";
 import { IndKST } from "./indicators/KST";
+import { IndATR } from "./indicators/ATR";
 
 export type Cb = (err: Error) => void;
 
@@ -183,6 +184,7 @@ export interface Indicators {
   keltner?: IndTimeframes<IndKeltner>;
   chandelierExit?: IndTimeframes<IndChandelierExit>;
   kst?: IndTimeframes<IndKST>;
+  atr?: IndATR;
 
   vwap30_10?: VWAP;
   vwap30_20?: VWAP;
