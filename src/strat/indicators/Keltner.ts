@@ -37,6 +37,8 @@ export class Keltner {
   p30_15_2: any;
   p30_15_3: any;
 
+  //https://github.com/anandanand84/technicalindicators/blob/83c81c41b925947b5d693c67b6cc07385e48e492/src/volatility/KeltnerChannels.ts
+
   constructor(waveManager: WaveManager) {
     this.p10_10_1 = new XmBase(waveManager, () => new _KeltnerChannels({ maPeriod: 10, atrPeriod: 10, multiplier: 1 }));
     this.p10_10_2 = new XmBase(waveManager, () => new _KeltnerChannels({ maPeriod: 10, atrPeriod: 10, multiplier: 2 }));

@@ -15,6 +15,7 @@ import { IndRSI } from "./indicators/RSI";
 import { IndIFT } from "./indicators/IFT";
 import { IndIFTS } from "./indicators/IFTS";
 import { IndKeltner } from "./indicators/Keltner";
+import { IndChandelierExit } from "./indicators/ChandelierExit";
 
 export type Cb = (err: Error) => void;
 
@@ -179,6 +180,7 @@ export interface Indicators {
   stochKD?: IndTimeframes<IndStochKD>;
   bbands?: IndTimeframes<IndBBands>;
   keltner?: IndTimeframes<IndKeltner>;
+  chandelierExit?: IndTimeframes<IndChandelierExit>;
 
   vwap30_10?: VWAP;
   vwap30_20?: VWAP;

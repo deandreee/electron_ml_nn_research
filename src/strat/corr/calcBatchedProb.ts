@@ -10,6 +10,7 @@ import { EMAxOCC } from "../indicators/EMAxOCC";
 import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
 import { Keltner } from "../indicators/Keltner";
+import { ChandelierExit } from "../indicators/ChandelierExit";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 const { BatchWaveManager } = require(`${GEKKO}/utils`);
@@ -43,6 +44,7 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
   const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
   const bbands = new IndTimeframeGroup(BBands, waveManagers);
   const keltner = new IndTimeframeGroup(Keltner, waveManagers);
+  const chandelierExit = new IndTimeframeGroup(ChandelierExit, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -78,7 +80,8 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
       emaOCC: emaOCC.update(bigCandles),
       vixFix: vixFix.update(bigCandles),
       bbands: bbands.update(bigCandles),
-      keltner: keltner.update(bigCandles)
+      keltner: keltner.update(bigCandles),
+      chandelierExit: chandelierExit.update(bigCandles)
     };
 
     const ptFive = getTrippleBarrierConfig("PT_FIVE");
