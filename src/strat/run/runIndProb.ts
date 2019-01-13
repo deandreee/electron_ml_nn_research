@@ -3,11 +3,11 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as runUtils from "./runUtils";
 
 // import * as calcCrossoverProb from "../corr/calcCrossoverProb";
-// import { probsBBands } from "../evtProb/evtBBands";
+import { calcProb } from "../evtProb/evtBBands";
 // import { probsOCC } from "../evtProb/evtOCC";
 // import { calcProb } from "../evtProb/evtKeltner";
 // import { calcProb } from "../evtProb/evtChandelier";
-import { calcProb } from "../evtProb/evtKST";
+// import { calcProb } from "../evtProb/evtKST";
 
 export const runIndProb = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];

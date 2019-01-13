@@ -88,9 +88,9 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
     candle.ind = {
       // emaOCC: emaOCC.update(bigCandles),
       // vixFix: vixFix.update(bigCandles),
-      // bbands: bbands.update(bigCandles),
+      bbands: bbands.update(bigCandles),
       // keltner: keltner.update(bigCandles),
-      chandelierExit: chandelierExit.update(bigCandles), // too slow, skip for now
+      // chandelierExit: chandelierExit.update(bigCandles), // too slow, skip for now
       kst: kst.update(bigCandles)
     };
 

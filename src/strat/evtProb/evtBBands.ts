@@ -1,37 +1,18 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
-import { getInd, timeframes, ps } from "../features/getBBands";
-import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
+import { getInd, ps } from "../features/getBBands";
+import { timeframes } from "../features/common";
+import { loop } from "./common";
+import { UpperLowerValue } from "../types";
 
-export const probsBBands = async (months: CorrCandleMonths, ranges: DateRange[]) => {
-  const probs = createProbsObj(timeframes, ps);
-
+export const calcProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
   const corrCandles = months[ranges[0].name];
-  logTrippleBarrierStats(corrCandles);
 
-  for (let t of timeframes) {
-    for (let p of ps) {
-      for (let lbl of TPB_LABELS) {
-        for (let i = 1; i < corrCandles.candlesActual.length; i++) {
-          const curr = corrCandles.candlesActual[i];
-          // const prev = corrCandles.candlesActual[i - 1];
+  loop(corrCandles, timeframes, ps, getInd, (curr, prev, indCurr, indPrev) => {
+    indCurr = indCurr as UpperLowerValue;
+    indPrev = indPrev as UpperLowerValue;
 
-          // bbands
-          const indCurr = getInd(curr, t, p);
-          // const indPrev = getInd(prev, t, p);
-
-          // hit lower
-          // if (prev.close > indPrev.lower && curr.close < indCurr.lower) {
-          if (curr.close < indCurr.lower) {
-            // because of lookAhead cooldown, don't have to compare anymore
-            probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
-
-            i += getLookAhead(lbl); // should be more fair
-          }
-        }
-      }
-    }
-  }
-
-  logProbs(probs, timeframes, ps);
+    // hit lower
+    return curr.close < indCurr.lower;
+  });
 };
