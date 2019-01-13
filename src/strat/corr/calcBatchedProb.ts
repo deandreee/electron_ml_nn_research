@@ -11,6 +11,7 @@ import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
 import { Keltner } from "../indicators/Keltner";
 import { ChandelierExit } from "../indicators/ChandelierExit";
+import { pad } from "lodash";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 const { BatchWaveManager } = require(`${GEKKO}/utils`);
@@ -99,6 +100,10 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
         FIVE: trippleBarrier(candles, i, five.stopLoss, five.takeProfit, five.lookAhead)
       }
     };
+
+    if (i % 1000 === 0) {
+      console.log(pad(` checkpoint @ ${new Date(candle.start * 1000).toDateString()} `, 85, "."));
+    }
   }
 
   const candlesActual = candles.filter((x, i) => !(i < WARMUP_IND_COUNT || i >= candles.length - EXTENDED_COUNT));
