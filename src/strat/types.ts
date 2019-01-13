@@ -346,3 +346,7 @@ export interface LinRegResult {
   corr: number;
   name: string;
 }
+
+export interface IndSettings {
+  [x: string]: object;
+}

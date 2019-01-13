@@ -107,3 +107,7 @@ export const fromCbGauss = (cb: Cb) => {
     }
   });
 };
+
+export const mapObj = (obj: object, fn: (k: string) => object) => {
+  return Object.assign({}, ...Object.keys(obj).map(k => ({ [k]: fn(k) })));
+};
