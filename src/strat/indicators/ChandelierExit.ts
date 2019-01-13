@@ -17,13 +17,13 @@ export interface IndChandelierExit {
   // p10_2: ChandelierExitValue;
   // p10_3: ChandelierExitValue;
 
-  // p15_1: ChandelierExitValue;
-  // p15_2: ChandelierExitValue;
-  // p15_3: ChandelierExitValue;
+  p15_1: ChandelierExitValue;
+  p15_2: ChandelierExitValue;
+  p15_3: ChandelierExitValue;
 
-  p20_1: ChandelierExitValue;
-  p20_2: ChandelierExitValue;
-  p20_3: ChandelierExitValue;
+  // p20_1: ChandelierExitValue;
+  // p20_2: ChandelierExitValue;
+  // p20_3: ChandelierExitValue;
 
   // p25_1: ChandelierExitValue;
   // p25_2: ChandelierExitValue;
@@ -92,23 +92,18 @@ export class ChandelierExit {
       // p5_1: this.p5_1.update(bigCandle),
       // p5_2: this.p5_2.update(bigCandle),
       // p5_3: this.p5_3.update(bigCandle),
-
       // p10_1: this.p10_1.update(bigCandle),
       // p10_2: this.p10_2.update(bigCandle),
       // p10_3: this.p10_3.update(bigCandle),
-
-      // p15_1: this.p15_1.update(bigCandle),
-      // p15_2: this.p15_2.update(bigCandle),
-      // p15_3: this.p15_3.update(bigCandle),
-
-      p20_1: this.p20_1.update(bigCandle),
-      p20_2: this.p20_2.update(bigCandle),
-      p20_3: this.p20_3.update(bigCandle)
-
+      p15_1: this.p15_1.update(bigCandle),
+      p15_2: this.p15_2.update(bigCandle),
+      p15_3: this.p15_3.update(bigCandle)
+      // p20_1: this.p20_1.update(bigCandle),
+      // p20_2: this.p20_2.update(bigCandle),
+      // p20_3: this.p20_3.update(bigCandle),
       // p25_1: this.p25_1.update(bigCandle),
       // p25_2: this.p25_2.update(bigCandle),
       // p25_3: this.p25_3.update(bigCandle),
-
       // p30_1: this.p30_1.update(bigCandle),
       // p30_2: this.p30_2.update(bigCandle),
       // p30_3: this.p30_3.update(bigCandle)

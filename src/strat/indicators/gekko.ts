@@ -16,7 +16,8 @@ const {
   EMA,
   LRC,
   KeltnerChannels,
-  ChandelierExit
+  ChandelierExit,
+  KST
 } = require(`${GEKKO}/indicators`);
 
 const {
@@ -71,5 +72,6 @@ export {
   ZerolagT3,
   LRC,
   KeltnerChannels,
-  ChandelierExit
+  ChandelierExit,
+  KST
 };

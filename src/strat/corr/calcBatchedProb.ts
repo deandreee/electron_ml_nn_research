@@ -1,3 +1,5 @@
+import { pad } from "lodash";
+
 import { CoinData } from "../types";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig } from "./trippleBarrier";
@@ -11,7 +13,7 @@ import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
 import { Keltner } from "../indicators/Keltner";
 import { ChandelierExit } from "../indicators/ChandelierExit";
-import { pad } from "lodash";
+import { KST } from "../indicators/KST";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 const { BatchWaveManager } = require(`${GEKKO}/utils`);
@@ -40,12 +42,18 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
     x240: waveManager240,
     x480: waveManager480
   };
-
+  // @ts-ignore
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
+  // @ts-ignore
   const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
+  // @ts-ignore
   const bbands = new IndTimeframeGroup(BBands, waveManagers);
+  // @ts-ignore
   const keltner = new IndTimeframeGroup(Keltner, waveManagers);
+  // @ts-ignore
   const chandelierExit = new IndTimeframeGroup(ChandelierExit, waveManagers);
+  // @ts-ignore
+  const kst = new IndTimeframeGroup(KST, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -78,11 +86,12 @@ export const corrCalcBatchedProb = (coin: CoinData) => {
     }
 
     candle.ind = {
-      emaOCC: emaOCC.update(bigCandles),
-      vixFix: vixFix.update(bigCandles),
-      bbands: bbands.update(bigCandles),
-      keltner: keltner.update(bigCandles),
-      chandelierExit: chandelierExit.update(bigCandles)
+      // emaOCC: emaOCC.update(bigCandles),
+      // vixFix: vixFix.update(bigCandles),
+      // bbands: bbands.update(bigCandles),
+      // keltner: keltner.update(bigCandles),
+      chandelierExit: chandelierExit.update(bigCandles), // too slow, skip for now
+      kst: kst.update(bigCandles)
     };
 
     const ptFive = getTrippleBarrierConfig("PT_FIVE");
