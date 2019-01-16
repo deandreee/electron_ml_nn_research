@@ -19,6 +19,7 @@ import { KST } from "../indicators/KST";
 import { ATR } from "../indicators/ATR";
 import { VWAP } from "../indicators/VWAP";
 import { WilliamsR } from "../indicators/WilliamsR";
+import { PSAR } from "../indicators/PSAR";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -91,6 +92,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
 
   const vwap = new IndTimeframeGroup(VWAP, waveManagers);
   const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers);
+  const psar = new IndTimeframeGroup(PSAR, waveManagers);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -147,7 +149,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
       vixFix: shouldCalc(featuresSplit, "vixFix") ? vixFix.update(bigCandles) : null,
 
       kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null,
-      williamsR: shouldCalc(featuresSplit, "williamsr") ? williamsR.update(bigCandles) : null
+      williamsR: shouldCalc(featuresSplit, "williamsr") ? williamsR.update(bigCandles) : null,
+      psar: shouldCalc(featuresSplit, "psar") ? psar.update(bigCandles) : null
     };
 
     if (shouldCalc(featuresSplit, "macd_adx")) {

@@ -20,6 +20,7 @@ import { IndKST } from "./indicators/KST";
 import { IndATR } from "./indicators/ATR";
 import { IndVWAP } from "./indicators/VWAP";
 import { IndWilliamsR } from "./indicators/WilliamsR";
+import { IndPSAR } from "./indicators/PSAR";
 
 export type Cb = (err: Error) => void;
 
@@ -130,7 +131,6 @@ export interface VWAPValue {
 export interface Indicators {
   rsi?: IndTimeframes<IndRSI>;
 
-  psar?: number;
   xmPsar?: number;
   hlTrueRange?: IndHlTrueRange;
 
@@ -193,6 +193,7 @@ export interface Indicators {
   zerolagMACD?: IndTimeframes<IndZerolagMACD>;
 
   vixFix?: IndTimeframes<IndVixFix>;
+  psar?: IndTimeframes<IndPSAR>;
 }
 
 export type CsvCell = string | number;

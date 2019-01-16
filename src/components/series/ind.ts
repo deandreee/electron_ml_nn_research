@@ -47,7 +47,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     series.push({
       ...base,
       color: "lightblue",
-      data: data(coin, x => x.ind.psar),
+      data: data(coin, x => x.ind.psar.x120.p0_0001.result),
       name: "PSAR"
     });
   }

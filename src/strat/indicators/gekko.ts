@@ -18,7 +18,9 @@ const {
   KeltnerChannels,
   ChandelierExit,
   KST,
-  WilliamsR
+  WilliamsR,
+  PSAR_TI,
+  PSARProps
 } = require(`${GEKKO}/indicators`);
 
 const {
@@ -75,5 +77,7 @@ export {
   KeltnerChannels,
   ChandelierExit,
   KST,
-  WilliamsR
+  WilliamsR,
+  PSAR_TI,
+  PSARProps
 };

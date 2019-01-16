@@ -20,6 +20,7 @@ import { getLRC } from "./getLRC";
 import { getZerolagMACD } from "./getZerolagMACD";
 import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
+import { getPSAR } from "./getPSAR";
 
 const getAll = () => {
   return [
@@ -69,5 +70,6 @@ export {
   getZerolagMACD,
   getKST,
   getKSTandPrice,
-  getWilliamsR
+  getWilliamsR,
+  getPSAR
 };
