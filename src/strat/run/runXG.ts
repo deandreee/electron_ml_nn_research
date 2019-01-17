@@ -5,12 +5,12 @@ import * as daterange from "../daterange";
 import * as csvLog from "../csvLog";
 import * as features from "../features";
 import { round2 } from "../utils";
-import { LABEL_NAME } from "../ml/mlGetLabels";
 import * as log from "../log";
 import { padEnd } from "lodash";
 
 // @ts-ignore
 import * as mlXG from "../mlXG";
+import { BARRIER_TYPE } from "./runConfigXG";
 
 export const runXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
@@ -40,7 +40,7 @@ export const runXG = async (): Promise<RunResult> => {
         new Date().toISOString(),
         corrCandles.coin.name,
         range.name,
-        LABEL_NAME,
+        BARRIER_TYPE,
         x.name,
         round2(mse),
         round2(r2),

@@ -6,7 +6,7 @@ import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 // import { round2 } from "./utils";
 import { mlGetLabels } from "./mlGetLabels";
-import { RunConfigXG } from "../run/runConfigXG";
+import { RunConfigXG, UNIQUE_LABELS } from "../run/runConfigXG";
 
 export const train = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
@@ -17,9 +17,6 @@ export const train = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, 
   }
 };
 
-// const uniqueLabels = [0, 1, 2];
-const uniqueLabels = [0, 1];
-
 export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
@@ -28,8 +25,8 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
 
   // middlesample
-  const labelCount = mlUtils.countLabels(uniqueLabels, labels);
-  const avgLabelCount = Math.round(mlUtils.sumLabels(uniqueLabels, labels) / uniqueLabels.length);
+  const labelCount = mlUtils.countLabels(UNIQUE_LABELS, labels);
+  const avgLabelCount = Math.round(mlUtils.sumLabels(UNIQUE_LABELS, labels) / UNIQUE_LABELS.length);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
   testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
 
@@ -50,7 +47,7 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
     iterations: runConfigXG.iterations || 10,
 
     verbosity: 1, // 0 (silent), 1 (warning), 2 (info), 3 (debug).
-    num_class: uniqueLabels.length
+    num_class: UNIQUE_LABELS.length
   });
 
   booster.train(features, labels);
@@ -68,7 +65,7 @@ export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: Fn
 
   const predicted = booster.predict(features);
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  const results = mlEvaluate.evaluateResults(UNIQUE_LABELS, labels, predicted);
 
   return { booster, features, labels, predicted, results };
 };
