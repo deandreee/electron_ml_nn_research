@@ -11,7 +11,8 @@ import { logConsole, logFile } from "./logClassResults";
 import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
-const ranges = runUtils.genRanges_TrainJunJul();
+// const ranges = runUtils.genRanges_TrainJunJul();
+const ranges = runUtils.genRangesLast3_JunJulAugSep();
 // const ranges = runUtils.genRanges_FastMiniTest();
 const featuresSplit = features.getVixFix();
 

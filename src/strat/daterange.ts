@@ -30,7 +30,7 @@ export const JunJul: DateRange = {
 };
 
 export const JunJulAugSep: DateRange = {
-  name: "JunJulAugSep",
+  name: "JJAS",
   from: new Date("2018-06-01T00:00:00Z"),
   to: new Date("2018-10-01T00:00:00Z")
 };

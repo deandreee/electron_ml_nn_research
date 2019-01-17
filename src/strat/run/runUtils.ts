@@ -14,6 +14,7 @@ interface PredictionMonth {
 
 export const getPredictionsTemplate = () => {
   const predictions: Predictions = {
+    JJAS: {},
     JunJulAugSep: {},
     AugSep: {},
     JunJul: {},
@@ -109,7 +110,7 @@ export const genRangesLast2_AugSepMini = () => {
 };
 
 export const genRangesLast3_JunJulAugSep = () => {
-  return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov];
+  return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov, daterange.Dec];
 };
 
 export const genRanges_TrainJunJul = () => {
