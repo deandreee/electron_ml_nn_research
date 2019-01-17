@@ -17,7 +17,8 @@ export const train = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, 
   }
 };
 
-const uniqueLabels = [0, 1, 2];
+// const uniqueLabels = [0, 1, 2];
+const uniqueLabels = [0, 1];
 
 export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));

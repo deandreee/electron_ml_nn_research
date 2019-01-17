@@ -1,7 +1,7 @@
 import { PctChange, CoinData } from "../types";
 import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
-import { trippleBarrier } from "./trippleBarrier";
+import { trippleBarrier } from "./barrier";
 // @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 

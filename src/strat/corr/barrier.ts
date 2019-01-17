@@ -46,3 +46,16 @@ export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
 
   throw new Error(`getTrippleBarrierConfig: Label ${label} not found`);
 };
+
+export const doubleBarrier = (candles: Candle[], idxCurr: number, stopLoss: number, takeProfit: number) => {
+  for (let i = idxCurr + 1; i < candles.length; i++) {
+    const pctChange = getPctChange(candles[i].close, candles[idxCurr].close);
+    if (pctChange > takeProfit) {
+      return 1;
+    } else if (pctChange < stopLoss) {
+      return 0;
+    }
+  }
+
+  throw new Error(`No label ${idxCurr}`);
+};

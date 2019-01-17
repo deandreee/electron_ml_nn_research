@@ -1,7 +1,7 @@
 import { PctChange, CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
-import { trippleBarrier, getTrippleBarrierConfig } from "./trippleBarrier";
+import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
 import { EMAxOCC } from "../indicators/EMAxOCC";
@@ -25,6 +25,7 @@ import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
 import { shouldCalc } from "./utils";
+import { doubleBarrier } from "./barrier";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -180,6 +181,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
     const tbCfg = getTrippleBarrierConfig();
 
     candle.pctChange = {
+      doubleBarrier: doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
       trippleBarrier: trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
     };
   }

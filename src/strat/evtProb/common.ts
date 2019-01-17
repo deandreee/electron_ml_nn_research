@@ -5,7 +5,7 @@ import { GetIndVal } from "../features/common";
 import * as percentile from "stats-percentile";
 import { round2 } from "../utils";
 import { TrippleBarrierLabel } from "../run/runConfigXG";
-import { getTrippleBarrierConfig } from "../corr/trippleBarrier";
+import { getTrippleBarrierConfig } from "../corr/barrier";
 import { Candle } from "../types";
 
 export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];

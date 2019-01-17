@@ -2,7 +2,7 @@ import { pad } from "lodash";
 
 import { CoinData } from "../types";
 import { CorrCandles } from "./CorrCandles";
-import { trippleBarrier, getTrippleBarrierConfig } from "./trippleBarrier";
+import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";

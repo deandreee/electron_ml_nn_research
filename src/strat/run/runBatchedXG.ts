@@ -12,14 +12,14 @@ import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
 const ranges = runUtils.genRanges_TrainJunJul();
-const featuresSplit = features.getPSAR();
+// const ranges = runUtils.genRanges_FastMiniTest();
+const featuresSplit = features.getVixFix();
 
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
   ranges[0].name
 } ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  // const ranges = runUtils.genRangesLast3_JunJulAugSep();
   const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
   const trainMonth = months[ranges[0].name];
 
