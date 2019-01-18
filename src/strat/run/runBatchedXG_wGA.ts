@@ -8,18 +8,18 @@ import * as runUtils from "./runUtils";
 import * as runConfigXG from "./runConfigXG";
 
 import { logConsole, logFile } from "./logClassResults";
-import * as log from "../log";
+// import * as log from "../log";
 
 import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
+import { runConfigXG2 } from "./runConfigXG";
 
-const featureName = "combo_single_each";
+const featureName = "x120.vixFix.a";
+const feature = features.getVixFix().find(x => x.name === featureName);
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const feature = features.getCombo().find(x => x.name === featureName);
-
   const ranges = runUtils.genRanges_TrainJunJul();
   const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
@@ -28,11 +28,13 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const predictions = runUtils.getPredictionsTemplate();
 
   const fnFitness = async (runConfig: runConfigXG.RunConfigXG) => {
-    log.start(runConfigXG.getName(runConfig), true);
+    // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
 
     const fScores = [];
+    const resultsForAvg = [];
+
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
@@ -41,9 +43,10 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
       if (!range.isTrain) {
         fScores.push(results.fScore);
+        resultsForAvg.push(results);
       }
 
-      logConsole(range.name, results);
+      // logConsole(range.name, results); // let's skip for now, too much noise
       await logFile(
         fileName,
         runConfig,
@@ -55,9 +58,21 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       );
     }
 
-    log.end(runConfigXG.getName(runConfig), true);
+    // log.end(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
     booster.free();
+
+    const avgResults = runUtils.calcAvgResults(resultsForAvg);
+    logConsole("AVG", avgResults);
+    await logFile(
+      fileName,
+      runConfigXG2,
+      Coins.BTC,
+      "AVG",
+      runConfigXG.TRIPPLE_BARRIER_LABEL,
+      feature.name,
+      avgResults
+    );
 
     return sum(fScores) / fScores.length;
   };
