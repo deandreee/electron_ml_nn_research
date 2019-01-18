@@ -9,6 +9,10 @@ export interface FeatureSplit {
 }
 
 export const getCoreName = (featuresSplit: FeatureSplit[]) => {
+  if (featuresSplit[0].name.startsWith("[c]")) {
+    return "[c]";
+  }
+
   const parts = featuresSplit[0].name.split(".");
 
   if (parts.length !== 3) {

@@ -3,7 +3,7 @@ import { getUpperMinusLower, getVsPrice } from "./getBBands";
 
 export const getCombo = (): FeatureSplit[] => {
   return [
-    { name: "rsi_combo", fn: x => [x.ind.rsi.x30.p10, x.ind.rsi.x60.p10, x.ind.rsi.x120.p10, x.ind.rsi.x240.p10] },
+    { name: "[c]rsi_combo", fn: x => [x.ind.rsi.x30.p10, x.ind.rsi.x60.p10, x.ind.rsi.x120.p10, x.ind.rsi.x240.p10] },
     { name: "rsi_combo_2", fn: x => [x.ind.rsi.x30.p30, x.ind.rsi.x60.p10, x.ind.rsi.x480.p10] },
     { name: "rsi_combo_2_mfi", fn: x => [x.ind.rsi.x30.p30, x.ind.rsi.x60.p10, x.ind.rsi.x480.p10, x.ind.mfi.x60.p15] },
     {
@@ -137,7 +137,7 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "ONE_OPT_x4",
-      fn: x => [x.ind.vwap.x24.p10.den, x.ind.vixFix.x120.b, x.ind.macd.x480.sig2_10.histo, x.ind.lrc.x480.p45]
+      fn: x => [x.ind.vwap.x240.p10.den, x.ind.vixFix.x120.b, x.ind.macd.x480.sig2_10.histo, x.ind.lrc.x480.p45]
     },
 
     {

@@ -18,6 +18,27 @@ export const getPctChange = (candlesActual: Candle[]) => {
 };
 
 export const shouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
+  if (featuresSplit[0].name.startsWith("[c]")) {
+    const combos = [
+      "rsi",
+      "mfi",
+      "stoch",
+      "macd",
+      "bbands",
+      "bbands",
+      "atr",
+      "wvap",
+      "zerolagMACD",
+      "zerolagT3",
+      "emaOCC",
+      "lrc",
+      "macd_adx",
+      "vixFix",
+      "vwap"
+    ];
+    return combos.indexOf(name) >= 0;
+  }
+
   const names = featuresSplit.map(x => x.name.toLowerCase());
   for (let x of names) {
     if (x.indexOf(name.toLowerCase()) >= 0) {
