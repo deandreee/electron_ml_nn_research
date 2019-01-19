@@ -83,7 +83,7 @@ const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature)
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   // testData = mlUtils.oversample(testData, labelCount);
   // testData = mlUtils.undersample(testData, labelCount, 200);
-  testData = mlUtils.middlesample(testData, labelCount, 500);
+  testData = mlUtils.resample(testData, labelCount, 500);
 
   const featuresMiddlesampled = testData.map(x => x.features);
   const labelsMiddlesampled = testData.map(x => x.label);

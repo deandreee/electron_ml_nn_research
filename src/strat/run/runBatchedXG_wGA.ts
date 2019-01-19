@@ -1,8 +1,8 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
-import * as mlXGClass from "../ml/mlXGClass";
-// import * as mlXGClass from "../ml/mlXGClassProb";
+// import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import * as runConfigXG from "./runConfigXG";
@@ -14,13 +14,23 @@ import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
 import { runConfigXG2 } from "./runConfigXG";
 
+// const featureName = "x120.macd.sig9";
+// const feature = features.getMACD().find(x => x.name === featureName);
+
+// const featureName = "[csi]combo_single_each";
+// const feature = features.getCombo().find(x => x.name === featureName);
+
 const featureName = "x120.vixFix.a";
 const feature = features.getVixFix().find(x => x.name === featureName);
+
+// const featureName = "vixFixCombo";
+// const feature = features.getCombo().find(x => x.name === featureName);
+
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_TrainJunJul();
+  const ranges = runUtils.genRangesLast3_JunJulAugSep();
   const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

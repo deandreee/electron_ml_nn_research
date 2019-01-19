@@ -19,6 +19,7 @@ export const logLabelsInline = (labelCount: NumberMap, avgLabelCount: number) =>
   );
 };
 
+// this seems a bit useless
 export const sumLabels = (uniqueLabels: number[], labels: number[]) => {
   let sum = 0;
   for (let lbl of uniqueLabels) {
@@ -169,7 +170,30 @@ interface TestData {
   label: number;
 }
 
-export const middlesample = (testData: TestData[], labelCount: NumberMap, max: number) => {
+export const getMaxLabel = (labelCount: NumberMap) => {
+  const counts = Object.keys(labelCount).map(k => labelCount[k as any]);
+  return Math.max(...counts);
+};
+
+export const upsample = (testData: TestData[], uniqueLabels: number[]) => {
+  const labels = testData.map(x => x.label);
+  const labelCount = countLabels(uniqueLabels, labels);
+  const max = getMaxLabel(labelCount);
+  // mlUtils.logLabelsInline(labelCount, avgLabelCount);
+  testData = resample(testData, labelCount, max);
+  return testData;
+};
+
+export const middlesample = (testData: TestData[], uniqueLabels: number[]) => {
+  const labels = testData.map(x => x.label);
+  const labelCount = countLabels(uniqueLabels, labels);
+  const avgLabelCount = Math.round(sumLabels(uniqueLabels, labels) / uniqueLabels.length);
+  // mlUtils.logLabelsInline(labelCount, avgLabelCount);
+  testData = resample(testData, labelCount, avgLabelCount);
+  return testData;
+};
+
+export const resample = (testData: TestData[], labelCount: NumberMap, newCount: number) => {
   let res: TestData[] = [];
 
   for (let label in labelCount) {
@@ -177,11 +201,11 @@ export const middlesample = (testData: TestData[], labelCount: NumberMap, max: n
       throw new Error("Can't middlesampele label count 0 for label: " + label);
     }
 
-    if (labelCount[label] >= max) {
-      const reSamples = take(testData, Number(label), max);
+    if (labelCount[label] >= newCount) {
+      const reSamples = take(testData, Number(label), newCount);
       res = res.concat(reSamples);
     } else {
-      const { existing, reSamples } = duplicateClass(testData, Number(label), max - labelCount[label]);
+      const { existing, reSamples } = duplicateClass(testData, Number(label), newCount - labelCount[label]);
       res = res.concat(existing);
       res = res.concat(reSamples);
     }

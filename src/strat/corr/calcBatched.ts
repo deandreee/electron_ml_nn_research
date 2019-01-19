@@ -26,6 +26,7 @@ import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
 import { shouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
+import { BARRIER_TYPE } from "../run/runConfigXG";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -181,8 +182,10 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
     const tbCfg = getTrippleBarrierConfig();
 
     candle.pctChange = {
-      doubleBarrier: doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
-      trippleBarrier: trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
+      doubleBarrier: BARRIER_TYPE === "doubleBarrier" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
+      trippleBarrier:
+        BARRIER_TYPE === "trippleBarrier" &&
+        trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
     };
   }
 

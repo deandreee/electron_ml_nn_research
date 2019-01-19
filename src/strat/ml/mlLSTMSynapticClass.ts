@@ -22,13 +22,7 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
   let labels = mlGetLabels(corrCandles);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  const labelCount = mlUtils.countLabels(uniqueLabels, labels);
-  // mlUtils.logLabels(uniqueLabels, labels);
-  // testData = mlUtils.middlesample(testData, labelCount, 500);
-  const avgLabelCount = Math.round(mlUtils.sumLabels(uniqueLabels, labels) / uniqueLabels.length);
-  mlUtils.logLabelsInline(labelCount, avgLabelCount);
-
-  testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
+  testData = mlUtils.middlesample(testData, uniqueLabels);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);

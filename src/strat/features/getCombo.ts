@@ -49,7 +49,7 @@ export const getCombo = (): FeatureSplit[] => {
     },
 
     {
-      name: "combo_single_each",
+      name: "[csi]combo_single_each",
       fn: x => [
         x.ind.rsi.x240.p20,
         // x.ind.rsi240x30,
@@ -218,6 +218,11 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.zerolagMACD.x120.sig2_16.histo,
         x.ind.mfi.x60.p60
       ]
+    },
+
+    {
+      name: "vixFixCombo",
+      fn: x => [x.ind.vixFix.x30.a, x.ind.vixFix.x60.a, x.ind.vixFix.x120.a]
     }
   ];
 };

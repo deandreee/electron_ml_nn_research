@@ -3,8 +3,8 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
-import * as mlXGClass from "../ml/mlXGClass";
-// import * as mlXGClass from "../ml/mlXGClassProb";
+// import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile } from "./logClassResults";
@@ -12,9 +12,9 @@ import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
-// const ranges = runUtils.genRangesLast3_JunJulAugSep();
-const ranges = runUtils.genRanges_FastMiniTest();
-const featuresSplit = features.getCombo();
+const ranges = runUtils.genRangesLast3_JunJulAugSep();
+// const ranges = runUtils.genRanges_FastMiniTest();
+const featuresSplit = features.getVixFix();
 
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
   ranges[0].name

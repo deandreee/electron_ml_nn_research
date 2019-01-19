@@ -23,15 +23,7 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
   let labels = mlGetLabels(corrCandles);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-
-  // middlesample
-  const labelCount = mlUtils.countLabels(UNIQUE_LABELS, labels);
-  const avgLabelCount = Math.round(mlUtils.sumLabels(UNIQUE_LABELS, labels) / UNIQUE_LABELS.length);
-  // mlUtils.logLabelsInline(labelCount, avgLabelCount);
-  testData = mlUtils.middlesample(testData, labelCount, avgLabelCount);
-
-  features = testData.map(x => x.features);
-  labels = testData.map(x => x.label);
+  testData = mlUtils.upsample(testData, UNIQUE_LABELS);
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
