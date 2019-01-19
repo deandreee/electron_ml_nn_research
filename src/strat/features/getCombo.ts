@@ -223,6 +223,16 @@ export const getCombo = (): FeatureSplit[] => {
     {
       name: "vixFixCombo",
       fn: x => [x.ind.vixFix.x30.a, x.ind.vixFix.x60.a, x.ind.vixFix.x120.a]
+    },
+
+    {
+      name: "macd.vixFix",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo]
+    },
+
+    {
+      name: "macd.vixFix.rsi",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.rsi.x120.p15]
     }
   ];
 };

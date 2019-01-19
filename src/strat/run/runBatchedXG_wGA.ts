@@ -20,11 +20,13 @@ import { runConfigXG2 } from "./runConfigXG";
 // const featureName = "[csi]combo_single_each";
 // const feature = features.getCombo().find(x => x.name === featureName);
 
-const featureName = "x120.vixFix.a";
-const feature = features.getVixFix().find(x => x.name === featureName);
+// const featureName = "x120.vixFix.a";
+// const feature = features.getVixFix().find(x => x.name === featureName);
 
 // const featureName = "vixFixCombo";
-// const feature = features.getCombo().find(x => x.name === featureName);
+// const featureName = "macd.vixFix";
+const featureName = "macd.vixFix.rsi";
+const feature = features.getCombo().find(x => x.name === featureName);
 
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;

@@ -36,7 +36,7 @@ export const shouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
       "vixFix",
       "vwap"
     ];
-    return combos.indexOf(name) >= 0;
+    return combos.indexOf(name.toLowerCase()) >= 0;
   }
 
   if (featuresSplit[0].name.startsWith("[csi]")) {
