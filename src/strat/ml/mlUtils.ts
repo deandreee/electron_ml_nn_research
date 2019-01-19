@@ -170,6 +170,16 @@ interface TestData {
   label: number;
 }
 
+export const labelCountSanityCheck = (labelCount: NumberMap) => {
+  const max = getMaxLabel(labelCount);
+  for (let k in labelCount) {
+    const proportion = labelCount[k] / max;
+    if (proportion < 0.9) {
+      throw new Error(`Classes too imbalanced: ${JSON.stringify(labelCount)}`);
+    }
+  }
+};
+
 export const getMaxLabel = (labelCount: NumberMap) => {
   const counts = Object.keys(labelCount).map(k => labelCount[k as any]);
   return Math.max(...counts);
@@ -178,6 +188,9 @@ export const getMaxLabel = (labelCount: NumberMap) => {
 export const upsample = (testData: TestData[], uniqueLabels: number[]) => {
   const labels = testData.map(x => x.label);
   const labelCount = countLabels(uniqueLabels, labels);
+
+  labelCountSanityCheck(labelCount);
+
   const max = getMaxLabel(labelCount);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
   testData = resample(testData, labelCount, max);
@@ -187,6 +200,9 @@ export const upsample = (testData: TestData[], uniqueLabels: number[]) => {
 export const middlesample = (testData: TestData[], uniqueLabels: number[]) => {
   const labels = testData.map(x => x.label);
   const labelCount = countLabels(uniqueLabels, labels);
+
+  labelCountSanityCheck(labelCount);
+
   const avgLabelCount = Math.round(sumLabels(uniqueLabels, labels) / uniqueLabels.length);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
   testData = resample(testData, labelCount, avgLabelCount);
