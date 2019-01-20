@@ -1,36 +1,37 @@
 import { XmBase, MACD as _MACD, WaveManager } from "./gekko";
-import { Candle, MACDValue } from "../types";
+import { Candle, MACDValue, IndSettings } from "../types";
+import { mapObj } from "../utils";
 
-export interface IndMACD {
-  [sig: string]: MACDValue;
-  sig5?: MACDValue;
-  sig9?: MACDValue;
-  sig2_10?: MACDValue;
-  sig2_16?: MACDValue;
-}
+export type P_MACD = "sig5" | "sig9" | "sig2_10" | "sig2_16" | "opt";
+
+export type IndMACD = { [p in P_MACD]: MACDValue };
+
+type Internal = { [p in P_MACD]: any };
 
 export class MACD {
-  sig5: any;
-  sig9: any;
-  sig2_10: any;
-  sig2_16: any;
+  ind: Internal;
 
-  constructor(waveManager: WaveManager) {
+  static getPS = () => Object.keys(new MACD({} as WaveManager, {}).ind);
+
+  constructor(waveManager: WaveManager, opt: object) {
     // from here: https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd
-    this.sig5 = new XmBase(waveManager, () => new _MACD({ short: 5, long: 35, signal: 5 }));
-    this.sig9 = new XmBase(waveManager, () => new _MACD({ short: 12, long: 26, signal: 9 }));
-
     // http://etfhq.com/blog/2013/02/26/macd-test-results/
-    this.sig2_10 = new XmBase(waveManager, () => new _MACD({ short: 10, long: 60, signal: 2 }));
-    this.sig2_16 = new XmBase(waveManager, () => new _MACD({ short: 16, long: 97, signal: 2 }));
+    const settings: IndSettings = {
+      sig5: { short: 5, long: 35, signal: 5 },
+      sig9: { short: 12, long: 26, signal: 9 },
+      sig2_10: { short: 10, long: 60, signal: 2 },
+      sig2_16: { short: 16, long: 97, signal: 2 },
+      opt
+    };
+
+    this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));
   }
 
+  createXm = (waveManager: WaveManager, settings: any) => {
+    return new XmBase(waveManager, () => new _MACD(settings));
+  };
+
   update(bigCandle: Candle): IndMACD {
-    return {
-      sig5: this.sig5.update(bigCandle.close),
-      sig9: this.sig9.update(bigCandle.close),
-      sig2_10: this.sig2_10.update(bigCandle.close),
-      sig2_16: this.sig2_16.update(bigCandle.close)
-    };
+    return mapObj(this.ind, (k: string) => this.ind[k as P_MACD].update(bigCandle.close));
   }
 }

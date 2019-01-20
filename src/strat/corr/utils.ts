@@ -31,23 +31,47 @@ export const getShouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
   const shouldCalc: ShouldCalcTF = {}; // everything false by default
 
   for (let fs of featuresSplit) {
-    const required = fs.fn
-      .toString()
-      .replace("x => [", "")
-      .replace("]", "")
+    const fnStr = fs.fn.toString();
+
+    let required = "";
+
+    if (fnStr.includes("[tf]") && fnStr.includes("[p]")) {
+      required = fnStr
+        .replace("(x, i, corrCandles) => ", "")
+        .replace("[", "") // first
+        .replace(/]$/, ""); // last
+    } else {
+      required = fnStr
+        .replace("x => [", "")
+        .replace("(x, i, corrCandles) => [", "")
+        .replace("]", "");
+    }
+
+    const requiredParts = required
       .replace(/x.ind./g, "")
       .replace(/ /g, "")
       .replace(/\n/g, "")
       .split(",");
 
-    for (let req of required) {
-      const parts = req.split(".");
-      const ind = parts[0];
-      const tf = parts[1];
-      // console.log(ind, tf);
+    for (let req of requiredParts) {
+      if (req.includes("[tf]") && req.includes("[p]")) {
+        const ind = req.slice(0, req.indexOf("[tf]"));
+        if (ind === name && req.includes("[tf]") && req.includes("[p]")) {
+          shouldCalc.x30 = true;
+          shouldCalc.x60 = true;
+          shouldCalc.x120 = true;
+          shouldCalc.x240 = true;
+          shouldCalc.x480 = true;
+          return shouldCalc;
+        }
+      } else {
+        const parts = req.split(".");
+        const ind = parts[0];
+        const tf = parts[1];
 
-      if (ind === name) {
-        shouldCalc[tf] = true;
+        if (ind === name) {
+          shouldCalc[tf] = true;
+        }
       }
     }
   }

@@ -31,6 +31,7 @@ export const queryCorrCandlesMonthsBatched = (
   coinName: Coins,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
+  opt?: object,
   prob?: boolean
 ) => {
   const corrCandleMonths: CorrCandleMonths = {};
@@ -44,7 +45,7 @@ export const queryCorrCandlesMonthsBatched = (
     batchCandlesIn10s(coin);
 
     const { corrCandles } = !prob
-      ? calcBatched.corrCalcBatched(coin, featuresSplit)
+      ? calcBatched.corrCalcBatched(coin, featuresSplit, opt)
       : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;

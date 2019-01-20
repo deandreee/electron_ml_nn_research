@@ -18,13 +18,18 @@ export class IndTimeframeGroup<T> {
   x240: T;
   x480: T;
 
-  constructor(ceetor: new (waveManager: WaveManager) => T, waveManagers: WaveManagers, shouldCalc: ShouldCalcTF) {
+  constructor(
+    ceetor: new (waveManager: WaveManager, opt: object) => T,
+    waveManagers: WaveManagers,
+    shouldCalc: ShouldCalcTF,
+    opt: object
+  ) {
     this.shouldCalc = shouldCalc;
-    this.x30 = new ceetor(waveManagers.x30);
-    this.x60 = new ceetor(waveManagers.x60);
-    this.x120 = new ceetor(waveManagers.x120);
-    this.x240 = new ceetor(waveManagers.x240);
-    this.x480 = new ceetor(waveManagers.x480);
+    this.x30 = new ceetor(waveManagers.x30, opt);
+    this.x60 = new ceetor(waveManagers.x60, opt);
+    this.x120 = new ceetor(waveManagers.x120, opt);
+    this.x240 = new ceetor(waveManagers.x240, opt);
+    this.x480 = new ceetor(waveManagers.x480, opt);
   }
 
   update(bigCandles: BigCandles) {

@@ -44,7 +44,7 @@ const wHist = {
   resultHistory: true
 };
 
-export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) => {
+export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], opt: object) => {
   const candles = coin.candles;
 
   const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;
@@ -63,9 +63,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
     x480: waveManager480
   };
 
-  const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"));
-  const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"));
-  const mfi = new IndTimeframeGroup(MFI, waveManagers, getShouldCalc(featuresSplit, "mfi"));
+  const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"), opt);
+  const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"), opt);
+  const mfi = new IndTimeframeGroup(MFI, waveManagers, getShouldCalc(featuresSplit, "mfi"), opt);
   // const ift = new IndTimeframeGroup(IFT, waveManagers);
   // const ifts = new IndTimeframeGroup(IFTS, waveManagers);
 
@@ -77,24 +77,29 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
   const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
 
-  const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"));
+  const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"), opt);
 
-  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"));
-  const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers, getShouldCalc(featuresSplit, "t3Macd"));
-  const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers, getShouldCalc(featuresSplit, "zerolagT3"));
-  const lrc = new IndTimeframeGroup(LRC, waveManagers, getShouldCalc(featuresSplit, "lrc"));
+  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"), opt);
+  const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers, getShouldCalc(featuresSplit, "t3Macd"), opt);
+  const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers, getShouldCalc(featuresSplit, "zerolagT3"), opt);
+  const lrc = new IndTimeframeGroup(LRC, waveManagers, getShouldCalc(featuresSplit, "lrc"), opt);
 
-  const macd = new IndTimeframeGroup(MACD, waveManagers, getShouldCalc(featuresSplit, "macd"));
-  const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers, getShouldCalc(featuresSplit, "zerolagMACD"));
-  const vixFix = new IndTimeframeGroup(VixFix, waveManagers, getShouldCalc(featuresSplit, "vixFix"));
+  const macd = new IndTimeframeGroup(MACD, waveManagers, getShouldCalc(featuresSplit, "macd"), opt);
+  const zerolagMACD = new IndTimeframeGroup(
+    ZerolagMACD,
+    waveManagers,
+    getShouldCalc(featuresSplit, "zerolagMACD"),
+    opt
+  );
+  const vixFix = new IndTimeframeGroup(VixFix, waveManagers, getShouldCalc(featuresSplit, "vixFix"), opt);
 
-  const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"));
+  const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"), opt);
 
   const atr = new ATR(waveManagers.x10);
 
-  const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"));
-  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"));
-  const psar = new IndTimeframeGroup(PSAR, waveManagers, getShouldCalc(featuresSplit, "psar"));
+  const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"), opt);
+  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"), opt);
+  const psar = new IndTimeframeGroup(PSAR, waveManagers, getShouldCalc(featuresSplit, "psar"), opt);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
