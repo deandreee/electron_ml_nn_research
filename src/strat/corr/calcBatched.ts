@@ -24,7 +24,7 @@ import { PSAR } from "../indicators/PSAR";
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
-import { shouldCalc } from "./utils";
+import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
 import { BARRIER_TYPE } from "../run/runConfigXG";
 
@@ -63,9 +63,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
     x480: waveManager480
   };
 
-  const rsi = new IndTimeframeGroup(RSI, waveManagers);
-  const bbands = new IndTimeframeGroup(BBands, waveManagers);
-  const mfi = new IndTimeframeGroup(MFI, waveManagers);
+  const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"));
+  const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"));
+  const mfi = new IndTimeframeGroup(MFI, waveManagers, getShouldCalc(featuresSplit, "mfi"));
   // const ift = new IndTimeframeGroup(IFT, waveManagers);
   // const ifts = new IndTimeframeGroup(IFTS, waveManagers);
 
@@ -77,24 +77,24 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[]) =
   const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
   const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
 
-  const stochKD = new IndTimeframeGroup(StochKD, waveManagers);
+  const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"));
 
-  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
-  const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers);
-  const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers);
-  const lrc = new IndTimeframeGroup(LRC, waveManagers);
+  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"));
+  const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers, getShouldCalc(featuresSplit, "t3Macd"));
+  const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers, getShouldCalc(featuresSplit, "zerolagT3"));
+  const lrc = new IndTimeframeGroup(LRC, waveManagers, getShouldCalc(featuresSplit, "lrc"));
 
-  const macd = new IndTimeframeGroup(MACD, waveManagers);
-  const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers);
-  const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
+  const macd = new IndTimeframeGroup(MACD, waveManagers, getShouldCalc(featuresSplit, "macd"));
+  const zerolagMACD = new IndTimeframeGroup(ZerolagMACD, waveManagers, getShouldCalc(featuresSplit, "zerolagMACD"));
+  const vixFix = new IndTimeframeGroup(VixFix, waveManagers, getShouldCalc(featuresSplit, "vixFix"));
 
-  const kst = new IndTimeframeGroup(KST, waveManagers);
+  const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"));
 
   const atr = new ATR(waveManagers.x10);
 
-  const vwap = new IndTimeframeGroup(VWAP, waveManagers);
-  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers);
-  const psar = new IndTimeframeGroup(PSAR, waveManagers);
+  const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"));
+  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"));
+  const psar = new IndTimeframeGroup(PSAR, waveManagers, getShouldCalc(featuresSplit, "psar"));
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
