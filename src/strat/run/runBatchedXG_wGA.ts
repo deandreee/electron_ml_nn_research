@@ -25,10 +25,17 @@ import { runConfigXG2 } from "./runConfigXG";
 
 // const featureName = "vixFixCombo";
 // const featureName = "macd.vixFix";
-const featureName = "macd.vixFix.rsi";
+// const featureName = "macd.vixFix.vwap";
+// const featureName = "macd.vixFix.vwap.kst";
+// const featureName = "macd.vixFix.vwap.t3Macd";
+// const featureName = "macd.vixFix.vwap.emaOCC";
+// const featureName = "macd.vixFix.vwap.psar";
+// const featureName = "macd.vixFix.vwap.zerolagMACD";
+// const featureName = "macd.vixFix.vwap.lrc";
+const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 const feature = features.getCombo().find(x => x.name === featureName);
 
-const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
@@ -59,15 +66,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       }
 
       // logConsole(range.name, results); // let's skip for now, too much noise
-      await logFile(
-        fileName,
-        runConfig,
-        coin.toString(),
-        range.name,
-        runConfigXG.TRIPPLE_BARRIER_LABEL,
-        feature.name,
-        results
-      );
+      await logFile(fileName, runConfig, coin.toString(), range.name, runConfigXG.BARRIER_LABEL, feature.name, results);
     }
 
     // log.end(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
@@ -76,15 +75,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(
-      fileName,
-      runConfigXG2,
-      Coins.BTC,
-      "AVG",
-      runConfigXG.TRIPPLE_BARRIER_LABEL,
-      feature.name,
-      avgResults
-    );
+    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults);
 
     return sum(fScores) / fScores.length;
   };

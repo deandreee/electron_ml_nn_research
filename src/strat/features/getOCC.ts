@@ -16,7 +16,7 @@ export const getOCC = (): FeatureSplit[] => {
       return flatten(
         ps.map(p => [
           {
-            name: `${tf}.bbands.${p}`,
+            name: `${tf}.emaOCC.${p}`,
             fn: (x, i, corrCandles) => [x.ind.emaOCC[tf][p]]
           } as FeatureSplit
         ])

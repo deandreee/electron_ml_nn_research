@@ -8,14 +8,12 @@ import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile } from "./logClassResults";
-import { runConfigXG2, TRIPPLE_BARRIER_LABEL } from "./runConfigXG";
+import { runConfigXG2, BARRIER_LABEL } from "./runConfigXG";
 
 const ranges = runUtils.genRangesFull();
 // const featureName: string = "ALL";
 const featureName: string = "COMBO";
-const fileName = `output/runBatchedXG_all/${featureName} [ train ${
-  ranges[0].name
-} ] [ lbl ${TRIPPLE_BARRIER_LABEL} ].csv`;
+const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAll();
@@ -39,7 +37,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       predictions[range.name][feature.name] = predicted;
 
       logConsole(range.name, results);
-      await logFile(fileName, runConfigXG2, Coins.BTC, range.name, TRIPPLE_BARRIER_LABEL, feature.name, results);
+      await logFile(fileName, runConfigXG2, Coins.BTC, range.name, BARRIER_LABEL, feature.name, results);
 
       if (!range.isTrain) {
         resultsForAvg.push(results);
@@ -50,7 +48,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", TRIPPLE_BARRIER_LABEL, feature.name, avgResults);
+    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", BARRIER_LABEL, feature.name, avgResults);
 
     log.end(feature.name);
   }

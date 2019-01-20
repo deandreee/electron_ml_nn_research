@@ -233,6 +233,75 @@ export const getCombo = (): FeatureSplit[] => {
     {
       name: "macd.vixFix.rsi",
       fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.rsi.x120.p15]
+    },
+
+    {
+      name: "macd.vixFix.vwap",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den]
+    },
+
+    {
+      name: "macd.vixFix.vwap.kst",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.kst.x60.p_sig3.kst]
+    },
+
+    {
+      name: "macd.vixFix.vwap.t3Macd",
+      fn: x => [
+        x.ind.vixFix.x120.a,
+        x.ind.macd.x120.sig9.histo,
+        x.ind.vwap.x30.p40.den,
+        x.ind.t3Macd.x120.sig2_16.histo
+      ]
+    },
+
+    {
+      name: "macd.vixFix.vwap.emaOCC",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.emaOCC.x60.emaOCC_20]
+    },
+
+    {
+      name: "macd.vixFix.vwap.psar",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.psar.x30.p0_0002.result]
+    },
+
+    {
+      name: "macd.vixFix.vwap.zerolagMACD",
+      fn: x => [
+        x.ind.vixFix.x120.a,
+        x.ind.macd.x120.sig9.histo,
+        x.ind.vwap.x30.p40.den,
+        x.ind.zerolagMACD.x480.sig2_16.histo
+      ]
+    },
+
+    {
+      name: "macd.vixFix.vwap.lrc",
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.lrc.x480.p30]
+    },
+
+    {
+      name: "macd.vixFix.vwap.t3Macd.zerolagMACD",
+      fn: x => [
+        x.ind.vixFix.x120.a,
+        x.ind.macd.x120.sig9.histo,
+        x.ind.vwap.x30.p40.den,
+        x.ind.t3Macd.x120.sig2_16.histo,
+        x.ind.zerolagMACD.x480.sig2_16.histo
+      ]
+    },
+
+    // 0.67 the very best so far on LBL ONE
+    {
+      name: "macd.vixFix.vwap.t3Macd.zerolagMACD.kst",
+      fn: x => [
+        x.ind.vixFix.x120.a,
+        x.ind.macd.x120.sig9.histo,
+        x.ind.vwap.x30.p40.den,
+        x.ind.t3Macd.x120.sig2_16.histo,
+        x.ind.zerolagMACD.x480.sig2_16.histo,
+        x.ind.kst.x60.p_sig3.kst
+      ]
     }
   ];
 };

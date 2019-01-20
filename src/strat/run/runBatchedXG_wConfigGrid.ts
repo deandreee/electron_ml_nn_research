@@ -11,7 +11,7 @@ import { logConsole, logFile } from "./logClassResults";
 import * as log from "../log";
 
 const featureName = "combo_single_each";
-const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfigXG.TRIPPLE_BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
@@ -41,15 +41,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       predictions[range.name][feature.name] = predicted;
 
       logConsole(range.name, results);
-      await logFile(
-        fileName,
-        runConfig,
-        coin.toString(),
-        range.name,
-        runConfigXG.TRIPPLE_BARRIER_LABEL,
-        feature.name,
-        results
-      );
+      await logFile(fileName, runConfig, coin.toString(), range.name, runConfigXG.BARRIER_LABEL, feature.name, results);
     }
 
     log.end(runConfigXG.getName(runConfig));

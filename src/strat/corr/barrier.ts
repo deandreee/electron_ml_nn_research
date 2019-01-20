@@ -1,6 +1,6 @@
 import { Candle } from "../types";
 import { getPctChange } from "../utils";
-import { TRIPPLE_BARRIER_LABEL, TrippleBarrierLabel } from "../run/runConfigXG";
+import { BARRIER_LABEL, TrippleBarrierLabel } from "../run/runConfigXG";
 
 export const trippleBarrier = (
   candles: Candle[],
@@ -22,7 +22,7 @@ export const trippleBarrier = (
 };
 
 export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
-  label = label || TRIPPLE_BARRIER_LABEL;
+  label = label || BARRIER_LABEL;
 
   if (label === "PT_FIVE") {
     return { stopLoss: -0.5, takeProfit: 0.5, lookAhead: 20 };
@@ -41,7 +41,7 @@ export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
   }
 
   if (label === "FIVE") {
-    return { stopLoss: -5, takeProfit: 5, lookAhead: 500 };
+    return { stopLoss: -5, takeProfit: 5, lookAhead: 650 };
   }
 
   throw new Error(`getTrippleBarrierConfig: Label ${label} not found`);
