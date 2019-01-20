@@ -9,12 +9,15 @@ export interface FeatureSplit {
 }
 
 export const getCoreName = (featuresSplit: FeatureSplit[]) => {
+  if (featuresSplit.length === 1) {
+    return featuresSplit[0].name;
+  }
+
   if (featuresSplit[0].name.startsWith("[c]")) {
     return "[c]";
   }
 
   const parts = featuresSplit[0].name.split(".");
-
   if (parts.length !== 3) {
     throw new Error(`getCoreName name parts not 3: ${featuresSplit[0].name}`);
   }

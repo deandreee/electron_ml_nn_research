@@ -41,7 +41,7 @@ export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
   }
 
   if (label === "FIVE") {
-    return { stopLoss: -5, takeProfit: 5, lookAhead: 650 };
+    return { stopLoss: -5, takeProfit: 5, lookAhead: 600 };
   }
 
   throw new Error(`getTrippleBarrierConfig: Label ${label} not found`);

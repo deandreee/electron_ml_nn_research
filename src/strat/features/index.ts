@@ -21,6 +21,7 @@ import { getZerolagMACD } from "./getZerolagMACD";
 import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
 import { getPSAR } from "./getPSAR";
+import { getValidation } from "./getValidation";
 
 const getAll = () => {
   return [
@@ -71,5 +72,6 @@ export {
   getKST,
   getKSTandPrice,
   getWilliamsR,
-  getPSAR
+  getPSAR,
+  getValidation
 };

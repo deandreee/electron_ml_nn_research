@@ -1,8 +1,8 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
-// import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClass from "../ml/mlXGClassProb";
+import * as mlXGClass from "../ml/mlXGClass";
+// import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import * as runConfigXG from "./runConfigXG";
@@ -12,9 +12,8 @@ import { logConsole, logFile } from "./logClassResults";
 
 import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
-import { runConfigXG2 } from "./runConfigXG";
 
-// const featureName = "x120.macd.sig9";
+// const featureName = "x240.macd.sig9";
 // const feature = features.getMACD().find(x => x.name === featureName);
 
 // const featureName = "[csi]combo_single_each";
@@ -75,7 +74,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults);
+    await logFile(fileName, runConfig, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults);
 
     return sum(fScores) / fScores.length;
   };

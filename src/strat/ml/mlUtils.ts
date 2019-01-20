@@ -174,8 +174,8 @@ export const labelCountSanityCheck = (labelCount: NumberMap) => {
   const max = getMaxLabel(labelCount);
   for (let k in labelCount) {
     const proportion = labelCount[k] / max;
-    if (proportion < 0.9) {
-      throw new Error(`Classes too imbalanced: ${JSON.stringify(labelCount)}`);
+    if (proportion < 0.85) {
+      throw new Error(`Classes too imbalanced (${proportion}): ${JSON.stringify(labelCount)}`);
     }
   }
 };
