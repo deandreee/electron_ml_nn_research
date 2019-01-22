@@ -21,6 +21,7 @@ import { IndATR } from "./indicators/ATR";
 import { IndVWAP } from "./indicators/VWAP";
 import { IndWilliamsR } from "./indicators/WilliamsR";
 import { IndPSAR } from "./indicators/PSAR";
+import { IndKalman } from "./indicators/Kalman";
 
 export type Cb = (err: Error) => void;
 
@@ -152,7 +153,6 @@ export interface Indicators {
   lrc10_pred?: number;
   twiggs?: number;
   xmTwiggs?: number;
-  kalman?: number;
   aroon?: IndChannel;
 
   mfi?: IndTimeframes<IndMFI>;
@@ -196,6 +196,7 @@ export interface Indicators {
 
   vixFix?: IndTimeframes<IndVixFix>;
   psar?: IndTimeframes<IndPSAR>;
+  kalman?: IndTimeframes<IndKalman>;
 }
 
 export type CsvCell = string | number;

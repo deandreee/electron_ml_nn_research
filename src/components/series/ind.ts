@@ -196,7 +196,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     series.push({
       ...baseDotted,
       color: "lightblue",
-      data: data(coin, x => x.ind.kalman),
+      data: data(coin, x => x.ind.kalman.x120.r001_q1),
       name: "Kalman"
     });
   }

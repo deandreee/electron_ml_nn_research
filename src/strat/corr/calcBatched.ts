@@ -20,6 +20,7 @@ import { ATR } from "../indicators/ATR";
 import { VWAP } from "../indicators/VWAP";
 import { WilliamsR } from "../indicators/WilliamsR";
 import { PSAR } from "../indicators/PSAR";
+import { Kalman } from "../indicators/Kalman";
 
 import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
@@ -100,6 +101,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"), opt);
   const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"), opt);
   const psar = new IndTimeframeGroup(PSAR, waveManagers, getShouldCalc(featuresSplit, "psar"), opt);
+  const kalman = new IndTimeframeGroup(Kalman, waveManagers, getShouldCalc(featuresSplit, "kalman"), opt);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -157,7 +159,8 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
       kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null,
       williamsR: shouldCalc(featuresSplit, "williamsr") ? williamsR.update(bigCandles) : null,
-      psar: shouldCalc(featuresSplit, "psar") ? psar.update(bigCandles) : null
+      psar: shouldCalc(featuresSplit, "psar") ? psar.update(bigCandles) : null,
+      kalman: shouldCalc(featuresSplit, "kalman") ? kalman.update(bigCandles) : null
     };
 
     if (shouldCalc(featuresSplit, "macd_adx")) {
@@ -209,7 +212,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
     _10d: candlesActual.map(x => x.pctChange._10d)
   };
 
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND_COUNT, EXTENDED_COUNT);
 
   return { corrCandles, pctChange };
 };

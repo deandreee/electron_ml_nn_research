@@ -20,7 +20,8 @@ const {
   KST,
   WilliamsR,
   PSAR_TI,
-  PSARProps
+  PSARProps,
+  Kalman
 } = require(`${GEKKO}/indicators`);
 
 const {
@@ -79,5 +80,6 @@ export {
   KST,
   WilliamsR,
   PSAR_TI,
-  PSARProps
+  PSARProps,
+  Kalman
 };

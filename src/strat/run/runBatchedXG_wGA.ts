@@ -31,8 +31,11 @@ import { sum } from "lodash";
 // const featureName = "macd.vixFix.vwap.psar";
 // const featureName = "macd.vixFix.vwap.zerolagMACD";
 // const featureName = "macd.vixFix.vwap.lrc";
-const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
-const feature = features.getCombo().find(x => x.name === featureName);
+// const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+// const feature = features.getCombo().find(x => x.name === featureName);
+
+const featureName = "kalman.x240.r001_q1";
+const feature = features.getKalmanDiff().find(x => x.name === featureName);
 
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;

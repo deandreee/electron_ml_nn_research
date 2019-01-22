@@ -20,7 +20,7 @@ export const getFeatureSplit = (
       return flatten(
         ps.map(p => [
           {
-            name: `${t}.${name}.${p}`,
+            name: `${name}.${t}.${p}`,
             fn: (x, i, corrCandles) => fn(x, i, corrCandles, t, p)
           } as FeatureSplit
         ])
