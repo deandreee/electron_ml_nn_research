@@ -1,5 +1,5 @@
 import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
 
 // import * as mlXGClass from "../ml/mlXGClass";
 import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
@@ -11,7 +11,7 @@ import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
 
 import { gaConfig, userData } from "./geneticAlgo2";
-import { sum } from "lodash";
+import { cloneDeep, sum } from "lodash";
 // import { GeneticMACD, GA_MACD } from "./gaMACD";
 // import { GeneticKalman, GA_Kalman } from "./gaKalman";
 import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
@@ -22,7 +22,7 @@ import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
 //   fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
 // };
 
-const t = "x480";
+const t = "x120";
 const feature: features.FeatureSplit = {
   name: `vixFix.${t}.opt`,
   fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
@@ -54,12 +54,14 @@ const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRangesLast3_JunJulAugSep();
+  const candleMonths = queryCandlesBatched(coin, ranges);
   // const ranges = runUtils.genRanges_FastMiniTest();
 
   const fnFitness = async (gaOpts: GA_VixFix) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
-    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaOpts, skipLog: true });
+    const candleMonthsCloned = cloneDeep(candleMonths);
+    const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaOpts, skipLog: true });
     const trainMonth = months[ranges[0].name];
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
@@ -92,7 +94,16 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const genetic = new GeneticVixFix(gaConfig, userData, fnFitness);
+  const fnFitnessWrapper = async (gaOpts: GA_VixFix) => {
+    try {
+      return await fnFitness(gaOpts);
+    } catch (err) {
+      console.error(`${err.message} | ${JSON.stringify(gaOpts)}`);
+      return 0;
+    }
+  };
+
+  const genetic = new GeneticVixFix(gaConfig, userData, fnFitnessWrapper);
   genetic.evolve();
 
   return {

@@ -1,4 +1,4 @@
-import { Coins } from "../types";
+import { Coins, CoinData } from "../types";
 import * as ms from "ms";
 import { queryCoin } from "../queryCoins";
 import * as calc from "../corr/calc";
@@ -11,6 +11,7 @@ import * as calcBatchedProb from "../corr/calcBatchedProb";
 import { FeatureSplit } from "../features";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
+export type CandleMonths = { [range: string]: CoinData };
 
 export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => {
   const corrCandleMonths: CorrCandleMonths = {};
@@ -70,5 +71,42 @@ export const queryCorrCandlesMonthsBatched = (
       log.end(`corrCandles ${range.name}`);
     }
   }
+  return corrCandleMonths;
+};
+
+export const queryCandlesBatched = (coinName: Coins, ranges: DateRange[]) => {
+  const candleMonths: CandleMonths = {};
+
+  for (let range of ranges) {
+    const fromExtended = new Date(range.from.getTime() - ms(`${calcBatched.WARMUP_IND}m`));
+    const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
+    const coin = queryCoin(coinName, fromExtended, toExtended);
+
+    batchCandlesIn10s(coin);
+
+    candleMonths[range.name] = coin;
+  }
+
+  return candleMonths;
+};
+
+export const calcIndicators = (
+  candleMonths: CandleMonths,
+  ranges: DateRange[],
+  featuresSplit: FeatureSplit[],
+  opts?: Opts
+) => {
+  const corrCandleMonths: CorrCandleMonths = {};
+
+  for (let range of ranges) {
+    const coin = candleMonths[range.name];
+
+    const { corrCandles } = !opts.prob
+      ? calcBatched.corrCalcBatched(coin, featuresSplit, opts.ga)
+      : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
+
+    corrCandleMonths[range.name] = corrCandles;
+  }
+
   return corrCandleMonths;
 };
