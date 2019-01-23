@@ -1,4 +1,5 @@
 import { pad } from "lodash";
+import { round2 } from "./utils";
 
 export const line = (s: string) => {
   console.log(pad(`  ${s} `, 100, "="));
@@ -32,6 +33,6 @@ export const timeEnd = (name: string, noThrow?: boolean) => {
 
   const end = new Date().getTime();
 
-  const elapsedSeconds = Math.round((end - start) / 1000);
+  const elapsedSeconds = round2((end - start) / 1000);
   console.log(pad(`TIME ${name}:     ${elapsedSeconds}s`, 100, "="));
 };

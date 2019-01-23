@@ -36,7 +36,7 @@ const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 const { ADX } = require(`${GEKKO}/indicators`);
 
 export const CANDLE_SIZE = 10;
-export const WARMUP_IND = 480 * 70; // => ind ready
+export const WARMUP_IND = 480 * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / CANDLE_SIZE;
 export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;

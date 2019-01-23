@@ -53,13 +53,21 @@ export const queryCorrCandlesMonthsBatched = (
 
     batchCandlesIn10s(coin);
 
+    if (!opts.skipLog) {
+      log.end(`query ${range.name}`);
+    }
+
+    if (!opts.skipLog) {
+      log.start(`corrCandles ${range.name}`);
+    }
+
     const { corrCandles } = !opts.prob
       ? calcBatched.corrCalcBatched(coin, featuresSplit, opts.ga)
       : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
     if (!opts.skipLog) {
-      log.end(`query ${range.name}`);
+      log.end(`corrCandles ${range.name}`);
     }
   }
   return corrCandleMonths;

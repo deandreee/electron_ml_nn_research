@@ -12,13 +12,20 @@ import { logConsole, logFile } from "./logClassResults";
 
 import { gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
-import { GeneticMACD, GA_MACD } from "./gaMACD";
+// import { GeneticMACD, GA_MACD } from "./gaMACD";
 // import { GeneticKalman, GA_Kalman } from "./gaKalman";
+import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
+
+// const t = "x480";
+// const feature: features.FeatureSplit = {
+//   name: `macd.${t}.opt`,
+//   fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
+// };
 
 const t = "x480";
 const feature: features.FeatureSplit = {
-  name: `macd.${t}.opt`,
-  fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
+  name: `vixFix.${t}.opt`,
+  fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
 };
 
 // const t = "x240";
@@ -49,7 +56,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRangesLast3_JunJulAugSep();
   // const ranges = runUtils.genRanges_FastMiniTest();
 
-  const fnFitness = async (gaOpts: GA_MACD) => {
+  const fnFitness = async (gaOpts: GA_VixFix) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
     const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaOpts, skipLog: true });
@@ -85,7 +92,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const genetic = new GeneticMACD(gaConfig, userData, fnFitness);
+  const genetic = new GeneticVixFix(gaConfig, userData, fnFitness);
   genetic.evolve();
 
   return {
