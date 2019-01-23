@@ -12,11 +12,28 @@ import { logConsole, logFile } from "./logClassResults";
 
 import { gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
-import { GeneticMACD, GA_MACD } from "./gaMACD";
+// import { GeneticMACD, GA_MACD } from "./gaMACD";
+import { GeneticKalman, GA_Kalman } from "./gaKalman";
 
+// const feature: features.FeatureSplit = {
+//   name: `macd.x120.opt`,
+//   fn: (x, i, corrCandles) => [x.ind.macd.x120.opt.histo]
+// };
+
+const t = "x60";
 const feature: features.FeatureSplit = {
-  name: `macd.x120.opt`,
-  fn: (x, i, corrCandles) => [x.ind.macd.x120.opt.histo]
+  name: `kalman.x60.opt`,
+  fn: (x, i, corrCandles) => [
+    x.ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 3).ind.kalman[t].opt, // 30m
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6).ind.kalman[t].opt, // 1h
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 3).ind.kalman[t].opt, // 3h
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 6).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 12).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24 * 3).ind.kalman[t].opt, // 3d
+    x.ind.kalman[t].opt - x.close
+  ]
 };
 
 const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
@@ -29,11 +46,12 @@ const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRangesLast3_JunJulAugSep();
+  // const ranges = runUtils.genRanges_FastMiniTest();
 
-  const fnFitness = async (gaOpts: GA_MACD) => {
+  const fnFitness = async (gaOpts: GA_Kalman) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
-    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], gaOpts);
+    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaOpts, skipLog: true });
     const trainMonth = months[ranges[0].name];
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
@@ -66,7 +84,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const genetic = new GeneticMACD(gaConfig, userData, fnFitness);
+  const genetic = new GeneticKalman(gaConfig, userData, fnFitness);
   genetic.evolve();
 
   return {

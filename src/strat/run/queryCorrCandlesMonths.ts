@@ -27,29 +27,40 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
   return corrCandleMonths;
 };
 
+interface Opts {
+  ga?: object;
+  prob?: boolean;
+  skipLog?: boolean;
+}
+
 export const queryCorrCandlesMonthsBatched = (
   coinName: Coins,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
-  opt?: object,
-  prob?: boolean
+  opts?: Opts
 ) => {
+  opts = opts || {};
+
   const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {
-    log.start(`query ${range.name}`);
+    if (!opts.skipLog) {
+      log.start(`query ${range.name}`);
+    }
     const fromExtended = new Date(range.from.getTime() - ms(`${calcBatched.WARMUP_IND}m`));
     const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
     batchCandlesIn10s(coin);
 
-    const { corrCandles } = !prob
-      ? calcBatched.corrCalcBatched(coin, featuresSplit, opt)
+    const { corrCandles } = !opts.prob
+      ? calcBatched.corrCalcBatched(coin, featuresSplit, opts.ga)
       : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
-    log.end(`query ${range.name}`);
+    if (!opts.skipLog) {
+      log.end(`query ${range.name}`);
+    }
   }
   return corrCandleMonths;
 };
