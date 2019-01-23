@@ -15,13 +15,13 @@ export class Kalman {
 
   constructor(waveManager: WaveManager, opt: object) {
     const settings: IndSettings = {
-      r001_q1: { R: 0.01, Q: 1 },
-      r001_q3: { R: 0.01, Q: 3 },
-      r001_q20: { R: 0.01, Q: 20 },
-      r001_q3_b2: { R: 0.01, Q: 3, B: 2 },
-      r01_q1: { R: 0.1, Q: 1 },
-      r01_q3: { R: 0.1, Q: 3 },
-      r01_q5: { R: 0.1, Q: 5 },
+      // r001_q1: { R: 0.01, Q: 1 },
+      // r001_q3: { R: 0.01, Q: 3 },
+      // r001_q20: { R: 0.01, Q: 20 },
+      // r001_q3_b2: { R: 0.01, Q: 3, B: 2 },
+      // r01_q1: { R: 0.1, Q: 1 },
+      // r01_q3: { R: 0.1, Q: 3 },
+      // r01_q5: { R: 0.1, Q: 5 },
       opt
     };
 

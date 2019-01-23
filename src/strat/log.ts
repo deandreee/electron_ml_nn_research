@@ -1,5 +1,9 @@
 import { pad } from "lodash";
 
+export const line = (s: string) => {
+  console.log(pad(`  ${s} `, 100, "="));
+};
+
 export const start = (name: string, noThrow?: boolean) => {
   time(name, noThrow);
   console.log(pad(` RUNNING ${name} `, 100, "="));

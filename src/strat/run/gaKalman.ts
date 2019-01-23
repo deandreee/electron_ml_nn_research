@@ -1,14 +1,15 @@
 import * as Genetic from "@glavin001/genetic-js";
 import { Population } from "@glavin001/genetic-js/dist/src/Selection";
 import { Stats, GeneticState, Configuration } from "@glavin001/genetic-js";
+import * as log from "../log";
 
 export interface GA_Kalman {
   [prop: string]: number;
 
   R: number;
   Q: number;
-  // B: number;
-  // A: number;
+  B: number;
+  A: number;
 }
 
 const takeRandom = (arr: number[]) => {
@@ -33,18 +34,22 @@ interface RunConfigXGOpts {
 // https://www.wouterbulten.nl/blog/tech/lightweight-javascript-library-for-noise-filtering/
 export const runConfigXGOpts: RunConfigXGOpts = {
   R: [0.01, 0.02, 0.05, 0.1],
-  Q: [1, 2, 3, 5, 10, 20]
+  Q: [1, 2, 3, 5, 10, 20],
+  B: [1, 2, 3, 5, 10, 20],
+  A: [1, 1.1, 1.2, 1.3, 1.5, 1.8, 2]
 };
 
 // Extend the abstract class Genetic.Genetic
 export class GeneticKalman extends Genetic.Genetic<GA_Kalman, UserData> {
   fnFitness: FnFitness;
   idx: number;
+  genIdx: number;
 
   constructor(configuration: Partial<Configuration>, userData: UserData, fnFitness: FnFitness) {
     super(configuration, userData);
     this.fnFitness = fnFitness;
     this.idx = 0;
+    this.genIdx = 0;
   }
 
   // more likely allows the most fit individuals to survive between generations
@@ -64,6 +69,7 @@ export class GeneticKalman extends Genetic.Genetic<GA_Kalman, UserData> {
     if (isFinished) {
       console.log(`Solution is ${pop[0].entity.eta}`);
     }
+    log.line(`FINISHED GEN ${this.genIdx++}`);
   }
 
   public optimize = Genetic.Optimize.Maximize;
@@ -84,6 +90,8 @@ export class GeneticKalman extends Genetic.Genetic<GA_Kalman, UserData> {
 
     child.R = this.random5050() === 1 ? mother.R : father.R;
     child.Q = this.random5050() === 1 ? mother.Q : father.Q;
+    child.B = this.random5050() === 1 ? mother.B : father.B;
+    child.A = this.random5050() === 1 ? mother.A : father.A;
 
     return child;
   }
@@ -99,7 +107,9 @@ export class GeneticKalman extends Genetic.Genetic<GA_Kalman, UserData> {
     return {
       idx: this.idx++,
       R: -1,
-      Q: -1
+      Q: -1,
+      B: -1,
+      A: -1
     };
   }
 
@@ -130,7 +140,9 @@ export class GeneticKalman extends Genetic.Genetic<GA_Kalman, UserData> {
     return {
       idx: this.idx++,
       R: takeRandom(runConfigXGOpts.R),
-      Q: takeRandom(runConfigXGOpts.Q)
+      Q: takeRandom(runConfigXGOpts.Q),
+      B: takeRandom(runConfigXGOpts.B),
+      A: takeRandom(runConfigXGOpts.A)
     };
   }
 }
