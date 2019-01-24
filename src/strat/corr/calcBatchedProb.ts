@@ -4,7 +4,6 @@ import { CoinData } from "../types";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
 
-import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import * as corrUtils from "./utils";
 
@@ -15,9 +14,7 @@ import { Keltner } from "../indicators/Keltner";
 import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
-
-const GEKKO = "../../../../gekko-develop/strategies";
-const { BatchWaveManager } = require(`${GEKKO}/utils`);
+import * as waveUtils from "./waveUtils";
 
 export const CANDLE_SIZE = 10;
 export const WARMUP_IND = 480 * 70; // => ind ready
@@ -28,21 +25,8 @@ export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
 export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
 
-  const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;
-  const waveManager30 = new BatchWaveManager(30, CANDLE_SIZE) as WaveManager;
-  const waveManager60 = new BatchWaveManager(60, CANDLE_SIZE) as WaveManager;
-  const waveManager120 = new BatchWaveManager(120, CANDLE_SIZE) as WaveManager;
-  const waveManager240 = new BatchWaveManager(240, CANDLE_SIZE) as WaveManager;
-  const waveManager480 = new BatchWaveManager(480, CANDLE_SIZE) as WaveManager;
+  const waveManagers = waveUtils.createManagers(CANDLE_SIZE);
 
-  const waveManagers: WaveManagers = {
-    x10: waveManager10,
-    x30: waveManager30,
-    x60: waveManager60,
-    x120: waveManager120,
-    x240: waveManager240,
-    x480: waveManager480
-  };
   // @ts-ignore
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
   // @ts-ignore
@@ -65,23 +49,9 @@ export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[
       continue;
     }
 
-    const bigCandle10 = waveManager10.update(candle);
-    const bigCandle30 = waveManager30.update(candle);
-    const bigCandle60 = waveManager60.update(candle);
-    const bigCandle120 = waveManager120.update(candle);
-    const bigCandle240 = waveManager240.update(candle);
-    const bigCandle480 = waveManager480.update(candle);
+    const bigCandles = waveUtils.updateCandles(waveManagers, candle);
 
-    const bigCandles: BigCandles = {
-      x10: bigCandle10,
-      x30: bigCandle30,
-      x60: bigCandle60,
-      x120: bigCandle120,
-      x240: bigCandle240,
-      x480: bigCandle480
-    };
-
-    if (!bigCandle10 || !bigCandle30 || !bigCandle60 || !bigCandle120 || !bigCandle240 || !bigCandle480) {
+    if (!waveUtils.areCandlesReady(bigCandles)) {
       candle.ind = {};
       continue;
     }

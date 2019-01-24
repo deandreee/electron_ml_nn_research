@@ -22,12 +22,12 @@ import { WilliamsR } from "../indicators/WilliamsR";
 import { PSAR } from "../indicators/PSAR";
 import { Kalman } from "../indicators/Kalman";
 
-import { WaveManager, BigCandles, WaveManagers } from "../indicators/gekko";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
 import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
 import { BARRIER_TYPE } from "../run/runConfigXG";
+import * as waveUtils from "./waveUtils";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -48,21 +48,7 @@ const wHist = {
 export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], opt: object) => {
   const candles = coin.candles;
 
-  const waveManager10 = new BatchWaveManager(10, CANDLE_SIZE) as WaveManager;
-  const waveManager30 = new BatchWaveManager(30, CANDLE_SIZE) as WaveManager;
-  const waveManager60 = new BatchWaveManager(60, CANDLE_SIZE) as WaveManager;
-  const waveManager120 = new BatchWaveManager(120, CANDLE_SIZE) as WaveManager;
-  const waveManager240 = new BatchWaveManager(240, CANDLE_SIZE) as WaveManager;
-  const waveManager480 = new BatchWaveManager(480, CANDLE_SIZE) as WaveManager;
-
-  const waveManagers: WaveManagers = {
-    x10: waveManager10,
-    x30: waveManager30,
-    x60: waveManager60,
-    x120: waveManager120,
-    x240: waveManager240,
-    x480: waveManager480
-  };
+  const waveManagers = waveUtils.createManagers(CANDLE_SIZE);
 
   const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"), opt);
   const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"), opt);
@@ -70,13 +56,13 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   // const ift = new IndTimeframeGroup(IFT, waveManagers);
   // const ifts = new IndTimeframeGroup(IFTS, waveManagers);
 
-  const macd60_ADX30 = new XmBase(waveManager60, () => new ADX(30, wHist));
-  const macd60_ADX60 = new XmBase(waveManager60, () => new ADX(60, wHist));
-  const macd60_ADX120 = new XmBase(waveManager60, () => new ADX(120, wHist));
+  const macd60_ADX30 = new XmBase(waveManagers.x60, () => new ADX(30, wHist));
+  const macd60_ADX60 = new XmBase(waveManagers.x60, () => new ADX(60, wHist));
+  const macd60_ADX120 = new XmBase(waveManagers.x60, () => new ADX(120, wHist));
 
-  const macd120_ADX30 = new XmBase(waveManager120, () => new ADX(30, wHist));
-  const macd120_ADX60 = new XmBase(waveManager120, () => new ADX(60, wHist));
-  const macd120_ADX120 = new XmBase(waveManager120, () => new ADX(120, wHist));
+  const macd120_ADX30 = new XmBase(waveManagers.x120, () => new ADX(30, wHist));
+  const macd120_ADX60 = new XmBase(waveManagers.x120, () => new ADX(60, wHist));
+  const macd120_ADX120 = new XmBase(waveManagers.x120, () => new ADX(120, wHist));
 
   const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"), opt);
 
@@ -112,23 +98,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
       continue;
     }
 
-    const bigCandle10 = waveManager10.update(candle);
-    const bigCandle30 = waveManager30.update(candle);
-    const bigCandle60 = waveManager60.update(candle);
-    const bigCandle120 = waveManager120.update(candle);
-    const bigCandle240 = waveManager240.update(candle);
-    const bigCandle480 = waveManager480.update(candle);
+    const bigCandles = waveUtils.updateCandles(waveManagers, candle);
 
-    const bigCandles: BigCandles = {
-      x10: bigCandle10,
-      x30: bigCandle30,
-      x60: bigCandle60,
-      x120: bigCandle120,
-      x240: bigCandle240,
-      x480: bigCandle480
-    };
-
-    if (!bigCandle10 || !bigCandle30 || !bigCandle60 || !bigCandle120 || !bigCandle240 || !bigCandle480) {
+    if (!waveUtils.areCandlesReady(bigCandles)) {
       candle.ind = {};
       continue;
     }

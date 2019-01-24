@@ -44,6 +44,7 @@ export interface WaveManagers {
   x120: WaveManager;
   x240: WaveManager;
   x480: WaveManager;
+  x1440: WaveManager;
 }
 
 export interface BigCandles {
@@ -53,6 +54,7 @@ export interface BigCandles {
   x120: Candle;
   x240: Candle;
   x480: Candle;
+  x1440: Candle;
 }
 
 export {
