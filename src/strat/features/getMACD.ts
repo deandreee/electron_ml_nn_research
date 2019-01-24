@@ -1,21 +1,18 @@
 import { FeatureSplit } from "./FeatureSplit";
-import { flatten } from "lodash";
-import { P_MACD } from "../indicators/MACD";
+import { Candle } from "../types";
+import { P_MACD, MACD } from "../indicators/MACD";
+import { getFeatureSplit, timeframes } from "./common";
+
+export const indName = "macd";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.macd[t][p as P_MACD].histo;
+};
+
+export const ps = MACD.getPS();
 
 export const getMACD = (): FeatureSplit[] => {
-  const timeframes = ["x30", "x60", "x120", "x240", "x480"];
-  const ps = ["sig5", "sig9", "sig2_10", "sig2_16"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `macd.${tf}.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.macd[tf][p as P_MACD].histo]
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.macd[t][p as P_MACD].histo];
+  });
 };

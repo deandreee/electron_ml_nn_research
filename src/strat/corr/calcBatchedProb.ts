@@ -16,16 +16,16 @@ import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
 import * as waveUtils from "./waveUtils";
 
-export const CANDLE_SIZE = 10;
+export const BATCH_SIZE = 10;
 export const WARMUP_IND = 480 * 70; // => ind ready
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
-export const WARMUP_IND_COUNT = WARMUP_IND / CANDLE_SIZE;
-export const EXTENDED_COUNT = EXTENDED / CANDLE_SIZE;
+export const WARMUP_IND_COUNT = WARMUP_IND / BATCH_SIZE;
+export const EXTENDED_COUNT = EXTENDED / BATCH_SIZE;
 
 export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
 
-  const waveManagers = waveUtils.createManagers(CANDLE_SIZE);
+  const waveManagers = waveUtils.createManagers(BATCH_SIZE);
 
   // @ts-ignore
   const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
