@@ -26,12 +26,12 @@ export class IndTimeframeGroup<T> {
     opt: object
   ) {
     this.shouldCalc = shouldCalc;
-    this.x30 = new ceetor(waveManagers.x30, opt);
-    this.x60 = new ceetor(waveManagers.x60, opt);
-    this.x120 = new ceetor(waveManagers.x120, opt);
-    this.x240 = new ceetor(waveManagers.x240, opt);
-    this.x480 = new ceetor(waveManagers.x480, opt);
-    this.x1440 = new ceetor(waveManagers.x1440, opt);
+    this.x30 = this.shouldCalc.x30 ? new ceetor(waveManagers.x30, opt) : null;
+    this.x60 = this.shouldCalc.x60 ? new ceetor(waveManagers.x60, opt) : null;
+    this.x120 = this.shouldCalc.x120 ? new ceetor(waveManagers.x120, opt) : null;
+    this.x240 = this.shouldCalc.x240 ? new ceetor(waveManagers.x240, opt) : null;
+    this.x480 = this.shouldCalc.x480 ? new ceetor(waveManagers.x480, opt) : null;
+    this.x1440 = this.shouldCalc.x1440 ? new ceetor(waveManagers.x1440, opt) : null;
   }
 
   update(bigCandles: BigCandles) {
@@ -42,6 +42,7 @@ export class IndTimeframeGroup<T> {
       x240: this.shouldCalc.x240 ? (this.x240 as any).update(bigCandles.x240) : null,
       x480: this.shouldCalc.x480 ? (this.x480 as any).update(bigCandles.x480) : null,
       x1440: this.shouldCalc.x1440 ? (this.x1440 as any).update(bigCandles.x1440) : null
+      // x1440: null as any
     };
   }
 }

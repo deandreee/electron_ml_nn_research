@@ -34,5 +34,5 @@ export const timeEnd = (name: string, noThrow?: boolean) => {
   const end = new Date().getTime();
 
   const elapsedSeconds = round2((end - start) / 1000);
-  console.log(pad(`TIME ${name}:     ${elapsedSeconds}s`, 100, "="));
+  console.log(pad(`  TIME ${name}:     [${elapsedSeconds}s]  `, 100, "="));
 };

@@ -17,3 +17,4 @@ declare module "ml-xgboost";
 declare module "genetic-js";
 declare module "gauss";
 declare module "stats-percentile";
+declare module "cli-progress";

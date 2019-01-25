@@ -1,5 +1,6 @@
 import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
+// import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
+import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 // import * as mlXGClass from "../ml/mlXGClass";
 import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
@@ -11,22 +12,24 @@ import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
 
 import { gaConfig, userData } from "./geneticAlgo2";
-import { cloneDeep, sum } from "lodash";
-// import { GeneticMACD, GA_MACD } from "./gaMACD";
+import { sum } from "lodash";
+import { GeneticMACD, GA_MACD } from "./gaMACD";
+import { TimeFrame } from "../features/common";
 // import { GeneticKalman, GA_Kalman } from "./gaKalman";
-import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
+// import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
 
-// const t = "x480";
-// const feature: features.FeatureSplit = {
-//   name: `macd.${t}.opt`,
-//   fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
-// };
-
-const t = "x120";
+const t: TimeFrame = "x480";
+// const t: TimeFrame = "x60";
 const feature: features.FeatureSplit = {
-  name: `vixFix.${t}.opt`,
-  fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
+  name: `macd.${t}.opt`,
+  fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
 };
+
+// const t: TimeFrame = "x120";
+// const feature: features.FeatureSplit = {
+//   name: `vixFix.${t}.opt`,
+//   fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
+// };
 
 // const t = "x240";
 // const feature: features.FeatureSplit = {
@@ -54,17 +57,29 @@ const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRangesLast3_JunJulAugSep();
-  const candleMonths = queryCandlesBatched(coin, ranges);
+  // const candleMonths = queryCandlesBatched(coin, ranges);
   // const ranges = runUtils.genRanges_FastMiniTest();
 
-  const fnFitness = async (gaOpts: GA_VixFix) => {
+  const fnFitness = async (gaOpts: GA_MACD) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
-    const candleMonthsCloned = cloneDeep(candleMonths);
-    const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaOpts, skipLog: true });
+    // console.time("clone");
+    // const candleMonthsCloned = cloneDeep(candleMonths);
+    // console.timeEnd("clone");
+
+    // process.stdout.write("C");
+    // console.time("ind");
+    // const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaOpts, skipLog: true });
+    // console.timeEnd("ind");
+    // process.stdout.write("I");
+
+    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaOpts, skipLog: true });
+    process.stdout.write("T");
+
     const trainMonth = months[ranges[0].name];
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
+    process.stdout.write("T");
 
     const fScores = [];
     const resultsForAvg = [];
@@ -83,6 +98,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       await logFile(fileName, runConfig, coin.toString(), range.name, runConfigXG.BARRIER_LABEL, feature.name, results);
     }
 
+    process.stdout.write("P");
+
     // log.end(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
     booster.free();
@@ -94,16 +111,17 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const fnFitnessWrapper = async (gaOpts: GA_VixFix) => {
+  const fnFitnessWrapper = async (gaOpts: GA_MACD) => {
     try {
       return await fnFitness(gaOpts);
     } catch (err) {
       console.error(`${err.message} | ${JSON.stringify(gaOpts)}`);
+      console.error(err.stack);
       return 0;
     }
   };
 
-  const genetic = new GeneticVixFix(gaConfig, userData, fnFitnessWrapper);
+  const genetic = new GeneticMACD(gaConfig, userData, fnFitnessWrapper);
   genetic.evolve();
 
   return {

@@ -1,6 +1,7 @@
 import { Candle } from "../types";
 import { getPctChange } from "../utils";
 import { BARRIER_LABEL, TrippleBarrierLabel } from "../run/runConfigXG";
+import { BATCH_SIZE } from "./calcBatched";
 
 export const trippleBarrier = (
   candles: Candle[],
@@ -21,27 +22,34 @@ export const trippleBarrier = (
   return 1; // no action
 };
 
+const convert10mToBatchSize = (lookAhead: number) => {
+  return Math.ceil(lookAhead / (BATCH_SIZE / 10));
+};
+
+// sheet all these were in 10m, now we need to batchSize
 export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
   label = label || BARRIER_LABEL;
 
   if (label === "PT_FIVE") {
-    return { stopLoss: -0.5, takeProfit: 0.5, lookAhead: 20 };
+    return { stopLoss: -0.5, takeProfit: 0.5, lookAhead: convert10mToBatchSize(20) };
   }
 
   if (label === "ONE") {
-    return { stopLoss: -1, takeProfit: 1, lookAhead: 50 };
+    return { stopLoss: -1, takeProfit: 1, lookAhead: convert10mToBatchSize(50) };
   }
 
   if (label === "TWO") {
-    return { stopLoss: -2, takeProfit: 2, lookAhead: 140 };
+    return { stopLoss: -2, takeProfit: 2, lookAhead: convert10mToBatchSize(140) };
   }
 
   if (label === "THREE") {
-    return { stopLoss: -3, takeProfit: 3, lookAhead: 220 };
+    return { stopLoss: -3, takeProfit: 3, lookAhead: convert10mToBatchSize(220) };
   }
 
   if (label === "FIVE") {
-    return { stopLoss: -5, takeProfit: 5, lookAhead: 600 };
+    // return { stopLoss: -5, takeProfit: 5, lookAhead: convert10mToBatchSize(600) };
+    // for batch 60 need more not sure why
+    return { stopLoss: -5, takeProfit: 5, lookAhead: convert10mToBatchSize(700) };
   }
 
   throw new Error(`getTrippleBarrierConfig: Label ${label} not found`);

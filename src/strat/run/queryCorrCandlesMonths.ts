@@ -6,7 +6,7 @@ import * as calcBatched from "../corr/calcBatched";
 import { CorrCandles } from "../corr/CorrCandles";
 import { DateRange } from "../daterange";
 import * as log from "../log";
-import { batchCandlesIn10s } from "../db/batchCandlesIn10s";
+import { batchCandlesInXs } from "../db/batchCandlesIn10s";
 import * as calcBatchedProb from "../corr/calcBatchedProb";
 import { FeatureSplit } from "../features";
 
@@ -52,7 +52,7 @@ export const queryCorrCandlesMonthsBatched = (
     const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    batchCandlesIn10s(coin);
+    batchCandlesInXs(coin);
 
     if (!opts.skipLog) {
       log.end(`query ${range.name}`);
@@ -82,7 +82,7 @@ export const queryCandlesBatched = (coinName: Coins, ranges: DateRange[]) => {
     const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    batchCandlesIn10s(coin);
+    batchCandlesInXs(coin);
 
     candleMonths[range.name] = coin;
   }

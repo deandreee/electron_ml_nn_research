@@ -1,10 +1,11 @@
 import { WaveManager, WaveManagers, BatchWaveManager, BigCandles } from "../indicators/gekko";
 import { Candle } from "../types";
+import { BATCH_SIZE } from "./calcBatched";
 
 export const createManagers = (batchSize: number) => {
-  const waveManager10 = new BatchWaveManager(10, batchSize) as WaveManager;
-  const waveManager30 = new BatchWaveManager(30, batchSize) as WaveManager;
-  const waveManager60 = new BatchWaveManager(60, batchSize) as WaveManager;
+  const waveManager10 = BATCH_SIZE <= 10 ? (new BatchWaveManager(10, batchSize) as WaveManager) : undefined;
+  const waveManager30 = BATCH_SIZE <= 30 ? (new BatchWaveManager(30, batchSize) as WaveManager) : undefined;
+  const waveManager60 = BATCH_SIZE <= 60 ? (new BatchWaveManager(60, batchSize) as WaveManager) : undefined;
   const waveManager120 = new BatchWaveManager(120, batchSize) as WaveManager;
   const waveManager240 = new BatchWaveManager(240, batchSize) as WaveManager;
   const waveManager480 = new BatchWaveManager(480, batchSize) as WaveManager;
@@ -24,9 +25,9 @@ export const createManagers = (batchSize: number) => {
 };
 
 export const updateCandles = (waveManagers: WaveManagers, candle: Candle) => {
-  const bigCandle10 = waveManagers.x10.update(candle);
-  const bigCandle30 = waveManagers.x30.update(candle);
-  const bigCandle60 = waveManagers.x60.update(candle);
+  const bigCandle10 = BATCH_SIZE <= 10 ? waveManagers.x10.update(candle) : undefined;
+  const bigCandle30 = BATCH_SIZE <= 30 ? waveManagers.x30.update(candle) : undefined;
+  const bigCandle60 = BATCH_SIZE <= 60 ? waveManagers.x60.update(candle) : undefined;
   const bigCandle120 = waveManagers.x120.update(candle);
   const bigCandle240 = waveManagers.x240.update(candle);
   const bigCandle480 = waveManagers.x480.update(candle);
@@ -47,8 +48,8 @@ export const updateCandles = (waveManagers: WaveManagers, candle: Candle) => {
 
 export const areCandlesReady = (bigCandles: BigCandles) => {
   if (
-    !bigCandles.x10 ||
-    !bigCandles.x30 ||
+    // !bigCandles.x10 ||
+    // !bigCandles.x30 || // don't care about small ones
     !bigCandles.x60 ||
     !bigCandles.x120 ||
     !bigCandles.x240 ||

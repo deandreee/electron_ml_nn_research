@@ -7,7 +7,8 @@ export type GetIndVal = (candle: Candle, t: string, p: string) => number;
 
 export type FnGetFeaturesInXm = (x: Candle, i: number, corrCandles: CorrCandles, t: string, p: string) => number[];
 
-export const timeframes = ["x30", "x60", "x120", "x240", "x480", "x1440"];
+export type TimeFrame = "x10" | "x30" | "x60" | "x120" | "x240" | "x480" | "x1440";
+export const timeframes: TimeFrame[] = ["x60", "x120", "x240", "x480", "x1440"];
 
 export const getFeatureSplit = (
   name: string,

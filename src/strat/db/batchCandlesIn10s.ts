@@ -1,9 +1,8 @@
 import { Candle, CoinData } from "../types";
+import { BATCH_SIZE } from "../corr/calcBatched";
 const { CandleBatcher2 } = require("../../../../gekko-develop/strategies/utils");
 
-const BATCH_SIZE = 10;
-
-export const batchCandlesIn10s = (coin: CoinData) => {
+export const batchCandlesInXs = (coin: CoinData) => {
   const batcher = new CandleBatcher2(BATCH_SIZE);
   const bigCandles: Candle[] = [];
   const candles = coin.candles;

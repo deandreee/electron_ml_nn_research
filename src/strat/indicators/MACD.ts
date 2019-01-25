@@ -17,11 +17,11 @@ export class MACD {
     // from here: https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd
     // http://etfhq.com/blog/2013/02/26/macd-test-results/
     const settings: IndSettings = {
-      sig5: { short: 5, long: 35, signal: 5 },
-      sig9: { short: 12, long: 26, signal: 9 },
-      sig2_10: { short: 10, long: 60, signal: 2 },
-      sig2_16: { short: 16, long: 97, signal: 2 },
-      opt
+      // sig5: { short: 5, long: 35, signal: 5 },
+      // sig9: { short: 12, long: 26, signal: 9 },
+      // sig2_10: { short: 10, long: 60, signal: 2 },
+      // sig2_16: { short: 16, long: 97, signal: 2 },
+      opt: opt || { short: 10, long: 20, signal: 5 } // need something otherwise NaN feature :/
     };
 
     this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));

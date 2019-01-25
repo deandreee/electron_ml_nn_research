@@ -35,8 +35,11 @@ const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const { ADX } = require(`${GEKKO}/indicators`);
 
-export const BATCH_SIZE = 10;
-export const WARMUP_IND = 480 * 100; // => ind ready | vixFix lb 90
+const MAX_TF = 1440; // was 480 prev
+
+// export const BATCH_SIZE = 10;
+export const BATCH_SIZE = 60;
+export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / BATCH_SIZE;
 export const EXTENDED_COUNT = EXTENDED / BATCH_SIZE;
@@ -82,7 +85,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
   const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"), opt);
 
-  const atr = new ATR(waveManagers.x10);
+  // now x60, basically smallest available
+  // const atr = new ATR(waveManagers.x10);
+  const atr = new ATR(waveManagers.x60);
 
   const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"), opt);
   const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"), opt);
