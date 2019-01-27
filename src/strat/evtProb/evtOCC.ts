@@ -1,6 +1,6 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
-import { getInd, ps } from "../features/getOCC";
+import { getInd, ps } from "../features/getEMAOCC";
 import { timeframes } from "../features/common";
 import { loop } from "./common";
 

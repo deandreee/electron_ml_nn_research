@@ -130,7 +130,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.macd.x240.sig9.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         ...getVsPrice(x.ind.bbands.x240.p30_dev2, x.close),
-        x.ind.emaOCC.x240.emaOCC_30,
+        x.ind.emaOCC.x240x.p30.diff,
         x.ind.zerolagT3.x60.p10
       ]
     },
@@ -192,7 +192,7 @@ export const getCombo = (): FeatureSplit[] => {
         x.ind.atr.p480,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.rsi.x480.p30,
-        x.ind.emaOCC.x480.emaOCC_30
+        x.ind.emaOCC.x480.p30.diff
       ]
     },
 
@@ -257,7 +257,7 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "macd.vixFix.vwap.emaOCC",
-      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.emaOCC.x60.emaOCC_20]
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.vwap.x30.p40.den, x.ind.emaOCC.x60.p20.diff]
     },
 
     {

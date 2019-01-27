@@ -13,7 +13,7 @@ import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix } from "./getVixFix";
 import { getTest } from "./getTest";
-import { getOCC } from "./getOCC";
+import { getEMAOCC } from "./getEMAOCC";
 import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC } from "./getLRC";
@@ -37,7 +37,7 @@ const getAll = () => {
     ...getStochKD(),
     ...getVWAP(),
     ...getVixFix(),
-    ...getOCC(),
+    ...getEMAOCC(),
     ...getT3MACD(),
     ...getZerolagT3(),
     ...getLRC(),
@@ -66,7 +66,7 @@ export {
   getVWAP,
   getVixFix,
   getTest,
-  getOCC,
+  getEMAOCC,
   getT3MACD,
   getZerolagT3,
   getLRC,

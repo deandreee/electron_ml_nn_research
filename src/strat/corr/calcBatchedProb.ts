@@ -7,7 +7,7 @@ import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import * as corrUtils from "./utils";
 
-import { EMAxOCC } from "../indicators/EMAxOCC";
+import { EMAOCC } from "../indicators/EMAOCC";
 import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
 import { Keltner } from "../indicators/Keltner";
@@ -28,7 +28,7 @@ export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[
   const waveManagers = waveUtils.createManagers(BATCH_SIZE);
 
   // @ts-ignore
-  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers);
+  const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers);
   // @ts-ignore
   const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
   // @ts-ignore

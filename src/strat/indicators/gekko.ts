@@ -21,7 +21,8 @@ const {
   WilliamsR,
   PSAR_TI,
   PSARProps,
-  Kalman
+  Kalman,
+  EMAOCC
 } = require(`${GEKKO}/indicators`);
 
 const {
@@ -83,5 +84,6 @@ export {
   WilliamsR,
   PSAR_TI,
   PSARProps,
-  Kalman
+  Kalman,
+  EMAOCC
 };

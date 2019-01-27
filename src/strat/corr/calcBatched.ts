@@ -4,7 +4,7 @@ import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
-import { EMAxOCC } from "../indicators/EMAxOCC";
+import { EMAOCC } from "../indicators/EMAOCC";
 import { T3MACD } from "../indicators/T3MACD";
 import { ZerolagT3 } from "../indicators/ZerolagT3";
 import { ZerolagMACD } from "../indicators/ZerolagMACD";
@@ -69,7 +69,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
   const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"), opt);
 
-  const emaOCC = new IndTimeframeGroup(EMAxOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"), opt);
+  const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"), opt);
   const t3Macd = new IndTimeframeGroup(T3MACD, waveManagers, getShouldCalc(featuresSplit, "t3Macd"), opt);
   const zerolagT3 = new IndTimeframeGroup(ZerolagT3, waveManagers, getShouldCalc(featuresSplit, "zerolagT3"), opt);
   const lrc = new IndTimeframeGroup(LRC, waveManagers, getShouldCalc(featuresSplit, "lrc"), opt);

@@ -24,7 +24,7 @@ export class VixFix {
       g: { pd: 22, bbl: 20, mult: 1.5, lb: 50, ph: 0.85 },
       h: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 },
       i: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 },
-      opt
+      opt: opt || { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 }
     };
 
     this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));

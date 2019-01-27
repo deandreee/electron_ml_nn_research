@@ -1,6 +1,6 @@
 import { PaperTrader } from "./gekko/PaperTrader";
 import { CorrCandles } from "./corr/CorrCandles";
-import { IndEMAxOCC } from "./indicators/EMAxOCC";
+import { IndEMAOCC } from "./indicators/EMAOCC";
 import { IndT3MACD } from "./indicators/T3MACD";
 import { IndZerolagT3 } from "./indicators/ZerolagT3";
 import { IndTimeframes } from "./indicators/IndTimeframeGroup";
@@ -131,6 +131,12 @@ export interface VWAPValue {
   den: number;
 }
 
+export interface OCCValue {
+  open: number;
+  close: number;
+  diff: number;
+}
+
 export interface Indicators {
   rsi?: IndTimeframes<IndRSI>;
 
@@ -186,7 +192,7 @@ export interface Indicators {
   vwap?: IndTimeframes<IndVWAP>;
   williamsR?: IndTimeframes<IndWilliamsR>;
 
-  emaOCC?: IndTimeframes<IndEMAxOCC>;
+  emaOCC?: IndTimeframes<IndEMAOCC>;
   t3Macd?: IndTimeframes<IndT3MACD>;
   zerolagT3?: IndTimeframes<IndZerolagT3>;
   lrc?: IndTimeframes<IndLRC>;
