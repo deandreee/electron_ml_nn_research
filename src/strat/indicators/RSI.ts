@@ -13,19 +13,7 @@ export class RSI {
 
   static getPS = () => Object.keys(new RSI({} as WaveManager).ind);
 
-  p5: any;
-  p10: any;
-  p15: any;
-  p20: any;
-  p30: any;
-
   constructor(waveManager: WaveManager) {
-    this.p5 = new XmBase(waveManager, () => new _RSI({ interval: 5 }));
-    this.p10 = new XmBase(waveManager, () => new _RSI({ interval: 10 }));
-    this.p15 = new XmBase(waveManager, () => new _RSI({ interval: 15 }));
-    this.p20 = new XmBase(waveManager, () => new _RSI({ interval: 20 }));
-    this.p30 = new XmBase(waveManager, () => new _RSI({ interval: 30 }));
-
     const settings: IndSettings = {
       p5: { interval: 5 },
       p10: { interval: 10 },
