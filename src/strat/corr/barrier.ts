@@ -35,7 +35,9 @@ export const getTrippleBarrierConfig = (label?: TrippleBarrierLabel) => {
   }
 
   if (label === "ONE") {
-    return { stopLoss: -1, takeProfit: 1, lookAhead: convert10mToBatchSize(50) };
+    // return { stopLoss: -1, takeProfit: 1, lookAhead: convert10mToBatchSize(50) };
+    // adjust for x60 candles
+    return { stopLoss: -1, takeProfit: 1, lookAhead: convert10mToBatchSize(60) };
   }
 
   if (label === "TWO") {

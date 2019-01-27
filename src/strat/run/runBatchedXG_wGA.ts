@@ -10,7 +10,10 @@ import * as runConfigXG from "./runConfigXG";
 import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
 
-import { CustomGenetic, gaConfig, userData } from "./geneticAlgo2";
+import { gaConfig, userData, GAEntity } from "./ga/common";
+import { GACore } from "./ga/GACore";
+import * as GAOpts from "./ga/GAOpts";
+
 import { sum } from "lodash";
 
 // const featureName = "x240.macd.sig9";
@@ -48,8 +51,10 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
-  const fnFitness = async (runConfig: runConfigXG.RunConfigXG) => {
+  const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
+
+    const runConfig = gaEntity as runConfigXG.RunConfigXG;
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
 
@@ -82,7 +87,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const genetic = new CustomGenetic(gaConfig, userData, fnFitness);
+  const genetic = new GACore({ config: gaConfig, gaOpts: GAOpts.XG, userData, fnFitness });
   genetic.evolve();
 
   return {

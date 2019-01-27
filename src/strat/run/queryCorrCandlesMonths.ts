@@ -96,6 +96,8 @@ export const calcIndicators = (
   featuresSplit: FeatureSplit[],
   opts?: Opts
 ) => {
+  opts = opts || {};
+
   const corrCandleMonths: CorrCandleMonths = {};
 
   for (let range of ranges) {

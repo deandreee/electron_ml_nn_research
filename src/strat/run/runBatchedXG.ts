@@ -1,5 +1,6 @@
 import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+// import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
@@ -25,7 +26,11 @@ const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
 } ] [ lbl ${BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
+  // const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
+
+  const candleMonths = queryCandlesBatched(Coins.BTC, ranges);
+  const months = calcIndicators(candleMonths, ranges, featuresSplit);
+
   const trainMonth = months[ranges[0].name];
 
   // runUtils.getIndMinMax(trainMonth);

@@ -11,19 +11,19 @@ import * as runConfigXG from "./runConfigXG";
 import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
 
-import { gaConfig, userData } from "./geneticAlgo2";
 import { sum } from "lodash";
-import { GeneticMACD, GA_MACD } from "./gaMACD";
 import { TimeFrame } from "../features/common";
-// import { GeneticKalman, GA_Kalman } from "./gaKalman";
-// import { GeneticVixFix, GA_VixFix } from "./gaVixFix";
 
-const t: TimeFrame = "x480";
-// const t: TimeFrame = "x60";
-const feature: features.FeatureSplit = {
-  name: `macd.${t}.opt`,
-  fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
-};
+import { gaConfig, userData, GAEntity } from "./ga/common";
+import { GACore } from "./ga/GACore";
+import * as GAOpts from "./ga/GAOpts";
+
+// const gaOpts = GAOpts.MACD;
+// const t: TimeFrame = "x1440";
+// const feature: features.FeatureSplit = {
+//   name: `macd.${t}.opt`,
+//   fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
+// };
 
 // const t: TimeFrame = "x120";
 // const feature: features.FeatureSplit = {
@@ -31,21 +31,22 @@ const feature: features.FeatureSplit = {
 //   fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
 // };
 
-// const t = "x240";
-// const feature: features.FeatureSplit = {
-//   name: `kalman.${t}.opt`,
-//   fn: (x, i, corrCandles) => [
-//     x.ind.kalman[t].opt,
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 3).ind.kalman[t].opt, // 30m
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6).ind.kalman[t].opt, // 1h
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 3).ind.kalman[t].opt, // 3h
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 6).ind.kalman[t].opt,
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 12).ind.kalman[t].opt,
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24).ind.kalman[t].opt,
-//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24 * 3).ind.kalman[t].opt, // 3d
-//     x.ind.kalman[t].opt - x.close
-//   ]
-// };
+const gaOpts = GAOpts.Kalman;
+const t: TimeFrame = "x1440";
+const feature: features.FeatureSplit = {
+  name: `kalman.${t}.opt`,
+  fn: (x, i, corrCandles) => [
+    x.ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 3).ind.kalman[t].opt, // 30m
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6).ind.kalman[t].opt, // 1h
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 3).ind.kalman[t].opt, // 3h
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 6).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 12).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24).ind.kalman[t].opt,
+    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24 * 3).ind.kalman[t].opt, // 3d
+    x.ind.kalman[t].opt - x.close
+  ]
+};
 
 const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
@@ -60,7 +61,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   // const candleMonths = queryCandlesBatched(coin, ranges);
   // const ranges = runUtils.genRanges_FastMiniTest();
 
-  const fnFitness = async (gaOpts: GA_MACD) => {
+  const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
     // console.time("clone");
@@ -69,11 +70,11 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     // process.stdout.write("C");
     // console.time("ind");
-    // const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaOpts, skipLog: true });
+    // const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaEntity, skipLog: true });
     // console.timeEnd("ind");
     // process.stdout.write("I");
 
-    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaOpts, skipLog: true });
+    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
     process.stdout.write("T");
 
     const trainMonth = months[ranges[0].name];
@@ -111,17 +112,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     return sum(fScores) / fScores.length;
   };
 
-  const fnFitnessWrapper = async (gaOpts: GA_MACD) => {
-    try {
-      return await fnFitness(gaOpts);
-    } catch (err) {
-      console.error(`${err.message} | ${JSON.stringify(gaOpts)}`);
-      console.error(err.stack);
-      return 0;
-    }
-  };
-
-  const genetic = new GeneticMACD(gaConfig, userData, fnFitnessWrapper);
+  const genetic = new GACore({ config: gaConfig, gaOpts, userData, fnFitness });
   genetic.evolve();
 
   return {
