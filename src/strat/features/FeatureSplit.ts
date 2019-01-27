@@ -22,5 +22,5 @@ export const getCoreName = (featuresSplit: FeatureSplit[]) => {
     throw new Error(`getCoreName name parts not 3: ${featuresSplit[0].name}`);
   }
 
-  return parts[1];
+  return parts[0];
 };

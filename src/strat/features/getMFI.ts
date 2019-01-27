@@ -1,20 +1,18 @@
-import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
+import { Candle } from "../types";
+import { P_MFI, MFI } from "../indicators/MFI";
+import { getFeatureSplit, timeframes } from "./common";
+
+export const indName = "mfi";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.mfi[t][p as P_MFI];
+};
+
+export const ps = MFI.getPS();
 
 export const getMFI = (): FeatureSplit[] => {
-  const timeframes = ["x30", "x60", "x120", "x240", "x480"];
-  const ps = ["p5", "p10", "p15", "p20", "p30", "p45", "p60"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `${tf}.mfi.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.mfi[tf][p]]
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.mfi[t][p as P_MFI]];
+  });
 };

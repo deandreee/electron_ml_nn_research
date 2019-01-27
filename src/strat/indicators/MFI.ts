@@ -1,45 +1,37 @@
 import { XmBase, MFI as _MFI, WaveManager } from "./gekko";
-import { Candle } from "../types";
+import { Candle, IndSettings } from "../types";
+import { mapObj } from "../utils";
 
-export interface IndMFI {
-  [p: string]: number;
-  p5: number;
-  p10: number;
-  p15: number;
-  p20: number;
-  p30: number;
-  p45: number;
-  p60: number;
-}
+export type P_MFI = "p5" | "p10" | "p15" | "p20" | "p30" | "p45" | "p60";
+
+export type IndMFI = { [p in P_MFI]: number };
+
+type Internal = { [p in P_MFI]: any };
 
 export class MFI {
-  p5: any;
-  p10: any;
-  p15: any;
-  p20: any;
-  p30: any;
-  p45: any;
-  p60: any;
+  ind: Internal;
+
+  static getPS = () => Object.keys(new MFI({} as WaveManager).ind);
 
   constructor(waveManager: WaveManager) {
-    this.p5 = new XmBase(waveManager, () => new _MFI(5));
-    this.p10 = new XmBase(waveManager, () => new _MFI(10));
-    this.p15 = new XmBase(waveManager, () => new _MFI(10));
-    this.p20 = new XmBase(waveManager, () => new _MFI(20));
-    this.p30 = new XmBase(waveManager, () => new _MFI(30));
-    this.p45 = new XmBase(waveManager, () => new _MFI(45));
-    this.p60 = new XmBase(waveManager, () => new _MFI(60));
+    const settings: IndSettings = {
+      p5: { interval: 5 },
+      p10: { interval: 10 },
+      p15: { interval: 15 },
+      p20: { interval: 20 },
+      p30: { interval: 30 },
+      p45: { interval: 45 },
+      p60: { interval: 60 }
+    };
+
+    this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));
   }
 
+  createXm = (waveManager: WaveManager, settings: any) => {
+    return new XmBase(waveManager, () => new _MFI(settings.interval));
+  };
+
   update(bigCandle: Candle): IndMFI {
-    return {
-      p5: this.p5.update(bigCandle),
-      p10: this.p10.update(bigCandle),
-      p15: this.p15.update(bigCandle),
-      p20: this.p20.update(bigCandle),
-      p30: this.p30.update(bigCandle),
-      p45: this.p45.update(bigCandle),
-      p60: this.p60.update(bigCandle)
-    };
+    return mapObj(this.ind, (k: string) => this.ind[k as P_MFI].update(bigCandle));
   }
 }
