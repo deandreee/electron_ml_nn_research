@@ -1,20 +1,18 @@
-import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
+import { Candle } from "../types";
+import { P_StochKD, StochKD } from "../indicators/StochKD";
+import { getFeatureSplit, timeframes } from "./common";
+
+export const indName = "stochKD";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.stochKD[t][p as P_StochKD].k;
+};
+
+export const ps = StochKD.getPS();
 
 export const getStochKD = (): FeatureSplit[] => {
-  const timeframes = ["x30", "x60", "x120", "x240", "x480"];
-  const ps = ["p10", "p14", "p20", "p30"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `${tf}.stochKD.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.stochKD[tf][p].k - x.ind.stochKD[tf][p].d]
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.stochKD[t][p as P_StochKD].k, x.ind.stochKD[t][p as P_StochKD].d];
+  });
 };
