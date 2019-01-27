@@ -17,7 +17,7 @@ const coin = Coins.BTC;
 export const runBatchedXG = async (): Promise<RunResult> => {
   const feature = features.getCombo().find(x => x.name === featureName);
 
-  const ranges = runUtils.genRanges_TrainJunJul();
+  const ranges = runUtils.genRanges_JJAS();
   const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

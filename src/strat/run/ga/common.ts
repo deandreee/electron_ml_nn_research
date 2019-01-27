@@ -27,7 +27,7 @@ export const gaConfig: Partial<Genetic.Configuration> = {
   crossover: 0.4,
   iterations: 2000,
   mutation: 0.3,
-  size: 20
+  size: 10
 };
 
 export type GATransform = (gaEntity: GAEntity) => GAEntity;

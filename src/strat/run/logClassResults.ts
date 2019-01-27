@@ -3,6 +3,7 @@ import { round2 } from "../utils";
 import { EvalResults, HitRate } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
 import { RunConfigXG } from "./runConfigXG";
+import { GAEntity } from "./ga/common";
 
 export const logConsole = (rangeName: string, results: EvalResults) => {
   console.log(
@@ -29,12 +30,9 @@ export const logFile = async (
   rangeName: string,
   labelName: string,
   featureName: string,
-  results: EvalResults
+  results: EvalResults,
+  gaEntity?: GAEntity
 ) => {
-  if (!(await csvLog.exists(fileName))) {
-    await logFileHeader(fileName);
-  }
-
   await csvLog.append(fileName, [
     new Date().toISOString(),
     coinName,
@@ -61,37 +59,41 @@ export const logFile = async (
     round2(results.precision[1]),
     round2(results.recall[1]),
     round2(results.precision[2]),
-    round2(results.recall[2])
+    round2(results.recall[2]),
+    JSON.stringify(gaEntity)
   ]);
 };
 
-const logFileHeader = async (fileName: string) => {
-  await csvLog.append(fileName, [
-    "DATE",
-    "COIN",
-    "RANGE",
-    "LABEL",
-    "FEATURE",
-    "IDX",
-    "ETA",
-    "GAMMA",
-    "MAX_DEPTH",
-    "MIN_CHILD_WEIGHT",
-    "SUBSAMPLE",
-    "ITERATIONS",
-    "PREC_TOTAL",
-    "RECALL_TOTAL",
-    "FSCORE",
-    "HITRATE",
-    "BIG_ERR_REV",
-    "ZERO_HITRATE",
-    "ONE_HITRATE",
-    "TWO_HITRATE",
-    "PREC_ZERO",
-    "RECALL_ZERO",
-    "PREC_ONE",
-    "RECALL_ONE",
-    "PREC_TWO",
-    "RECALL_TWO"
-  ]);
+export const logFileHeader = async (fileName: string) => {
+  if (!(await csvLog.exists(fileName))) {
+    await csvLog.append(fileName, [
+      "DATE",
+      "COIN",
+      "RANGE",
+      "LABEL",
+      "FEATURE",
+      "IDX",
+      "ETA",
+      "GAMMA",
+      "MAX_DEPTH",
+      "MIN_CHILD_WEIGHT",
+      "SUBSAMPLE",
+      "ITERATIONS",
+      "PREC_TOTAL",
+      "RECALL_TOTAL",
+      "FSCORE",
+      "HITRATE",
+      "BIG_ERR_REV",
+      "ZERO_HITRATE",
+      "ONE_HITRATE",
+      "TWO_HITRATE",
+      "PREC_ZERO",
+      "RECALL_ZERO",
+      "PREC_ONE",
+      "RECALL_ONE",
+      "PREC_TWO",
+      "RECALL_TWO",
+      "GA_ENTITY"
+    ]);
+  }
 };

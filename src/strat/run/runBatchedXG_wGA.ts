@@ -44,7 +44,7 @@ const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.BARR
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRangesLast3_JunJulAugSep();
+  const ranges = runUtils.genRanges_JJAS();
   const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

@@ -1,6 +1,6 @@
 import { Coins, RunResult, LinRegResult } from "../types";
-// import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
-import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
+import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+// import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
 
 // import * as mlXGClass from "../ml/mlXGClass";
 import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
@@ -8,10 +8,10 @@ import * as features from "../features";
 import * as runUtils from "./runUtils";
 import * as runConfigXG from "./runConfigXG";
 
-import { logConsole, logFile } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "./logClassResults";
 // import * as log from "../log";
 
-import { sum, cloneDeep } from "lodash";
+import { sum } from "lodash";
 import { TimeFrame } from "../features/common";
 
 import { gaConfig, userData, GAEntity } from "./ga/common";
@@ -65,29 +65,29 @@ const linRegs: LinRegResult[] = [];
 const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRangesLast3_JunJulAugSep();
+  const ranges = runUtils.genRanges_JJAS();
   // const ranges = runUtils.genRanges_FastMiniTest();
 
   // console.time("queryCandlesBatched");
-  const candleMonths = queryCandlesBatched(coin, ranges);
+  // const candleMonths = queryCandlesBatched(coin, ranges);
   // console.timeEnd("queryCandlesBatched");
+
+  await logFileHeader(fileName);
 
   const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
-    console.log(gaEntity);
-
     // console.time("clone");
-    const candleMonthsCloned = cloneDeep(candleMonths);
-    // console.timeEnd("clone");
-    process.stdout.write("C");
+    // const candleMonthsCloned = cloneDeep(candleMonths);
+    // // console.timeEnd("clone");
+    // process.stdout.write("C");
 
-    // console.time("ind");
-    const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaEntity, skipLog: true });
-    // console.timeEnd("ind");
-    process.stdout.write("I");
+    // // console.time("ind");
+    // const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaEntity, skipLog: true });
+    // // console.timeEnd("ind");
+    // process.stdout.write("I");
 
-    // const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
+    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
     // process.stdout.write("T");
 
     const trainMonth = months[ranges[0].name];
@@ -114,7 +114,16 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       }
 
       // logConsole(range.name, results); // let's skip for now, too much noise
-      await logFile(fileName, runConfig, coin.toString(), range.name, runConfigXG.BARRIER_LABEL, feature.name, results);
+      await logFile(
+        fileName,
+        runConfig,
+        coin.toString(),
+        range.name,
+        runConfigXG.BARRIER_LABEL,
+        feature.name,
+        results,
+        gaEntity
+      );
     }
 
     process.stdout.write("P");
@@ -125,7 +134,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfig, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults);
+    await logFile(fileName, runConfig, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults, gaEntity);
 
     return sum(fScores) / fScores.length;
   };

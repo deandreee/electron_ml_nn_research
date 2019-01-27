@@ -1,16 +1,18 @@
 import { XmBase, RSI as _RSI, WaveManager } from "./gekko";
-import { Candle } from "../types";
+import { Candle, IndSettings } from "../types";
+import { mapObj } from "../utils";
 
-export interface IndRSI {
-  [sig: string]: number;
-  p5: number;
-  p10: number;
-  p15: number;
-  p20: number;
-  p30: number;
-}
+export type P_RSI = "p5" | "p10" | "p15" | "p20" | "p30";
+
+export type IndRSI = { [p in P_RSI]: number };
+
+type Internal = { [p in P_RSI]: any };
 
 export class RSI {
+  ind: Internal;
+
+  static getPS = () => Object.keys(new RSI({} as WaveManager).ind);
+
   p5: any;
   p10: any;
   p15: any;
@@ -23,15 +25,23 @@ export class RSI {
     this.p15 = new XmBase(waveManager, () => new _RSI({ interval: 15 }));
     this.p20 = new XmBase(waveManager, () => new _RSI({ interval: 20 }));
     this.p30 = new XmBase(waveManager, () => new _RSI({ interval: 30 }));
+
+    const settings: IndSettings = {
+      p5: { interval: 5 },
+      p10: { interval: 10 },
+      p15: { interval: 15 },
+      p20: { interval: 20 },
+      p30: { interval: 30 }
+    };
+
+    this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));
   }
 
+  createXm = (waveManager: WaveManager, settings: any) => {
+    return new XmBase(waveManager, () => new _RSI(settings));
+  };
+
   update(bigCandle: Candle): IndRSI {
-    return {
-      p5: this.p5.update(bigCandle),
-      p10: this.p10.update(bigCandle),
-      p15: this.p15.update(bigCandle),
-      p20: this.p20.update(bigCandle),
-      p30: this.p30.update(bigCandle)
-    };
+    return mapObj(this.ind, (k: string) => this.ind[k as P_RSI].update(bigCandle));
   }
 }

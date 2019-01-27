@@ -1,20 +1,18 @@
-import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
+import { Candle } from "../types";
+import { P_RSI, RSI } from "../indicators/RSI";
+import { getFeatureSplit, timeframes } from "./common";
+
+export const indName = "rsi";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.rsi[t][p as P_RSI];
+};
+
+export const ps = RSI.getPS();
 
 export const getRSI = (): FeatureSplit[] => {
-  const timeframes = ["x30", "x60", "x120", "x240", "x480"];
-  const ps = ["p5", "p10", "p15", "p20", "p30"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `${tf}.rsi.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.rsi[tf][p]]
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [x.ind.rsi[t][p as P_RSI]];
+  });
 };
