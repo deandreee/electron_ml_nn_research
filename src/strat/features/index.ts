@@ -22,6 +22,7 @@ import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
 import { getPSAR } from "./getPSAR";
 import { getValidation } from "./getValidation";
+import { getValidationCombo } from "./getValidationCombo";
 import { getKalman, getKalmanDiff } from "./getKalman";
 
 const getAll = () => {
@@ -75,6 +76,7 @@ export {
   getWilliamsR,
   getPSAR,
   getValidation,
+  getValidationCombo,
   getKalman,
   getKalmanDiff
 };

@@ -3,7 +3,7 @@ import { Candle } from "../types";
 import { P_KST, KST } from "../indicators/KST";
 import { getFeatureSplit, timeframes } from "./common";
 
-export const indName = "KST";
+export const indName = "kst";
 
 export const getInd = (candle: Candle, t: string, p: string) => {
   return candle.ind.kst[t][p as P_KST];

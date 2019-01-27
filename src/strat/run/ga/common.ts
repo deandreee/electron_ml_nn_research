@@ -30,6 +30,8 @@ export const gaConfig: Partial<Genetic.Configuration> = {
   size: 20
 };
 
+export type GATransform = (gaEntity: GAEntity) => GAEntity;
+
 export type GAProp = string | number | boolean;
 
 // single
@@ -39,7 +41,8 @@ export interface GAEntity {
 
 // options
 export interface GAOpts {
-  [x: string]: GAProp[];
+  props: { [x: string]: GAProp[] };
+  transform?: GATransform;
 }
 
 export const random5050 = (): Random5050 => {

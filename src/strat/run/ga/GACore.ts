@@ -56,10 +56,14 @@ export class GACore extends Genetic.Genetic<GAEntity, UserData> {
   }
 
   createChild(mother: GAEntity, father: GAEntity): GAEntity {
-    const child = this.seed();
+    let child = this.seed();
 
     for (let k in this.getMutableProps()) {
       child[k] = random5050() === 1 ? mother[k] : father[k];
+    }
+
+    if (this.gaOpts.transform) {
+      child = this.gaOpts.transform(child);
     }
 
     return child;
@@ -86,7 +90,7 @@ export class GACore extends Genetic.Genetic<GAEntity, UserData> {
     // return Object.keys(entity).filter(x => x !== "idx");
 
     // let's try this actually
-    return Object.keys(this.gaOpts);
+    return Object.keys(this.gaOpts.props);
   }
 
   mutate(entity: GAEntity) {
@@ -102,18 +106,22 @@ export class GACore extends Genetic.Genetic<GAEntity, UserData> {
   setRandomProp(entity: GAEntity) {
     const props = this.getMutableProps();
     const prop1 = takeRandomStr(props) as string;
-    entity[prop1] = takeRandom(this.gaOpts[prop1]) as number;
+    entity[prop1] = takeRandom(this.gaOpts.props[prop1]) as number;
   }
 
   seed() {
-    const base: GAEntity = {};
+    let base: GAEntity = {};
     const props = this.getMutableProps();
     for (let k of props) {
-      if (this.gaOpts[k] === null || this.gaOpts[k] === undefined) {
+      if (this.gaOpts.props[k] === null || this.gaOpts.props[k] === undefined) {
         throw new Error(`GAOpts empty for key: ${k}`);
       }
 
-      base[k] = takeRandom(this.gaOpts[k]);
+      base[k] = takeRandom(this.gaOpts.props[k]);
+    }
+
+    if (this.gaOpts.transform) {
+      base = this.gaOpts.transform(base);
     }
 
     base.idx = this.idx++;

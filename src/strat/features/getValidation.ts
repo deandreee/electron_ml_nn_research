@@ -10,10 +10,10 @@ export const getValidation = (): FeatureSplit[] => {
       name: "macd.x120.sig9",
       fn: x => [x.ind.macd.x120.sig9.histo]
     },
-    {
-      name: "vwap.x30.p40",
-      fn: x => [x.ind.vwap.x30.p40.den]
-    },
+    // {
+    //   name: "vwap.x30.p40",
+    //   fn: x => [x.ind.vwap.x30.p40.den]
+    // },
     {
       name: "t3Macd.x120.sig2_16.histo",
       fn: x => [x.ind.t3Macd.x120.sig2_16.histo]
@@ -34,7 +34,7 @@ export const getValidation = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x120.a,
         x.ind.macd.x120.sig9.histo,
-        x.ind.vwap.x30.p40.den,
+        // x.ind.vwap.x30.p40.den,
         x.ind.t3Macd.x120.sig2_16.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.kst.x60.p_sig3.kst

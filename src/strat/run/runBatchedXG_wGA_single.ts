@@ -1,6 +1,6 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 // import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
 
 // import * as mlXGClass from "../ml/mlXGClass";
 import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
@@ -11,7 +11,7 @@ import * as runConfigXG from "./runConfigXG";
 import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
 
-import { sum } from "lodash";
+import { sum, cloneDeep } from "lodash";
 import { TimeFrame } from "../features/common";
 
 import { gaConfig, userData, GAEntity } from "./ga/common";
@@ -25,28 +25,36 @@ import * as GAOpts from "./ga/GAOpts";
 //   fn: (x, i, corrCandles) => [x.ind.macd[t].opt.histo]
 // };
 
+// const gaOpts = GAOpts.VixFix;
 // const t: TimeFrame = "x120";
 // const feature: features.FeatureSplit = {
 //   name: `vixFix.${t}.opt`,
 //   fn: (x, i, corrCandles) => [x.ind.vixFix[t].opt]
 // };
 
-const gaOpts = GAOpts.Kalman;
-const t: TimeFrame = "x1440";
+const gaOpts = GAOpts.KST;
+const t: TimeFrame = "x240";
 const feature: features.FeatureSplit = {
-  name: `kalman.${t}.opt`,
-  fn: (x, i, corrCandles) => [
-    x.ind.kalman[t].opt,
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 3).ind.kalman[t].opt, // 30m
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6).ind.kalman[t].opt, // 1h
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 3).ind.kalman[t].opt, // 3h
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 6).ind.kalman[t].opt,
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 12).ind.kalman[t].opt,
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24).ind.kalman[t].opt,
-    x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24 * 3).ind.kalman[t].opt, // 3d
-    x.ind.kalman[t].opt - x.close
-  ]
+  name: `kst.${t}.opt`,
+  fn: (x, i, corrCandles) => [x.ind.kst[t].opt.kst]
 };
+
+// const gaOpts = GAOpts.Kalman;
+// const t: TimeFrame = "x1440";
+// const feature: features.FeatureSplit = {
+//   name: `kalman.${t}.opt`,
+//   fn: (x, i, corrCandles) => [
+//     x.ind.kalman[t].opt,
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 3).ind.kalman[t].opt, // 30m
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6).ind.kalman[t].opt, // 1h
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 3).ind.kalman[t].opt, // 3h
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 6).ind.kalman[t].opt,
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 12).ind.kalman[t].opt,
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24).ind.kalman[t].opt,
+//     x.ind.kalman[t].opt - corrCandles.getPrev(i, 6 * 24 * 3).ind.kalman[t].opt, // 3d
+//     x.ind.kalman[t].opt - x.close
+//   ]
+// };
 
 const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
@@ -58,28 +66,36 @@ const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRangesLast3_JunJulAugSep();
-  // const candleMonths = queryCandlesBatched(coin, ranges);
   // const ranges = runUtils.genRanges_FastMiniTest();
+
+  // console.time("queryCandlesBatched");
+  const candleMonths = queryCandlesBatched(coin, ranges);
+  // console.timeEnd("queryCandlesBatched");
 
   const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
+    console.log(gaEntity);
+
     // console.time("clone");
-    // const candleMonthsCloned = cloneDeep(candleMonths);
+    const candleMonthsCloned = cloneDeep(candleMonths);
     // console.timeEnd("clone");
+    process.stdout.write("C");
 
-    // process.stdout.write("C");
     // console.time("ind");
-    // const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaEntity, skipLog: true });
+    const months = calcIndicators(candleMonthsCloned, ranges, [feature], { ga: gaEntity, skipLog: true });
     // console.timeEnd("ind");
-    // process.stdout.write("I");
+    process.stdout.write("I");
 
-    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
-    process.stdout.write("T");
+    // const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
+    // process.stdout.write("T");
 
     const trainMonth = months[ranges[0].name];
 
+    // console.time("train");
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
+    // console.timeEnd("train");
+
     process.stdout.write("T");
 
     const fScores = [];
@@ -88,7 +104,9 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
+      // console.time("predict");
       const { results } = await mlXGClass.predict(booster, corrCandles, feature.fn);
+      // console.timeEnd("predict");
 
       if (!range.isTrain) {
         fScores.push(results.fScore);

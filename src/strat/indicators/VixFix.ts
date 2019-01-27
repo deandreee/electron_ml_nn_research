@@ -15,15 +15,15 @@ export class VixFix {
 
   constructor(waveManager: WaveManager, opt: object) {
     const settings: IndSettings = {
-      // a: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
-      // b: { pd: 25, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
-      // c: { pd: 30, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
-      // d: { pd: 15, bbl: 12, mult: 2.0, lb: 50, ph: 0.85 },
-      // e: { pd: 15, bbl: 10, mult: 2.0, lb: 50, ph: 0.85 },
-      // f: { pd: 22, bbl: 20, mult: 3.0, lb: 50, ph: 0.85 },
-      // g: { pd: 22, bbl: 20, mult: 1.5, lb: 50, ph: 0.85 },
-      // h: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 },
-      // i: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 },
+      a: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
+      b: { pd: 25, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
+      c: { pd: 30, bbl: 20, mult: 2.0, lb: 50, ph: 0.85 },
+      d: { pd: 15, bbl: 12, mult: 2.0, lb: 50, ph: 0.85 },
+      e: { pd: 15, bbl: 10, mult: 2.0, lb: 50, ph: 0.85 },
+      f: { pd: 22, bbl: 20, mult: 3.0, lb: 50, ph: 0.85 },
+      g: { pd: 22, bbl: 20, mult: 1.5, lb: 50, ph: 0.85 },
+      h: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.75 },
+      i: { pd: 22, bbl: 20, mult: 2.0, lb: 50, ph: 0.9 },
       opt
     };
 

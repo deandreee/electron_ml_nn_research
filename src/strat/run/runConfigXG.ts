@@ -3,7 +3,7 @@ import * as GAOpts from "./ga/GAOpts";
 export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
 // let's keep this const for now
-export const BARRIER_LABEL: TrippleBarrierLabel = "PT_FIVE";
+export const BARRIER_LABEL: TrippleBarrierLabel = "FIVE";
 
 export type BarrierType = "doubleBarrier" | "trippleBarrier";
 
@@ -28,12 +28,12 @@ export interface RunConfigXG {
 export const getConfigGrid = () => {
   let idx = 0;
   const gridOpts: RunConfigXG[] = [];
-  for (let eta of GAOpts.XG.eta) {
-    for (let gamma of GAOpts.XG.gamma) {
-      for (let max_depth of GAOpts.XG.max_depth) {
-        for (let min_child_weight of GAOpts.XG.min_child_weight) {
-          for (let subsample of GAOpts.XG.subsample) {
-            for (let iterations of GAOpts.XG.iterations) {
+  for (let eta of GAOpts.XG.props.eta) {
+    for (let gamma of GAOpts.XG.props.gamma) {
+      for (let max_depth of GAOpts.XG.props.max_depth) {
+        for (let min_child_weight of GAOpts.XG.props.min_child_weight) {
+          for (let subsample of GAOpts.XG.props.subsample) {
+            for (let iterations of GAOpts.XG.props.iterations) {
               gridOpts.push({
                 idx: idx++,
                 eta: eta as number,
