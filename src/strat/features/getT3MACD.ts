@@ -3,7 +3,7 @@ import { Candle } from "../types";
 import { P_T3MACD, T3MACD } from "../indicators/T3MACD";
 import { getFeatureSplit, timeframes } from "./common";
 
-export const indName = "T3MACD";
+export const indName = "t3Macd";
 
 export const getInd = (candle: Candle, t: string, p: string) => {
   return candle.ind.t3Macd[t][p as P_T3MACD].histo;

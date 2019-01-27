@@ -1,32 +1,38 @@
 import { XmBase, ZerolagT3 as _ZerolagT3, WaveManager } from "./gekko";
-import { Candle } from "../types";
+import { Candle, IndSettings } from "../types";
+import { mapObj } from "../utils";
 
-export interface IndZerolagT3 {
-  p5?: number;
-  p10?: number;
-  p30?: number;
-  p60?: number;
-}
+export type P_ZerolagT3 = "p5" | "p10" | "p15" | "p20" | "p25" | "p30" | "p45" | "p60";
+
+export type IndZerolagT3 = { [p in P_ZerolagT3]: number };
+
+type Internal = { [p in P_ZerolagT3]: any };
 
 export class ZerolagT3 {
-  p5: any;
-  p10: any;
-  p30: any;
-  p60: any;
+  ind: Internal;
+
+  static getPS = () => Object.keys(new ZerolagT3({} as WaveManager).ind);
 
   constructor(waveManager: WaveManager) {
-    this.p5 = new XmBase(waveManager, () => new _ZerolagT3(5));
-    this.p10 = new XmBase(waveManager, () => new _ZerolagT3(10));
-    this.p30 = new XmBase(waveManager, () => new _ZerolagT3(30));
-    this.p60 = new XmBase(waveManager, () => new _ZerolagT3(60));
+    const settings: IndSettings = {
+      p5: { period: 5 },
+      p10: { period: 10 },
+      p15: { period: 15 },
+      p20: { period: 20 },
+      p25: { period: 25 },
+      p30: { period: 30 },
+      p45: { period: 45 },
+      p60: { period: 60 }
+    };
+
+    this.ind = mapObj(settings, x => this.createXm(waveManager, settings[x]));
   }
 
+  createXm = (waveManager: WaveManager, settings: any) => {
+    return new XmBase(waveManager, () => new _ZerolagT3(settings.period));
+  };
+
   update(bigCandle: Candle): IndZerolagT3 {
-    return {
-      p5: this.p5.update(bigCandle),
-      p10: this.p10.update(bigCandle),
-      p30: this.p30.update(bigCandle),
-      p60: this.p60.update(bigCandle)
-    };
+    return mapObj(this.ind, (k: string) => this.ind[k as P_ZerolagT3].update(bigCandle));
   }
 }
