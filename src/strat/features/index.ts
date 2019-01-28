@@ -13,7 +13,7 @@ import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix } from "./getVixFix";
 import { getTest } from "./getTest";
-import { getEMAOCC } from "./getEMAOCC";
+import { getEMAOCC, getEMAOCC_Price, getEMAOCC_History } from "./getEMAOCC";
 import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC } from "./getLRC";
@@ -21,11 +21,13 @@ import { getZerolagMACD } from "./getZerolagMACD";
 import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
 import { getPSAR } from "./getPSAR";
-import { getValidation } from "./getValidation";
-import { getValidationCombo } from "./getValidationCombo";
 import { getKalman, getKalmanDiff } from "./getKalman";
 import { getChandelierExit } from "./getChandelierExit";
 import { getKeltner } from "./getKeltner";
+
+import { getValidation } from "./getValidation";
+import { getValidationCombo } from "./getValidationCombo";
+import { getValidationFive } from "./getValidationFive";
 
 const getAll = () => {
   return [
@@ -69,6 +71,8 @@ export {
   getVixFix,
   getTest,
   getEMAOCC,
+  getEMAOCC_Price,
+  getEMAOCC_History,
   getT3MACD,
   getZerolagT3,
   getLRC,
@@ -79,6 +83,7 @@ export {
   getPSAR,
   getValidation,
   getValidationCombo,
+  getValidationFive,
   getKalman,
   getKalmanDiff,
   getChandelierExit,

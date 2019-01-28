@@ -8,7 +8,7 @@ import * as log from "../log";
 import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole, logFile } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "./logClassResults";
 import { runConfigXGDef as runConfigXG, BARRIER_LABEL } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
@@ -16,7 +16,7 @@ import { getCoreName } from "../features/FeatureSplit";
 const ranges = runUtils.genRanges_JJAS();
 // const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
-const featuresSplit = features.getKeltner();
+const featuresSplit = features.getEMAOCC_History();
 // const featuresSplit = features.getValidationCombo();
 
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
@@ -28,6 +28,8 @@ const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   // const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
+
+  await logFileHeader(fileName);
 
   const candleMonths = queryCandlesBatched(Coins.BTC, ranges);
   const months = calcIndicators(candleMonths, ranges, featuresSplit);
