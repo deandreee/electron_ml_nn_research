@@ -1,8 +1,8 @@
 import { FeatureSplit } from "./FeatureSplit";
 import { flatten } from "lodash";
+import { timeframes } from "./common";
 
 export const getLRC = (): FeatureSplit[] => {
-  const timeframes = ["x30", "x60", "x120", "x240", "x480"];
   const ps = ["p5", "p10", "p20", "p30", "p45", "p60"];
 
   return flatten(
@@ -10,7 +10,7 @@ export const getLRC = (): FeatureSplit[] => {
       return flatten(
         ps.map(p => [
           {
-            name: `${tf}.lrc.${p}`,
+            name: `lrc.${tf}.${p}`,
             fn: (x, i, corrCandles) => [x.ind.lrc[tf][p] - x.close]
           } as FeatureSplit
         ])

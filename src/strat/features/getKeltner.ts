@@ -1,6 +1,7 @@
 import { flatten } from "lodash";
 import { FeatureSplit } from "./FeatureSplit";
 import { UpperLowerValue, Candle } from "../types";
+import { timeframes } from "./common";
 
 export const indName = "Keltner";
 
@@ -10,7 +11,6 @@ export const getInd: GetIndValBBands = (candle: Candle, t: string, p: string) =>
   return candle.ind.keltner[t][p];
 };
 
-export const timeframes = ["x30", "x60", "x120", "x240", "x480"];
 export const ps = [
   "p10_10_1",
   "p10_10_2",
@@ -35,7 +35,7 @@ export const getKeltner = (): FeatureSplit[] => {
       return flatten(
         ps.map(p => [
           {
-            name: `${tf}.keltner.${p}`,
+            name: `keltner.${tf}.${p}`,
             fn: (x, i, corrCandles) => [getUpperMinusLower(getInd(x, tf, p))]
           } as FeatureSplit
         ])

@@ -16,7 +16,7 @@ import { getCoreName } from "../features/FeatureSplit";
 const ranges = runUtils.genRanges_JJAS();
 // const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
-const featuresSplit = features.getZerolagT3();
+const featuresSplit = features.getKeltner();
 // const featuresSplit = features.getValidationCombo();
 
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";

@@ -21,6 +21,8 @@ import { VWAP } from "../indicators/VWAP";
 import { WilliamsR } from "../indicators/WilliamsR";
 import { PSAR } from "../indicators/PSAR";
 import { Kalman } from "../indicators/Kalman";
+import { ChandelierExit } from "../indicators/ChandelierExit";
+import { Keltner } from "../indicators/Keltner";
 
 import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
@@ -90,9 +92,17 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   const atr = new ATR(waveManagers.x60);
 
   const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"), opt);
-  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsR"), opt);
+  const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsr"), opt);
   const psar = new IndTimeframeGroup(PSAR, waveManagers, getShouldCalc(featuresSplit, "psar"), opt);
   const kalman = new IndTimeframeGroup(Kalman, waveManagers, getShouldCalc(featuresSplit, "kalman"), opt);
+
+  const chandelierExit = new IndTimeframeGroup(
+    ChandelierExit,
+    waveManagers,
+    getShouldCalc(featuresSplit, "chandelierExit"),
+    opt
+  );
+  const keltner = new IndTimeframeGroup(Keltner, waveManagers, getShouldCalc(featuresSplit, "keltner"), opt);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
@@ -137,7 +147,10 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
       kst: shouldCalc(featuresSplit, "kst") ? kst.update(bigCandles) : null,
       williamsR: shouldCalc(featuresSplit, "williamsr") ? williamsR.update(bigCandles) : null,
       psar: shouldCalc(featuresSplit, "psar") ? psar.update(bigCandles) : null,
-      kalman: shouldCalc(featuresSplit, "kalman") ? kalman.update(bigCandles) : null
+      kalman: shouldCalc(featuresSplit, "kalman") ? kalman.update(bigCandles) : null,
+
+      chandelierExit: shouldCalc(featuresSplit, "chandelierExit") ? chandelierExit.update(bigCandles) : null,
+      keltner: shouldCalc(featuresSplit, "keltner") ? keltner.update(bigCandles) : null
     };
 
     if (shouldCalc(featuresSplit, "macd_adx")) {

@@ -1,7 +1,8 @@
 import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
-import { getInd, timeframes, ps } from "../features/getChandelierExit";
+import { getInd, ps } from "../features/getChandelierExit";
 import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
+import { timeframes } from "../features/common";
 
 // almost identical to BBands ...
 

@@ -24,6 +24,8 @@ import { getPSAR } from "./getPSAR";
 import { getValidation } from "./getValidation";
 import { getValidationCombo } from "./getValidationCombo";
 import { getKalman, getKalmanDiff } from "./getKalman";
+import { getChandelierExit } from "./getChandelierExit";
+import { getKeltner } from "./getKeltner";
 
 const getAll = () => {
   return [
@@ -78,5 +80,7 @@ export {
   getValidation,
   getValidationCombo,
   getKalman,
-  getKalmanDiff
+  getKalmanDiff,
+  getChandelierExit,
+  getKeltner
 };
