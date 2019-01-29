@@ -72,7 +72,8 @@ export const runConfigXGDef = {
   max_depth: 6,
   min_child_weight: 1,
   subsample: 1,
-  iterations: 10
+  iterations: 10,
+  colsample_bytree: 1
 };
 
 export const getName = (cfg: RunConfigXG) => {
@@ -92,7 +93,8 @@ export const runConfigXG2 = {
   max_depth: 3,
   min_child_weight: 5,
   subsample: 0.3,
-  iterations: 5
+  iterations: 5,
+  colsample_bytree: 1
 };
 
 // opt for macd.vixFix.vwap.t3Macd.zerolagMACD.kst
@@ -106,7 +108,8 @@ export const runConfigXG3 = {
   max_depth: 2,
   min_child_weight: 5,
   subsample: 0.3,
-  iterations: 50
+  iterations: 50,
+  colsample_bytree: 1
 };
 
 // opt for macd.vixFix.vwap.t3Macd.zerolagMACD.kst
@@ -121,7 +124,8 @@ export const runConfigXG4 = {
   max_depth: 2,
   min_child_weight: 2,
   subsample: 0.3,
-  iterations: 10
+  iterations: 10,
+  colsample_bytree: 1
 };
 
 // opt for x240.macd.sig9 => 0.54
@@ -135,7 +139,8 @@ export const runConfigXG5 = {
   max_depth: 0,
   min_child_weight: 0,
   subsample: 1,
-  iterations: 50
+  iterations: 50,
+  colsample_bytree: 1
 };
 
 // opt for x240.macd.sig9 => 0.53
@@ -149,5 +154,6 @@ export const runConfigXG6 = {
   max_depth: 6,
   min_child_weight: 2,
   subsample: 0.3,
-  iterations: 10
+  iterations: 10,
+  colsample_bytree: 1
 };
