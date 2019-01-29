@@ -1,13 +1,14 @@
 import { GAOpts, GAEntity } from "./common";
 
 // https://xgboost.readthedocs.io/en/latest/parameter.html
+// https://www.analyticsvidhya.com/blog/2016/03/complete-guide-parameter-tuning-xgboost-with-codes-python/
 export const XG: GAOpts = {
   props: {
     // eta [default=0.3, alias: learning_rate]
     eta: [0.01, 0.02, 0.05, 0.1, 0.3, 0.5, 0.7, 0.9],
     // [default=0, alias: min_split_loss]
     // range [0, infinity]
-    gamma: [0, 1, 3, 5, 10, 50, 100, 200],
+    gamma: [0, 0.1, 0.2, 0.5, 1, 3, 5, 10, 20, 50, 100, 200],
 
     // max_depth [default=6]
     // Maximum depth of a tree. Increasing this value will make the model more
@@ -16,7 +17,7 @@ export const XG: GAOpts = {
 
     // [default=1]
     // range [0, infinity]
-    min_child_weight: [0, 1, 2, 5, 10],
+    min_child_weight: [0, 1, 2, 3, 5, 7, 10],
 
     // Usually this parameter is not needed, but it might help in logistic regression
     // when class is extremely imbalanced. Set it to value of 1-10 might help control
@@ -29,7 +30,37 @@ export const XG: GAOpts = {
     // training data prior to growing trees. and this will prevent overfitting.
     subsample: [0.3, 0.5, 0.7, 0.8, 0.9, 1],
 
-    iterations: [5, 10, 20, 50]
+    iterations: [5, 10, 20, 50],
+
+    // max_leaf_nodes If this is defined, GBM will ignore max_depth.
+
+    // Usually this parameter is not needed, but it might help in logistic regression when class is extremely imbalanced.
+    // This is generally not used but you can explore further if you wish.
+    // max_delta_step
+
+    // Similar to max_features in GBM. Denotes the fraction of columns
+    // to be randomly samples for each tree.
+    // Typical values: 0.5-1
+    // [default=1]
+    colsample_bytree: [0.3, 0.5, 0.7, 0.8, 0.9, 1]
+
+    // Denotes the subsample ratio of columns for each split, in each level.
+    // I don’t use this often because subsample and colsample_bytree will do the
+    // job for you. but you can explore further if you feel so.
+    // colsample_bylevel
+
+    // L2 regularization term on weights (analogous to Ridge regression)
+    // This used to handle the regularization part of XGBoost. Though many
+    // data scientists don’t use it often, it should be explored to reduce overfitting.
+    // lambda [default=1]
+
+    // Can be used in case of very high dimensionality so that the algorithm
+    // runs faster when implemented
+    // alpha [default=0]
+
+    // A value greater than 0 should be used in case of
+    // high class imbalance as it helps in faster convergence.
+    // scale_pos_weight [default=1]
   }
 };
 

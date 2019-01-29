@@ -41,6 +41,8 @@ export const train_ = async (runConfigXG: RunConfigXG, corrCandles: CorrCandles,
     subsample: runConfigXG.subsample || 0.5,
     iterations: runConfigXG.iterations || 10,
 
+    colsample_bytree: runConfigXG.colsample_bytree || 1,
+
     verbosity: 1, // 0 (silent), 1 (warning), 2 (info), 3 (debug).
     num_class: UNIQUE_LABELS.length
   });
