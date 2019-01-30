@@ -49,6 +49,7 @@ export interface WaveManagers {
 }
 
 export interface BigCandles {
+  [x: string]: Candle;
   x10: Candle;
   x30: Candle;
   x60: Candle;

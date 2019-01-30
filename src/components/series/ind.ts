@@ -37,7 +37,8 @@ const data = (coin: CorrCandles, fn: fnGetIndValue) => {
 const hasIndicator = (coin: CorrCandles, fn: fnGetInd) => {
   const candles = coin.candlesActual;
   // return fn(candles[candles.length - EXTENDED_COUNT - 1]) !== undefined; // quick fix, not sure about the number
-  return fn(candles[candles.length - 1]) !== undefined; // quick fix, not sure about the number
+  const val = fn(candles[candles.length - 1]);
+  return val !== undefined && val !== null; // quick fix, not sure about the number
 };
 
 export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
@@ -269,6 +270,33 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   if (hasIndicator(coin, x => x.ind.rsi)) {
     series.push({
       ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.rsi.x60.p10]),
+      name: "rsi.x60.p10",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+
+    series.push({
+      ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.rsi.x480.p10]),
+      name: "rsi.x480.p10",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+
+    series.push({
+      ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.rsi.x1440.p10]),
+      name: "rsi.x1440.p10",
+      xAxisIndex: 1,
+      yAxisIndex: 1
+    });
+
+    series.push({
+      ...base,
       // type: "scatter",
       // symbol: flash,
       // symbolSize: 10,
@@ -277,7 +305,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       data: coin.candlesActual
         // .filter(x => x && x.ind.rsi > 80)
         .map(x => x && [x.start * 1000, x.ind.rsi.x60.p10 > 80 ? x.ind.rsi.x60.p10 : null]),
-      name: "RSI",
+      name: "RSI > 80",
       xAxisIndex: 1,
       yAxisIndex: 1
     });
@@ -350,6 +378,22 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
         return null;
       }),
       name: "bbands.x120.p30_dev3[HIT]"
+    });
+  }
+
+  if (hasIndicator(coin, x => x.pctChange.trippleBarrier)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarrier === 2 ? x.close : null]),
+      name: "trippleBarrier"
+    });
+
+    series.push({
+      ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarrier === 0 ? x.close : null]),
+      name: "trippleBarrier"
     });
   }
 

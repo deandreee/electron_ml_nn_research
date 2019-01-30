@@ -16,7 +16,7 @@ import { MFI } from "../indicators/MFI";
 import { RSI } from "../indicators/RSI";
 import { BBands } from "../indicators/BBands";
 import { KST } from "../indicators/KST";
-import { ATR } from "../indicators/ATR";
+// import { ATR } from "../indicators/ATR";
 import { VWAP } from "../indicators/VWAP";
 import { WilliamsR } from "../indicators/WilliamsR";
 import { PSAR } from "../indicators/PSAR";
@@ -35,20 +35,21 @@ const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
-const { ADX } = require(`${GEKKO}/indicators`);
+// const { ADX } = require(`${GEKKO}/indicators`);
 
-const MAX_TF = 1440; // was 480 prev
+export const MAX_TF = 1440; // was 480 prev
 
 // export const BATCH_SIZE = 10;
-export const BATCH_SIZE = 60;
+// export const BATCH_SIZE = 60;
+export const BATCH_SIZE = 240;
 export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / BATCH_SIZE;
 export const EXTENDED_COUNT = EXTENDED / BATCH_SIZE;
 
-const wHist = {
-  resultHistory: true
-};
+// const wHist = {
+// resultHistory: true
+// };
 
 export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], opt: object) => {
   const candles = coin.candles;
@@ -61,13 +62,13 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   // const ift = new IndTimeframeGroup(IFT, waveManagers);
   // const ifts = new IndTimeframeGroup(IFTS, waveManagers);
 
-  const macd60_ADX30 = new XmBase(waveManagers.x60, () => new ADX(30, wHist));
-  const macd60_ADX60 = new XmBase(waveManagers.x60, () => new ADX(60, wHist));
-  const macd60_ADX120 = new XmBase(waveManagers.x60, () => new ADX(120, wHist));
+  // const macd60_ADX30 = new XmBase(waveManagers.x60, () => new ADX(30, wHist));
+  // const macd60_ADX60 = new XmBase(waveManagers.x60, () => new ADX(60, wHist));
+  // const macd60_ADX120 = new XmBase(waveManagers.x60, () => new ADX(120, wHist));
 
-  const macd120_ADX30 = new XmBase(waveManagers.x120, () => new ADX(30, wHist));
-  const macd120_ADX60 = new XmBase(waveManagers.x120, () => new ADX(60, wHist));
-  const macd120_ADX120 = new XmBase(waveManagers.x120, () => new ADX(120, wHist));
+  // const macd120_ADX30 = new XmBase(waveManagers.x120, () => new ADX(30, wHist));
+  // const macd120_ADX60 = new XmBase(waveManagers.x120, () => new ADX(60, wHist));
+  // const macd120_ADX120 = new XmBase(waveManagers.x120, () => new ADX(120, wHist));
 
   const stochKD = new IndTimeframeGroup(StochKD, waveManagers, getShouldCalc(featuresSplit, "stochKD"), opt);
 
@@ -89,7 +90,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
   // now x60, basically smallest available
   // const atr = new ATR(waveManagers.x10);
-  const atr = new ATR(waveManagers.x60);
+  // const atr = new ATR(waveManagers.x60);
 
   const vwap = new IndTimeframeGroup(VWAP, waveManagers, getShouldCalc(featuresSplit, "vwap"), opt);
   const williamsR = new IndTimeframeGroup(WilliamsR, waveManagers, getShouldCalc(featuresSplit, "williamsr"), opt);
@@ -131,7 +132,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
       stochKD: shouldCalc(featuresSplit, "stoch") ? stochKD.update(bigCandles) : null,
 
-      atr: shouldCalc(featuresSplit, "atr") ? atr.update(bigCandles.x10) : null,
+      // atr: shouldCalc(featuresSplit, "atr") ? atr.update(bigCandles.x10) : null,
       vwap: shouldCalc(featuresSplit, "vwap") ? vwap.update(bigCandles) : null,
 
       emaOCC: shouldCalc(featuresSplit, "emaOCC") ? emaOCC.update(bigCandles) : null,
@@ -153,27 +154,27 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
       keltner: shouldCalc(featuresSplit, "keltner") ? keltner.update(bigCandles) : null
     };
 
-    if (shouldCalc(featuresSplit, "macd_adx")) {
-      candle.ind.macd60_ADX30 = macd60_ADX30.update(
-        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-      );
-      candle.ind.macd60_ADX60 = macd60_ADX60.update(
-        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-      );
-      candle.ind.macd60_ADX120 = macd60_ADX120.update(
-        valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
-      );
+    // if (shouldCalc(featuresSplit, "macd_adx")) {
+    //   candle.ind.macd60_ADX30 = macd60_ADX30.update(
+    //     valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    //   );
+    //   candle.ind.macd60_ADX60 = macd60_ADX60.update(
+    //     valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    //   );
+    //   candle.ind.macd60_ADX120 = macd60_ADX120.update(
+    //     valueToOHLC(candle.ind.macd.x60.sig9 && candle.ind.macd.x60.sig9.histo)
+    //   );
 
-      candle.ind.macd120_ADX30 = macd120_ADX30.update(
-        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-      );
-      candle.ind.macd120_ADX60 = macd120_ADX60.update(
-        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-      );
-      candle.ind.macd120_ADX120 = macd120_ADX120.update(
-        valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
-      );
-    }
+    //   candle.ind.macd120_ADX30 = macd120_ADX30.update(
+    //     valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    //   );
+    //   candle.ind.macd120_ADX60 = macd120_ADX60.update(
+    //     valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    //   );
+    //   candle.ind.macd120_ADX120 = macd120_ADX120.update(
+    //     valueToOHLC(candle.ind.macd.x120.sig9 && candle.ind.macd.x120.sig9.histo)
+    //   );
+    // }
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
@@ -190,16 +191,16 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   const candlesActual = candles.filter((x, i) => !(i < WARMUP_IND_COUNT || i >= candles.length - EXTENDED_COUNT));
 
   const pctChange: PctChange = {
-    _10m: candlesActual.map(x => x.pctChange._10m),
-    _60m: candlesActual.map(x => x.pctChange._60m),
-    _120m: candlesActual.map(x => x.pctChange._120m),
-    _240m: candlesActual.map(x => x.pctChange._240m),
-    _480m: candlesActual.map(x => x.pctChange._480m),
-    _1d: candlesActual.map(x => x.pctChange._1d),
-    _2d: candlesActual.map(x => x.pctChange._2d),
-    _4d: candlesActual.map(x => x.pctChange._4d),
-    _7d: candlesActual.map(x => x.pctChange._7d),
-    _10d: candlesActual.map(x => x.pctChange._10d)
+    _10m: [],
+    _60m: [],
+    _120m: [],
+    _240m: [],
+    _480m: [],
+    _1d: [],
+    _2d: [],
+    _4d: [],
+    _7d: [],
+    _10d: []
   };
 
   const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND_COUNT, EXTENDED_COUNT);

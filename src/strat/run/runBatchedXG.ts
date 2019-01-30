@@ -16,7 +16,7 @@ import { getCoreName } from "../features/FeatureSplit";
 const ranges = runUtils.genRanges_JJAS();
 // const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
-const featuresSplit = features.getValidationFive();
+const featuresSplit = features.getRSI();
 // const featuresSplit = features.getValidationCombo();
 
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
@@ -71,7 +71,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   }
 
   return {
-    coin: months.Jul,
+    coin: months["JJAS"],
     labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
