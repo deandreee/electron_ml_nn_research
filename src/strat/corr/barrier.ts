@@ -67,5 +67,9 @@ export const doubleBarrier = (candles: Candle[], idxCurr: number, stopLoss: numb
     }
   }
 
-  throw new Error(`No label ${idxCurr}`);
+  // throw new Error(`No label ${idxCurr}`);
+
+  // let's just take the last one
+  const pctChange = getPctChange(candles[candles.length - 1].close, candles[idxCurr].close);
+  return pctChange > 0 ? 1 : 0;
 };

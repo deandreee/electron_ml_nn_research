@@ -26,7 +26,8 @@ export const getPredictionsTemplate = () => {
     Sep: {},
     Oct: {},
     Nov: {},
-    Dec: {}
+    Dec: {},
+    Jan19: {}
   };
   return predictions;
 };
@@ -115,7 +116,7 @@ export const genRanges_MJJAS = () => {
 };
 
 export const genRanges_JJAS = () => {
-  return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov, daterange.Dec];
+  return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov, daterange.Dec, daterange.Jan19];
 };
 
 export const genRanges_JJ = () => {
