@@ -16,8 +16,9 @@ describe("run", () => {
     month = months.Dec;
   });
 
-  test("1", () => {
-    expect(month.candlesActual.length).toBeGreaterThan(700);
+  test("candlesActual.length", () => {
+    const candlesPerDay = 24 / 4;
+    expect(month.candlesActual.length).toEqual(candlesPerDay * 31);
   });
 
   test("candlesActual.start", () => {
@@ -27,70 +28,68 @@ describe("run", () => {
 
   test("candlesActual.end", () => {
     const d = new Date(month.candlesActual[month.candlesActual.length - 1].start * 1000);
-    expect(d.toISOString()).toEqual("2019-01-01T00:00:00.000Z");
+    expect(d.toISOString()).toEqual("2018-12-31T20:00:00.000Z"); // start + 4h
+  });
+
+  test("1", () => {
+    const d1 = Math.floor(new Date("2018-12-01T00:00:00Z").getTime() / 1000);
+    const c1 = month.candlesActual.find(x => x.start === d1);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(44);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-07T00:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(27);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(28);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(27);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-07T04:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(29);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(30);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(29);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-07T12:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(23);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(24);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(27);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-07T16:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(36);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(37);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(37);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-09T08:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(39);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(40);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(39);
   });
 
-  test.only("1", () => {
+  test("1", () => {
     const d1 = Math.floor(new Date("2018-12-17T08:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(47);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(48);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(44);
+    // expect(c1.ind.rsi.x240.p20).toBeLessThan(48);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-17T12:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(63);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(64);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(57);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-17T16:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(70);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(71);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(63);
   });
 
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-17T20:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(c1.ind.rsi.x240.p20).toBeGreaterThan(67);
-    expect(c1.ind.rsi.x240.p20).toBeLessThan(68);
+    expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(61);
   });
 
   // {

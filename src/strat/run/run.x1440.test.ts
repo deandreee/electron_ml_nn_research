@@ -41,7 +41,7 @@ describe("x1440", () => {
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(37);
   });
 
-  test.only("1", () => {
+  test("1", () => {
     const d1 = Math.floor(new Date("2018-12-20T00:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(52);
