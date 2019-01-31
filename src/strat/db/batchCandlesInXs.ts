@@ -1,9 +1,8 @@
 import { Candle, CoinData } from "../types";
-import { BATCH_SIZE } from "../corr/calcBatched";
 const { CandleBatcher2 } = require("../../../../gekko-develop/strategies/utils");
 
-export const batchCandlesInXs = (coin: CoinData) => {
-  const batcher = new CandleBatcher2(BATCH_SIZE);
+export const batchCandlesInXs = (coin: CoinData, batchSize: number) => {
+  const batcher = new CandleBatcher2(batchSize);
   const bigCandles: Candle[] = [];
   const candles = coin.candles;
 
@@ -11,7 +10,7 @@ export const batchCandlesInXs = (coin: CoinData) => {
     batcher.write(candles[i]);
 
     // ask: could add partial last, but gekko removes it, so let's just keep like that
-    if ((i + 1) % BATCH_SIZE === 0) {
+    if ((i + 1) % batchSize === 0) {
       const bigCandle = batcher.check();
       bigCandles.push(bigCandle);
     }
