@@ -40,8 +40,8 @@ const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 export const MAX_TF = 1440; // was 480 prev
 
 // export const BATCH_SIZE = 10;
-// export const BATCH_SIZE = 60;
-export const BATCH_SIZE = 240;
+export const BATCH_SIZE = 60;
+// export const BATCH_SIZE = 480;
 // export const BATCH_SIZE = 1440;
 export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10

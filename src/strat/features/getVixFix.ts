@@ -16,3 +16,31 @@ export const getVixFix = (): FeatureSplit[] => {
     return [x.ind.vixFix[t][p as P_VixFix]];
   });
 };
+
+export const getVixFix_HistoryHrs = (): FeatureSplit[] => {
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [
+      x.ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 1).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 2).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 4).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 8).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 12).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24).ind.vixFix[t][p as P_VixFix]
+    ];
+  });
+};
+
+export const getVixFix_HistoryDays = (): FeatureSplit[] => {
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [
+      x.ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 12).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24 * 2).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24 * 3).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24 * 4).ind.vixFix[t][p as P_VixFix],
+      corrCandles.getPrev(i, 24 * 5).ind.vixFix[t][p as P_VixFix]
+    ];
+  });
+};

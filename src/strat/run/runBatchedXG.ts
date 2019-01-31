@@ -4,8 +4,8 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
-// import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClass from "../ml/mlXGClassProb";
+import * as mlXGClass from "../ml/mlXGClass";
+// import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile, logFileHeader } from "./logClassResults";
@@ -16,9 +16,35 @@ import { getCoreName } from "../features/FeatureSplit";
 const ranges = runUtils.genRanges_JJAS();
 // const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
-const featuresSplit = features.getRSI();
-// const featuresSplit = features.getValidationCombo();
 
+// const featuresSplit = features.getRSI();
+// const featuresSplit = features.getBBands();
+// const featuresSplit = features.getBBandsAndPrice(); // not working, name not bbands...
+// const featuresSplit = features.getMFI();
+// const featuresSplit = features.getStochKD();
+// const featuresSplit = features.getEMAOCC();
+// const featuresSplit = features.getEMAOCC_Price();
+// const featuresSplit = features.getEMAOCC_History();
+// const featuresSplit = features.getT3MACD();
+// const featuresSplit = features.getZerolagT3();
+// const featuresSplit = features.getLRC();
+// const featuresSplit = features.getLRC_HistoryHrs();
+// const featuresSplit = features.getLRC_HistoryDays();
+// const featuresSplit = features.getMACD();
+// const featuresSplit = features.getZerolagMACD();
+// const featuresSplit = features.getVixFix();
+// const featuresSplit = features.getVixFix_HistoryHrs();
+const featuresSplit = features.getVixFix_HistoryDays();
+// const featuresSplit = features.getKST();
+// const featuresSplit = features.getVWAP();
+// const featuresSplit = features.getWilliamsR();
+// const featuresSplit = features.getPSAR();
+// const featuresSplit = features.getKalman();
+// const featuresSplit = features.getKalmanDiff();
+// const featuresSplit = features.getChandelierExit();
+// const featuresSplit = features.getKeltner();
+
+// const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
 

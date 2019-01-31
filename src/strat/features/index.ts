@@ -11,12 +11,12 @@ import { getMFI } from "./getMFI";
 import { getRSI } from "./getRSI";
 import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
-import { getVixFix } from "./getVixFix";
+import { getVixFix, getVixFix_HistoryHrs, getVixFix_HistoryDays } from "./getVixFix";
 import { getTest } from "./getTest";
 import { getEMAOCC, getEMAOCC_Price, getEMAOCC_History } from "./getEMAOCC";
 import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
-import { getLRC } from "./getLRC";
+import { getLRC, getLRC_HistoryHrs, getLRC_HistoryDays } from "./getLRC";
 import { getZerolagMACD } from "./getZerolagMACD";
 import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
@@ -69,6 +69,8 @@ export {
   getStochKD,
   getVWAP,
   getVixFix,
+  getVixFix_HistoryHrs,
+  getVixFix_HistoryDays,
   getTest,
   getEMAOCC,
   getEMAOCC_Price,
@@ -76,6 +78,8 @@ export {
   getT3MACD,
   getZerolagT3,
   getLRC,
+  getLRC_HistoryHrs,
+  getLRC_HistoryDays,
   getZerolagMACD,
   getKST,
   getKSTandPrice,
