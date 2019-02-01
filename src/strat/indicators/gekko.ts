@@ -5,6 +5,7 @@ const GEKKO = "../../../../gekko-develop/strategies";
 const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const {
+  SMA,
   MACD,
   RSI,
   BBands,
@@ -36,6 +37,8 @@ const { VWAP, ZerolagMACD } = require(`${GEKKO}/indicators/lizard`);
 
 export interface WaveManager {
   update: (candle: Candle) => Candle;
+  getCurrentWaveIdx: () => number;
+  age: number;
 }
 
 export interface WaveManagers {
@@ -63,6 +66,7 @@ export {
   XmBase,
   BatchWaveManager,
   valueToOHLC,
+  SMA,
   MACD,
   RSI,
   BBands,
