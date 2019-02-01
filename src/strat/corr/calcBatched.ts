@@ -30,6 +30,7 @@ import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
 import { BARRIER_TYPE } from "../run/runConfigXG";
 import * as waveUtils from "./waveUtils";
+import { SMA } from "../indicators/SMA";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
@@ -41,7 +42,8 @@ export const MAX_TF = 1440; // was 480 prev
 
 // export const BATCH_SIZE = 10;
 export const BATCH_SIZE = 60;
-// export const BATCH_SIZE = 480;
+// export const BATCH_SIZE = 10;
+// export const BATCH_SIZE = 240;
 // export const BATCH_SIZE = 1440;
 export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
@@ -57,6 +59,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
   const waveManagers = waveUtils.createManagers(BATCH_SIZE);
 
+  const sma = new IndTimeframeGroup(SMA, waveManagers, getShouldCalc(featuresSplit, "sma"), opt);
   const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"), opt);
   const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"), opt);
   const mfi = new IndTimeframeGroup(MFI, waveManagers, getShouldCalc(featuresSplit, "mfi"), opt);
@@ -123,6 +126,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
     }
 
     candle.ind = {
+      sma: shouldCalc(featuresSplit, "sma") ? sma.update(bigCandles) : null,
       rsi: shouldCalc(featuresSplit, "rsi") ? rsi.update(bigCandles) : null,
       bbands: shouldCalc(featuresSplit, "bbands") ? bbands.update(bigCandles) : null,
       mfi: shouldCalc(featuresSplit, "mfi") ? mfi.update(bigCandles) : null,

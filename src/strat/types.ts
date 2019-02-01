@@ -22,6 +22,7 @@ import { IndVWAP } from "./indicators/VWAP";
 import { IndWilliamsR } from "./indicators/WilliamsR";
 import { IndPSAR } from "./indicators/PSAR";
 import { IndKalman } from "./indicators/Kalman";
+import { IndSMA } from "./indicators/SMA";
 
 export type Cb = (err: Error) => void;
 
@@ -138,6 +139,7 @@ export interface OCCValue {
 }
 
 export interface Indicators {
+  sma?: IndTimeframes<IndSMA>;
   rsi?: IndTimeframes<IndRSI>;
 
   xmPsar?: number;

@@ -24,6 +24,7 @@ import { getPSAR } from "./getPSAR";
 import { getKalman, getKalmanDiff } from "./getKalman";
 import { getChandelierExit } from "./getChandelierExit";
 import { getKeltner } from "./getKeltner";
+import { getSMA } from "./getSMA";
 
 import { getValidation } from "./getValidation";
 import { getValidationCombo } from "./getValidationCombo";
@@ -50,6 +51,7 @@ const getAll = () => {
 };
 
 export {
+  getSMA,
   FeatureSplit,
   FnGetFeature,
   getAll,
