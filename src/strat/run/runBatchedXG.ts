@@ -9,7 +9,7 @@ import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile, logFileHeader } from "./logClassResults";
-import { runConfigXGDef as runConfigXG, BARRIER_LABEL } from "./runConfigXG";
+import { runConfigXGDef as runConfigXG, BARRIER_LABEL, batchConfig } from "./runConfigXG";
 import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
@@ -53,7 +53,7 @@ const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
 } ] [ lbl ${BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
+  const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
 
   await logFileHeader(fileName);
 

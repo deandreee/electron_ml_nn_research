@@ -1,6 +1,5 @@
 import { Candle, CandleProp } from "../../strat/types";
 import { options } from "../options";
-// import { EXTENDED_COUNT } from "../../strat/corr/calcBatched";
 import { CorrCandles } from "../../strat/corr/CorrCandles";
 
 const base = {
@@ -36,9 +35,8 @@ const data = (coin: CorrCandles, fn: fnGetIndValue) => {
 
 const hasIndicator = (coin: CorrCandles, fn: fnGetInd) => {
   const candles = coin.candlesActual;
-  // return fn(candles[candles.length - EXTENDED_COUNT - 1]) !== undefined; // quick fix, not sure about the number
   const val = fn(candles[candles.length - 1]);
-  return val !== undefined && val !== null; // quick fix, not sure about the number
+  return val !== undefined && val !== null;
 };
 
 export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {

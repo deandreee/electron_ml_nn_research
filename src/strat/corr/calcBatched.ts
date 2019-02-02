@@ -31,29 +31,23 @@ import { doubleBarrier } from "./barrier";
 import { BARRIER_TYPE } from "../run/runConfigXG";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
+import { BatchConfig } from "./BatchConfig";
 
 // const { ADX } = require(`${GEKKO}/indicators`);
-
-export const MAX_TF = 1440; // was 480 prev
-
-// const BATCH_SIZE = 10;
-export const BATCH_SIZE = 60;
-// const BATCH_SIZE = 10;
-// const BATCH_SIZE = 240;
-// const BATCH_SIZE = 1440;
-export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
-export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
-export const WARMUP_IND_COUNT = WARMUP_IND / BATCH_SIZE;
-export const EXTENDED_COUNT = EXTENDED / BATCH_SIZE;
 
 // const wHist = {
 // resultHistory: true
 // };
 
-export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], opt: object) => {
+export const corrCalcBatched = (
+  batchConfig: BatchConfig,
+  coin: CoinData,
+  featuresSplit: FeatureSplit[],
+  opt: object
+) => {
   const candles = coin.candles;
 
-  const waveManagers = waveUtils.createManagers(BATCH_SIZE);
+  const waveManagers = waveUtils.createManagers(batchConfig.batchSize);
 
   const sma = new IndTimeframeGroup(SMA, waveManagers, getShouldCalc(featuresSplit, "sma"), opt);
   const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"), opt);
@@ -108,7 +102,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
-    if (i >= candles.length - EXTENDED_COUNT) {
+    if (i >= candles.length - batchConfig.extendedCount) {
       // only for pct change, not needed
       candle.ind = {};
       continue;
@@ -116,7 +110,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
     const bigCandles = waveUtils.updateCandles(waveManagers, candle);
 
-    if (!waveUtils.areCandlesReady(bigCandles)) {
+    if (!waveUtils.areCandlesReady(bigCandles, batchConfig)) {
       candle.ind = {};
       continue;
     }
@@ -179,7 +173,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
-    const tbCfg = getTrippleBarrierConfig(BATCH_SIZE);
+    const tbCfg = getTrippleBarrierConfig(batchConfig.batchSize);
 
     candle.pctChange = {
       doubleBarrier: BARRIER_TYPE === "doubleBarrier" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
@@ -189,7 +183,9 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
     };
   }
 
-  const candlesActual = candles.filter((x, i) => !(i < WARMUP_IND_COUNT || i >= candles.length - EXTENDED_COUNT));
+  const candlesActual = candles.filter(
+    (x, i) => !(i < batchConfig.warmupIndCount || i >= candles.length - batchConfig.extendedCount)
+  );
 
   const pctChange: PctChange = {
     _10m: [],
@@ -204,7 +200,13 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
     _10d: []
   };
 
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND_COUNT, EXTENDED_COUNT);
+  const corrCandles = new CorrCandles(
+    coin,
+    candles,
+    candlesActual,
+    batchConfig.warmupIndCount,
+    batchConfig.extendedCount
+  );
 
   return { corrCandles, pctChange };
 };

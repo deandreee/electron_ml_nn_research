@@ -1,6 +1,6 @@
 import { WaveManager, WaveManagers, BatchWaveManager, BigCandles } from "../indicators/gekko";
 import { Candle } from "../types";
-import { MAX_TF } from "./calcBatched";
+import { BatchConfig } from "./BatchConfig";
 
 export const createManagers = (batchSize: number) => {
   const waveManager10 = batchSize <= 10 ? (new BatchWaveManager(10, batchSize) as WaveManager) : undefined;
@@ -47,8 +47,8 @@ export const updateCandles = (waveManagers: WaveManagers, candle: Candle) => {
   return bigCandles;
 };
 
-export const areCandlesReady = (bigCandles: BigCandles) => {
-  if (!bigCandles[`x${MAX_TF}`]) {
+export const areCandlesReady = (bigCandles: BigCandles, batchConfig: BatchConfig) => {
+  if (!bigCandles[`x${batchConfig.maxTF}`]) {
     return false;
   }
 

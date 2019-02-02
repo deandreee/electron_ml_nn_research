@@ -87,7 +87,10 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     // // console.timeEnd("ind");
     // process.stdout.write("I");
 
-    const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature], { ga: gaEntity, skipLog: true });
+    const months = queryCorrCandlesMonthsBatched(runConfigXG.batchConfig, coin, ranges, [feature], {
+      ga: gaEntity,
+      skipLog: true
+    });
     // process.stdout.write("T");
 
     const trainMonth = months[ranges[0].name];

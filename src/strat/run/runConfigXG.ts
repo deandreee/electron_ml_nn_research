@@ -1,4 +1,5 @@
 import * as GAOpts from "./ga/GAOpts";
+import { BatchConfig } from "../corr/BatchConfig";
 
 export type TrippleBarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
@@ -12,6 +13,8 @@ export const UNIQUE_LABELS = [0, 1, 2];
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
 // export const UNIQUE_LABELS = [0, 1];
+
+export const batchConfig = new BatchConfig(60, 1440);
 
 export interface RunConfigXG {
   [prop: string]: number;

@@ -10,6 +10,9 @@ import * as mlLSTM from "../ml/mlLSTMTF";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole } from "./logClassResults";
+import { BatchConfig } from "../corr/BatchConfig";
+
+const batchConfig = new BatchConfig(60, 1440);
 
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
 
@@ -33,7 +36,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   // const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
 
-  const months = queryCorrCandlesMonthsBatched(Coins.BTC, ranges, featuresSplit);
+  const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
 
   const trainMonth = months[ranges[0].name];
 

@@ -8,6 +8,7 @@ import * as log from "../log";
 import { batchCandlesInXs } from "../db/batchCandlesInXs";
 import * as calcBatchedProb from "../corr/calcBatchedProb";
 import { FeatureSplit } from "../features";
+import { BatchConfig } from "../corr/BatchConfig";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
 export type CandleMonths = { [range: string]: CoinData };
@@ -41,6 +42,7 @@ interface Opts {
 }
 
 export const queryCorrCandlesMonthsBatched = (
+  batchConfig: BatchConfig,
   coinName: Coins,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
@@ -54,11 +56,11 @@ export const queryCorrCandlesMonthsBatched = (
     if (!opts.skipLog) {
       log.start(`query ${range.name}`);
     }
-    const fromExtended = new Date(range.from.getTime() - ms(`${calcBatched.WARMUP_IND}m`));
-    const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
+    const fromExtended = new Date(range.from.getTime() - ms(`${batchConfig.warmupInd}m`));
+    const toExtended = new Date(range.to.getTime() + ms(`${batchConfig.extended}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    coin.candles = batchCandlesInXs(coin.candles, calcBatched.BATCH_SIZE);
+    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
 
     if (!opts.skipLog) {
       log.end(`query ${range.name}`);
@@ -69,8 +71,8 @@ export const queryCorrCandlesMonthsBatched = (
     }
 
     const { corrCandles } = !opts.prob
-      ? calcBatched.corrCalcBatched(coin, featuresSplit, opts.ga)
-      : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
+      ? calcBatched.corrCalcBatched(batchConfig, coin, featuresSplit, opts.ga)
+      : calcBatchedProb.corrCalcBatchedProb(batchConfig, coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
     if (!opts.skipLog) {
@@ -80,15 +82,15 @@ export const queryCorrCandlesMonthsBatched = (
   return corrCandleMonths;
 };
 
-export const queryCandlesBatched = (coinName: Coins, ranges: DateRange[]) => {
+export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
   const candleMonths: CandleMonths = {};
 
   for (let range of ranges) {
-    const fromExtended = new Date(range.from.getTime() - ms(`${calcBatched.WARMUP_IND}m`));
-    const toExtended = new Date(range.to.getTime() + ms(`${calcBatched.EXTENDED}m`));
+    const fromExtended = new Date(range.from.getTime() - ms(`${batchConfig.warmupInd}m`));
+    const toExtended = new Date(range.to.getTime() + ms(`${batchConfig.extended}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    coin.candles = batchCandlesInXs(coin.candles, calcBatched.BATCH_SIZE);
+    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
 
     candleMonths[range.name] = coin;
   }
@@ -97,6 +99,7 @@ export const queryCandlesBatched = (coinName: Coins, ranges: DateRange[]) => {
 };
 
 export const calcIndicators = (
+  batchConfig: BatchConfig,
   candleMonths: CandleMonths,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
@@ -110,8 +113,8 @@ export const calcIndicators = (
     const coin = candleMonths[range.name];
 
     const { corrCandles } = !opts.prob
-      ? calcBatched.corrCalcBatched(coin, featuresSplit, opts.ga)
-      : calcBatchedProb.corrCalcBatchedProb(coin, featuresSplit);
+      ? calcBatched.corrCalcBatched(batchConfig, coin, featuresSplit, opts.ga)
+      : calcBatchedProb.corrCalcBatchedProb(batchConfig, coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
   }

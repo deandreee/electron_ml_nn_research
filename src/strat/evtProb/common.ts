@@ -7,7 +7,8 @@ import { round2 } from "../utils";
 import { TrippleBarrierLabel } from "../run/runConfigXG";
 import { getTrippleBarrierConfig } from "../corr/barrier";
 import { Candle } from "../types";
-import { BATCH_SIZE } from "../corr/calcBatchedProb";
+
+const BATCH_SIZE = 10; // TODO: fix when needed
 
 export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
 

@@ -51,7 +51,7 @@ const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_JJAS();
-  const months = queryCorrCandlesMonthsBatched(coin, ranges, [feature]);
+  const months = queryCorrCandlesMonthsBatched(runConfigXG.batchConfig, coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
