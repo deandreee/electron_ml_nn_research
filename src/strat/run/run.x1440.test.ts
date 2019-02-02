@@ -23,50 +23,43 @@ describe("x1440", () => {
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-07T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-07T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(23);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(24);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-15T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-15T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(25);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(26);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-17T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-17T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(36);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(37);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-20T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-20T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(52);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(53);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-25T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-25T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(45);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(46);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-28T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-28T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(48);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(49);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-31T00:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
+    const c1 = month.getCandleStartsAt(new Date("2018-12-31T00:00:00Z"), "x1440");
     expect(c1.ind.rsi.x1440.p15).toBeGreaterThan(45);
     expect(c1.ind.rsi.x1440.p15).toBeLessThan(46);
   });
