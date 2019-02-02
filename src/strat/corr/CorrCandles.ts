@@ -17,8 +17,9 @@ export class CorrCandles {
 
   // candles actual is used further, but we still need to see the diff n periods ago,
   // so we look into full candles
+  // this is just by idx, ot depending on df, so will differ between tfs
   getPrev = (curr: number, minus: number) => {
-    return this.candles[curr - minus + this.batchConfig.warmupInd];
+    return this.candles[curr - minus + this.batchConfig.warmupIndCount];
   };
 
   // https://www.evernote.com/Home.action?login=true#n=5d6db76a-2b78-445a-853b-cb151e9bc15d&s=s202&ses=4&sh=2&sds=5&
