@@ -70,28 +70,30 @@ describe("run", () => {
     }
   });
 
-  test("1", () => {
-    const d1 = toUnix("2018-12-01T00:00:00Z");
-    const c1 = month.candlesActual.find(x => x.start === d1);
+  test.only("1", () => {
+    // const d1 = toUnix("2018-12-01T00:00:00Z");
+    // const c1 = month.candlesActual.find(x => x.start === d1);
 
-    {
-      const cStart = month.candles[0];
-      const cEnd = month.candles[month.candles.length - 1];
-      logCandleStart(cStart);
-      logCandleStart(cEnd);
-    }
+    const c1 = month.getCandleEndsAt(new Date("2018-12-01T04:00:00Z"), "x240");
 
-    {
-      const cStart = month.candlesActual[0];
-      const cEnd = month.candlesActual[month.candlesActual.length - 1];
-      logCandleStart(cStart);
-      logCandleStart(cEnd);
-    }
+    // {
+    //   const cStart = month.candles[0];
+    //   const cEnd = month.candles[month.candles.length - 1];
+    //   logCandleStart(cStart);
+    //   logCandleStart(cEnd);
+    // }
+
+    // {
+    //   const cStart = month.candlesActual[0];
+    //   const cEnd = month.candlesActual[month.candlesActual.length - 1];
+    //   logCandleStart(cStart);
+    //   logCandleStart(cEnd);
+    // }
 
     expect(getSMA(c1)).toEqual(4148);
   });
 
-  test.only("1", () => {
+  test("1", () => {
     const d1 = toUnix("2018-12-01T01:00:00Z");
     const c1 = month.candlesActual.find(x => x.start === d1);
     expect(getSMA(c1)).toEqual(4148);
@@ -103,7 +105,7 @@ describe("run", () => {
     expect(getSMA(c1)).toEqual(4148);
   });
 
-  test.only("try_find", () => {
+  test("try_find", () => {
     const c1 = month.candlesActual.find(x => Math.floor(x.ind.sma.x240.p10) === 4148);
     logCandleStart(c1);
   });

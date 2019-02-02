@@ -43,6 +43,15 @@ export class CorrCandles {
   // basically, when compring indicators, we are intereseted when candles end, not start
   // tradingView has start, but values are only comparable at the end
   getCandleEndsAt = (date: Date, tf: TimeFrame) => {
+    return this.getCandleWithOffset(date, tf, false);
+  };
+
+  // this will be more understandable ...
+  getCandleStartsAt = (date: Date, tf: TimeFrame) => {
+    return this.getCandleWithOffset(date, tf, true);
+  };
+
+  getCandleWithOffset = (date: Date, tf: TimeFrame, plus: boolean) => {
     const tsUnix = Math.floor(date.getTime() / 1000);
 
     const tfBatched = this.batchConfig.batchSize;
@@ -55,9 +64,16 @@ export class CorrCandles {
     const diff = tfWave / tfBatched;
 
     // like (60 * 4) - 60
-    const minusMins = tfBatched * diff;
-    const minusSeconds = minusMins * 60;
-    const tsUnixAdjusted = tsUnix - minusSeconds;
+    let tsUnixAdjusted: number = null;
+    if (plus) {
+      const diffMins = tfBatched * diff - tfBatched;
+      const diffSeconds = diffMins * 60;
+      tsUnixAdjusted = tsUnix + (plus ? diffSeconds : -diffSeconds);
+    } else {
+      const diffMins = tfBatched * diff;
+      const diffSeconds = diffMins * 60;
+      tsUnixAdjusted = tsUnix + (plus ? diffSeconds : -diffSeconds);
+    }
 
     const candle = this.candlesActual.find(x => x.start === tsUnixAdjusted);
     if (candle) {
@@ -71,6 +87,6 @@ export class CorrCandles {
       return candleBehind;
     }
 
-    throw new Error(`getCandleEndsAt ${date.toISOString()} not found`);
+    throw new Error(`getCandleWithOffset ${date.toISOString()} not found`);
   };
 }

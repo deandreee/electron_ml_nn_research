@@ -2,7 +2,7 @@ import { Candle } from "../types";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
-const { CandleBatcher2, BatchXmBase, XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
+const { CandleBatcher2, XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const {
   SMA,
@@ -65,8 +65,7 @@ export interface BigCandles {
 }
 
 export {
-  BatchXmBase as XmBase,
-  BatchXmBase,
+  XmBase,
   BatchWaveManager,
   valueToOHLC,
   CandleBatcher2,

@@ -9,7 +9,7 @@ const ranges = [daterange.Dec];
 const featuresSplit = features.getRSI();
 const batchConfig = new BatchConfig(60, 1440);
 
-describe("x60", () => {
+describe("rsi | x60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {

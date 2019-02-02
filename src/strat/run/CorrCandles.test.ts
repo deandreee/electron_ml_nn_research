@@ -268,3 +268,37 @@ describe("corrCandles | getPrevHrs | 1440", () => {
     expect(start(c1)).toEqual("2018-11-29T00:00:00.000Z");
   });
 });
+
+describe("corrCandles | getCandleStartsAt | 60", () => {
+  let month: CorrCandles = null;
+
+  beforeAll(() => {
+    const batchConfig = new BatchConfig(60, 1440);
+    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+  });
+
+  test("60", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-02T00:00:00.000Z"), "x60");
+    expect(start(c1)).toEqual("2018-12-02T00:00:00.000Z");
+  });
+
+  test("120", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-02T00:00:00.000Z"), "x120");
+    expect(start(c1)).toEqual("2018-12-02T01:00:00.000Z");
+  });
+
+  test("240", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-02T00:00:00.000Z"), "x240");
+    expect(start(c1)).toEqual("2018-12-02T03:00:00.000Z");
+  });
+
+  test("480", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-02T00:00:00.000Z"), "x480");
+    expect(start(c1)).toEqual("2018-12-02T07:00:00.000Z");
+  });
+
+  test("1440", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-02T00:00:00.000Z"), "x1440");
+    expect(start(c1)).toEqual("2018-12-02T23:00:00.000Z");
+  });
+});
