@@ -32,19 +32,15 @@ import { BARRIER_TYPE } from "../run/runConfigXG";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
 
-const GEKKO = "../../../../gekko-develop/strategies";
-// @ts-ignore
-const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
-
 // const { ADX } = require(`${GEKKO}/indicators`);
 
 export const MAX_TF = 1440; // was 480 prev
 
-// export const BATCH_SIZE = 10;
+// const BATCH_SIZE = 10;
 export const BATCH_SIZE = 60;
-// export const BATCH_SIZE = 10;
-// export const BATCH_SIZE = 240;
-// export const BATCH_SIZE = 1440;
+// const BATCH_SIZE = 10;
+// const BATCH_SIZE = 240;
+// const BATCH_SIZE = 1440;
 export const WARMUP_IND = MAX_TF * 100; // => ind ready | vixFix lb 90
 export const EXTENDED = 1500 * 10; // => for pct change, not sure why 10
 export const WARMUP_IND_COUNT = WARMUP_IND / BATCH_SIZE;
@@ -183,7 +179,7 @@ export const corrCalcBatched = (coin: CoinData, featuresSplit: FeatureSplit[], o
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
-    const tbCfg = getTrippleBarrierConfig();
+    const tbCfg = getTrippleBarrierConfig(BATCH_SIZE);
 
     candle.pctChange = {
       doubleBarrier: BARRIER_TYPE === "doubleBarrier" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),

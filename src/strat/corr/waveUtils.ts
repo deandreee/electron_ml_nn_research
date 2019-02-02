@@ -18,7 +18,8 @@ export const createManagers = (batchSize: number) => {
     x120: waveManager120,
     x240: waveManager240,
     x480: waveManager480,
-    x1440: waveManager1440
+    x1440: waveManager1440,
+    batchSize
   };
 
   return waveManagers;

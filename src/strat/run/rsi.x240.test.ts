@@ -37,6 +37,11 @@ describe("run", () => {
     expect(Math.floor(c1.ind.rsi.x240.p20)).toEqual(44);
   });
 
+  test.only("try_find", () => {
+    const c1 = month.candlesActual.find(x => Math.floor(x.ind.rsi.x240.p20) === 27);
+    console.log(new Date(c1.start * 1000));
+  });
+
   test("1", () => {
     const d1 = Math.floor(new Date("2018-12-07T00:00:00Z").getTime() / 1000);
     const c1 = month.candlesActual.find(x => x.start === d1);

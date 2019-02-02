@@ -1,9 +1,9 @@
-import { CoinData } from "../types";
+import { Candle } from "../types";
 import { batchCandlesInXs } from "./batchCandlesInXs";
 import { createCandle } from "../corr/testUtils";
 
 describe("batchCandlesInXs", () => {
-  let coin: CoinData = null;
+  let bigCandles: Candle[] = null;
 
   beforeAll(() => {
     const first10 = [
@@ -19,40 +19,35 @@ describe("batchCandlesInXs", () => {
       createCandle({ close: 10, start: 10, open: 10, high: 20, low: 20 })
     ];
 
-    coin = {
-      name: "BTC",
-      candles: first10
-    };
-
-    batchCandlesInXs(coin, 3);
+    bigCandles = batchCandlesInXs(first10, 3);
   });
 
   // last partial is removed, check comment in batched
   test("candlesActual.length", () => {
-    expect(coin.candles.length).toEqual(3);
+    expect(bigCandles.length).toEqual(3);
   });
 
   test("0", () => {
-    expect(coin.candles[0].close).toEqual(3);
-    expect(coin.candles[0].start).toEqual(1);
-    expect(coin.candles[0].open).toEqual(1);
-    expect(coin.candles[0].high).toEqual(13);
-    expect(coin.candles[0].low).toEqual(11);
+    expect(bigCandles[0].close).toEqual(3);
+    expect(bigCandles[0].start).toEqual(1);
+    expect(bigCandles[0].open).toEqual(1);
+    expect(bigCandles[0].high).toEqual(13);
+    expect(bigCandles[0].low).toEqual(11);
   });
 
   test("1", () => {
-    expect(coin.candles[1].close).toEqual(6);
-    expect(coin.candles[1].start).toEqual(4);
-    expect(coin.candles[1].open).toEqual(4);
-    expect(coin.candles[1].high).toEqual(16);
-    expect(coin.candles[1].low).toEqual(14);
+    expect(bigCandles[1].close).toEqual(6);
+    expect(bigCandles[1].start).toEqual(4);
+    expect(bigCandles[1].open).toEqual(4);
+    expect(bigCandles[1].high).toEqual(16);
+    expect(bigCandles[1].low).toEqual(14);
   });
 
   test("2", () => {
-    expect(coin.candles[2].close).toEqual(9);
-    expect(coin.candles[2].start).toEqual(7);
-    expect(coin.candles[2].open).toEqual(7);
-    expect(coin.candles[2].high).toEqual(19);
-    expect(coin.candles[2].low).toEqual(17);
+    expect(bigCandles[2].close).toEqual(9);
+    expect(bigCandles[2].start).toEqual(7);
+    expect(bigCandles[2].open).toEqual(7);
+    expect(bigCandles[2].high).toEqual(19);
+    expect(bigCandles[2].low).toEqual(17);
   });
 });

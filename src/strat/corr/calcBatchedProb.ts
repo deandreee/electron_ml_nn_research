@@ -65,11 +65,11 @@ export const corrCalcBatchedProb = (coin: CoinData, featuresSplit: FeatureSplit[
       kst: kst.update(bigCandles)
     };
 
-    const ptFive = getTrippleBarrierConfig("PT_FIVE");
-    const one = getTrippleBarrierConfig("ONE");
-    const two = getTrippleBarrierConfig("TWO");
-    const three = getTrippleBarrierConfig("THREE");
-    const five = getTrippleBarrierConfig("FIVE");
+    const ptFive = getTrippleBarrierConfig(BATCH_SIZE, "PT_FIVE");
+    const one = getTrippleBarrierConfig(BATCH_SIZE, "ONE");
+    const two = getTrippleBarrierConfig(BATCH_SIZE, "TWO");
+    const three = getTrippleBarrierConfig(BATCH_SIZE, "THREE");
+    const five = getTrippleBarrierConfig(BATCH_SIZE, "FIVE");
 
     candle.pctChange = {
       trippleBarriers: {

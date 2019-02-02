@@ -22,3 +22,7 @@ export const createCandle = (partial: Partial<Candle>) => {
 
   return candle;
 };
+
+export const logCandleStart = (candle: Candle) => {
+  console.log(new Date(candle.start * 1000));
+};

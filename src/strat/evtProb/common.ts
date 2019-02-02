@@ -7,6 +7,7 @@ import { round2 } from "../utils";
 import { TrippleBarrierLabel } from "../run/runConfigXG";
 import { getTrippleBarrierConfig } from "../corr/barrier";
 import { Candle } from "../types";
+import { BATCH_SIZE } from "../corr/calcBatchedProb";
 
 export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
 
@@ -118,7 +119,7 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[], thres
 };
 
 export const getLookAhead = (lbl: TrippleBarrierLabel) => {
-  return getTrippleBarrierConfig(lbl).lookAhead;
+  return getTrippleBarrierConfig(BATCH_SIZE, lbl).lookAhead;
 };
 
 // retuns hit or miss

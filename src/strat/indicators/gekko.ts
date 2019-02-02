@@ -2,7 +2,7 @@ import { Candle } from "../types";
 
 const GEKKO = "../../../../gekko-develop/strategies";
 // @ts-ignore
-const { XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
+const { CandleBatcher2, BatchXmBase, XmBase, BatchWaveManager, valueToOHLC } = require(`${GEKKO}/utils`);
 
 const {
   SMA,
@@ -39,6 +39,7 @@ export interface WaveManager {
   update: (candle: Candle) => Candle;
   getCurrentWaveIdx: () => number;
   age: number;
+  getWaveCandles: (idx: number) => Candle[];
 }
 
 export interface WaveManagers {
@@ -49,6 +50,7 @@ export interface WaveManagers {
   x240: WaveManager;
   x480: WaveManager;
   x1440: WaveManager;
+  batchSize: number;
 }
 
 export interface BigCandles {
@@ -63,9 +65,11 @@ export interface BigCandles {
 }
 
 export {
-  XmBase,
+  BatchXmBase as XmBase,
+  BatchXmBase,
   BatchWaveManager,
   valueToOHLC,
+  CandleBatcher2,
   SMA,
   MACD,
   RSI,
