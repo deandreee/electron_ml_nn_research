@@ -1,6 +1,7 @@
 import { CoinData, Candle } from "../types";
 import { TimeFrame } from "../features/common";
 import { BatchConfig } from "./BatchConfig";
+import { round2 } from "../utils";
 
 export class CorrCandles {
   coin: CoinData;
@@ -15,11 +16,26 @@ export class CorrCandles {
     this.batchConfig = batchConfig;
   }
 
+  isInt = (n: number) => {
+    return n % 1 === 0;
+  };
+
   // candles actual is used further, but we still need to see the diff n periods ago,
   // so we look into full candles
   // this is just by idx, ot depending on df, so will differ between tfs
   getPrev = (curr: number, minus: number) => {
     return this.candles[curr - minus + this.batchConfig.warmupIndCount];
+  };
+
+  getPrevHrs = (curr: number, minus: number) => {
+    const div = 60 / this.batchConfig.batchSize;
+
+    const minusCandles = div * minus;
+    if (!this.isInt(minusCandles)) {
+      throw new Error(`getPrevHrs: not integer (minus ${minus} | div ${round2(div)})`);
+    }
+
+    return this.candles[curr - minusCandles + this.batchConfig.warmupIndCount];
   };
 
   // https://www.evernote.com/Home.action?login=true#n=5d6db76a-2b78-445a-853b-cb151e9bc15d&s=s202&ses=4&sh=2&sds=5&

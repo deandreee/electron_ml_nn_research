@@ -194,3 +194,77 @@ describe("corrCandles | getPrev | 60", () => {
     expect(start(c1)).toEqual("2018-11-30T00:00:00.000Z");
   });
 });
+
+describe("corrCandles | getPrevHrs | 60", () => {
+  let month: CorrCandles = null;
+
+  beforeAll(() => {
+    const batchConfig = new BatchConfig(60, 1440);
+    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+  });
+
+  test("1", () => {
+    const c1 = month.getPrevHrs(0, 1);
+    expect(start(c1)).toEqual("2018-11-30T23:00:00.000Z");
+  });
+
+  test("12", () => {
+    const c1 = month.getPrevHrs(0, 12);
+    expect(start(c1)).toEqual("2018-11-30T12:00:00.000Z");
+  });
+
+  test("24", () => {
+    const c1 = month.getPrevHrs(0, 24);
+    expect(start(c1)).toEqual("2018-11-30T00:00:00.000Z");
+  });
+});
+
+describe("corrCandles | getPrevHrs | 120", () => {
+  let month: CorrCandles = null;
+
+  beforeAll(() => {
+    const batchConfig = new BatchConfig(120, 1440);
+    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+  });
+
+  test("1", () => {
+    expect(() => {
+      month.getPrevHrs(0, 1);
+    }).toThrowError("getPrevHrs: not integer (minus 1 | div 0.5)");
+  });
+
+  test("2", () => {
+    const c1 = month.getPrevHrs(0, 2);
+    expect(start(c1)).toEqual("2018-11-30T22:00:00.000Z");
+  });
+
+  test("24", () => {
+    const c1 = month.getPrevHrs(0, 24);
+    expect(start(c1)).toEqual("2018-11-30T00:00:00.000Z");
+  });
+});
+
+describe("corrCandles | getPrevHrs | 1440", () => {
+  let month: CorrCandles = null;
+
+  beforeAll(() => {
+    const batchConfig = new BatchConfig(1440, 1440);
+    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+  });
+
+  test("1", () => {
+    expect(() => {
+      month.getPrevHrs(0, 1);
+    }).toThrowError("getPrevHrs: not integer (minus 1 | div 0.04)");
+  });
+
+  test("24", () => {
+    const c1 = month.getPrevHrs(0, 24);
+    expect(start(c1)).toEqual("2018-11-30T00:00:00.000Z");
+  });
+
+  test("48", () => {
+    const c1 = month.getPrevHrs(0, 48);
+    expect(start(c1)).toEqual("2018-11-29T00:00:00.000Z");
+  });
+});
