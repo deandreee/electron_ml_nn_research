@@ -4,7 +4,6 @@ import * as features from "../features";
 import * as daterange from "../daterange";
 import { CorrCandles } from "../corr/CorrCandles";
 import { BatchConfig } from "../corr/BatchConfig";
-import { toUnix, logCandleStart } from "../corr/testUtils";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getSMA();
@@ -23,102 +22,18 @@ describe("run", () => {
     month = months.Dec;
   });
 
-  // test("candlesActual.length", () => {
-  //   const candlesPerDay = 24 / 4;
-  //   expect(month.candlesActual.length).toEqual(candlesPerDay * 31);
-  // });
-
-  // test("candlesActual.start", () => {
-  //   const d = new Date(month.candlesActual[0].start * 1000);
-  //   expect(d.toISOString()).toEqual("2018-12-01T00:00:00.000Z");
-  // });
-
-  // test("candlesActual.end", () => {
-  //   const d = new Date(month.candlesActual[month.candlesActual.length - 1].start * 1000);
-  //   expect(d.toISOString()).toEqual("2018-12-31T20:00:00.000Z"); // start + 4h
-  // });
-
-  test("candlesActual.lengt", () => {
+  test("candlesActual.length", () => {
     expect(month.candlesActual.length).toEqual(24 * 31);
   });
 
-  test("log_candles", () => {
-    for (let i = 1; i < month.candles.length; i++) {
-      // console.log(new Date(x.start * 1000));
-      const curr = month.candles[i];
-      // const prev = month.candles[i - 1];
-      // expect(curr.start - prev.start).toEqual(60 * 60); // 1h
-      console.log(new Date(curr.start * 1000).toISOString(), curr.close);
-    }
-  });
-
-  test("log_candles", () => {
-    for (let i = 1; i < month.candles.length; i++) {
-      // console.log(new Date(x.start * 1000));
-      const curr = month.candles[i];
-      const prev = month.candles[i - 1];
-      expect(curr.start - prev.start).toEqual(60 * 60); // 1h
-    }
-  });
-
-  test("log_candles", () => {
-    for (let i = 1; i < month.candlesActual.length; i++) {
-      // console.log(new Date(x.start * 1000));
-      const curr = month.candlesActual[i];
-      const prev = month.candlesActual[i - 1];
-      expect(curr.start - prev.start).toEqual(60 * 60); // 1h
-    }
-  });
-
-  test.only("1", () => {
-    // const d1 = toUnix("2018-12-01T00:00:00Z");
-    // const c1 = month.candlesActual.find(x => x.start === d1);
-
-    const c1 = month.getCandleEndsAt(new Date("2018-12-01T04:00:00Z"), "x240");
-
-    // {
-    //   const cStart = month.candles[0];
-    //   const cEnd = month.candles[month.candles.length - 1];
-    //   logCandleStart(cStart);
-    //   logCandleStart(cEnd);
-    // }
-
-    // {
-    //   const cStart = month.candlesActual[0];
-    //   const cEnd = month.candlesActual[month.candlesActual.length - 1];
-    //   logCandleStart(cStart);
-    //   logCandleStart(cEnd);
-    // }
-
+  test("01", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-01T00:00:00Z"), "x240");
     expect(getSMA(c1)).toEqual(4148);
   });
 
-  test("1", () => {
-    const d1 = toUnix("2018-12-01T01:00:00Z");
-    const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(getSMA(c1)).toEqual(4148);
-  });
-
-  test("1", () => {
-    const d1 = toUnix("2018-12-01T04:00:00Z");
-    const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(getSMA(c1)).toEqual(4148);
-  });
-
-  test("try_find", () => {
-    const c1 = month.candlesActual.find(x => Math.floor(x.ind.sma.x240.p10) === 4148);
-    logCandleStart(c1);
-  });
-
-  test("1", () => {
-    const d1 = toUnix("2018-12-05T00:00:00Z");
-    const c1 = month.candlesActual.find(x => x.start === d1);
+  test("05", () => {
+    const c1 = month.getCandleStartsAt(new Date("2018-12-05T00:00:00Z"), "x240");
     expect(getSMA(c1)).toEqual(3935);
-  });
-
-  test("try_find", () => {
-    const c1 = month.candlesActual.find(x => Math.floor(x.ind.sma.x240.p10) === 3935);
-    logCandleStart(c1);
   });
 
   // test("1", () => {

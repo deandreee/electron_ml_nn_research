@@ -47,6 +47,7 @@ export class CorrCandles {
   };
 
   // this will be more understandable ...
+  // this is not starts, this is get candle for IND that starts in that timeframe ...
   getCandleStartsAt = (date: Date, tf: TimeFrame) => {
     return this.getCandleWithOffset(date, tf, true);
   };
