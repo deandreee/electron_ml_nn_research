@@ -23,6 +23,14 @@ export const createCandle = (partial: Partial<Candle>) => {
   return candle;
 };
 
+export const start = (candle: Candle) => {
+  return new Date(candle.start * 1000).toISOString();
+};
+
 export const logCandleStart = (candle: Candle) => {
-  console.log(new Date(candle.start * 1000));
+  console.log(start(candle));
+};
+
+export const toUnix = (timeStr: string) => {
+  return Math.floor(new Date(timeStr).getTime() / 1000);
 };

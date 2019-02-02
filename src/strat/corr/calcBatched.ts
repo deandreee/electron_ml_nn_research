@@ -109,7 +109,6 @@ export const corrCalcBatched = (
     }
 
     const bigCandles = waveUtils.updateCandles(waveManagers, candle);
-
     if (!waveUtils.areCandlesReady(bigCandles, batchConfig)) {
       candle.ind = {};
       continue;
@@ -200,13 +199,7 @@ export const corrCalcBatched = (
     _10d: []
   };
 
-  const corrCandles = new CorrCandles(
-    coin,
-    candles,
-    candlesActual,
-    batchConfig.warmupIndCount,
-    batchConfig.extendedCount
-  );
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
 
   return { corrCandles, pctChange };
 };

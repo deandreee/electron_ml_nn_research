@@ -12,18 +12,15 @@ describe("run", () => {
   let month2: CoinData = null;
 
   beforeAll(() => {
-    const batchConfigRaw = new BatchConfig(1, 1440);
+    const batchConfigRaw = new BatchConfig(1, 10);
     monthRaw = queryCandles(batchConfigRaw, Coins.BTC, ranges).Dec;
 
-    const batchConfig1 = new BatchConfig(60, 1440);
+    const batchConfig1 = new BatchConfig(3, 10);
     month1 = queryCandlesBatched(batchConfig1, Coins.BTC, ranges).Dec;
-
-    const batchConfig2 = new BatchConfig(120, 1440);
-    month2 = queryCandlesBatched(batchConfig2, Coins.BTC, ranges).Dec;
   });
 
-  test.skip("candles.length", () => {
-    expect(monthRaw.candles.length).toEqual(month1.candles.length * 60);
+  test("candles.length", () => {
+    const xmBase = expect(monthRaw.candles.length).toEqual(month1.candles.length * 60);
     expect(monthRaw.candles.length).toEqual(month2.candles.length * 120);
     expect(month1.candles.length).toEqual(month2.candles.length * 2);
   });

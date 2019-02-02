@@ -27,7 +27,7 @@ export const queryCorrCandlesMonths = (coinName: Coins, ranges: DateRange[]) => 
 
     // need to implement when/if get back to this
     // const { corrCandles } = calc.corrCalc(coin);
-    const corrCandles = new CorrCandles(coin, [], [], 0, 0);
+    const corrCandles = new CorrCandles(coin, [], [], new BatchConfig(0, 0));
 
     corrCandleMonths[range.name] = corrCandles;
     log.end(`query ${range.name}`);
@@ -82,7 +82,7 @@ export const queryCorrCandlesMonthsBatched = (
   return corrCandleMonths;
 };
 
-export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
+export const queryCandles = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
   const candleMonths: CandleMonths = {};
 
   for (let range of ranges) {
@@ -90,8 +90,18 @@ export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, r
     const toExtended = new Date(range.to.getTime() + ms(`${batchConfig.extended}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
+    candleMonths[range.name] = coin;
+  }
 
+  return candleMonths;
+};
+
+export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
+  const candleMonths = queryCandles(batchConfig, coinName, ranges);
+
+  for (let range of ranges) {
+    const coin = candleMonths[range.name];
+    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
     candleMonths[range.name] = coin;
   }
 

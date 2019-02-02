@@ -2,6 +2,7 @@ import { PctChange, CoinData } from "../types";
 import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./barrier";
+import { batchConfig } from "../run/runConfigXG";
 // @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 
@@ -254,7 +255,7 @@ export const corrCalc = (coin: CoinData) => {
     _10d: candlesActual.map(x => x.pctChange._10d)
   };
 
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, WARMUP_IND, EXTENDED);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
 
   return { corrCandles, pctChange };
 };

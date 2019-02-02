@@ -85,7 +85,7 @@ export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, fe
     (x, i) => !(i < batchConfig.warmupIndCount || i >= candles.length - batchConfig.extendedCount)
   );
   const pctChange = corrUtils.getPctChange(candlesActual);
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig.warmupIndCount, batchConfig.extended);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
 
   return { corrCandles, pctChange };
 };

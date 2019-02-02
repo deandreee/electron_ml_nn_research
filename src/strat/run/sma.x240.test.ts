@@ -1,13 +1,18 @@
-import { Coins } from "../types";
+import { Coins, Candle } from "../types";
 import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
 import * as features from "../features";
 import * as daterange from "../daterange";
 import { CorrCandles } from "../corr/CorrCandles";
 import { BatchConfig } from "../corr/BatchConfig";
+import { toUnix, logCandleStart } from "../corr/testUtils";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getSMA();
 const batchConfig = new BatchConfig(60, 1440);
+
+const getSMA = (candle: Candle) => {
+  return Math.floor(candle.ind.sma.x240.p10);
+};
 
 describe("run", () => {
   let month: CorrCandles = null;
@@ -37,7 +42,7 @@ describe("run", () => {
     expect(month.candlesActual.length).toEqual(24 * 31);
   });
 
-  test.only("log_candles", () => {
+  test("log_candles", () => {
     for (let i = 1; i < month.candles.length; i++) {
       // console.log(new Date(x.start * 1000));
       const curr = month.candles[i];
@@ -66,52 +71,52 @@ describe("run", () => {
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-01T00:00:00Z").getTime() / 1000);
+    const d1 = toUnix("2018-12-01T00:00:00Z");
     const c1 = month.candlesActual.find(x => x.start === d1);
 
     {
       const cStart = month.candles[0];
       const cEnd = month.candles[month.candles.length - 1];
-      console.log(new Date(cStart.start * 1000));
-      console.log(new Date(cEnd.start * 1000));
+      logCandleStart(cStart);
+      logCandleStart(cEnd);
     }
 
     {
       const cStart = month.candlesActual[0];
       const cEnd = month.candlesActual[month.candlesActual.length - 1];
-      console.log(new Date(cStart.start * 1000));
-      console.log(new Date(cEnd.start * 1000));
+      logCandleStart(cStart);
+      logCandleStart(cEnd);
     }
 
-    expect(Math.floor(c1.ind.sma.x240.p10)).toEqual(4148);
+    expect(getSMA(c1)).toEqual(4148);
+  });
+
+  test.only("1", () => {
+    const d1 = toUnix("2018-12-01T01:00:00Z");
+    const c1 = month.candlesActual.find(x => x.start === d1);
+    expect(getSMA(c1)).toEqual(4148);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-01T01:00:00Z").getTime() / 1000);
+    const d1 = toUnix("2018-12-01T04:00:00Z");
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(Math.floor(c1.ind.sma.x240.p10)).toEqual(4148);
+    expect(getSMA(c1)).toEqual(4148);
   });
 
-  test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-01T04:00:00Z").getTime() / 1000);
-    const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(Math.floor(c1.ind.sma.x240.p10)).toEqual(4148);
-  });
-
-  test("try_find", () => {
+  test.only("try_find", () => {
     const c1 = month.candlesActual.find(x => Math.floor(x.ind.sma.x240.p10) === 4148);
-    console.log(new Date(c1.start * 1000));
+    logCandleStart(c1);
   });
 
   test("1", () => {
-    const d1 = Math.floor(new Date("2018-12-05T00:00:00Z").getTime() / 1000);
+    const d1 = toUnix("2018-12-05T00:00:00Z");
     const c1 = month.candlesActual.find(x => x.start === d1);
-    expect(Math.floor(c1.ind.sma.x240.p10)).toEqual(3935);
+    expect(getSMA(c1)).toEqual(3935);
   });
 
   test("try_find", () => {
     const c1 = month.candlesActual.find(x => Math.floor(x.ind.sma.x240.p10) === 3935);
-    console.log(new Date(c1.start * 1000));
+    logCandleStart(c1);
   });
 
   // test("1", () => {
