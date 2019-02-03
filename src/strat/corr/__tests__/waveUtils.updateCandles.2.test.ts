@@ -1,8 +1,8 @@
-import * as waveUtils from "./waveUtils";
-import { createCandle } from "./testUtils";
-import { batchCandlesInXs } from "../db/batchCandlesInXs";
+import * as waveUtils from "../waveUtils";
+import { createCandle } from "../testUtils";
+import { batchCandlesInXs } from "../../db/batchCandlesInXs";
 
-describe("waveUtils | update", () => {
+describe("waveUtils | updateCandles", () => {
   const candles = [
     createCandle({ close: 0, start: 0, open: 0, high: 11, low: 11 }),
     createCandle({ close: 1, start: 1, open: 1, high: 12, low: 12 }),
@@ -53,7 +53,7 @@ describe("waveUtils | update", () => {
     expect(bigCandles.x240.start).toEqual(4);
   });
 
-  test.only("x1 diff batchSize", () => {
+  test("x1 diff batchSize", () => {
     const waveManagers1 = waveUtils.createManagers(60);
     const waveManagers2 = waveUtils.createManagers(240);
 

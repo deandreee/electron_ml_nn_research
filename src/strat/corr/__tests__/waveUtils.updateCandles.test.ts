@@ -19,7 +19,7 @@ const candles = [
   createCandle({ close: 13, start: 10, open: 10, high: 20, low: 20 })
 ];
 
-describe("waveUtils.updateCandles x1 - 1", () => {
+describe("waveUtils | updateCandles | x1 - 1", () => {
   let waveManagers: WaveManagers = null;
 
   beforeAll(() => {
@@ -109,7 +109,7 @@ describe("waveUtils.updateCandles x1 - 1", () => {
   });
 });
 
-describe("waveUtils.updateCandles x1 2", () => {
+describe("waveUtils | updateCandles | x1 2", () => {
   let waveManagers: WaveManagers = null;
 
   beforeAll(() => {

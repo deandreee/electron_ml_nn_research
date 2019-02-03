@@ -1,7 +1,7 @@
-import * as waveUtils from "./waveUtils";
-import { createCandle } from "./testUtils";
+import * as waveUtils from "../waveUtils";
+import { createCandle } from "../testUtils";
 
-describe("waveUtils", () => {
+describe("waveUtils | updateCandles | 3", () => {
   const candles = [
     createCandle({ close: 0, start: 0, open: 0, high: 11, low: 11 }),
     createCandle({ close: 1, start: 1, open: 1, high: 12, low: 12 }),
@@ -129,7 +129,7 @@ describe("waveUtils", () => {
     expect(bigCandle.close).toEqual(8);
   });
 
-  test.only("start 1st", () => {
+  test("start 1st", () => {
     const waveManagers = waveUtils.createManagers(30);
 
     waveManagers.x120.update(candles[0]);
@@ -141,7 +141,7 @@ describe("waveUtils", () => {
     expect(bigCandle.start).toEqual(0);
   });
 
-  test.only("start 2nd", () => {
+  test("start 2nd", () => {
     const waveManagers = waveUtils.createManagers(30);
 
     waveManagers.x120.update(candles[0]);

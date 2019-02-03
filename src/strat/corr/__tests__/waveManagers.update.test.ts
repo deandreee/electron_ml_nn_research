@@ -1,7 +1,7 @@
 import * as waveUtils from "./waveUtils";
 import { createCandle } from "./testUtils";
 
-describe("waveUtils", () => {
+describe("waveManagers.update", () => {
   const candles = [
     createCandle({ close: 1, start: 1, open: 1, high: 11, low: 11 }),
     createCandle({ close: 2, start: 2, open: 2, high: 12, low: 12 }),
