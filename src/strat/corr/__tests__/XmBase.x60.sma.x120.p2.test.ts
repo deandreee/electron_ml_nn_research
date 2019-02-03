@@ -1,8 +1,8 @@
-import * as waveUtils from "./waveUtils";
-import { createCandle } from "./testUtils";
-import { XmBase, SMA } from "../indicators/gekko";
+import * as waveUtils from "../waveUtils";
+import { createCandle } from "../testUtils";
+import { XmBase, SMA } from "../../indicators/gekko";
 
-describe("waveUtils", () => {
+describe("XmBase x60 | sma x120 p2", () => {
   const candles = [
     createCandle({ close: 0, start: 1, open: 1, high: 11, low: 11 }),
     createCandle({ close: 1, start: 2, open: 2, high: 12, low: 12 }),
