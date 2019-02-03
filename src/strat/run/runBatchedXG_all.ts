@@ -3,12 +3,14 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
-import * as mlXGClass from "../ml/mlXGClass";
-// import * as mlXGClass from "../ml/mlXGClassProb";
+// import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole, logFile } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "./logClassResults";
 import { runConfigXG2, BARRIER_LABEL, batchConfig } from "./runConfigXG";
+import { CorrCandles } from "../corr/CorrCandles";
+import { BatchConfig } from "../corr/BatchConfig";
 
 const ranges = runUtils.genRangesFull();
 const featureName: string = "ALL";
@@ -16,45 +18,53 @@ const featureName: string = "ALL";
 const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAllPart3();
+  // split in parts to reduce the load
+  const featuresSplitParts =
+    featureName === "COMBO"
+      ? [features.getCombo()]
+      : [features.getAllPart1(), features.getAllPart2(), features.getAllPart3()];
 
-  const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
-  const trainMonth = months[ranges[0].name];
-
-  const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
+  const linRegs: LinRegResult[] = [];
 
-  for (let feature of featuresSplit) {
-    log.start(feature.name);
-    const { booster } = await mlXGClass.train(runConfigXG2, trainMonth, feature.fn);
+  await logFileHeader(fileName);
 
-    const resultsForAvg = [];
+  for (let featuresSplit of featuresSplitParts) {
+    const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
+    const trainMonth = months[ranges[0].name];
 
-    for (let range of ranges) {
-      const corrCandles = months[range.name];
+    for (let feature of featuresSplit) {
+      log.start(feature.name);
+      const { booster } = await mlXGClass.train(runConfigXG2, trainMonth, feature.fn);
 
-      const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
-      predictions[range.name][feature.name] = predicted;
+      const resultsForAvg = [];
 
-      logConsole(range.name, results);
-      await logFile(fileName, runConfigXG2, Coins.BTC, range.name, BARRIER_LABEL, feature.name, results);
+      for (let range of ranges) {
+        const corrCandles = months[range.name];
 
-      if (!range.isTrain) {
-        resultsForAvg.push(results);
+        const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
+        predictions[range.name][feature.name] = predicted;
+
+        logConsole(range.name, results);
+        await logFile(fileName, runConfigXG2, Coins.BTC, range.name, BARRIER_LABEL, feature.name, results);
+
+        if (!range.isTrain) {
+          resultsForAvg.push(results);
+        }
       }
+
+      booster.free();
+
+      const avgResults = runUtils.calcAvgResults(resultsForAvg);
+      logConsole("AVG", avgResults);
+      await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", BARRIER_LABEL, feature.name, avgResults);
+
+      log.end(feature.name);
     }
-
-    booster.free();
-
-    const avgResults = runUtils.calcAvgResults(resultsForAvg);
-    logConsole("AVG", avgResults);
-    await logFile(fileName, runConfigXG2, Coins.BTC, "AVG", BARRIER_LABEL, feature.name, avgResults);
-
-    log.end(feature.name);
   }
 
   return {
-    coin: months.Jul,
+    coin: new CorrCandles({ name: "BTC", candles: [] }, [], [], new BatchConfig(0, 0)),
     labelsPredicted: predictions.Jul["vixFix480"] || [],
     linRegs
   };
