@@ -45,7 +45,7 @@
       "name": "Jest ALL",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
       "runtimeVersion": "8.11.3",
-      // "args": ["${relativeFile}"],
+      "args": ["src"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "windows": {
