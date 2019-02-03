@@ -1,15 +1,15 @@
-import { Coins } from "../types";
-import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
-import * as features from "../features";
-import * as daterange from "../daterange";
-import { CorrCandles } from "../corr/CorrCandles";
-import { BatchConfig } from "../corr/BatchConfig";
+import { Coins } from "../../types";
+import { queryCandlesBatched, calcIndicators } from "../../run/queryCorrCandlesMonths";
+import * as features from "../../features";
+import * as daterange from "../../daterange";
+import { CorrCandles } from "../../corr/CorrCandles";
+import { BatchConfig } from "../../corr/BatchConfig";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getRSI();
 const batchConfig = new BatchConfig(60, 1440);
 
-describe("x1440", () => {
+describe("rsi | x1440 | p15", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {

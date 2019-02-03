@@ -1,5 +1,5 @@
-import * as waveUtils from "./waveUtils";
-import { createCandle } from "./testUtils";
+import * as waveUtils from "../waveUtils";
+import { createCandle } from "../testUtils";
 
 describe("waveManagers.update", () => {
   const candles = [

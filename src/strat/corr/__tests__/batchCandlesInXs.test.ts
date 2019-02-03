@@ -1,6 +1,6 @@
-import { Candle } from "../types";
-import { batchCandlesInXs } from "./batchCandlesInXs";
-import { createCandle } from "../corr/testUtils";
+import { Candle } from "../../types";
+import { batchCandlesInXs } from "../../db/batchCandlesInXs";
+import { createCandle } from "../../corr/testUtils";
 
 describe("batchCandlesInXs", () => {
   let bigCandles: Candle[] = null;

@@ -29,7 +29,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Jest Current File",
+      "name": "Jest Current",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
       "runtimeVersion": "8.11.3",
       "args": ["${relativeFile}"],
@@ -38,6 +38,20 @@
       "windows": {
         "program": "${workspaceFolder}/node_modules/jest/bin/jest"
       }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jest ALL",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "runtimeVersion": "8.11.3",
+      // "args": ["${relativeFile}"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      },
+      "preLaunchTask": "tsc.be"
     }
   ]
 }

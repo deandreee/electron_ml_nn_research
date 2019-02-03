@@ -1,15 +1,15 @@
-import { Coins } from "../types";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
-import * as features from "../features";
-import * as daterange from "../daterange";
-import { BatchConfig } from "../corr/BatchConfig";
-import { start } from "../corr/testUtils";
-import { CorrCandles } from "../corr/CorrCandles";
+import { Coins } from "../../types";
+import { queryCorrCandlesMonthsBatched } from "../../run/queryCorrCandlesMonths";
+import * as features from "../../features";
+import * as daterange from "../../daterange";
+import { BatchConfig } from "../../corr/BatchConfig";
+import { start } from "../../corr/testUtils";
+import { CorrCandles } from "../../corr/CorrCandles";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getSMA();
 
-describe("corrCandles | getCandleEndsAt | 60", () => {
+describe("CorrCandles | getCandleEndsAt | 60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {

@@ -1,9 +1,9 @@
-import { Coins, Candle } from "../types";
-import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
-import * as features from "../features";
-import * as daterange from "../daterange";
-import { CorrCandles } from "../corr/CorrCandles";
-import { BatchConfig } from "../corr/BatchConfig";
+import { Coins, Candle } from "../../types";
+import { queryCandlesBatched, calcIndicators } from "../../run/queryCorrCandlesMonths";
+import * as features from "../../features";
+import * as daterange from "../../daterange";
+import { CorrCandles } from "../../corr/CorrCandles";
+import { BatchConfig } from "../../corr/BatchConfig";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getMFI();
@@ -13,7 +13,7 @@ const getMFI = (candle: Candle) => {
   return Math.floor(candle.ind.mfi.x60.p10);
 };
 
-describe("mfi.x60.p10", () => {
+describe("mfi | x60 | p10", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {

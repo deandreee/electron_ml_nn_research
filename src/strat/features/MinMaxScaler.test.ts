@@ -7,7 +7,7 @@ describe("featureSplit", () => {
     const featureSplit: FnGetFeature = x => [x.ind.rsi.x30.p10];
     const minMaxScaler = new MinMaxScaler(featureSplit);
     const indicators = minMaxScaler.getIndicatorNames();
-    expect(indicators).toEqual(["rsi30x10"]);
+    expect(indicators).toEqual(["rsi.x30.p10"]);
   });
 
   test("getIndicatorNames | multiple", () => {
@@ -21,7 +21,7 @@ describe("featureSplit", () => {
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
     const indicators = minMaxScaler.getIndicatorNames();
-    expect(indicators).toEqual(["rsi30x10", "rsi60x10", "rsi120x10", "rsi240x10", "rsi480x10"]);
+    expect(indicators).toEqual(["rsi.x30.p10", "rsi.x60.p10", "rsi.x120.p10", "rsi.x240.p10", "rsi.x480.p10"]);
   });
 
   test("getIndicatorNames | with point", () => {
@@ -40,7 +40,7 @@ describe("featureSplit", () => {
 
     const minMaxScaler = new MinMaxScaler(featureSplit);
     const indicators = minMaxScaler.getIndicatorNames();
-    expect(indicators).toEqual(["rsi30x10", "rsi120x10"]);
+    expect(indicators).toEqual(["rsi.x30.p10", "rsi.x120.p10"]);
   });
 
   test("scaleInitial | feature count too much", () => {
