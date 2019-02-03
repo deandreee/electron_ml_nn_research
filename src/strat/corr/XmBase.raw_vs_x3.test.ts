@@ -1,5 +1,5 @@
 import { Coins, CoinData } from "../types";
-import { queryCandlesBatched, queryCandles } from "./queryCorrCandlesMonths";
+import { queryCandlesBatched, queryCandles } from "../run/queryCorrCandlesMonths";
 import * as daterange from "../daterange";
 import { start } from "../corr/testUtils";
 import { BatchConfig } from "../corr/BatchConfig";
@@ -20,7 +20,7 @@ describe("run", () => {
   });
 
   test("candles.length", () => {
-    const xmBase = expect(monthRaw.candles.length).toEqual(month1.candles.length * 60);
+    expect(monthRaw.candles.length).toEqual(month1.candles.length * 60);
     expect(monthRaw.candles.length).toEqual(month2.candles.length * 120);
     expect(month1.candles.length).toEqual(month2.candles.length * 2);
   });

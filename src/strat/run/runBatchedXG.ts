@@ -34,7 +34,7 @@ const ranges = runUtils.genRanges_JJAS();
 // const featuresSplit = features.getZerolagMACD();
 // const featuresSplit = features.getVixFix();
 // const featuresSplit = features.getVixFix_HistoryHrs();
-const featuresSplit = features.getVixFix_HistoryDays();
+// const featuresSplit = features.getVixFix_HistoryDays();
 // const featuresSplit = features.getKST();
 // const featuresSplit = features.getVWAP();
 // const featuresSplit = features.getWilliamsR();
@@ -43,6 +43,7 @@ const featuresSplit = features.getVixFix_HistoryDays();
 // const featuresSplit = features.getKalmanDiff();
 // const featuresSplit = features.getChandelierExit();
 // const featuresSplit = features.getKeltner();
+const featuresSplit = features.getAllPart1();
 
 // const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";

@@ -30,23 +30,44 @@ import { getValidation } from "./getValidation";
 import { getValidationCombo } from "./getValidationCombo";
 import { getValidationFive } from "./getValidationFive";
 
-const getAll = () => {
+const getAllPart1 = () => {
   return [
-    ...getATR(),
-    ...getBBands(),
-    ...getBBandsVsPrice(),
-    ...getMACD(),
-    ...getMACDADX(),
-    ...getMFI(),
     ...getRSI(),
+    ...getBBands(),
+    // ...getBBandsAndPrice(); // not working, name not bbands...
+    ...getMFI(),
     ...getStochKD(),
-    ...getVWAP(),
-    ...getVixFix(),
     ...getEMAOCC(),
-    ...getT3MACD(),
+    ...getEMAOCC_Price(),
+    ...getEMAOCC_History(),
+    ...getT3MACD()
+  ];
+};
+
+const getAllPart2 = () => {
+  return [
     ...getZerolagT3(),
     ...getLRC(),
-    ...getZerolagMACD()
+    ...getLRC_HistoryHrs(),
+    ...getLRC_HistoryDays(),
+    ...getMACD(),
+    ...getZerolagMACD(),
+    ...getVixFix(),
+    ...getVixFix_HistoryHrs(),
+    ...getVixFix_HistoryDays()
+  ];
+};
+
+const getAllPart3 = () => {
+  return [
+    ...getKST(),
+    ...getVWAP(),
+    ...getWilliamsR(),
+    ...getPSAR(),
+    ...getKalman(),
+    ...getKalmanDiff(),
+    ...getChandelierExit(),
+    ...getKeltner()
   ];
 };
 
@@ -54,7 +75,9 @@ export {
   getSMA,
   FeatureSplit,
   FnGetFeature,
-  getAll,
+  getAllPart1,
+  getAllPart2,
+  getAllPart3,
   getAllKhaos,
   getATR,
   getBBands,

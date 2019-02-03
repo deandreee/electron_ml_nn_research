@@ -11,12 +11,12 @@ import { logConsole, logFile } from "./logClassResults";
 import { runConfigXG2, BARRIER_LABEL, batchConfig } from "./runConfigXG";
 
 const ranges = runUtils.genRangesFull();
-// const featureName: string = "ALL";
-const featureName: string = "COMBO";
+const featureName: string = "ALL";
+// const featureName: string = "COMBO";
 const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${BARRIER_LABEL} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAll();
+  const featuresSplit = featureName === "COMBO" ? features.getCombo() : features.getAllPart3();
 
   const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
   const trainMonth = months[ranges[0].name];
