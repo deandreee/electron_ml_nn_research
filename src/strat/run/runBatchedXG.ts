@@ -13,7 +13,8 @@ import { runConfigXGDef as runConfigXG, BARRIER_LABEL, batchConfig } from "./run
 import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
-const ranges = runUtils.genRanges_JJAS();
+// const ranges = runUtils.genRanges_JJAS();
+const ranges = runUtils.genRanges_JJASON();
 // const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
 
@@ -45,10 +46,10 @@ const ranges = runUtils.genRanges_JJAS();
 // const featuresSplit = features.getKeltner();
 // const featuresSplit = features.getVixFix();
 // const featuresSplit = features.getVixFix();
-// const featuresSplit = features.getVixFix_HistoryHrs();
+const featuresSplit = features.getVixFix_HistoryHrs();
 // const featuresSplit = features.getVixFix_HistoryDays();
 // const featuresSplit = features.getAllPart2();
-const featuresSplit = features.getKST_HistoryDays();
+// const featuresSplit = features.getRSI_HistoryHrs();
 
 // const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";

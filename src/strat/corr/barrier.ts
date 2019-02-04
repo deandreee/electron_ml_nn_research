@@ -45,7 +45,9 @@ export const getTrippleBarrierConfig = (batchSize: number, label?: TrippleBarrie
 
   if (label === "THREE") {
     // return { stopLoss: -3, takeProfit: 3, lookAhead: convert10mToBatchSize(batchSize, 220) };
-    return { stopLoss: -3, takeProfit: 3, lookAhead: convert10mToBatchSize(batchSize, 250) };
+    // return { stopLoss: -3, takeProfit: 3, lookAhead: convert10mToBatchSize(batchSize, 250) };
+    // for JJASON
+    return { stopLoss: -3, takeProfit: 3, lookAhead: convert10mToBatchSize(batchSize, 350) };
   }
 
   if (label === "FIVE") {

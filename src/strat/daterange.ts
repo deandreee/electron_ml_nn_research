@@ -35,6 +35,12 @@ export const MayJunJulAugSep: DateRange = {
   to: new Date("2018-10-01T00:00:00Z")
 };
 
+export const JJASON: DateRange = {
+  name: "JJASON",
+  from: new Date("2018-06-01T00:00:00Z"),
+  to: new Date("2018-12-01T00:00:00Z")
+};
+
 export const JunJulAugSep: DateRange = {
   name: "JJAS",
   from: new Date("2018-06-01T00:00:00Z"),

@@ -16,10 +16,12 @@ export const getPredictionsTemplate = () => {
   const predictions: Predictions = {
     JJAS: {},
     MJJAS: {},
+    JJASON: {},
     JunJulAugSep: {},
     AugSep: {},
     JunJul: {},
     NovDump: {},
+    JunNov: {},
     Jun: {},
     Jul: {},
     Aug: {},
@@ -117,6 +119,10 @@ export const genRanges_MJJAS = () => {
 
 export const genRanges_JJAS = () => {
   return [train(daterange.JunJulAugSep), daterange.Oct, daterange.Nov, daterange.Dec, daterange.Jan19];
+};
+
+export const genRanges_JJASON = () => {
+  return [train(daterange.JJASON), daterange.Dec, daterange.Jan19];
 };
 
 export const genRanges_JJ = () => {

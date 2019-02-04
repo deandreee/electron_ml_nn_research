@@ -5,10 +5,10 @@ import { getBBands, getBBandsUpperLower, getBBandsVsPrice, getBBandsAndPrice } f
 import { getCombo } from "./getCombo";
 import { getIFT } from "./getIFT";
 import { getIFTS } from "./getIFTS";
-import { getMACD } from "./getMACD";
+import { getMACD, getMACD_HistoryHrs, getMACD_HistoryDays } from "./getMACD";
 import { getMACDADX } from "./getMACDADX";
 import { getMFI } from "./getMFI";
-import { getRSI } from "./getRSI";
+import { getRSI, getRSI_HistoryHrs, getRSI_HistoryDays } from "./getRSI";
 import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix, getVixFix_HistoryHrs, getVixFix_HistoryDays } from "./getVixFix";
@@ -33,6 +33,8 @@ import { getValidationFive } from "./getValidationFive";
 const getAllPart1 = () => {
   return [
     ...getRSI(),
+    ...getRSI_HistoryHrs(),
+    ...getRSI_HistoryDays(),
     ...getBBands(),
     // ...getBBandsAndPrice(); // not working, name not bbands...
     ...getMFI(),
@@ -52,6 +54,8 @@ const getAllPart2 = () => {
     ...getLRC_HistoryHrs(),
     ...getLRC_HistoryDays(),
     ...getMACD(),
+    ...getMACD_HistoryHrs(),
+    ...getMACD_HistoryDays(),
     ...getZerolagMACD(),
     ...getVixFix(),
     ...getVixFix_HistoryHrs(),
@@ -93,9 +97,13 @@ export {
   getIFT,
   getIFTS,
   getMACD,
+  getMACD_HistoryHrs,
+  getMACD_HistoryDays,
   getMACDADX,
   getMFI,
   getRSI,
+  getRSI_HistoryHrs,
+  getRSI_HistoryDays,
   getStochKD,
   getVWAP,
   getVixFix,
