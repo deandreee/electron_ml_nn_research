@@ -48,7 +48,7 @@ const ranges = runUtils.genRanges_JJAS();
 // const featuresSplit = features.getVixFix_HistoryHrs();
 // const featuresSplit = features.getVixFix_HistoryDays();
 // const featuresSplit = features.getAllPart2();
-const featuresSplit = features.getKalman_HistoryHrs();
+const featuresSplit = features.getKST_HistoryDays();
 
 // const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";

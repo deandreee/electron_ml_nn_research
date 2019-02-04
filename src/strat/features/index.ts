@@ -18,7 +18,7 @@ import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC, getLRC_HistoryHrs, getLRC_HistoryDays } from "./getLRC";
 import { getZerolagMACD } from "./getZerolagMACD";
-import { getKST, getKSTandPrice } from "./getKST";
+import { getKST, getKST_Price, getKST_HistoryHrs, getKST_HistoryDays } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
 import { getPSAR } from "./getPSAR";
 import { getKalman, getKalman_HistoryHrs, getKalman_HistoryDays } from "./getKalman";
@@ -62,6 +62,9 @@ const getAllPart2 = () => {
 const getAllPart3 = () => {
   return [
     ...getKST(),
+    ...getKST_Price(),
+    ...getKST_HistoryHrs(),
+    ...getKST_HistoryDays(),
     ...getVWAP(),
     ...getWilliamsR(),
     ...getPSAR(),
@@ -110,7 +113,9 @@ export {
   getLRC_HistoryDays,
   getZerolagMACD,
   getKST,
-  getKSTandPrice,
+  getKST_Price,
+  getKST_HistoryHrs,
+  getKST_HistoryDays,
   getWilliamsR,
   getPSAR,
   getValidation,
