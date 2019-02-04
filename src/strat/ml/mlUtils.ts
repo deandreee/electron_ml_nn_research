@@ -252,7 +252,11 @@ export const undersample = (testData: TestData[], labelCount: NumberMap, max: nu
 
 export const take = (testData: TestData[], label: number, count: number) => {
   let res: TestData[] = [];
-  for (let x of testData) {
+
+  // take from end, so we have more recent examples
+  // for (let x of testData) {
+  for (let i = testData.length - 1; i >= 0; i--) {
+    const x = testData[i];
     if (x.label === label) {
       res.push(x);
       if (res.length === count) {
