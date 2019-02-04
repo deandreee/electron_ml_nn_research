@@ -4,10 +4,11 @@ import * as features from "../../features";
 import * as daterange from "../../daterange";
 import { CorrCandles } from "../../corr/CorrCandles";
 import { BatchConfig } from "../../corr/BatchConfig";
+import { getRunConfig } from "../testUtils";
 
 const ranges = [daterange.Dec];
 const featuresSplit = features.getKST();
-const batchConfig = new BatchConfig(10, 1440);
+const runConfig = getRunConfig(new BatchConfig(10, 1440));
 
 const getKST = (candle: Candle) => {
   const ind = candle.ind.kst.x120.p_sig9_roc5_smaroc_5;
@@ -21,8 +22,8 @@ describe("kst.x120.test", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const candleMonths = queryCandlesBatched(batchConfig, Coins.BTC, ranges);
-    const months = calcIndicators(batchConfig, candleMonths, ranges, featuresSplit);
+    const candleMonths = queryCandlesBatched(runConfig, Coins.BTC, ranges);
+    const months = calcIndicators(runConfig, candleMonths, ranges, featuresSplit);
     month = months.Dec;
   });
 

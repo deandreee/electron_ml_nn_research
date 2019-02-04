@@ -9,6 +9,7 @@ import { batchCandlesInXs } from "../db/batchCandlesInXs";
 import * as calcBatchedProb from "../corr/calcBatchedProb";
 import { FeatureSplit } from "../features";
 import { BatchConfig } from "../corr/BatchConfig";
+import { RunConfig } from "./runConfig";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
 export type CandleMonths = { [range: string]: CoinData };
@@ -42,7 +43,7 @@ interface Opts {
 }
 
 export const queryCorrCandlesMonthsBatched = (
-  batchConfig: BatchConfig,
+  runConfig: RunConfig,
   coinName: Coins,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
@@ -56,11 +57,11 @@ export const queryCorrCandlesMonthsBatched = (
     if (!opts.skipLog) {
       log.start(`query ${range.name}`);
     }
-    const fromExtended = new Date(range.from.getTime() - ms(`${batchConfig.warmupInd}m`));
-    const toExtended = new Date(range.to.getTime() + ms(`${batchConfig.extended}m`));
+    const fromExtended = new Date(range.from.getTime() - ms(`${runConfig.BATCH.warmupInd}m`));
+    const toExtended = new Date(range.to.getTime() + ms(`${runConfig.BATCH.extended}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
-    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
+    coin.candles = batchCandlesInXs(coin.candles, runConfig.BATCH.batchSize);
 
     if (!opts.skipLog) {
       log.end(`query ${range.name}`);
@@ -71,8 +72,8 @@ export const queryCorrCandlesMonthsBatched = (
     }
 
     const { corrCandles } = !opts.prob
-      ? calcBatched.corrCalcBatched(batchConfig, coin, featuresSplit, opts.ga)
-      : calcBatchedProb.corrCalcBatchedProb(batchConfig, coin, featuresSplit);
+      ? calcBatched.corrCalcBatched(runConfig, coin, featuresSplit, opts.ga)
+      : calcBatchedProb.corrCalcBatchedProb(runConfig, coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
     if (!opts.skipLog) {
@@ -82,12 +83,12 @@ export const queryCorrCandlesMonthsBatched = (
   return corrCandleMonths;
 };
 
-export const queryCandles = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
+export const queryCandles = (runConfig: RunConfig, coinName: Coins, ranges: DateRange[]) => {
   const candleMonths: CandleMonths = {};
 
   for (let range of ranges) {
-    const fromExtended = new Date(range.from.getTime() - ms(`${batchConfig.warmupInd}m`));
-    const toExtended = new Date(range.to.getTime() + ms(`${batchConfig.extended}m`));
+    const fromExtended = new Date(range.from.getTime() - ms(`${runConfig.BATCH.warmupInd}m`));
+    const toExtended = new Date(range.to.getTime() + ms(`${runConfig.BATCH.extended}m`));
     const coin = queryCoin(coinName, fromExtended, toExtended);
 
     candleMonths[range.name] = coin;
@@ -96,12 +97,12 @@ export const queryCandles = (batchConfig: BatchConfig, coinName: Coins, ranges: 
   return candleMonths;
 };
 
-export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, ranges: DateRange[]) => {
-  const candleMonths = queryCandles(batchConfig, coinName, ranges);
+export const queryCandlesBatched = (runConfig: RunConfig, coinName: Coins, ranges: DateRange[]) => {
+  const candleMonths = queryCandles(runConfig, coinName, ranges);
 
   for (let range of ranges) {
     const coin = candleMonths[range.name];
-    coin.candles = batchCandlesInXs(coin.candles, batchConfig.batchSize);
+    coin.candles = batchCandlesInXs(coin.candles, runConfig.BATCH.batchSize);
     candleMonths[range.name] = coin;
   }
 
@@ -109,7 +110,7 @@ export const queryCandlesBatched = (batchConfig: BatchConfig, coinName: Coins, r
 };
 
 export const calcIndicators = (
-  batchConfig: BatchConfig,
+  runConfig: RunConfig,
   candleMonths: CandleMonths,
   ranges: DateRange[],
   featuresSplit: FeatureSplit[],
@@ -123,8 +124,8 @@ export const calcIndicators = (
     const coin = candleMonths[range.name];
 
     const { corrCandles } = !opts.prob
-      ? calcBatched.corrCalcBatched(batchConfig, coin, featuresSplit, opts.ga)
-      : calcBatchedProb.corrCalcBatchedProb(batchConfig, coin, featuresSplit);
+      ? calcBatched.corrCalcBatched(runConfig, coin, featuresSplit, opts.ga)
+      : calcBatchedProb.corrCalcBatchedProb(runConfig, coin, featuresSplit);
 
     corrCandleMonths[range.name] = corrCandles;
   }

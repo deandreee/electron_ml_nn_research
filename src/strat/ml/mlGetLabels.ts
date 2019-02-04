@@ -1,6 +1,6 @@
 import { CorrCandles } from "../corr/CorrCandles";
-import { BARRIER_TYPE } from "../run/runConfigXG";
+import { RunConfig } from "../run/runConfig";
 
-export const mlGetLabels = (corrCandles: CorrCandles) => {
-  return corrCandles.candlesActual.map(x => x.pctChange[BARRIER_TYPE]);
+export const mlGetLabels = (corrCandles: CorrCandles, runConfig: RunConfig) => {
+  return corrCandles.candlesActual.map(x => x.pctChange[runConfig.BARRIER_TYPE]);
 };

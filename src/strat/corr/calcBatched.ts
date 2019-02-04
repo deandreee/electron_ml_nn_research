@@ -28,10 +28,9 @@ import { IndTimeframeGroup } from "../indicators/IndTimeframeGroup";
 import { FeatureSplit } from "../features";
 import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
-import { BARRIER_TYPE } from "../run/runConfigXG";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
-import { BatchConfig } from "./BatchConfig";
+import { RunConfig } from "../run/runConfig";
 
 // const { ADX } = require(`${GEKKO}/indicators`);
 
@@ -39,15 +38,10 @@ import { BatchConfig } from "./BatchConfig";
 // resultHistory: true
 // };
 
-export const corrCalcBatched = (
-  batchConfig: BatchConfig,
-  coin: CoinData,
-  featuresSplit: FeatureSplit[],
-  opt: object
-) => {
+export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSplit: FeatureSplit[], opt: object) => {
   const candles = coin.candles;
 
-  const waveManagers = waveUtils.createManagers(batchConfig.batchSize);
+  const waveManagers = waveUtils.createManagers(runConfig.BATCH.batchSize);
 
   const sma = new IndTimeframeGroup(SMA, waveManagers, getShouldCalc(featuresSplit, "sma"), opt);
   const rsi = new IndTimeframeGroup(RSI, waveManagers, getShouldCalc(featuresSplit, "rsi"), opt);
@@ -102,14 +96,14 @@ export const corrCalcBatched = (
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
-    if (i >= candles.length - batchConfig.extendedCount) {
+    if (i >= candles.length - runConfig.BATCH.extendedCount) {
       // only for pct change, not needed
       candle.ind = {};
       continue;
     }
 
     const bigCandles = waveUtils.updateCandles(waveManagers, candle);
-    if (!waveUtils.areCandlesReady(bigCandles, batchConfig)) {
+    if (!waveUtils.areCandlesReady(bigCandles, runConfig.BATCH)) {
       candle.ind = {};
       continue;
     }
@@ -172,18 +166,18 @@ export const corrCalcBatched = (
 
     // candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
-    const tbCfg = getTrippleBarrierConfig(batchConfig.batchSize);
+    const tbCfg = getTrippleBarrierConfig(runConfig, runConfig.BARRIER_LABEL);
 
     candle.pctChange = {
-      doubleBarrier: BARRIER_TYPE === "doubleBarrier" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
-      trippleBarrier:
-        BARRIER_TYPE === "trippleBarrier" &&
+      double: runConfig.BARRIER_TYPE === "double" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
+      tripple:
+        runConfig.BARRIER_TYPE === "tripple" &&
         trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
     };
   }
 
   const candlesActual = candles.filter(
-    (x, i) => !(i < batchConfig.warmupIndCount || i >= candles.length - batchConfig.extendedCount)
+    (x, i) => !(i < runConfig.BATCH.warmupIndCount || i >= candles.length - runConfig.BATCH.extendedCount)
   );
 
   const pctChange: PctChange = {
@@ -199,7 +193,7 @@ export const corrCalcBatched = (
     _10d: []
   };
 
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, runConfig.BATCH);
 
   return { corrCandles, pctChange };
 };

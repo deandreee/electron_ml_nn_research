@@ -6,20 +6,21 @@ import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { round2 } from "../utils";
 import { mlGetLabels } from "./mlGetLabels";
+import { RunConfig } from "../run/runConfig";
 
-export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
-    return await train_(corrCandles, fnGetFeature);
+    return await train_(runConfig, corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
     throw new Error(err);
   }
 };
 
-export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles, runConfig);
 
   // const filtered = mlUtils.filterByLabels(features, labels, 3);
   // features = filtered.features;
@@ -48,10 +49,10 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 };
 
 // let's not complicate, just go full cycle, getting features/labels is fast anyway
-export const predict = (booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles, runConfig);
 
   features = mlUtils.rescaleFeatures(features);
   labels = labels.map(x => round2(x));

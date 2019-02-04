@@ -10,9 +10,7 @@ import * as mlLSTM from "../ml/mlLSTMTF";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole } from "./logClassResults";
-import { BatchConfig } from "../corr/BatchConfig";
-
-const batchConfig = new BatchConfig(60, 1440);
+import { runConfig } from "./runConfig";
 
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
 
@@ -36,7 +34,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   // const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
 
-  const months = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit);
+  const months = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit);
 
   const trainMonth = months[ranges[0].name];
 
@@ -46,12 +44,12 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
   for (let x of featuresSplit) {
     log.start(x.name);
 
-    const { net, minMaxScaler } = await mlLSTM.train(trainMonth, x.fn);
+    const { net, minMaxScaler } = await mlLSTM.train(runConfig, trainMonth, x.fn);
 
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
-      const { results, predicted } = await mlLSTM.predict(net, corrCandles, x.fn, minMaxScaler);
+      const { results, predicted } = await mlLSTM.predict(runConfig, net, corrCandles, x.fn, minMaxScaler);
       predictions[range.name][x.name] = predicted;
 
       logConsole(range.name, results);

@@ -1,6 +1,6 @@
 import { Candle } from "../types";
 import { getPctChange } from "../utils";
-import { BARRIER_LABEL, TrippleBarrierLabel } from "../run/runConfigXG";
+import { RunConfig, BarrierLabel } from "../run/runConfig";
 
 export const trippleBarrier = (
   candles: Candle[],
@@ -26,8 +26,9 @@ const convert10mToBatchSize = (batchSize: number, lookAhead: number) => {
 };
 
 // sheet all these were in 10m, now we need to batchSize
-export const getTrippleBarrierConfig = (batchSize: number, label?: TrippleBarrierLabel) => {
-  label = label || BARRIER_LABEL;
+export const getTrippleBarrierConfig = (runConfig: RunConfig, label: BarrierLabel) => {
+  // const label = runConfig.BARRIER_LABEL; // need to pass because calcProb uses all
+  const batchSize = runConfig.BATCH.batchSize;
 
   if (label === "PT_FIVE") {
     return { stopLoss: -0.5, takeProfit: 0.5, lookAhead: convert10mToBatchSize(batchSize, 20) };

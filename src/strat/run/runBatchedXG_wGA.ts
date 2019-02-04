@@ -5,7 +5,8 @@ import * as mlXGClass from "../ml/mlXGClass";
 // import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import * as runConfigXG from "./runConfigXG";
+import { runConfig as runConfigBase } from "./runConfig";
+import { RunConfigXG } from "./runConfigXG";
 
 import { logConsole, logFile } from "./logClassResults";
 // import * as log from "../log";
@@ -46,12 +47,12 @@ import { sum } from "lodash";
 const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
 const feature = features.getValidationFive().find(x => x.name === featureName);
 
-const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigBase.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_JJAS();
-  const months = queryCorrCandlesMonthsBatched(runConfigXG.batchConfig, coin, ranges, [feature]);
+  const months = queryCorrCandlesMonthsBatched(runConfigBase, coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 
   const linRegs: LinRegResult[] = [];
@@ -60,7 +61,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
-    const runConfig = gaEntity as runConfigXG.RunConfigXG;
+    const runConfig = { ...runConfigBase, XG: gaEntity as RunConfigXG };
 
     const { booster } = await mlXGClass.train(runConfig, trainMonth, feature.fn);
 
@@ -70,7 +71,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
-      const { results, predicted } = await mlXGClass.predict(booster, corrCandles, feature.fn);
+      const { results, predicted } = await mlXGClass.predict(runConfig, booster, corrCandles, feature.fn);
       predictions[range.name][feature.name] = predicted;
 
       if (!range.isTrain) {
@@ -79,7 +80,15 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       }
 
       // logConsole(range.name, results); // let's skip for now, too much noise
-      await logFile(fileName, runConfig, coin.toString(), range.name, runConfigXG.BARRIER_LABEL, feature.name, results);
+      await logFile(
+        fileName,
+        runConfig.XG,
+        coin.toString(),
+        range.name,
+        runConfig.BARRIER_LABEL,
+        feature.name,
+        results
+      );
     }
 
     // log.end(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
@@ -88,7 +97,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfig, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults);
+    await logFile(fileName, runConfig.XG, Coins.BTC, "AVG", runConfig.BARRIER_LABEL, feature.name, avgResults);
 
     return sum(fScores) / fScores.length;
   };

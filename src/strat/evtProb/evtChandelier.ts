@@ -3,10 +3,11 @@ import { DateRange } from "../daterange";
 import { getInd, ps } from "../features/getChandelierExit";
 import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
 import { timeframes } from "../features/common";
+import { RunConfig } from "../run/runConfig";
 
 // almost identical to BBands ...
 
-export const calcProb = async (months: CorrCandleMonths, ranges: DateRange[]) => {
+export const calcProb = async (runConfig: RunConfig, months: CorrCandleMonths, ranges: DateRange[]) => {
   const probs = createProbsObj(timeframes, ps);
 
   const corrCandles = months[ranges[0].name];
@@ -26,7 +27,7 @@ export const calcProb = async (months: CorrCandleMonths, ranges: DateRange[]) =>
           if (curr.close > indCurr.exitShort) {
             probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
 
-            i += getLookAhead(lbl); // should be more fair
+            i += getLookAhead(runConfig, lbl); // should be more fair
           }
         }
       }

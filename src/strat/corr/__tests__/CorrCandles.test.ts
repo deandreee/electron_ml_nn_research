@@ -3,7 +3,7 @@ import { queryCorrCandlesMonthsBatched } from "../../run/queryCorrCandlesMonths"
 import * as features from "../../features";
 import * as daterange from "../../daterange";
 import { BatchConfig } from "../../corr/BatchConfig";
-import { start } from "../../corr/testUtils";
+import { start, getRunConfig } from "../../corr/testUtils";
 import { CorrCandles } from "../../corr/CorrCandles";
 
 const ranges = [daterange.Dec];
@@ -13,8 +13,8 @@ describe("CorrCandles | getCandleEndsAt | 60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(60, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(60, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("60", () => {
@@ -78,8 +78,8 @@ describe("corrCandles | getCandleEndsAt | 10", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(10, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(10, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("10", () => {
@@ -122,8 +122,8 @@ describe("corrCandles | getCandleEndsAt | 480", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(480, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(480, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("480", () => {
@@ -141,8 +141,8 @@ describe("corrCandles | getPrev | 480", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(480, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(480, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("1", () => {
@@ -175,8 +175,8 @@ describe("corrCandles | getPrev | 60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(60, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(60, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("1", () => {
@@ -199,8 +199,8 @@ describe("corrCandles | getPrevHrs | 60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(60, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(60, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("1", () => {
@@ -223,8 +223,8 @@ describe("corrCandles | getPrevHrs | 120", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(120, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(120, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("1", () => {
@@ -248,8 +248,8 @@ describe("corrCandles | getPrevHrs | 1440", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(1440, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(1440, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("1", () => {
@@ -273,8 +273,8 @@ describe("corrCandles | getCandleStartsAt | 60", () => {
   let month: CorrCandles = null;
 
   beforeAll(() => {
-    const batchConfig = new BatchConfig(60, 1440);
-    month = queryCorrCandlesMonthsBatched(batchConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
+    const runConfig = getRunConfig(new BatchConfig(60, 1440));
+    month = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit, { skipLog: true }).Dec;
   });
 
   test("60", () => {

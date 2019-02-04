@@ -1,4 +1,7 @@
 import { Candle } from "../types";
+import { runConfigXGDef } from "../run/runConfigXG";
+import { BatchConfig } from "./BatchConfig";
+import { RunConfig } from "../run/runConfig";
 
 export type Partial<T> = { [P in keyof T]?: T[P] };
 
@@ -33,4 +36,15 @@ export const logCandleStart = (candle: Candle) => {
 
 export const toUnix = (timeStr: string) => {
   return Math.floor(new Date(timeStr).getTime() / 1000);
+};
+
+export const getRunConfig = (batchConfig: BatchConfig): RunConfig => {
+  return {
+    BATCH: batchConfig,
+    PROB: 0,
+    XG: runConfigXGDef,
+    BARRIER_LABEL: "TWO",
+    BARRIER_TYPE: "tripple",
+    UNIQUE_LABELS: [0, 1, 2]
+  };
 };

@@ -6,7 +6,7 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import * as runConfigXG from "./runConfigXG";
+import { runConfig } from "./runConfig";
 
 import { logConsole, logFile, logFileHeader } from "./logClassResults";
 // import * as log from "../log";
@@ -56,10 +56,8 @@ const feature: features.FeatureSplit = {
 //   ]
 // };
 
-const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfigXG.BARRIER_LABEL}].csv`;
+const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfig.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
-
-const runConfig = runConfigXG.runConfigXGDef;
 
 const linRegs: LinRegResult[] = [];
 const predictions = runUtils.getPredictionsTemplate();
@@ -87,7 +85,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     // // console.timeEnd("ind");
     // process.stdout.write("I");
 
-    const months = queryCorrCandlesMonthsBatched(runConfigXG.batchConfig, coin, ranges, [feature], {
+    const months = queryCorrCandlesMonthsBatched(runConfig, coin, ranges, [feature], {
       ga: gaEntity,
       skipLog: true
     });
@@ -108,7 +106,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       const corrCandles = months[range.name];
 
       // console.time("predict");
-      const { results } = await mlXGClass.predict(booster, corrCandles, feature.fn);
+      const { results } = await mlXGClass.predict(runConfig, booster, corrCandles, feature.fn);
       // console.timeEnd("predict");
 
       if (!range.isTrain) {
@@ -119,10 +117,10 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       // logConsole(range.name, results); // let's skip for now, too much noise
       await logFile(
         fileName,
-        runConfig,
+        runConfig.XG,
         coin.toString(),
         range.name,
-        runConfigXG.BARRIER_LABEL,
+        runConfig.BARRIER_LABEL,
         feature.name,
         results,
         gaEntity
@@ -137,7 +135,16 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfig, Coins.BTC, "AVG", runConfigXG.BARRIER_LABEL, feature.name, avgResults, gaEntity);
+    await logFile(
+      fileName,
+      runConfig.XG,
+      Coins.BTC,
+      "AVG",
+      runConfig.BARRIER_LABEL,
+      feature.name,
+      avgResults,
+      gaEntity
+    );
 
     return sum(fScores) / fScores.length;
   };

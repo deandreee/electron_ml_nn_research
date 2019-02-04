@@ -1,7 +1,7 @@
 import { Coins, CoinData } from "../../types";
 import { queryCandlesBatched, queryCandles } from "../../run/queryCorrCandlesMonths";
 import * as daterange from "../../daterange";
-import { start } from "../../corr/testUtils";
+import { start, getRunConfig } from "../../corr/testUtils";
 import { BatchConfig } from "../../corr/BatchConfig";
 
 const ranges = [daterange.Dec];
@@ -12,14 +12,14 @@ describe("queryCandlesVsBatched", () => {
   let month2: CoinData = null;
 
   beforeAll(() => {
-    const batchConfigRaw = new BatchConfig(1, 1440);
-    monthRaw = queryCandles(batchConfigRaw, Coins.BTC, ranges).Dec;
+    const runConfigRaw = getRunConfig(new BatchConfig(1, 1440));
+    monthRaw = queryCandles(runConfigRaw, Coins.BTC, ranges).Dec;
 
-    const batchConfig1 = new BatchConfig(60, 1440);
-    month1 = queryCandlesBatched(batchConfig1, Coins.BTC, ranges).Dec;
+    const runConfig1 = getRunConfig(new BatchConfig(60, 1440));
+    month1 = queryCandlesBatched(runConfig1, Coins.BTC, ranges).Dec;
 
-    const batchConfig2 = new BatchConfig(120, 1440);
-    month2 = queryCandlesBatched(batchConfig2, Coins.BTC, ranges).Dec;
+    const runConfig2 = getRunConfig(new BatchConfig(120, 1440));
+    month2 = queryCandlesBatched(runConfig2, Coins.BTC, ranges).Dec;
   });
 
   // test("monthRaw vs month1", () => {

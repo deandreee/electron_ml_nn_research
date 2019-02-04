@@ -80,19 +80,6 @@ const train = (range: daterange.DateRange) => {
   return { ...range, isTrain: true };
 };
 
-export const genRangesFull = () => {
-  return [
-    train(daterange.JunJulAugSep),
-    train(daterange.Jun),
-    train(daterange.Jul),
-    train(daterange.Aug),
-    train(daterange.Sep),
-    daterange.Oct,
-    daterange.Nov,
-    daterange.Dec
-  ];
-};
-
 export const genRanges_FastMiniTest = () => {
   return [train(daterange.Jul), daterange.Aug];
 };

@@ -4,13 +4,11 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { GetIndVal } from "../features/common";
 import * as percentile from "stats-percentile";
 import { round2 } from "../utils";
-import { TrippleBarrierLabel } from "../run/runConfigXG";
+import { BarrierLabel, RunConfig } from "../run/runConfig";
 import { getTrippleBarrierConfig } from "../corr/barrier";
 import { Candle } from "../types";
 
-const BATCH_SIZE = 10; // TODO: fix when needed
-
-export const TPB_LABELS: TrippleBarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
+export const TPB_LABELS: BarrierLabel[] = ["PT_FIVE", "ONE", "TWO", "THREE", "FIVE"];
 
 export interface Probs {
   [ind: string]: NumberMap;
@@ -119,8 +117,8 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[], thres
   }
 };
 
-export const getLookAhead = (lbl: TrippleBarrierLabel) => {
-  return getTrippleBarrierConfig(BATCH_SIZE, lbl).lookAhead;
+export const getLookAhead = (runConfig: RunConfig, lbl: BarrierLabel) => {
+  return getTrippleBarrierConfig(runConfig, lbl).lookAhead;
 };
 
 // retuns hit or miss
@@ -133,6 +131,7 @@ export type FnGetInd = (candle: Candle, t: string, p: string) => any;
 // };
 
 export const loop = async (
+  runConfig: RunConfig,
   corrCandles: CorrCandles,
   timeframes: string[],
   ps: string[],
@@ -157,7 +156,7 @@ export const loop = async (
           //  buy
           if (fn(curr, prev, indCurr, indPrev)) {
             probs[formatTP(lbl, t, p)][curr.pctChange.trippleBarriers[lbl]]++;
-            i += getLookAhead(lbl); // should be more fair
+            i += getLookAhead(runConfig, lbl); // should be more fair
           }
         }
       }

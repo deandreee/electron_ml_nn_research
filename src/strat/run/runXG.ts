@@ -10,7 +10,7 @@ import { padEnd } from "lodash";
 
 // @ts-ignore
 import * as mlXG from "../mlXG";
-import { BARRIER_TYPE } from "./runConfigXG";
+import { runConfig } from "./runConfig";
 
 export const runXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];
@@ -40,7 +40,7 @@ export const runXG = async (): Promise<RunResult> => {
         new Date().toISOString(),
         corrCandles.coin.name,
         range.name,
-        BARRIER_TYPE,
+        runConfig.BARRIER_TYPE,
         x.name,
         round2(mse),
         round2(r2),

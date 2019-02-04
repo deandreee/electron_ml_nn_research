@@ -15,12 +15,12 @@ import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
 import * as waveUtils from "./waveUtils";
-import { BatchConfig } from "./BatchConfig";
+import { RunConfig } from "../run/runConfig";
 
-export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, featuresSplit: FeatureSplit[]) => {
+export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
 
-  const waveManagers = waveUtils.createManagers(batchConfig.batchSize);
+  const waveManagers = waveUtils.createManagers(runConfig.BATCH.batchSize);
 
   // @ts-ignore
   const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers);
@@ -38,7 +38,7 @@ export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, fe
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
 
-    if (i >= candles.length - batchConfig.extendedCount) {
+    if (i >= candles.length - runConfig.BATCH.extendedCount) {
       // only for pct change, not needed
       candle.ind = {};
       continue;
@@ -46,7 +46,7 @@ export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, fe
 
     const bigCandles = waveUtils.updateCandles(waveManagers, candle);
 
-    if (!waveUtils.areCandlesReady(bigCandles, batchConfig)) {
+    if (!waveUtils.areCandlesReady(bigCandles, runConfig.BATCH)) {
       candle.ind = {};
       continue;
     }
@@ -60,11 +60,11 @@ export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, fe
       kst: kst.update(bigCandles)
     };
 
-    const ptFive = getTrippleBarrierConfig(batchConfig.batchSize, "PT_FIVE");
-    const one = getTrippleBarrierConfig(batchConfig.batchSize, "ONE");
-    const two = getTrippleBarrierConfig(batchConfig.batchSize, "TWO");
-    const three = getTrippleBarrierConfig(batchConfig.batchSize, "THREE");
-    const five = getTrippleBarrierConfig(batchConfig.batchSize, "FIVE");
+    const ptFive = getTrippleBarrierConfig(runConfig, "PT_FIVE");
+    const one = getTrippleBarrierConfig(runConfig, "ONE");
+    const two = getTrippleBarrierConfig(runConfig, "TWO");
+    const three = getTrippleBarrierConfig(runConfig, "THREE");
+    const five = getTrippleBarrierConfig(runConfig, "FIVE");
 
     candle.pctChange = {
       trippleBarriers: {
@@ -82,10 +82,10 @@ export const corrCalcBatchedProb = (batchConfig: BatchConfig, coin: CoinData, fe
   }
 
   const candlesActual = candles.filter(
-    (x, i) => !(i < batchConfig.warmupIndCount || i >= candles.length - batchConfig.extendedCount)
+    (x, i) => !(i < runConfig.BATCH.warmupIndCount || i >= candles.length - runConfig.BATCH.extendedCount)
   );
   const pctChange = corrUtils.getPctChange(candlesActual);
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, runConfig.BATCH);
 
   return { corrCandles, pctChange };
 };

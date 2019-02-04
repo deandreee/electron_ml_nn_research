@@ -373,18 +373,18 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.pctChange.trippleBarrier)) {
+  if (hasIndicator(coin, x => x.pctChange.tripple)) {
     series.push({
       ...base,
       color: "green",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarrier === 2 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.tripple === 2 ? x.close : null]),
       name: "trippleBarrier"
     });
 
     series.push({
       ...base,
       color: "red",
-      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.trippleBarrier === 0 ? x.close : null]),
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.tripple === 0 ? x.close : null]),
       name: "trippleBarrier"
     });
   }

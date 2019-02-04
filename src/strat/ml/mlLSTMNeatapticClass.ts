@@ -4,10 +4,11 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
+import { RunConfig } from "../run/runConfig";
 
-export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
-    return await train_(corrCandles, fnGetFeature);
+    return await train_(runConfig, corrCandles, fnGetFeature);
   } catch (err) {
     console.error(err.stack);
     throw new Error(err);
@@ -16,10 +17,10 @@ export const train = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature
 
 const uniqueLabels = [0, 1, 2];
 
-export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles, runConfig);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   testData = mlUtils.middlesample(testData, uniqueLabels);
@@ -49,10 +50,10 @@ export const train_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatur
 };
 
 // let's not complicate, just go full cycle, getting features/labels is fast anyway
-export const predict = (net: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const predict = (runConfig: RunConfig, net: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(corrCandles);
+  let labels = mlGetLabels(corrCandles, runConfig);
 
   features = mlUtils.rescaleFeatures(features);
 

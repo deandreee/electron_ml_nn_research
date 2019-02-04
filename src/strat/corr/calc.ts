@@ -2,7 +2,7 @@ import { PctChange, CoinData } from "../types";
 import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./barrier";
-import { batchConfig } from "../run/runConfigXG";
+import { RunConfig } from "../run/runConfig";
 // @ts-ignore
 const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
 
@@ -39,7 +39,7 @@ export const EXTENDED = 1500 * 10; // X days
 //   resultHistory: true
 // };
 
-export const corrCalc = (coin: CoinData) => {
+export const corrCalc = (coin: CoinData, runConfig: RunConfig) => {
   const candles = coin.candles;
 
   const waveManager10 = new WaveManager(10);
@@ -221,7 +221,7 @@ export const corrCalc = (coin: CoinData) => {
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
     candle.pctChange = {
-      trippleBarrier: trippleBarrier(candles, i, -2, 2, 700)
+      tripple: trippleBarrier(candles, i, -2, 2, 700)
       // _10m: getCandlePctChange(candles, i + 10, i),
       // _60m: getAvgCandlePctChange(candles, i, i + 50, i + 70),
       // _120m: getAvgCandlePctChange(candles, i, i + 100, i + 140),
@@ -255,7 +255,7 @@ export const corrCalc = (coin: CoinData) => {
     _10d: candlesActual.map(x => x.pctChange._10d)
   };
 
-  const corrCandles = new CorrCandles(coin, candles, candlesActual, batchConfig);
+  const corrCandles = new CorrCandles(coin, candles, candlesActual, runConfig.BATCH);
 
   return { corrCandles, pctChange };
 };
