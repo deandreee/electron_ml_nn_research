@@ -2,8 +2,8 @@ import { padEnd } from "lodash";
 import { round2 } from "../utils";
 import { EvalResults, HitRate } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
-import { RunConfigXG } from "./runConfigXG";
 import { GAEntity } from "./ga/common";
+import { RunConfig } from "./runConfig";
 
 export const logConsole = (rangeName: string, results: EvalResults) => {
   console.log(
@@ -25,10 +25,9 @@ const formatHitRate = (hitRate: HitRate) => {
 
 export const logFile = async (
   fileName: string,
-  runConfig: RunConfigXG,
+  runConfig: RunConfig,
   coinName: string,
   rangeName: string,
-  labelName: string,
   featureName: string,
   results: EvalResults,
   gaEntity?: GAEntity
@@ -37,15 +36,16 @@ export const logFile = async (
     new Date().toISOString(),
     coinName,
     rangeName,
-    labelName,
+    runConfig.BARRIER_LABEL,
+    runConfig.PROB,
     featureName,
-    runConfig.idx,
-    runConfig.eta,
-    runConfig.gamma,
-    runConfig.max_depth,
-    runConfig.min_child_weight,
-    runConfig.subsample,
-    runConfig.iterations,
+    runConfig.XG.idx,
+    runConfig.XG.eta,
+    runConfig.XG.gamma,
+    runConfig.XG.max_depth,
+    runConfig.XG.min_child_weight,
+    runConfig.XG.subsample,
+    runConfig.XG.iterations,
     round2(results.precisionTotal),
     round2(results.recallTotal),
     round2(results.fScore),
@@ -71,6 +71,7 @@ export const logFileHeader = async (fileName: string) => {
       "COIN",
       "RANGE",
       "LABEL",
+      "PROB",
       "FEATURE",
       "IDX",
       "ETA",

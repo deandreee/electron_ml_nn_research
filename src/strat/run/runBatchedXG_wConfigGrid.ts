@@ -44,15 +44,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       predictions[range.name][feature.name] = predicted;
 
       logConsole(range.name, results);
-      await logFile(
-        fileName,
-        runConfig.XG,
-        coin.toString(),
-        range.name,
-        runConfig.BARRIER_LABEL,
-        feature.name,
-        results
-      );
+      await logFile(fileName, runConfig, coin.toString(), range.name, feature.name, results);
     }
 
     log.end(runConfigXG.getName(xg));

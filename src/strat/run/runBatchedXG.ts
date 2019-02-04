@@ -4,8 +4,8 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
-// import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClass from "../ml/mlXGClassProb";
+import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClassProb from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile, logFileHeader } from "./logClassResults";
@@ -60,6 +60,8 @@ const featuresSplit = features.getBBandsAndPrice(); // not working, name not bba
 // const featureName = "vixFix.x240.h.days";
 // const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
 
+const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
+
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${ranges[0].name} ] [ lbl ${
   runConfig.BARRIER_LABEL
 } ].csv`;
@@ -81,18 +83,18 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   for (let x of featuresSplit) {
     log.start(x.name);
-    const { booster } = await mlXGClass.train(runConfig, trainMonth, x.fn);
+    const { booster } = await mlXG.train(runConfig, trainMonth, x.fn);
 
     const resultsForAvg = [];
 
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
-      const { results, predicted } = await mlXGClass.predict(runConfig, booster, corrCandles, x.fn);
+      const { results, predicted } = await mlXG.predict(runConfig, booster, corrCandles, x.fn);
       predictions[range.name][x.name] = predicted;
 
       logConsole(range.name, results);
-      await logFile(fileName, runConfig.XG, Coins.BTC, range.name, runConfig.BARRIER_LABEL, x.name, results);
+      await logFile(fileName, runConfig, Coins.BTC, range.name, x.name, results);
 
       if (!range.isTrain) {
         resultsForAvg.push(results);
@@ -103,7 +105,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(fileName, runConfig.XG, Coins.BTC, "AVG", runConfig.BARRIER_LABEL, x.name, avgResults);
+    await logFile(fileName, runConfig, Coins.BTC, "AVG", x.name, avgResults);
 
     log.end(x.name);
   }

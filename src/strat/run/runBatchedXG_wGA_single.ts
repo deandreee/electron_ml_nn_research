@@ -115,16 +115,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       }
 
       // logConsole(range.name, results); // let's skip for now, too much noise
-      await logFile(
-        fileName,
-        runConfig.XG,
-        coin.toString(),
-        range.name,
-        runConfig.BARRIER_LABEL,
-        feature.name,
-        results,
-        gaEntity
-      );
+      await logFile(fileName, runConfig, coin.toString(), range.name, feature.name, results, gaEntity);
     }
 
     process.stdout.write("P");
@@ -135,16 +126,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const avgResults = runUtils.calcAvgResults(resultsForAvg);
     logConsole("AVG", avgResults);
-    await logFile(
-      fileName,
-      runConfig.XG,
-      Coins.BTC,
-      "AVG",
-      runConfig.BARRIER_LABEL,
-      feature.name,
-      avgResults,
-      gaEntity
-    );
+    await logFile(fileName, runConfig, Coins.BTC, "AVG", feature.name, avgResults, gaEntity);
 
     return sum(fScores) / fScores.length;
   };
