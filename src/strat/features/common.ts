@@ -17,12 +17,15 @@ export const getFeatureSplit = (
   ps: string[],
   fn: FnGetFeaturesInXm
 ): FeatureSplit[] => {
+  const parts = name.split("|");
+  const partEnding = parts[1] ? `.${parts[1]}` : "";
+
   return flatten(
     timeframes.map(t => {
       return flatten(
         ps.map(p => [
           {
-            name: `${name}.${t}.${p}`,
+            name: `${parts[0]}.${t}.${p}${partEnding}`,
             fn: (x, i, corrCandles) => fn(x, i, corrCandles, t, p)
           } as FeatureSplit
         ])

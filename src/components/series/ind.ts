@@ -19,11 +19,16 @@ const baseDotted = {
 
 const baseScatter = {
   ...base,
-  symbol: "pin", // https://ecomfe.github.io/echarts-doc/public/en/option.html#series-scatter.symbol
+  symbol: "circle", // https://ecomfe.github.io/echarts-doc/public/en/option.html#series-scatter.symbol
   large: true,
   sampling: "average",
   type: "scatter",
   symbolSize: 2
+};
+
+export const grid2 = {
+  xAxisIndex: 1,
+  yAxisIndex: 1
 };
 
 type fnGetInd = (x: Candle) => any;
@@ -120,17 +125,6 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "yellow",
       data: data(coin, x => x.ind.lrcChannel && x.ind.lrcChannel.down),
       name: "LRC"
-    });
-  }
-
-  if (hasIndicator(coin, x => x.ind.vixFix)) {
-    series.push({
-      ...base,
-      color: "red",
-      data: data(coin, x => x.ind.vixFix.x30.a),
-      name: "vixFix30",
-      xAxisIndex: 1,
-      yAxisIndex: 1
     });
   }
 
@@ -401,13 +395,19 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
 export const seriesPredicted = (coin: CorrCandles, predicted: number[]) => {
   return [
     {
-      ...base,
-      type: "scatter",
+      ...baseScatter,
       color: "red",
-      data: predicted.map((x, i) => [coin.candlesActual[i].start * 1000, x]),
+      data: predicted.map((x, i) => [coin.candlesActual[i].start * 1000, x === 0 ? coin.candlesActual[i].close : null]),
       name: "predicted",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      symbolSize: 5
+    },
+
+    {
+      ...baseScatter,
+      color: "green",
+      data: predicted.map((x, i) => [coin.candlesActual[i].start * 1000, x === 2 ? coin.candlesActual[i].close : null]),
+      name: "predicted",
+      symbolSize: 5
     }
   ];
 };

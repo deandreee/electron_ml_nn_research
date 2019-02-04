@@ -92,7 +92,7 @@ export const genRangesFull = () => {
 };
 
 export const genRanges_FastMiniTest = () => {
-  return [daterange.NovDump, daterange.Jun];
+  return [train(daterange.Jul), daterange.Aug];
 };
 
 export const genRangesLast1_AugSep = () => {

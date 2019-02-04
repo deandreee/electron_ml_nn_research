@@ -4,8 +4,8 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";
 
-import * as mlXGClass from "../ml/mlXGClass";
-// import * as mlXGClass from "../ml/mlXGClassProb";
+// import * as mlXGClass from "../ml/mlXGClass";
+import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { logConsole, logFile, logFileHeader } from "./logClassResults";
@@ -43,11 +43,16 @@ const ranges = runUtils.genRanges_JJAS();
 // const featuresSplit = features.getKalmanDiff();
 // const featuresSplit = features.getChandelierExit();
 // const featuresSplit = features.getKeltner();
-const featuresSplit = features.getAllPart1();
+// const featuresSplit = features.getVixFix();
+// const featuresSplit = features.getVixFix();
+// const featuresSplit = features.getAllPart2();
 
 // const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
+
+const featureName = "vixFix.x240.h.days";
+const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
 
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
   ranges[0].name
@@ -98,8 +103,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   }
 
   return {
-    coin: months["JJAS"],
-    labelsPredicted: predictions.Jul["vixFix480"] || [],
+    coin: months["Dec"],
+    labelsPredicted: predictions.Dec["vixFix.x1440.a"] || [],
     linRegs
   };
 };

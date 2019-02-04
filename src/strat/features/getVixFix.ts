@@ -18,7 +18,7 @@ export const getVixFix = (): FeatureSplit[] => {
 };
 
 export const getVixFix_HistoryHrs = (): FeatureSplit[] => {
-  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|hrs`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [
       x.ind.vixFix[t][p as P_VixFix],
       corrCandles.getPrev(i, 1).ind.vixFix[t][p as P_VixFix],
@@ -32,7 +32,7 @@ export const getVixFix_HistoryHrs = (): FeatureSplit[] => {
 };
 
 export const getVixFix_HistoryDays = (): FeatureSplit[] => {
-  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|days`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [
       x.ind.vixFix[t][p as P_VixFix],
       corrCandles.getPrev(i, 12).ind.vixFix[t][p as P_VixFix],
