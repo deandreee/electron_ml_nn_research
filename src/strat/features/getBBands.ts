@@ -18,19 +18,19 @@ export const getBBands = (): FeatureSplit[] => {
 };
 
 export const getBBandsUpperLower = (): FeatureSplit[] => {
-  return getFeatureSplit(`${indName}_uper_lower`, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|uper_lower`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [getUpperMinusLower(x.ind.bbands[t][p as P_BBands])];
   });
 };
 
 export const getBBandsVsPrice = (): FeatureSplit[] => {
-  return getFeatureSplit(`${indName}_vs_price`, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|vs_price`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return getVsPrice(x.ind.bbands[t][p as P_BBands], x.close);
   });
 };
 
 export const getBBandsAndPrice = (): FeatureSplit[] => {
-  return getFeatureSplit(`${indName}_and_price`, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|and_price`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [x.ind.bbands[t][p as P_BBands].upper, x.ind.bbands[t][p as P_BBands].lower, x.close];
   });
 };

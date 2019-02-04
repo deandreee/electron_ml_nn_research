@@ -37,3 +37,37 @@ export const getFeatureSplit = (
 export const getFeatureSplitPsOnly = (name: string, ps: string[], fn: FnGetFeaturesInXm): FeatureSplit[] => {
   return getFeatureSplit(name, [""], ps, fn);
 };
+
+export const getHistoryHrs = (
+  corrCandles: CorrCandles,
+  i: number,
+  t: string,
+  p: string,
+  getInd: GetIndVal
+): number[] => {
+  return [
+    getInd(corrCandles.getPrevHrs(i, 1), t, p),
+    getInd(corrCandles.getPrevHrs(i, 2), t, p),
+    getInd(corrCandles.getPrevHrs(i, 4), t, p),
+    getInd(corrCandles.getPrevHrs(i, 8), t, p),
+    getInd(corrCandles.getPrevHrs(i, 12), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24), t, p)
+  ];
+};
+
+export const getHistoryDays = (
+  corrCandles: CorrCandles,
+  i: number,
+  t: string,
+  p: string,
+  getInd: GetIndVal
+): number[] => {
+  return [
+    getInd(corrCandles.getPrevHrs(i, 12), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24 * 2), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24 * 3), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24 * 4), t, p),
+    getInd(corrCandles.getPrevHrs(i, 24 * 5), t, p)
+  ];
+};

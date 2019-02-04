@@ -45,14 +45,17 @@ const ranges = runUtils.genRanges_JJAS();
 // const featuresSplit = features.getKeltner();
 // const featuresSplit = features.getVixFix();
 // const featuresSplit = features.getVixFix();
+// const featuresSplit = features.getVixFix_HistoryHrs();
+// const featuresSplit = features.getVixFix_HistoryDays();
 // const featuresSplit = features.getAllPart2();
+const featuresSplit = features.getKalman_HistoryHrs();
 
 // const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
 
-const featureName = "vixFix.x240.h.days";
-const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
+// const featureName = "vixFix.x240.h.days";
+// const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
 
 const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${
   ranges[0].name

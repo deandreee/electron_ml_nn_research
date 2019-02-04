@@ -18,7 +18,7 @@ export const getEMAOCC = (): FeatureSplit[] => {
 };
 
 export const getEMAOCC_Price = (): FeatureSplit[] => {
-  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+  return getFeatureSplit(`${indName}|price`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [
       x.ind.emaOCC[t][p as P_EMAOCC].diff,
       x.ind.emaOCC[t][p as P_EMAOCC].open,
@@ -28,28 +28,30 @@ export const getEMAOCC_Price = (): FeatureSplit[] => {
   });
 };
 
-export const getEMAOCC_History = (): FeatureSplit[] => {
-  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+export const getEMAOCC_HistoryHrs = (): FeatureSplit[] => {
+  return getFeatureSplit(`${indName}|hrs`, timeframes, ps, (x, i, corrCandles, t, p) => {
     return [
       x.ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 1).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 2).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 3).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 4).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 5).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 6).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 7).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 8).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 10).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 12).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 16).ind.emaOCC[t][p as P_EMAOCC].diff,
-      // corrCandles.getPrev(i, 24).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 2).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 3).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 4).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 5).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 6).ind.emaOCC[t][p as P_EMAOCC].diff,
-      corrCandles.getPrev(i, 24 * 7).ind.emaOCC[t][p as P_EMAOCC].diff
+      corrCandles.getPrevHrs(i, 1).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 2).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 4).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 8).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 12).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24).ind.emaOCC[t][p as P_EMAOCC].diff
+    ];
+  });
+};
+
+export const getEMAOCC_HistoryDays = (): FeatureSplit[] => {
+  return getFeatureSplit(`${indName}|days`, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [
+      x.ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 12).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24 * 2).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24 * 3).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24 * 4).ind.emaOCC[t][p as P_EMAOCC].diff,
+      corrCandles.getPrevHrs(i, 24 * 5).ind.emaOCC[t][p as P_EMAOCC].diff
     ];
   });
 };

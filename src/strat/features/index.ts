@@ -13,7 +13,7 @@ import { getStochKD } from "./getStochKD";
 import { getVWAP } from "./getVWAP";
 import { getVixFix, getVixFix_HistoryHrs, getVixFix_HistoryDays } from "./getVixFix";
 import { getTest } from "./getTest";
-import { getEMAOCC, getEMAOCC_Price, getEMAOCC_History } from "./getEMAOCC";
+import { getEMAOCC, getEMAOCC_Price, getEMAOCC_HistoryHrs, getEMAOCC_HistoryDays } from "./getEMAOCC";
 import { getT3MACD } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC, getLRC_HistoryHrs, getLRC_HistoryDays } from "./getLRC";
@@ -21,7 +21,7 @@ import { getZerolagMACD } from "./getZerolagMACD";
 import { getKST, getKSTandPrice } from "./getKST";
 import { getWilliamsR } from "./getWilliamsR";
 import { getPSAR } from "./getPSAR";
-import { getKalman, getKalmanDiff } from "./getKalman";
+import { getKalman, getKalman_HistoryHrs, getKalman_HistoryDays } from "./getKalman";
 import { getChandelierExit } from "./getChandelierExit";
 import { getKeltner } from "./getKeltner";
 import { getSMA } from "./getSMA";
@@ -39,7 +39,8 @@ const getAllPart1 = () => {
     ...getStochKD(),
     ...getEMAOCC(),
     ...getEMAOCC_Price(),
-    ...getEMAOCC_History(),
+    ...getEMAOCC_HistoryHrs(),
+    ...getEMAOCC_HistoryDays(),
     ...getT3MACD()
   ];
 };
@@ -65,7 +66,8 @@ const getAllPart3 = () => {
     ...getWilliamsR(),
     ...getPSAR(),
     ...getKalman(),
-    ...getKalmanDiff(),
+    ...getKalman_HistoryHrs(),
+    ...getKalman_HistoryDays(),
     ...getChandelierExit(),
     ...getKeltner()
   ];
@@ -99,7 +101,8 @@ export {
   getTest,
   getEMAOCC,
   getEMAOCC_Price,
-  getEMAOCC_History,
+  getEMAOCC_HistoryHrs,
+  getEMAOCC_HistoryDays,
   getT3MACD,
   getZerolagT3,
   getLRC,
@@ -114,7 +117,8 @@ export {
   getValidationCombo,
   getValidationFive,
   getKalman,
-  getKalmanDiff,
+  getKalman_HistoryHrs,
+  getKalman_HistoryDays,
   getChandelierExit,
   getKeltner
 };
