@@ -1,6 +1,7 @@
-import { Candle, CandleProp } from "../../strat/types";
+import { Candle, CandleProp, Prediction } from "../../strat/types";
 import { options } from "../options";
 import { CorrCandles } from "../../strat/corr/CorrCandles";
+import { flatten } from "lodash";
 
 const base = {
   ...options.series[0],
@@ -259,7 +260,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.rsi)) {
+  if (hasIndicator(coin, x => x.ind.rsi && x.ind.rsi.x60)) {
     series.push({
       ...base,
       color: "red",
@@ -268,7 +269,9 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       xAxisIndex: 1,
       yAxisIndex: 1
     });
+  }
 
+  if (hasIndicator(coin, x => x.ind.rsi && x.ind.rsi.x480)) {
     series.push({
       ...base,
       color: "red",
@@ -277,27 +280,14 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       xAxisIndex: 1,
       yAxisIndex: 1
     });
+  }
 
+  if (hasIndicator(coin, x => x.ind.rsi && x.ind.rsi.x1440)) {
     series.push({
       ...base,
       color: "red",
       data: coin.candlesActual.map(x => x && [x.start * 1000, x.ind.rsi.x1440.p10]),
       name: "rsi.x1440.p10",
-      xAxisIndex: 1,
-      yAxisIndex: 1
-    });
-
-    series.push({
-      ...base,
-      // type: "scatter",
-      // symbol: flash,
-      // symbolSize: 10,
-      color: "red",
-      // data: data(coins, x => x.ind.rsi),
-      data: coin.candlesActual
-        // .filter(x => x && x.ind.rsi > 80)
-        .map(x => x && [x.start * 1000, x.ind.rsi.x60.p10 > 80 ? x.ind.rsi.x60.p10 : null]),
-      name: "RSI > 80",
       xAxisIndex: 1,
       yAxisIndex: 1
     });
@@ -392,24 +382,37 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   return series;
 };
 
-export const seriesPredicted = (coin: CorrCandles, predicted: number[]) => {
-  return [
-    {
-      ...baseScatter,
-      color: "red",
-      data: predicted.map((x, i) => [coin.candlesActual[i].start * 1000, x === 0 ? coin.candlesActual[i].close : null]),
-      name: "predicted",
-      symbolSize: 5
-    },
+const valueXpct = (value: number, pi: number) => {
+  const pct = pi / 100;
+  return value + value * pct;
+};
 
-    {
-      ...baseScatter,
-      color: "green",
-      data: predicted.map((x, i) => [coin.candlesActual[i].start * 1000, x === 2 ? coin.candlesActual[i].close : null]),
-      name: "predicted",
-      symbolSize: 5
-    }
-  ];
+export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
+  return flatten(
+    predicted.map((p, pi) => [
+      {
+        ...base,
+        color: "red",
+        data: p.values.map((x, i) => [
+          coin.candlesActual[i].start * 1000,
+          x === 0 ? valueXpct(coin.candlesActual[i].close, pi) : null
+        ]),
+        name: `[P]${p.name}`,
+        symbolSize: 5
+      },
+
+      {
+        ...base,
+        color: "green",
+        data: p.values.map((x, i) => [
+          coin.candlesActual[i].start * 1000,
+          x === 2 ? valueXpct(coin.candlesActual[i].close, pi) : null
+        ]),
+        name: `[P]${p.name}`,
+        symbolSize: 5
+      }
+    ])
+  );
 };
 
 // const seriesVolume = {

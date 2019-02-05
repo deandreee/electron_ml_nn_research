@@ -20,7 +20,7 @@ const ranges = runUtils.genRanges_JJASON();
 
 // const featuresSplit = features.getRSI();
 // const featuresSplit = features.getBBands();
-const featuresSplit = features.getBBandsAndPrice(); // not working, name not bbands...
+// const featuresSplit = features.getBBandsAndPrice(); // not working, name not bbands...
 // const featuresSplit = features.getMFI();
 // const featuresSplit = features.getStochKD();
 // const featuresSplit = features.getEMAOCC();
@@ -28,6 +28,8 @@ const featuresSplit = features.getBBandsAndPrice(); // not working, name not bba
 // const featuresSplit = features.getEMAOCC_HistoryHrs();
 // const featuresSplit = features.getEMAOCC_HistoryDays();
 // const featuresSplit = features.getT3MACD();
+// const featuresSplit = features.getT3MACD_HistoryHrs();
+const featuresSplit = features.getT3MACD_HistoryDays();
 // const featuresSplit = features.getZerolagT3();
 // const featuresSplit = features.getLRC();
 // const featuresSplit = features.getLRC_HistoryHrs();
@@ -59,6 +61,14 @@ const featuresSplit = features.getBBandsAndPrice(); // not working, name not bba
 
 // const featureName = "vixFix.x240.h.days";
 // const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
+
+// const featureNames = [
+//   "t3Macd.x480.sig9",
+//   "rsi.x120.p15.days",
+//   "kst.x480.p_sig3_roc5_smaroc_5.days",
+//   "vixFix.x60.b.days"
+// ];
+// const featuresSplit = features.getByName(featureNames);
 
 const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
 
@@ -110,9 +120,14 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.end(x.name);
   }
 
+  const labelsPredicted = featureNames.map(x => ({
+    name: x,
+    values: predictions.Dec[x] || []
+  }));
+
   return {
     coin: months["Dec"],
-    labelsPredicted: predictions.Dec["vixFix.x60.b.days"] || [],
+    labelsPredicted,
     linRegs
   };
 };

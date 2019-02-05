@@ -1,16 +1,18 @@
 import styles from "./styles";
 import { CorrCandles } from "../strat/corr/CorrCandles";
+import { uniq } from "lodash";
 
 interface Hash {
   [name: string]: boolean;
 }
 
-export const getLegend = (coin: CorrCandles, seriesInd: any) => {
+export const getLegend = (coin: CorrCandles, seriesInd: any, seriesPreictions: any) => {
   let coinNames = [coin.coin.name];
   let indNames = seriesInd.map((x: any) => x.name);
+  let predNames = uniq(seriesPreictions.map((x: any) => x.name));
 
   let legendSelected: Hash = {};
-  [...coinNames, ...indNames].forEach(k => {
+  [...coinNames, ...indNames, ...predNames].forEach(k => {
     legendSelected[k] = false;
   });
 
@@ -25,7 +27,7 @@ export const getLegend = (coin: CorrCandles, seriesInd: any) => {
     // bottom: 0,
     // width: 1000,
     height: "auto",
-    data: [...coinNames, ...indNames],
+    data: [...coinNames, ...indNames, ...predNames],
     selected: legendSelected,
     inactiveColor: "#777",
     textStyle: {

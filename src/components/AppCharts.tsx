@@ -8,10 +8,11 @@ import { seriesInd, seriesPredicted } from "./series";
 // import { CorrChart } from "./CorrChart";
 import styles from "./styles";
 import { CorrCandles } from "../strat/corr/CorrCandles";
+import { Prediction } from "../strat/types";
 
 interface Props {
   coin: CorrCandles;
-  labelsPredicted: number[];
+  labelsPredicted: Prediction[];
 }
 
 interface State {
@@ -49,7 +50,7 @@ export class AppCharts extends React.Component<Props, State> {
     const seriesInd_ = seriesInd(currentProp, coin);
     const seriesPredicted_ = seriesPredicted(coin, labelsPredicted);
 
-    const legend = getLegend(coin, seriesInd_);
+    const legend = getLegend(coin, seriesInd_, seriesPredicted_);
     const optionsMod = {
       ...options,
       legend,

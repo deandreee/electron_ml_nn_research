@@ -60,7 +60,6 @@ const fileName = `output/runBatchedXG_wGA_single/${feature.name}_[lbl=${runConfi
 const coin = Coins.BTC;
 
 const linRegs: LinRegResult[] = [];
-const predictions = runUtils.getPredictionsTemplate();
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const ranges = runUtils.genRanges_JJAS();
@@ -136,7 +135,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   return {
     coin: {} as any,
-    labelsPredicted: predictions.Jul["vixFix480"] || [],
+    labelsPredicted: [],
     linRegs
   };
 };

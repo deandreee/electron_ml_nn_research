@@ -42,10 +42,9 @@ export const runSVM = async (): Promise<RunResult> => {
     }
   }
 
-  const labelsPredicted: number[] = [];
   return {
     coin: trainMonth,
-    labelsPredicted,
+    labelsPredicted: [],
     linRegs
   };
 };

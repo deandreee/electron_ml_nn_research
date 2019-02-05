@@ -328,9 +328,14 @@ export interface RoundTripAction {
   total: number;
 }
 
+export interface Prediction {
+  name: string;
+  values: number[];
+}
+
 export interface RunResult {
   coin: CorrCandles;
-  labelsPredicted: number[];
+  labelsPredicted: Prediction[];
   linRegs: LinRegResult[];
 }
 

@@ -14,7 +14,7 @@ import { getVWAP } from "./getVWAP";
 import { getVixFix, getVixFix_HistoryHrs, getVixFix_HistoryDays } from "./getVixFix";
 import { getTest } from "./getTest";
 import { getEMAOCC, getEMAOCC_Price, getEMAOCC_HistoryHrs, getEMAOCC_HistoryDays } from "./getEMAOCC";
-import { getT3MACD } from "./getT3MACD";
+import { getT3MACD, getT3MACD_HistoryHrs, getT3MACD_HistoryDays } from "./getT3MACD";
 import { getZerolagT3 } from "./getZerolagT3";
 import { getLRC, getLRC_HistoryHrs, getLRC_HistoryDays } from "./getLRC";
 import { getZerolagMACD } from "./getZerolagMACD";
@@ -43,7 +43,9 @@ const getAllPart1 = () => {
     ...getEMAOCC_Price(),
     ...getEMAOCC_HistoryHrs(),
     ...getEMAOCC_HistoryDays(),
-    ...getT3MACD()
+    ...getT3MACD(),
+    ...getT3MACD_HistoryHrs(),
+    ...getT3MACD_HistoryDays()
   ];
 };
 
@@ -78,6 +80,10 @@ const getAllPart3 = () => {
     ...getChandelierExit(),
     ...getKeltner()
   ];
+};
+
+export const getByName = (names: string[]) => {
+  return [...getAllPart1(), ...getAllPart2(), ...getAllPart3()].filter(x => names.indexOf(x.name) >= 0);
 };
 
 export {
@@ -115,6 +121,8 @@ export {
   getEMAOCC_HistoryHrs,
   getEMAOCC_HistoryDays,
   getT3MACD,
+  getT3MACD_HistoryHrs,
+  getT3MACD_HistoryDays,
   getZerolagT3,
   getLRC,
   getLRC_HistoryHrs,

@@ -12,7 +12,6 @@ import { calcProb } from "../evtProb/evtBBands";
 
 export const runIndProb = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
-  const predictions = runUtils.getPredictionsTemplate();
 
   const ranges = runUtils.genRanges_JunDec();
   // const ranges = runUtils.genRanges_SepWeek();
@@ -24,7 +23,7 @@ export const runIndProb = async (): Promise<RunResult> => {
 
   return {
     coin: months[ranges[0].name],
-    labelsPredicted: predictions.Jul["vixFix480"] || [],
+    labelsPredicted: [],
     linRegs
   };
 };

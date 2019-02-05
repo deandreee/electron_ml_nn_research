@@ -16,8 +16,8 @@ export interface RunConfig {
 
 export const runConfig: RunConfig = {
   BATCH: new BatchConfig(60, 1440),
-  PROB: 0.6,
-  // PROB: 0,
+  // PROB: 0.6,
+  PROB: 0,
   XG: runConfigXGDef,
   BARRIER_LABEL: "TWO",
   BARRIER_TYPE: "tripple",

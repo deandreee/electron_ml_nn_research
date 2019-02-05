@@ -1,6 +1,6 @@
 import * as React from "react";
 import { run } from "../strat/run";
-import { LinRegResult } from "../strat/types";
+import { LinRegResult, Prediction } from "../strat/types";
 import { AppCharts } from "./AppCharts";
 import { CorrCandles } from "../strat/corr/CorrCandles";
 // import { AppCorr } from "./AppCorr";
@@ -8,7 +8,7 @@ import { CorrCandles } from "../strat/corr/CorrCandles";
 interface State {
   coin: CorrCandles;
   linRegs: LinRegResult[];
-  labelsPredicted: number[];
+  labelsPredicted: Prediction[];
 }
 
 export class App extends React.Component {
