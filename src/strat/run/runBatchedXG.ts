@@ -1,4 +1,4 @@
-import { Coins, RunResult, LinRegResult } from "../types";
+import { Coins, RunResult, LinRegResult, Prediction } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 // import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
 
@@ -120,9 +120,9 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.end(x.name);
   }
 
-  const labelsPredicted = featureNames.map(x => ({
-    name: x,
-    values: predictions.Dec[x] || []
+  const labelsPredicted: Prediction[] = featuresSplit.map(x => ({
+    name: x.name,
+    values: predictions.Dec[x.name] || []
   }));
 
   return {
