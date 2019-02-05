@@ -19,7 +19,7 @@ export const runConfig: RunConfig = {
   // PROB: 0.6,
   PROB: 0,
   XG: runConfigXGDef,
-  BARRIER_LABEL: "TWO",
+  BARRIER_LABEL: "FIVE",
   BARRIER_TYPE: "tripple",
   UNIQUE_LABELS: [0, 1, 2]
 };

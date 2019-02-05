@@ -129,7 +129,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.vixFix)) {
+  if (hasIndicator(coin, x => x.ind.vixFix && x.ind.vixFix.x60)) {
     series.push({
       ...base,
       color: "red",
@@ -383,8 +383,9 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
 };
 
 const valueXpct = (value: number, pi: number) => {
-  const pct = pi / 100;
-  return value + value * pct;
+  // const pct = pi / 100;
+  // return value + value * pct;
+  return value;
 };
 
 export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {

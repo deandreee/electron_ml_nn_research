@@ -44,8 +44,11 @@ import { sum } from "lodash";
 // const featureName = "emaOCC.x1440.p20";
 // const feature = features.getEMAOCC_History().find(x => x.name === featureName);
 
-const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
-const feature = features.getValidationFive().find(x => x.name === featureName);
+// const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
+// const feature = features.getValidationFive().find(x => x.name === featureName);
+
+const featureName = "emaOCC.x1440.p25.hrs";
+const feature = features.getEMAOCC_HistoryHrs().find(x => x.name === featureName);
 
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigBase.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;

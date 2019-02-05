@@ -29,7 +29,7 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getEMAOCC_HistoryDays();
 // const featuresSplit = features.getT3MACD();
 // const featuresSplit = features.getT3MACD_HistoryHrs();
-const featuresSplit = features.getT3MACD_HistoryDays();
+// const featuresSplit = features.getT3MACD_HistoryDays();
 // const featuresSplit = features.getZerolagT3();
 // const featuresSplit = features.getLRC();
 // const featuresSplit = features.getLRC_HistoryHrs();
@@ -62,6 +62,7 @@ const featuresSplit = features.getT3MACD_HistoryDays();
 // const featureName = "vixFix.x240.h.days";
 // const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
 
+// LBL TWO
 // const featureNames = [
 //   "t3Macd.x480.sig9",
 //   "rsi.x120.p15.days",
@@ -69,6 +70,16 @@ const featuresSplit = features.getT3MACD_HistoryDays();
 //   "vixFix.x60.b.days"
 // ];
 // const featuresSplit = features.getByName(featureNames);
+
+// LBL FIVE
+const featureNames = [
+  "stochKD.x1440.p45",
+  "emaOCC.x1440.p25.hrs",
+  "chandelierExit.x240.p10_2",
+  "macd.x1440.sig2_16.hrs",
+  "vixFix.x1440.c"
+];
+const featuresSplit = features.getByName(featureNames);
 
 const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
 
