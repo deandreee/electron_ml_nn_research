@@ -3,7 +3,7 @@ import { RunConfigXG, runConfigXGDef } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
-export type BarrierType = "double" | "tripple";
+export type BarrierType = "double" | "tripple" | "up" | "down";
 
 export interface RunConfig {
   BATCH: BatchConfig;

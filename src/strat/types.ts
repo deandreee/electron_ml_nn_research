@@ -53,6 +53,9 @@ export interface Barriers {
 export interface CandlePctChange {
   tripple?: number;
   double?: number;
+  up?: number;
+  down?: number;
+
   trippleBarriers?: Barriers;
   doubleBarriers?: Barriers;
   _10m?: number;

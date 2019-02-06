@@ -1,7 +1,7 @@
-import { Coins, CoinData } from "./types";
-import * as daterange from "./daterange";
-import { queryCoin } from "./queryCoins";
-import { getPctChange } from "./utils";
+import { Coins, CoinData } from "../strat/types";
+import * as daterange from "../strat/daterange";
+import { queryCoin } from "../strat/queryCoins";
+import { getPctChange } from "../strat/utils";
 // @ts-ignore
 import { padEnd, padStart } from "lodash";
 

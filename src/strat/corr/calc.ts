@@ -221,7 +221,7 @@ export const corrCalc = (coin: CoinData, runConfig: RunConfig) => {
     candle.pctChange60m = getCandlePctChange(candles, i + 60, i);
 
     candle.pctChange = {
-      tripple: trippleBarrier(candles, i, -2, 2, 700)
+      tripple: trippleBarrier(candles, i, { stopLoss: -2, takeProfit: 2, lookAhead: 700 })
       // _10m: getCandlePctChange(candles, i + 10, i),
       // _60m: getAvgCandlePctChange(candles, i, i + 50, i + 70),
       // _120m: getAvgCandlePctChange(candles, i, i + 100, i + 140),

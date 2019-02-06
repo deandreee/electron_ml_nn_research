@@ -1,7 +1,7 @@
 import { PctChange, CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
-import { trippleBarrier, getTrippleBarrierConfig } from "./barrier";
+import { trippleBarrier, getTrippleBarrierConfig, binaryBarrierUp, binaryBarrierDown } from "./barrier";
 // import { IFT } from "../indicators/IFT";
 // import { IFTS } from "../indicators/IFTS";
 import { EMAOCC } from "../indicators/EMAOCC";
@@ -169,10 +169,10 @@ export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSp
     const tbCfg = getTrippleBarrierConfig(runConfig, runConfig.BARRIER_LABEL);
 
     candle.pctChange = {
-      double: runConfig.BARRIER_TYPE === "double" && doubleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit),
-      tripple:
-        runConfig.BARRIER_TYPE === "tripple" &&
-        trippleBarrier(candles, i, tbCfg.stopLoss, tbCfg.takeProfit, tbCfg.lookAhead)
+      double: runConfig.BARRIER_TYPE === "double" && doubleBarrier(candles, i, tbCfg),
+      tripple: runConfig.BARRIER_TYPE === "tripple" && trippleBarrier(candles, i, tbCfg),
+      up: runConfig.BARRIER_TYPE === "up" && binaryBarrierUp(candles, i, tbCfg),
+      down: runConfig.BARRIER_TYPE === "down" && binaryBarrierDown(candles, i, tbCfg)
     };
   }
 

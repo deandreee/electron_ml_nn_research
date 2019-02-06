@@ -68,11 +68,11 @@ export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featur
 
     candle.pctChange = {
       trippleBarriers: {
-        PT_FIVE: trippleBarrier(candles, i, ptFive.stopLoss, ptFive.takeProfit, ptFive.lookAhead),
-        ONE: trippleBarrier(candles, i, one.stopLoss, one.takeProfit, one.lookAhead),
-        TWO: trippleBarrier(candles, i, two.stopLoss, two.takeProfit, two.lookAhead),
-        THREE: trippleBarrier(candles, i, three.stopLoss, three.takeProfit, three.lookAhead),
-        FIVE: trippleBarrier(candles, i, five.stopLoss, five.takeProfit, five.lookAhead)
+        PT_FIVE: trippleBarrier(candles, i, ptFive),
+        ONE: trippleBarrier(candles, i, one),
+        TWO: trippleBarrier(candles, i, two),
+        THREE: trippleBarrier(candles, i, three),
+        FIVE: trippleBarrier(candles, i, five)
       }
     };
 
