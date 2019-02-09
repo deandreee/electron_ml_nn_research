@@ -1,6 +1,7 @@
 import { round1 } from "../utils";
 import { rescale } from "../rescale";
 import { uniq } from "lodash";
+import { RunConfig } from "../run/runConfig";
 
 export const logLabels = (uniqueLabels: number[], labels: number[]) => {
   for (let lbl of uniqueLabels) {
@@ -170,7 +171,7 @@ interface TestData {
   label: number;
 }
 
-export const labelCountSanityCheck = (labelCount: NumberMap) => {
+export const labelCountSanityCheck = (labelCount: NumberMap, maxClassImbalance: number) => {
   const max = getMaxLabel(labelCount);
   for (let k in labelCount) {
     const proportion = labelCount[k] / max;
@@ -178,8 +179,8 @@ export const labelCountSanityCheck = (labelCount: NumberMap) => {
     // if (proportion < 0.8) {
     // if (proportion < 0.75) {
     // if (proportion < 0.7) {
-    if (proportion < 0.65) {
-      throw new Error(`Classes too imbalanced (${proportion}): ${JSON.stringify(labelCount)}`);
+    if (proportion < maxClassImbalance) {
+      throw new Error(`Classes too imbalanced (${proportion}/${maxClassImbalance}): ${JSON.stringify(labelCount)}`);
     }
   }
 };
@@ -189,11 +190,11 @@ export const getMaxLabel = (labelCount: NumberMap) => {
   return Math.max(...counts);
 };
 
-export const upsample = (testData: TestData[], uniqueLabels: number[]) => {
+export const upsample = (testData: TestData[], runConfig: RunConfig) => {
   const labels = testData.map(x => x.label);
-  const labelCount = countLabels(uniqueLabels, labels);
+  const labelCount = countLabels(runConfig.UNIQUE_LABELS, labels);
 
-  labelCountSanityCheck(labelCount);
+  labelCountSanityCheck(labelCount, runConfig.MAX_CLASS_IMBALANCE);
 
   const max = getMaxLabel(labelCount);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
@@ -201,13 +202,13 @@ export const upsample = (testData: TestData[], uniqueLabels: number[]) => {
   return testData;
 };
 
-export const middlesample = (testData: TestData[], uniqueLabels: number[]) => {
+export const middlesample = (testData: TestData[], runConfig: RunConfig) => {
   const labels = testData.map(x => x.label);
-  const labelCount = countLabels(uniqueLabels, labels);
+  const labelCount = countLabels(runConfig.UNIQUE_LABELS, labels);
 
-  labelCountSanityCheck(labelCount);
+  labelCountSanityCheck(labelCount, runConfig.MAX_CLASS_IMBALANCE);
 
-  const avgLabelCount = Math.round(sumLabels(uniqueLabels, labels) / uniqueLabels.length);
+  const avgLabelCount = Math.round(sumLabels(runConfig.UNIQUE_LABELS, labels) / runConfig.UNIQUE_LABELS.length);
   // mlUtils.logLabelsInline(labelCount, avgLabelCount);
   testData = resample(testData, labelCount, avgLabelCount);
   return testData;

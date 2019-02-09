@@ -23,7 +23,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   let labels = mlGetLabels(corrCandles, runConfig);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.upsample(testData, runConfig.UNIQUE_LABELS);
+  testData = mlUtils.upsample(testData, runConfig);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);
@@ -33,7 +33,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   const XGBoost = await XGBoost_;
   const booster = new XGBoost({
     booster: "gbtree",
-    objective: "multi:softprob",
+    objective: runConfig.XG_OBJECTIVE || "multi:softprob",
     eta: runConfig.XG.eta || 0.3,
     gamma: runConfig.XG.gamma || 0,
     max_depth: runConfig.XG.max_depth || 3,
@@ -44,7 +44,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
     colsample_bytree: runConfig.XG.colsample_bytree || 1,
 
     verbosity: 1, // 0 (silent), 1 (warning), 2 (info), 3 (debug).
-    num_class: runConfig.UNIQUE_LABELS.length
+    num_class: runConfig.XG_OBJECTIVE.indexOf("binary") >= 0 ? undefined : runConfig.UNIQUE_LABELS.length
   });
 
   booster.train(features, labels);

@@ -15,9 +15,9 @@ import { BatchConfig } from "../corr/BatchConfig";
 const ranges = runUtils.genRanges_JJASON();
 const featureName: string = "ALL";
 // const featureName: string = "COMBO";
-const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${
+const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${runConfig.BARRIER_TYPE} ${
   runConfig.BARRIER_LABEL
-} ] [ prob ${runConfig.PROB} ].csv`;
+} ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
 
 const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
 

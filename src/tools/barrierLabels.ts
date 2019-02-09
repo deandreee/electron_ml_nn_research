@@ -8,7 +8,7 @@ import { Coins } from "../strat/types";
 import { trippleBarrier } from "../strat/corr/barrier";
 import { binaryBarrierUp } from "../strat/corr/barrier";
 import { binaryBarrierDown } from "../strat/corr/barrier";
-import { getTrippleBarrierConfig } from "../strat/corr/barrier";
+// import { getTrippleBarrierConfig } from "../strat/corr/barrier";
 import { runConfig } from "../strat/run/runConfig";
 import { batchCandlesInXs } from "../strat/db/batchCandlesInXs";
 
@@ -19,7 +19,8 @@ export const barrierLabels = () => {
   const coin = queryCoin(Coins.BTC, fromExtended, toExtended);
   const candles = batchCandlesInXs(coin.candles, runConfig.BATCH.batchSize);
 
-  const tbCfg = getTrippleBarrierConfig(runConfig, runConfig.BARRIER_LABEL);
+  // const tbCfg = getTrippleBarrierConfig(runConfig, runConfig.BARRIER_LABEL);
+  const tbCfg = { stopLoss: -5, takeProfit: 5, lookAhead: 250 }; // 250 was best
 
   for (let i = 0; i < candles.length; i++) {
     // console.log(i);

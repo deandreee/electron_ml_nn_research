@@ -23,14 +23,15 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   let labels = mlGetLabels(corrCandles, runConfig);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.upsample(testData, runConfig.UNIQUE_LABELS);
+  testData = mlUtils.upsample(testData, runConfig);
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   const XGBoost = await XGBoost_;
-  const booster = new XGBoost({
+
+  const xgProps: any = {
     booster: "gbtree",
-    objective: "multi:softmax",
+    objective: runConfig.XG_OBJECTIVE || "multi:softmax",
     eta: runConfig.XG.eta || 0.3,
     gamma: runConfig.XG.gamma || 0,
     max_depth: runConfig.XG.max_depth || 3,
@@ -40,9 +41,14 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
 
     colsample_bytree: runConfig.XG.colsample_bytree || 1,
 
-    verbosity: 1, // 0 (silent), 1 (warning), 2 (info), 3 (debug).
-    num_class: runConfig.UNIQUE_LABELS.length
-  });
+    verbosity: 1 // 0 (silent), 1 (warning), 2 (info), 3 (debug).
+  };
+
+  if (runConfig.XG_OBJECTIVE.indexOf("binary") === -1 && runConfig.XG_OBJECTIVE.indexOf("logistic") === -1) {
+    xgProps.num_class = runConfig.UNIQUE_LABELS.length;
+  }
+
+  const booster = new XGBoost(xgProps);
 
   booster.train(features, labels);
 
@@ -58,8 +64,12 @@ export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCan
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   const predicted = booster.predict(features);
+  if (runConfig.XG_OBJECTIVE.indexOf("binary") >= 0 || runConfig.XG_OBJECTIVE.indexOf("logistic") >= 0) {
+    const predictedRound = predicted.map((x: number) => (x > runConfig.PRED_PROB ? 1 : 0));
+    const results = mlEvaluate.evaluateResults(runConfig.UNIQUE_LABELS, labels, predictedRound);
+    return { booster, features, labels, predicted: predictedRound, results };
+  }
 
   const results = mlEvaluate.evaluateResults(runConfig.UNIQUE_LABELS, labels, predicted);
-
   return { booster, features, labels, predicted, results };
 };

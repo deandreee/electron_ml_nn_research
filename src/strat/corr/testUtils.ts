@@ -43,8 +43,11 @@ export const getRunConfig = (batchConfig: BatchConfig): RunConfig => {
     BATCH: batchConfig,
     PROB: 0,
     XG: runConfigXGDef,
+    XG_OBJECTIVE: "multi:softmax",
+    PRED_PROB: 0.5,
     BARRIER_LABEL: "TWO",
     BARRIER_TYPE: "tripple",
-    UNIQUE_LABELS: [0, 1, 2]
+    UNIQUE_LABELS: [0, 1, 2],
+    MAX_CLASS_IMBALANCE: 0.65
   };
 };

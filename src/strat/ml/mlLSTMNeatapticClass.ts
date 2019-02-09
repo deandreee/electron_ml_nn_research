@@ -23,7 +23,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   let labels = mlGetLabels(corrCandles, runConfig);
 
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.middlesample(testData, uniqueLabels);
+  testData = mlUtils.middlesample(testData, runConfig);
 
   features = testData.map(x => x.features);
   labels = testData.map(x => x.label);

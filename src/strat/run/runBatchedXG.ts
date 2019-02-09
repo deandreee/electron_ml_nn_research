@@ -55,7 +55,7 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getAllPart2();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
-// const featuresSplit = features.getValidationCombo();
+const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
 
@@ -72,20 +72,20 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getByName(featureNames);
 
 // LBL FIVE
-const featureNames = [
-  "stochKD.x1440.p45",
-  "emaOCC.x1440.p25.hrs",
-  "chandelierExit.x240.p10_2",
-  "macd.x1440.sig2_16.hrs",
-  "vixFix.x1440.c"
-];
-const featuresSplit = features.getByName(featureNames);
+// const featureNames = [
+//   "stochKD.x1440.p45",
+//   "emaOCC.x1440.p25.hrs",
+//   "chandelierExit.x240.p10_2",
+//   "macd.x1440.sig2_16.hrs",
+//   "vixFix.x1440.c"
+// ];
+// const featuresSplit = features.getByName(featureNames);
 
 const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
 
-const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${ranges[0].name} ] [ lbl ${
-  runConfig.BARRIER_LABEL
-} ].csv`;
+const fileName = `output/runBatchedXG_all/${getCoreName(featuresSplit)} [ train ${ranges[0].name} ] [ lbl ${
+  runConfig.BARRIER_TYPE
+} ${runConfig.BARRIER_LABEL} ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const months = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit);

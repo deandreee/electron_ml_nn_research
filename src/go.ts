@@ -5,7 +5,7 @@ import { run } from "./strat/run";
 // import { marketMonth } from "./tools/marketMonth";
 import { barrierLabels } from "./tools/barrierLabels";
 
-const wrapTool = async () => {
+export const wrapTool = async () => {
   try {
     // marketMonth();
     await barrierLabels();
@@ -16,8 +16,8 @@ const wrapTool = async () => {
 };
 
 try {
-  // run();
-  wrapTool();
+  run();
+  // wrapTool();
 } catch (err) {
   console.error(err);
 }
