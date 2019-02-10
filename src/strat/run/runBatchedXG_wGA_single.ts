@@ -33,7 +33,7 @@ import * as GAOpts from "./ga/GAOpts";
 // };
 
 const gaOpts = GAOpts.KST;
-const t: TimeFrame = "x240";
+const t: TimeFrame = "x1440";
 const feature: features.FeatureSplit = {
   name: `kst.${t}.opt`,
   fn: (x, i, corrCandles) => [x.ind.kst[t].opt.kst]

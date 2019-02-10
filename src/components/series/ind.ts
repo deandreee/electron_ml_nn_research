@@ -379,6 +379,15 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
+  if (hasIndicator(coin, x => x.pctChange.up)) {
+    series.push({
+      ...base,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.up === 1 ? x.close : null]),
+      name: "[B]UP"
+    });
+  }
+
   return series;
 };
 
@@ -389,6 +398,24 @@ const valueXpct = (value: number, pi: number) => {
 };
 
 export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
+  // TODO: binary
+  if (1 + 1 === 2) {
+    return flatten(
+      predicted.map((p, pi) => [
+        {
+          ...base,
+          color: "green",
+          data: p.values.map((x, i) => [
+            coin.candlesActual[i].start * 1000,
+            x === 1 ? valueXpct(coin.candlesActual[i].close, pi) : null
+          ]),
+          name: `[P]${p.name}`,
+          symbolSize: 5
+        }
+      ])
+    );
+  }
+
   return flatten(
     predicted.map((p, pi) => [
       {

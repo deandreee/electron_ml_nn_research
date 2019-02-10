@@ -20,7 +20,8 @@ export const barrierLabels = () => {
   const candles = batchCandlesInXs(coin.candles, runConfig.BATCH.batchSize);
 
   // const tbCfg = getTrippleBarrierConfig(runConfig, runConfig.BARRIER_LABEL);
-  const tbCfg = { stopLoss: -5, takeProfit: 5, lookAhead: 250 }; // 250 was best
+  // const tbCfg = { stopLoss: -5, takeProfit: 5, lookAhead: 250 }; // 250 was best
+  const tbCfg = { stopLoss: -2, takeProfit: 2, lookAhead: 80 };
 
   for (let i = 0; i < candles.length; i++) {
     // console.log(i);

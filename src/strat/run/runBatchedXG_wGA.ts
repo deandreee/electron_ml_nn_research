@@ -47,14 +47,23 @@ import { sum } from "lodash";
 // const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
 // const feature = features.getValidationFive().find(x => x.name === featureName);
 
-const featureName = "emaOCC.x1440.p25.hrs";
-const feature = features.getEMAOCC_HistoryHrs().find(x => x.name === featureName);
+// const featureName = "emaOCC.x1440.p25.hrs";
+// const feature = features.getEMAOCC_HistoryHrs().find(x => x.name === featureName);
+
+// const featureName = "chandelierExit.x120.p20_3";
+// const feature = features.getChandelierExit().find(x => x.name === featureName);
+
+// const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
+// const feature = features.getKST_Price().find(x => x.name === featureName);
+
+const featureName = "bbands.x240.p20_dev1";
+const feature = features.getBBands().find(x => x.name === featureName);
 
 const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigBase.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_JJAS();
+  const ranges = runUtils.genRanges_JJASON();
   const months = queryCorrCandlesMonthsBatched(runConfigBase, coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

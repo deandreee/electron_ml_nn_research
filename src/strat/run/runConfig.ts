@@ -29,7 +29,7 @@ export const runConfig: RunConfig = {
 
   XG_OBJECTIVE: "binary:logistic",
   // XG_OBJECTIVE: "reg:logistic",
-  PRED_PROB: 0.7,
+  PRED_PROB: 0.5,
 
   BARRIER_TYPE: "up",
   UNIQUE_LABELS: [0, 1],

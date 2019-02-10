@@ -91,7 +91,8 @@ export const getTrippleBarrierConfig = (runConfig: RunConfig, label: BarrierLabe
     // return { stopLoss: -2, takeProfit: 2, lookAhead: convert10mToBatchSize(batchSize, 140) };
 
     // JJASON
-    return { stopLoss: -2, takeProfit: 2, lookAhead: convert10mToBatchSize(batchSize, 220) };
+    // return { stopLoss: -2, takeProfit: 2, lookAhead: convert10mToBatchSize(batchSize, 220) };
+    return { stopLoss: -2, takeProfit: 2, lookAhead: 80 };
   }
 
   if (label === "THREE") {

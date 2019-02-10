@@ -55,12 +55,27 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getAllPart2();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
-const featuresSplit = features.getValidationCombo();
+// const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
 
-// const featureName = "vixFix.x240.h.days";
+// const featureName = "vixFix.x1440.b.days";
 // const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
+
+// const featureName = "chandelierExit.x480.p5_2";
+// const featuresSplit = [features.getChandelierExit().find(x => x.name === featureName)];
+
+// const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
+// const featuresSplit = [features.getKST_Price().find(x => x.name === featureName)];
+
+const featureName = "kalman.x1440.r001_q20.hrs";
+const featuresSplit = features.getByName([featureName]);
+
+// const featureName = "emaOCC.x240.p10.price";
+// const featuresSplit = [features.getEMAOCC_Price().find(x => x.name === featureName)];
+
+// const featureName = "zerolagT3.x480.p60";
+// const featuresSplit = [features.getZerolagT3().find(x => x.name === featureName)];
 
 // LBL TWO
 // const featureNames = [
