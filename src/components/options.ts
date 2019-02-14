@@ -3,7 +3,6 @@ import styles from "./styles";
 import { xAxis } from "./xAxis";
 import { yAxis } from "./yAxis";
 import { dataZoom } from "./dataZoom";
-import { axisTooltip } from "./tooltip";
 
 export const options: EChartOption = {
   backgroundColor: styles.colors.background,
@@ -35,11 +34,17 @@ export const options: EChartOption = {
       splitLine: { show: false }
     },
     {
-      type: "category",
+      type: "time",
       gridIndex: 1,
       scale: true,
+      color: styles.colors.axis,
+      fontFamily: styles.fontFamily,
       boundaryGap: false,
-      axisLine: { onZero: false },
+      // this is to show bar negative values downside
+      // ... although this could break rsi and similar
+      // ... although lot if indicators are either 0-1 or -1 +1
+      // maybe we just need grid3 ...
+      axisLine: { onZero: true },
       axisTick: { show: false },
       splitLine: { show: false },
       axisLabel: { show: false },
@@ -48,8 +53,6 @@ export const options: EChartOption = {
       max: "dataMax"
     }
   ] as object[],
-
-  // yAxis: // moved to separate file because @types different (array vs object) [
 
   dataZoom,
 
@@ -73,6 +76,20 @@ export const options: EChartOption = {
     }
   ],
 
-  tooltip: axisTooltip
-  // tooltip: { ...itemTooltip, formatter: tooltipFormatter }
+  tooltip: {
+    trigger: "axis",
+    axisPointer: {
+      type: "cross",
+      label: { show: false },
+      animation: false,
+      lineStyle: {
+        color: "#376df4",
+        width: 2,
+        opacity: 1
+      }
+    }
+  },
+  axisPointer: {
+    link: { xAxisIndex: "all" } // sync tooltip/line between both grids
+  }
 };
