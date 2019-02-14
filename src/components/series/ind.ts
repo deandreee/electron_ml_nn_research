@@ -48,7 +48,7 @@ const hasIndicator = (coin: CorrCandles, fn: fnGetInd) => {
 export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   const series = [];
 
-  if (hasIndicator(coin, x => x.ind.psar)) {
+  if (hasIndicator(coin, x => x.ind.psar && x.ind.psar.x120)) {
     series.push({
       ...base,
       color: "lightblue",

@@ -1,72 +1,30 @@
 import { FeatureSplit } from "./FeatureSplit";
-import { flatten } from "lodash";
-import { timeframes } from "./common";
+import { Candle } from "../types";
+import { P_LRC, LRC } from "../indicators/LRC";
+import { getFeatureSplit, timeframes, getHistoryHrs, getHistoryDays } from "./common";
+
+export const indName = "lrc";
+
+export const getInd = (candle: Candle, t: string, p: string) => {
+  return candle.ind.lrc[t][p as P_LRC] - candle.close;
+};
+
+export const ps = LRC.getPS();
 
 export const getLRC = (): FeatureSplit[] => {
-  const ps = ["p5", "p10", "p20", "p30", "p45", "p60"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `lrc.${tf}.${p}`,
-            fn: (x, i, corrCandles) => [x.ind.lrc[tf][p] - x.close]
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(indName, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [getInd(x, t, p)];
+  });
 };
 
 export const getLRC_HistoryHrs = (): FeatureSplit[] => {
-  const ps = ["p5", "p10", "p20", "p30", "p45", "p60"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `lrc.${tf}.${p}`,
-            fn: (x, i, corrCandles) => {
-              return [
-                x.ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 1).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 2).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 4).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 8).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 12).ind.lrc[tf][p] - x.close
-              ];
-            }
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(`${indName}|hrs`, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [getInd(x, t, p), ...getHistoryHrs(corrCandles, i, t, p, getInd)];
+  });
 };
 
 export const getLRC_HistoryDays = (): FeatureSplit[] => {
-  const ps = ["p5", "p10", "p20", "p30", "p45", "p60"];
-
-  return flatten(
-    timeframes.map(tf => {
-      return flatten(
-        ps.map(p => [
-          {
-            name: `lrc.${tf}.${p}`,
-            fn: (x, i, corrCandles) => {
-              return [
-                x.ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 1).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 12).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 24).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 24 * 2).ind.lrc[tf][p] - x.close,
-                corrCandles.getPrev(i, 24 ^ 3).ind.lrc[tf][p] - x.close
-              ];
-            }
-          } as FeatureSplit
-        ])
-      );
-    })
-  );
+  return getFeatureSplit(`${indName}|days`, timeframes, ps, (x, i, corrCandles, t, p) => {
+    return [getInd(x, t, p), ...getHistoryDays(corrCandles, i, t, p, getInd)];
+  });
 };
