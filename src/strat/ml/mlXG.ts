@@ -32,8 +32,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   const XGBoost = await XGBoost_;
   const booster = new XGBoost({
     booster: "gbtree",
-    // objective: "multi:softmax", // not working this is classes
-    objective: "reg:linear", // seems to be the
+    objective: "reg:linear",
     max_depth: 5,
     eta: 0.1,
     min_child_weight: 1,

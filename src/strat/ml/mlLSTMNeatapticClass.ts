@@ -59,7 +59,7 @@ export const predict = (runConfig: RunConfig, net: any, corrCandles: CorrCandles
 
   const predicted = features.map(x => net.activate(x) as number[]).map(x => x[0]);
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
+  const results = mlEvaluate.evalClasif(uniqueLabels, labels, predicted);
 
   return { net, features, labels, predicted, results };
 };

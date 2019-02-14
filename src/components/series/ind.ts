@@ -186,7 +186,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.kalman)) {
+  if (hasIndicator(coin, x => x.ind.kalman && x.ind.kalman.x120)) {
     series.push({
       ...baseDotted,
       color: "lightblue",
@@ -323,7 +323,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
-  if (hasIndicator(coin, x => x.ind.bbands)) {
+  if (hasIndicator(coin, x => x.ind.bbands && x.ind.bbands.x120)) {
     series.push({
       ...base,
       color: "green",
@@ -385,6 +385,15 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "green",
       data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.up === 1 ? x.close : null]),
       name: "[B]UP"
+    });
+  }
+
+  if (hasIndicator(coin, x => x.pctChange.down)) {
+    series.push({
+      ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange.down === 1 ? x.close : null]),
+      name: "[B]DOWN"
     });
   }
 

@@ -63,7 +63,7 @@ export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCan
   const predicted = booster.predict(features);
 
   const { xLabels, xPredicted } = getPredictionsOverX(labels, predicted, runConfig.PROB);
-  const results = mlEvaluate.evaluateResults(runConfig.UNIQUE_LABELS, xLabels, xPredicted);
+  const results = mlEvaluate.evalClasif(runConfig.UNIQUE_LABELS, xLabels, xPredicted);
 
   return { booster, features, labels, predicted: xPredicted, results };
 };

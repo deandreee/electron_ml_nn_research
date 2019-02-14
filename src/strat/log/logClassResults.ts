@@ -1,11 +1,11 @@
 import { padEnd } from "lodash";
 import { round2 } from "../utils";
-import { EvalResults, HitRate } from "../ml/mlEvaluate";
+import { ClasifResults, HitRate } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
-import { GAEntity } from "./ga/common";
-import { RunConfig } from "./runConfig";
+import { GAEntity } from "../run/ga/common";
+import { RunConfig } from "../run/runConfig";
 
-export const logConsole = (rangeName: string, results: EvalResults) => {
+export const logConsole = (rangeName: string, results: ClasifResults) => {
   console.log(
     padEnd(rangeName, 10),
     padEnd(round2(results.precisionTotal).toString(), 5),
@@ -29,7 +29,7 @@ export const logFile = async (
   coinName: string,
   rangeName: string,
   featureName: string,
-  results: EvalResults,
+  results: ClasifResults,
   gaEntity?: GAEntity
 ) => {
   await csvLog.append(fileName, [

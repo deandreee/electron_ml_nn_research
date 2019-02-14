@@ -80,7 +80,7 @@ export const predict = async (
   const tfPredicted = await (net.predict(tfInput) as tf.Tensor<tf.Rank>);
   const predicted = await model.decodePrediction(tfPredicted, trainBatches.length);
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, labelsLast, predicted);
+  const results = mlEvaluate.evalClasif(uniqueLabels, labelsLast, predicted);
 
   return { net, features, labels, predicted, results };
 };

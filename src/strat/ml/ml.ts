@@ -96,9 +96,9 @@ const predictSvm_ = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeature)
   const predicted = svm.predict(features) as number[];
   // mlUtils.logLabels(uniqueLabels, predicted);
 
-  const results = mlEvaluate.evaluateResults(uniqueLabels, labels, predicted);
-  const results3s = mlEvaluate.evaluateResultsInXs(3, labels, predicted);
-  const results5s = mlEvaluate.evaluateResultsInXs(5, labels, predicted);
+  const results = mlEvaluate.evalClasif(uniqueLabels, labels, predicted);
+  const results3s = mlEvaluate.evalClasifInXs(3, labels, predicted);
+  const results5s = mlEvaluate.evalClasifInXs(5, labels, predicted);
 
   // const crossVal = svm.crossValidation(features, labels, 3);
   // console.log(crossVal);

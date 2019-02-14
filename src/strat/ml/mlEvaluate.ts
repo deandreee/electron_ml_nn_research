@@ -8,7 +8,7 @@ import { Series } from "pandas-js";
 // * Recall/Sensitivity: how many relevant instances are selected.
 // * F1 score: harmonic mean of precision and recall.
 
-export interface EvalResults {
+export interface ClasifResults {
   fScore: number;
   precision: NumberMap;
   precisionTotal: number;
@@ -21,7 +21,7 @@ export interface EvalResults {
   twoHitRate: HitRate;
 }
 
-export const evaluateResults = (uniqueLabels: number[], labels: number[], predicted: number[]): EvalResults => {
+export const evalClasif = (uniqueLabels: number[], labels: number[], predicted: number[]): ClasifResults => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};
@@ -127,7 +127,7 @@ export interface MlEvaluateResults {
   recallTotal: number;
 }
 
-export const evaluateResultsInXs = (limit: number, input: number[], output: number[]): MlEvaluateResults => {
+export const evalClasifInXs = (limit: number, input: number[], output: number[]): MlEvaluateResults => {
   let truePositives: NumberMap = {};
   let falsePositives: NumberMap = {};
   let falseNegatives: NumberMap = {};
@@ -241,4 +241,22 @@ export const evalRegCorr = (labels: number[], predicted: number[]) => {
   // console.log(padEnd("R2/LR", 10), round2(r2));
 
   return { r2, corr };
+};
+
+export interface CorrResults {
+  r2: number;
+  corr: number;
+}
+
+export interface RegResults {
+  mse: number;
+  r2: number;
+  evalCorr: CorrResults;
+}
+
+export const evalReg = (labels: number[], predicted: number[]): RegResults => {
+  const { mse } = evalRegMSE(labels, predicted);
+  const { r2 } = evalRegR2(labels, predicted);
+  const evalCorr = evalRegCorr(labels, predicted);
+  return { mse, r2, evalCorr };
 };

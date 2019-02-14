@@ -4,7 +4,6 @@ import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
-// import { round2 } from "./utils";
 import { mlGetLabels } from "./mlGetLabels";
 import { RunConfig } from "../run/runConfig";
 
@@ -20,8 +19,8 @@ export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGe
 export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(corrCandles, runConfig);
 
+  let labels = mlGetLabels(corrCandles, runConfig);
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
   testData = mlUtils.upsample(testData, runConfig);
 
@@ -44,7 +43,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
     verbosity: 1 // 0 (silent), 1 (warning), 2 (info), 3 (debug).
   };
 
-  if (runConfig.XG_OBJECTIVE.indexOf("binary") === -1 && runConfig.XG_OBJECTIVE.indexOf("logistic") === -1) {
+  if (runConfig.XG_OBJECTIVE.startsWith("multi:")) {
     xgProps.num_class = runConfig.UNIQUE_LABELS.length;
   }
 
@@ -55,8 +54,26 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   return { booster, features, labels };
 };
 
+export interface EvalResults {
+  clasifResults?: mlEvaluate.ClasifResults;
+  regResults?: mlEvaluate.RegResults;
+}
+
+export interface PredictResults {
+  booster: any;
+  features: number[][];
+  labels: number[];
+  predicted: number[];
+  results: EvalResults;
+}
+
 // let's not complicate, just go full cycle, getting features/labels is fast anyway
-export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
+export const predict = (
+  runConfig: RunConfig,
+  booster: any,
+  corrCandles: CorrCandles,
+  fnGetFeature: FnGetFeature
+): PredictResults => {
   let features = corrCandles.candlesActual.map((x, i) => fnGetFeature(x, i, corrCandles));
   features.forEach(mlUtils.sanityCheckRow);
   let labels = mlGetLabels(corrCandles, runConfig);
@@ -64,12 +81,16 @@ export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCan
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   const predicted = booster.predict(features);
-  if (runConfig.XG_OBJECTIVE.indexOf("binary") >= 0 || runConfig.XG_OBJECTIVE.indexOf("logistic") >= 0) {
+  if (runConfig.XG_OBJECTIVE.endsWith(":logistic")) {
     const predictedRound = predicted.map((x: number) => (x > runConfig.PRED_PROB ? 1 : 0));
-    const results = mlEvaluate.evaluateResults(runConfig.UNIQUE_LABELS, labels, predictedRound);
-    return { booster, features, labels, predicted: predictedRound, results };
+    const clasifResults = mlEvaluate.evalClasif(runConfig.UNIQUE_LABELS, labels, predictedRound);
+    return { booster, features, labels, predicted: predictedRound, results: { clasifResults } };
+  } else if (runConfig.XG_OBJECTIVE.startsWith("multi:")) {
+    const clasifResults = mlEvaluate.evalClasif(runConfig.UNIQUE_LABELS, labels, predicted);
+    return { booster, features, labels, predicted, results: { clasifResults } };
+  } else {
+    // regression
+    const regResults = mlEvaluate.evalReg(labels, predicted);
+    return { booster, features, labels, predicted, results: { regResults } };
   }
-
-  const results = mlEvaluate.evaluateResults(runConfig.UNIQUE_LABELS, labels, predicted);
-  return { booster, features, labels, predicted, results };
 };

@@ -1,0 +1,72 @@
+import { padEnd } from "lodash";
+import { round2 } from "../utils";
+import { RegResults } from "../ml/mlEvaluate";
+import * as csvLog from "../csvLog";
+import { GAEntity } from "../run/ga/common";
+import { RunConfig } from "../run/runConfig";
+
+export const logConsole = (rangeName: string, results: RegResults) => {
+  console.log(
+    padEnd(rangeName, 10),
+    padEnd(round2(results.mse).toString(), 5),
+    padEnd(round2(results.r2).toString(), 5),
+    padEnd(round2(results.evalCorr.r2).toString(), 5),
+    padEnd(round2(results.evalCorr.corr).toString(), 5)
+  );
+};
+
+export const logFile = async (
+  fileName: string,
+  runConfig: RunConfig,
+  coinName: string,
+  rangeName: string,
+  featureName: string,
+  results: RegResults,
+  gaEntity?: GAEntity
+) => {
+  await csvLog.append(fileName, [
+    new Date().toISOString(),
+    coinName,
+    rangeName,
+    runConfig.BARRIER_LABEL,
+    runConfig.PROB,
+    featureName,
+    runConfig.XG.idx,
+    runConfig.XG.eta,
+    runConfig.XG.gamma,
+    runConfig.XG.max_depth,
+    runConfig.XG.min_child_weight,
+    runConfig.XG.subsample,
+    runConfig.XG.iterations,
+    round2(results.mse),
+    round2(results.r2),
+    round2(results.evalCorr.r2),
+    round2(results.evalCorr.corr),
+    JSON.stringify(gaEntity)
+  ]);
+};
+
+export const logFileHeader = async (fileName: string) => {
+  if (!(await csvLog.exists(fileName))) {
+    await csvLog.append(fileName, [
+      "DATE",
+      "COIN",
+      "RANGE",
+      "LABEL",
+      "PROB",
+      "FEATURE",
+      "IDX",
+      "ETA",
+      "GAMMA",
+      "MAX_DEPTH",
+      "MIN_CHILD_WEIGHT",
+      "SUBSAMPLE",
+      "ITERATIONS",
+      "MSE",
+      "R2",
+      "CORR.R2",
+      "CORR.CORR",
+      "GA_ENTITY"
+    ]);
+  }
+};

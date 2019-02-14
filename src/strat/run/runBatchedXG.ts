@@ -5,10 +5,9 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as log from "../log";
 
 import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClassProb from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole, logFile, logFileHeader } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "../log/logResults";
 import { runConfig } from "./runConfig";
 import { getCoreName } from "../features/FeatureSplit";
 
@@ -55,20 +54,11 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getAllPart2();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
-// const featuresSplit = features.getValidationCombo();
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
-// const featuresSplit = [features.getCombo().find(x => x.name === featureName)];
-
 // const featureName = "vixFix.x1440.b.days";
-// const featuresSplit = [features.getVixFix_HistoryDays().find(x => x.name === featureName)];
-
 // const featureName = "chandelierExit.x480.p5_2";
-// const featuresSplit = [features.getChandelierExit().find(x => x.name === featureName)];
-
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
-// const featuresSplit = [features.getKST_Price().find(x => x.name === featureName)];
-
-const featureName = "kalman.x1440.r001_q20.hrs";
+const featureName = "lrc.x480.p60";
 const featuresSplit = features.getByName([featureName]);
 
 // const featureName = "emaOCC.x240.p10.price";
@@ -96,16 +86,17 @@ const featuresSplit = features.getByName([featureName]);
 // ];
 // const featuresSplit = features.getByName(featureNames);
 
-const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
+// const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
+const mlXG = mlXGClass; // TODO: fix
 
-const fileName = `output/runBatchedXG_all/${getCoreName(featuresSplit)} [ train ${ranges[0].name} ] [ lbl ${
+const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${ranges[0].name} ] [ lbl ${
   runConfig.BARRIER_TYPE
 } ${runConfig.BARRIER_LABEL} ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   const months = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit);
 
-  await logFileHeader(fileName);
+  await logFileHeader(fileName, runConfig);
 
   // const candleMonths = queryCandlesBatched(Coins.BTC, ranges);
   // const months = calcIndicators(candleMonths, ranges, featuresSplit);
@@ -121,7 +112,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.start(x.name);
     const { booster } = await mlXG.train(runConfig, trainMonth, x.fn);
 
-    const resultsForAvg = [];
+    const resultsForAvg: mlXGClass.EvalResults[] = [];
 
     for (let range of ranges) {
       const corrCandles = months[range.name];

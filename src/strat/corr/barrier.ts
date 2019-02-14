@@ -105,10 +105,10 @@ export const getTrippleBarrierConfig = (runConfig: RunConfig, label: BarrierLabe
   if (label === "FIVE") {
     // return { stopLoss: -5, takeProfit: 5, lookAhead: convert10mToBatchSize(600) };
     // for batch 60 need more not sure why
-    // return { stopLoss: -5, takeProfit: 5, lookAhead: convert10mToBatchSize(batchSize, 750) };
+    return { stopLoss: -5, takeProfit: 5, lookAhead: convert10mToBatchSize(batchSize, 750) };
 
     // 60m for up/down
-    return { stopLoss: -5, takeProfit: 5, lookAhead: 250 };
+    // return { stopLoss: -5, takeProfit: 5, lookAhead: 250 };
   }
 
   throw new Error(`getTrippleBarrierConfig: Label ${label} not found`);

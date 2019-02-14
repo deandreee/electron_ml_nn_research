@@ -2,7 +2,8 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { minBy, maxBy, padEnd, meanBy, sumBy } from "lodash";
 import { round2 } from "../utils";
 import * as daterange from "../daterange";
-import { EvalResults } from "../ml/mlEvaluate";
+import { ClasifResults, RegResults } from "../ml/mlEvaluate";
+import { EvalResults } from "../ml/mlXGClass";
 
 interface Predictions {
   [name: string]: PredictionMonth;
@@ -134,7 +135,15 @@ export const genRanges_SepWeek = () => {
 };
 
 export const calcAvgResults = (results: EvalResults[]) => {
-  const avg: EvalResults = {
+  if (results[0].clasifResults) {
+    return { clasifResults: calcAvgResultsClasif(results.map(x => x.clasifResults)) };
+  } else {
+    return { regResults: calcAvgResultsReg(results.map(x => x.regResults)) };
+  }
+};
+
+export const calcAvgResultsClasif = (results: ClasifResults[]) => {
+  const avg: ClasifResults = {
     fScore: meanBy(results, x => x.fScore),
     precision: {
       0: meanBy(results, x => x.precision[0]),
@@ -161,6 +170,19 @@ export const calcAvgResults = (results: EvalResults[]) => {
     twoHitRate: {
       predicted: sumBy(results, x => x.twoHitRate.predicted),
       actual: sumBy(results, x => x.twoHitRate.actual)
+    }
+  };
+
+  return avg;
+};
+
+export const calcAvgResultsReg = (results: RegResults[]) => {
+  const avg: RegResults = {
+    mse: meanBy(results, x => x.mse),
+    r2: meanBy(results, x => x.r2),
+    evalCorr: {
+      r2: meanBy(results, x => x.evalCorr.r2),
+      corr: meanBy(results, x => x.evalCorr.corr)
     }
   };
 

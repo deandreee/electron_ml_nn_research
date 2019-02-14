@@ -2,13 +2,12 @@ import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 // import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
 
-// import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClass from "../ml/mlXGClassProb"; // !!! I think prob makes more sense with this
+import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
 import { runConfig } from "./runConfig";
 
-import { logConsole, logFile, logFileHeader } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "../log/logResults";
 // import * as log from "../log";
 
 import { sum } from "lodash";
@@ -69,7 +68,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   // const candleMonths = queryCandlesBatched(coin, ranges);
   // console.timeEnd("queryCandlesBatched");
 
-  await logFileHeader(fileName);
+  await logFileHeader(fileName, runConfig);
 
   const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
@@ -109,7 +108,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       // console.timeEnd("predict");
 
       if (!range.isTrain) {
-        fScores.push(results.fScore);
+        fScores.push(results.clasifResults.fScore);
         resultsForAvg.push(results);
       }
 
@@ -127,7 +126,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     logConsole("AVG", avgResults);
     await logFile(fileName, runConfig, Coins.BTC, "AVG", feature.name, avgResults, gaEntity);
 
-    return sum(fScores) / fScores.length;
+    return sum(fScores) / fScores.length; // TODO: need to solve for reg ...
   };
 
   const genetic = new GACore({ config: gaConfig, gaOpts, userData, fnFitness });

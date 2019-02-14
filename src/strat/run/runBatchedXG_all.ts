@@ -4,10 +4,9 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as log from "../log";
 
 import * as mlXGClass from "../ml/mlXGClass";
-import * as mlXGClassProb from "../ml/mlXGClassProb";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole, logFile, logFileHeader } from "./logClassResults";
+import { logConsole, logFile, logFileHeader } from "../log/logResults";
 import { runConfig } from "./runConfig";
 import { CorrCandles } from "../corr/CorrCandles";
 import { BatchConfig } from "../corr/BatchConfig";
@@ -19,7 +18,7 @@ const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].nam
   runConfig.BARRIER_LABEL
 } ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
 
-const mlXG = runConfig.PROB === 0 ? mlXGClass : mlXGClassProb;
+const mlXG = mlXGClass;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
   // split in parts to reduce the load
@@ -31,7 +30,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const predictions = runUtils.getPredictionsTemplate();
   const linRegs: LinRegResult[] = [];
 
-  await logFileHeader(fileName);
+  await logFileHeader(fileName, runConfig);
 
   for (let featuresSplit of featuresSplitParts) {
     const months = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit);

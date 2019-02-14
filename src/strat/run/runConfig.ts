@@ -5,16 +5,18 @@ export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
 export type BarrierType = "double" | "tripple" | "up" | "down";
 
+export type XGObjective = "multi:softmax" | "reg:logistic" | "reg:linear" | "binary:logistic";
+
 export interface RunConfig {
   BATCH: BatchConfig;
   PROB: number;
   XG: RunConfigXG;
-  XG_OBJECTIVE: string;
-  PRED_PROB: number;
+  XG_OBJECTIVE: XGObjective;
+  PRED_PROB?: number;
   BARRIER_LABEL: BarrierLabel;
   BARRIER_TYPE: BarrierType;
   UNIQUE_LABELS: number[];
-  MAX_CLASS_IMBALANCE: number;
+  MAX_CLASS_IMBALANCE?: number;
 }
 
 export const runConfig: RunConfig = {
@@ -24,16 +26,22 @@ export const runConfig: RunConfig = {
   XG: runConfigXGDef,
   BARRIER_LABEL: "FIVE",
 
+  // XG_OBJECTIVE: "multi:softmax",
   // BARRIER_TYPE: "tripple",
-  // UNIQUE_LABELS: [0, 1, 2]
+  // UNIQUE_LABELS: [0, 1, 2],
+  // MAX_CLASS_IMBALANCE: 0.65
 
-  XG_OBJECTIVE: "binary:logistic",
+  // XG_OBJECTIVE: "binary:logistic",
   // XG_OBJECTIVE: "reg:logistic",
-  PRED_PROB: 0.5,
+  // PRED_PROB: 0.5
 
-  BARRIER_TYPE: "up",
-  UNIQUE_LABELS: [0, 1],
-  MAX_CLASS_IMBALANCE: 0.4
+  // BARRIER_TYPE: "tripple",
+  // UNIQUE_LABELS: [0, 1],
+  // MAX_CLASS_IMBALANCE: 0.4
+
+  XG_OBJECTIVE: "reg:linear",
+  BARRIER_TYPE: "tripple",
+  UNIQUE_LABELS: [0, 1, 2]
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";

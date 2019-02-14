@@ -9,7 +9,7 @@ import * as log from "../log";
 import * as mlLSTM from "../ml/mlLSTMTF";
 import * as features from "../features";
 import * as runUtils from "./runUtils";
-import { logConsole } from "./logClassResults";
+import { logConsole } from "../log/logResults";
 import { runConfig } from "./runConfig";
 
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
@@ -52,7 +52,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
       const { results, predicted } = await mlLSTM.predict(runConfig, net, corrCandles, x.fn, minMaxScaler);
       predictions[range.name][x.name] = predicted;
 
-      logConsole(range.name, results);
+      logConsole(range.name, { clasifResults: results }); // hardcoded for now
     }
 
     log.end(x.name);

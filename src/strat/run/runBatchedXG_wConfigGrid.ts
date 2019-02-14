@@ -8,7 +8,7 @@ import * as runUtils from "./runUtils";
 import { runConfig as runConfigBase } from "./runConfig";
 import * as runConfigXG from "./runConfigXG";
 
-import { logConsole, logFile } from "./logClassResults";
+import { logConsole, logFile } from "../log/logResults";
 import * as log from "../log";
 
 const featureName = "combo_single_each";

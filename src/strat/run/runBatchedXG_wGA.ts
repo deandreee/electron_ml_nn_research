@@ -8,7 +8,7 @@ import * as runUtils from "./runUtils";
 import { runConfig as runConfigBase } from "./runConfig";
 import { RunConfigXG } from "./runConfigXG";
 
-import { logConsole, logFile } from "./logClassResults";
+import { logConsole, logFile } from "../log/logResults";
 // import * as log from "../log";
 
 import { gaConfig, userData, GAEntity } from "./ga/common";
@@ -87,7 +87,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
       predictions[range.name][feature.name] = predicted;
 
       if (!range.isTrain) {
-        fScores.push(results.fScore);
+        fScores.push(results.clasifResults.fScore);
         resultsForAvg.push(results);
       }
 
@@ -103,7 +103,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     logConsole("AVG", avgResults);
     await logFile(fileName, runConfig, Coins.BTC, "AVG", feature.name, avgResults);
 
-    return sum(fScores) / fScores.length;
+    return sum(fScores) / fScores.length; // TODO: fix for reg
   };
 
   const genetic = new GACore({ config: gaConfig, gaOpts: GAOpts.XG, userData, fnFitness });
