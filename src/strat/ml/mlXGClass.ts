@@ -22,7 +22,11 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
 
   let labels = mlGetLabels(corrCandles, runConfig);
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
-  testData = mlUtils.upsample(testData, runConfig);
+
+  // for now, too difficult to reasonably upsample
+  if (!runConfig.XG_OBJECTIVE.startsWith("reg:")) {
+    testData = mlUtils.upsample(testData, runConfig);
+  }
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 

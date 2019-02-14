@@ -31,6 +31,7 @@ import { doubleBarrier } from "./barrier";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
 import { RunConfig } from "../run/runConfig";
+import { getPctChange } from "../utils";
 
 // const { ADX } = require(`${GEKKO}/indicators`);
 
@@ -172,7 +173,8 @@ export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSp
       double: runConfig.BARRIER_TYPE === "double" && doubleBarrier(candles, i, tbCfg),
       tripple: runConfig.BARRIER_TYPE === "tripple" && trippleBarrier(candles, i, tbCfg),
       up: runConfig.BARRIER_TYPE === "up" && binaryBarrierUp(candles, i, tbCfg),
-      down: runConfig.BARRIER_TYPE === "down" && binaryBarrierDown(candles, i, tbCfg)
+      down: runConfig.BARRIER_TYPE === "down" && binaryBarrierDown(candles, i, tbCfg),
+      _7d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 7].close, candles[i].close)
     };
   }
 

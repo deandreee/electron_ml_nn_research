@@ -3,7 +3,7 @@ import { RunConfigXG, runConfigXGDef } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
-export type BarrierType = "double" | "tripple" | "up" | "down";
+export type BarrierType = "_7d" | "double" | "tripple" | "up" | "down";
 
 export type XGObjective = "multi:softmax" | "reg:logistic" | "reg:linear" | "binary:logistic";
 
@@ -15,7 +15,7 @@ export interface RunConfig {
   PRED_PROB?: number;
   BARRIER_LABEL: BarrierLabel;
   BARRIER_TYPE: BarrierType;
-  UNIQUE_LABELS: number[];
+  UNIQUE_LABELS?: number[]; // not needed for reg
   MAX_CLASS_IMBALANCE?: number;
 }
 
@@ -40,8 +40,7 @@ export const runConfig: RunConfig = {
   // MAX_CLASS_IMBALANCE: 0.4
 
   XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "tripple",
-  UNIQUE_LABELS: [0, 1, 2]
+  BARRIER_TYPE: "_7d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";

@@ -135,8 +135,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "red",
       data: data(coin, x => x.ind.vixFix.x60.a),
       name: "vixFix60",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -146,8 +145,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "red",
       data: data(coin, x => x.ind.twiggs),
       name: "TWIGGS",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -157,8 +155,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "red",
       data: data(coin, x => x.ind.xmTwiggs),
       name: "XmTWIGGS",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -168,8 +165,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "green",
       data: data(coin, x => x.ind.hlTrueRange && x.ind.hlTrueRange.valid),
       name: "HlValid",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
 
     const hlMax = coin.candlesActual.map(x => x && [x.start * 1000, x.ind.hlTrueRange && x.ind.hlTrueRange.runningMax]);
@@ -201,8 +197,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "green",
       data: data(coin, x => x.ind.aroon && x.ind.aroon.up),
       name: "Aroon",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -212,8 +207,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "red",
       data: data(coin, x => x.ind.aroon && x.ind.aroon.down),
       name: "Aroon",
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -233,8 +227,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "green",
       name: "pctChange_1d",
       data: data(coin, x => x.pctChange && x.pctChange._1d),
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -244,8 +237,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "blue",
       name: "pctChange_4d",
       data: data(coin, x => x.pctChange && x.pctChange._4d),
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -255,8 +247,7 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
       color: "red",
       name: "pctChange_7d",
       data: data(coin, x => x.pctChange && x.pctChange._7d),
-      xAxisIndex: 1,
-      yAxisIndex: 1
+      ...grid2
     });
   }
 
@@ -400,13 +391,50 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   return series;
 };
 
-const valueXpct = (value: number, pi: number) => {
-  // const pct = pi / 100;
-  // return value + value * pct;
-  return value;
+// const valueXpct = (value: number, pi: number) => {
+//   const pct = pi / 100;
+//   return value + value * pct;
+//   // return value;
+// };
+
+const isReg = (p0: number) => {
+  if (p0 === 0 || p0 === 1 || p0 === 2) {
+    return false;
+  }
+  return true;
 };
 
 export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
+  // TODO: this is very crude reg check
+  if (isReg(predicted[0].values[0])) {
+    return flatten(
+      predicted.map((p, pi) => [
+        {
+          ...base,
+          color: "green",
+          data: p.values.map((x, i) => [
+            coin.candlesActual[i].start * 1000,
+            // valueXpct(coin.candlesActual[i].close, x)
+            x > 1 ? x : null
+          ]),
+          name: `[P]${p.name}`,
+          ...grid2
+        },
+        {
+          ...base,
+          color: "red",
+          data: p.values.map((x, i) => [
+            coin.candlesActual[i].start * 1000,
+            // valueXpct(coin.candlesActual[i].close, x)
+            x < -1 ? x : null
+          ]),
+          name: `[P]${p.name}`,
+          ...grid2
+        }
+      ])
+    );
+  }
+
   // TODO: binary
   if (1 + 1 === 2) {
     return flatten(
@@ -416,7 +444,7 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
           color: "green",
           data: p.values.map((x, i) => [
             coin.candlesActual[i].start * 1000,
-            x === 1 ? valueXpct(coin.candlesActual[i].close, pi) : null
+            x === 1 ? coin.candlesActual[i].close : null
           ]),
           name: `[P]${p.name}`,
           symbolSize: 5
@@ -432,7 +460,7 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
         color: "red",
         data: p.values.map((x, i) => [
           coin.candlesActual[i].start * 1000,
-          x === 0 ? valueXpct(coin.candlesActual[i].close, pi) : null
+          x === 0 ? coin.candlesActual[i].close : null
         ]),
         name: `[P]${p.name}`,
         symbolSize: 5
@@ -443,7 +471,7 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
         color: "green",
         data: p.values.map((x, i) => [
           coin.candlesActual[i].start * 1000,
-          x === 2 ? valueXpct(coin.candlesActual[i].close, pi) : null
+          x === 2 ? coin.candlesActual[i].close : null
         ]),
         name: `[P]${p.name}`,
         symbolSize: 5
