@@ -1,6 +1,6 @@
 import { NumberMap } from "./mlUtils";
-import { padEnd, sum } from "lodash";
-import { avg, round2 } from "../utils";
+import { padEnd, sum, meanBy } from "lodash";
+import { round2 } from "../utils";
 import * as regression from "regression";
 import { Series } from "pandas-js";
 
@@ -181,25 +181,28 @@ export const calcSSE = (labels: number[], predicted: number[]) => {
   for (let i = 0; i < labels.length; i++) {
     const lbl = labels[i];
     const pred = predicted[i];
+    // const err = Math.pow(lbl - pred, 2);
     const err = lbl - pred;
-
-    errSum += err * err;
+    errSum += err;
   }
 
-  return errSum;
+  // return errSum;
+  return Math.pow(errSum, 2);
 };
 
 // SST is the sum of squared errors of our baseline model.
+// baseline = average
 export const calcSST = (labels: number[]) => {
-  const mean = avg(labels, x => x);
+  const mean = meanBy(labels, x => x);
   let errSum = 0;
   for (let i = 0; i < labels.length; i++) {
     const lbl = labels[i];
+    // const err = Math.pow(lbl - mean, 2);
     const err = lbl - mean;
-    errSum += err * err;
+    errSum += err;
   }
 
-  return errSum;
+  return Math.pow(errSum, 2);
 };
 
 export const evalRegMSE = (labels: number[], predicted: number[]) => {
@@ -221,8 +224,9 @@ export const evalRegR2 = (labels: number[], predicted: number[]) => {
   }
 
   const sse = calcSSE(labels, predicted);
-  const sst = calcSST(labels);
+  const sst = calcSST(predicted);
   const r2 = 1 - sse / sst;
+  // const r2 = sse / sst;
 
   // console.log(padEnd("R2", 10), round2(r2));
 
