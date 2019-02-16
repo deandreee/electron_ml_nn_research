@@ -1,4 +1,4 @@
-import { PctChange, CoinData } from "../types";
+import { CoinData } from "../types";
 // import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier, getTrippleBarrierConfig, binaryBarrierUp, binaryBarrierDown } from "./barrier";
@@ -174,7 +174,11 @@ export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSp
       tripple: runConfig.BARRIER_TYPE === "tripple" && trippleBarrier(candles, i, tbCfg),
       up: runConfig.BARRIER_TYPE === "up" && binaryBarrierUp(candles, i, tbCfg),
       down: runConfig.BARRIER_TYPE === "down" && binaryBarrierDown(candles, i, tbCfg),
-      _7d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 7].close, candles[i].close)
+      _10d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 10].close, candles[i].close),
+      _7d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 7].close, candles[i].close),
+      _5d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 5].close, candles[i].close),
+      _2d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 2].close, candles[i].close),
+      _1d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 1].close, candles[i].close)
     };
   }
 
@@ -182,20 +186,7 @@ export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSp
     (x, i) => !(i < runConfig.BATCH.warmupIndCount || i >= candles.length - runConfig.BATCH.extendedCount)
   );
 
-  const pctChange: PctChange = {
-    _10m: [],
-    _60m: [],
-    _120m: [],
-    _240m: [],
-    _480m: [],
-    _1d: [],
-    _2d: [],
-    _4d: [],
-    _7d: [],
-    _10d: []
-  };
-
   const corrCandles = new CorrCandles(coin, candles, candlesActual, runConfig.BATCH);
 
-  return { corrCandles, pctChange };
+  return { corrCandles };
 };

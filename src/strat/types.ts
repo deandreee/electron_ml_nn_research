@@ -66,6 +66,7 @@ export interface CandlePctChange {
   _1d?: number;
   _2d?: number;
   _4d?: number;
+  _5d?: number;
   _7d?: number;
   _10d?: number;
 }

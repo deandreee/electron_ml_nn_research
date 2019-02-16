@@ -201,6 +201,7 @@ export const calcSST = (labels: number[]) => {
   return errSum;
 };
 
+// https://scikit-learn.org/stable/modules/model_evaluation.html#mean-absolute-error
 export const evalRegMSE = (labels: number[], predicted: number[]) => {
   if (labels.length !== predicted.length) {
     throw new Error("evalRegMSE: lengths not equal");

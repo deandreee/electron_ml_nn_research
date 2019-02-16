@@ -3,7 +3,7 @@ import { RunConfigXG, runConfigXGDef } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
-export type BarrierType = "_7d" | "double" | "tripple" | "up" | "down";
+export type BarrierType = "_1d" | "_2d" | "_5d" | "_7d" | "_10d" | "double" | "tripple" | "up" | "down";
 
 export type XGObjective = "multi:softmax" | "reg:logistic" | "reg:linear" | "binary:logistic";
 
@@ -24,7 +24,7 @@ export const runConfig: RunConfig = {
   // PROB: 0.6,
   PROB: 0,
   XG: runConfigXGDef,
-  BARRIER_LABEL: "FIVE",
+  BARRIER_LABEL: "TWO",
 
   // XG_OBJECTIVE: "multi:softmax",
   // BARRIER_TYPE: "tripple",
@@ -40,7 +40,7 @@ export const runConfig: RunConfig = {
   // MAX_CLASS_IMBALANCE: 0.4
 
   XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "_7d"
+  BARRIER_TYPE: "_5d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
