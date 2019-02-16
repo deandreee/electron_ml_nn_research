@@ -60,7 +60,6 @@ export const predict = (runConfig: RunConfig, booster: any, corrCandles: CorrCan
 
   const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
   const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
-  const evalCorr = mlEvaluate.evalRegCorr(labels, predicted);
 
-  return { booster, features, labels, predicted, mse, r2, evalCorr };
+  return { booster, features, labels, predicted, mse, r2 };
 };

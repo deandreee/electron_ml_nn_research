@@ -179,11 +179,7 @@ export const calcAvgResultsClasif = (results: ClasifResults[]) => {
 export const calcAvgResultsReg = (results: RegResults[]) => {
   const avg: RegResults = {
     mse: meanBy(results, x => x.mse),
-    r2: meanBy(results, x => x.r2),
-    evalCorr: {
-      r2: meanBy(results, x => x.evalCorr.r2),
-      corr: meanBy(results, x => x.evalCorr.corr)
-    }
+    r2: meanBy(results, x => x.r2)
   };
 
   return avg;

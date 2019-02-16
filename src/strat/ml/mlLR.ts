@@ -27,16 +27,8 @@ export const predict = async (corrCandles: CorrCandles, fnGetFeature: FnGetFeatu
 
   const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
   const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
-  const evalCorr = mlEvaluate.evalRegCorr(labels, predicted);
 
-  await csvLog.append("output/ml_lr.csv", [
-    24,
-    round2(lrModelR2),
-    round2(mse),
-    round2(r2),
-    round2(evalCorr.corr),
-    round2(evalCorr.r2)
-  ]);
+  await csvLog.append("output/ml_lr.csv", [24, round2(lrModelR2), round2(mse), round2(r2)]);
 
-  return { labels, predicted, mse, r2, evalCorr, lrModelR2 };
+  return { labels, predicted, mse, r2, lrModelR2 };
 };

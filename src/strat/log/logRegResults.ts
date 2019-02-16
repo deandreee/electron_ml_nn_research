@@ -9,9 +9,7 @@ export const logConsole = (rangeName: string, results: RegResults) => {
   console.log(
     padEnd(rangeName, 10),
     padEnd(round2(results.mse).toString(), 5),
-    padEnd(round2(results.r2).toString(), 5),
-    padEnd(round2(results.evalCorr.r2).toString(), 5),
-    padEnd(round2(results.evalCorr.corr).toString(), 5)
+    padEnd(round2(results.r2).toString(), 5)
   );
 };
 
@@ -40,8 +38,6 @@ export const logFile = async (
     runConfig.XG.iterations,
     round2(results.mse),
     round2(results.r2),
-    round2(results.evalCorr.r2),
-    round2(results.evalCorr.corr),
     JSON.stringify(gaEntity)
   ]);
 };
@@ -64,8 +60,6 @@ export const logFileHeader = async (fileName: string) => {
       "ITERATIONS",
       "MSE",
       "R2",
-      "CORR.R2",
-      "CORR.CORR",
       "GA_ENTITY"
     ]);
   }

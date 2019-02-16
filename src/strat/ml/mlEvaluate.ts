@@ -1,8 +1,6 @@
 import { NumberMap } from "./mlUtils";
 import { padEnd, sum, meanBy } from "lodash";
 import { round2 } from "../utils";
-import * as regression from "regression";
-import { Series } from "pandas-js";
 
 // * Precision/Specificity: how many selected instances are relevant.
 // * Recall/Sensitivity: how many relevant instances are selected.
@@ -233,19 +231,18 @@ export const evalRegR2 = (labels: number[], predicted: number[]) => {
   return { r2 };
 };
 
-export const evalRegCorr = (labels: number[], predicted: number[]) => {
-  const linreg = regression.linear(labels.map((w, i) => [labels[i], predicted[i]]));
-  const r2 = linreg.r2;
+// this is completely different beast => x vs y not y_true vs y_pred
+// removing to skip confusion, leaving as example
+// export const evalRegCorr = (labels: number[], predicted: number[]) => {
+//   const linreg = regression.linear(labels.map((w, i) => [labels[i], predicted[i]]));
+//   const r2 = linreg.r2;
 
-  const s1 = new Series(labels);
-  const s2 = new Series(predicted);
-  const corr = round2(s1.corr(s2));
+//   const s1 = new Series(labels);
+//   const s2 = new Series(predicted);
+//   const corr = round2(s1.corr(s2));
 
-  // console.log(padEnd("CORR/LR", 10), round2(corr));
-  // console.log(padEnd("R2/LR", 10), round2(r2));
-
-  return { r2, corr };
-};
+//   return { r2, corr };
+// };
 
 export interface CorrResults {
   r2: number;
@@ -255,12 +252,10 @@ export interface CorrResults {
 export interface RegResults {
   mse: number;
   r2: number;
-  evalCorr: CorrResults;
 }
 
 export const evalReg = (labels: number[], predicted: number[]): RegResults => {
   const { mse } = evalRegMSE(labels, predicted);
   const { r2 } = evalRegR2(labels, predicted);
-  const evalCorr = evalRegCorr(labels, predicted);
-  return { mse, r2, evalCorr };
+  return { mse, r2 };
 };

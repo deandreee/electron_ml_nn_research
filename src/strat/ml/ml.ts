@@ -138,7 +138,6 @@ export const predictSvmRegression = async (corrCandles: CorrCandles, fnGetFeatur
 
   const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
   const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
-  mlEvaluate.evalRegCorr(labels, predicted);
 
   return { svm, labels, predicted, mse, gamma, cost, r2 };
 };
@@ -182,7 +181,6 @@ export const predictAnotherMonthReg = (svm: any, corrCandles: CorrCandles, fnGet
 
   const { mse } = mlEvaluate.evalRegMSE(labels, predicted);
   const { r2 } = mlEvaluate.evalRegR2(labels, predicted);
-  mlEvaluate.evalRegCorr(labels, predicted);
 
   return { svm, labels, predicted, mse, gamma: svm.options.gamma, cost: svm.options.cost, r2 };
 };
