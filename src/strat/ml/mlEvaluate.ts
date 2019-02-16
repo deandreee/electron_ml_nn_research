@@ -181,28 +181,26 @@ export const calcSSE = (labels: number[], predicted: number[]) => {
   for (let i = 0; i < labels.length; i++) {
     const lbl = labels[i];
     const pred = predicted[i];
-    // const err = Math.pow(lbl - pred, 2);
-    const err = lbl - pred;
+    const err = Math.pow(lbl - pred, 2);
     errSum += err;
   }
 
-  // return errSum;
-  return Math.pow(errSum, 2);
+  return errSum;
 };
 
 // SST is the sum of squared errors of our baseline model.
 // baseline = average
 export const calcSST = (labels: number[]) => {
   const mean = meanBy(labels, x => x);
+
   let errSum = 0;
   for (let i = 0; i < labels.length; i++) {
     const lbl = labels[i];
-    // const err = Math.pow(lbl - mean, 2);
-    const err = lbl - mean;
+    const err = Math.pow(lbl - mean, 2);
     errSum += err;
   }
 
-  return Math.pow(errSum, 2);
+  return errSum;
 };
 
 export const evalRegMSE = (labels: number[], predicted: number[]) => {
@@ -213,22 +211,24 @@ export const evalRegMSE = (labels: number[], predicted: number[]) => {
   const errSum = calcSSE(labels, predicted);
   const mse = errSum / labels.length;
 
-  // console.log(padEnd("MSE", 10), round2(mse));
-
   return { mse };
 };
 
+// this is the real one, y vs y-pred (or y-hat)
+// can be negative, max 1
+// https://towardsdatascience.com/coefficient-of-determination-r-squared-explained-db32700d924e
+// https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html
+// A constant model that always
+// predicts the expected value of y, disregarding the input features,
+// would get a R^2 score of 0.0.
 export const evalRegR2 = (labels: number[], predicted: number[]) => {
   if (labels.length !== predicted.length) {
     throw new Error("evalRegMSE: lengths not equal");
   }
 
   const sse = calcSSE(labels, predicted);
-  const sst = calcSST(predicted);
+  const sst = calcSST(labels);
   const r2 = 1 - sse / sst;
-  // const r2 = sse / sst;
-
-  // console.log(padEnd("R2", 10), round2(r2));
 
   return { r2 };
 };

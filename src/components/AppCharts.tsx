@@ -4,7 +4,7 @@ import ReactEcharts from "echarts-for-react";
 import { options } from "./options";
 // import * as chartUtils from "./chartUtils";
 import { getLegend } from "./getLegend";
-import { seriesInd, seriesPredicted, seriesActual } from "./series";
+import { seriesInd, seriesPredicted } from "./series";
 // import { CorrChart } from "./CorrChart";
 import styles from "./styles";
 import { CorrCandles } from "../strat/corr/CorrCandles";
