@@ -1,5 +1,5 @@
-// import * as XGBoost_ from "ml-xgboost";
-import * as XGPy from "./XGPy";
+import * as XGBoost_ from "ml-xgboost";
+// import * as XGPy from "./XGPy";
 // const XGBoost_ = require("ml-xgboost");
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
@@ -36,12 +36,12 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
-  // const XGBoost = await XGBoost_;
+  const XGBoost = await XGBoost_;
 
   const xgProps: any = {
     booster: "gbtree",
-    // objective: runConfig.XG_OBJECTIVE || "multi:softmax",
-    objective: customObjective1,
+    objective: runConfig.XG_OBJECTIVE || "multi:softmax",
+    // objective: customObjective1,
     eta: runConfig.XG.eta || 0.3,
     gamma: runConfig.XG.gamma || 0,
     max_depth: runConfig.XG.max_depth || 3,
@@ -58,10 +58,10 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
     xgProps.num_class = runConfig.UNIQUE_LABELS.length;
   }
 
-  // const booster = new XGBoost(xgProps);
-  // booster.train(features, labels);
+  const booster = new XGBoost(xgProps);
+  booster.train(features, labels);
 
-  const booster = await XGPy.train(features, labels, xgProps);
+  // const booster = await XGPy.train(features, labels, xgProps);
 
   return { booster, features, labels };
 };
@@ -92,8 +92,8 @@ export const predict = async (
 
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
-  // const predicted = booster.predict(features);
-  const predicted = await XGPy.predict(features, labels);
+  const predicted = booster.predict(features);
+  // const predicted = await XGPy.predict(features, labels);
 
   if (runConfig.XG_OBJECTIVE.endsWith(":logistic")) {
     const predictedRound = predicted.map((x: number) => (x > runConfig.PRED_PROB ? 1 : 0));

@@ -13,8 +13,8 @@ import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
 // const ranges = runUtils.genRanges_JJAS();
-// const ranges = runUtils.genRanges_JJASON();
-const ranges = runUtils.genRanges_FastMiniTest();
+const ranges = runUtils.genRanges_JJASON();
+// const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
 
 // const featuresSplit = features.getRSI();
@@ -58,7 +58,7 @@ const ranges = runUtils.genRanges_FastMiniTest();
 // const featureName = "vixFix.x1440.b.days";
 // const featureName = "chandelierExit.x480.p5_2";
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
-const featureName = "lrc.x480.p60.hrs";
+const featureName = "psar.x60.p0_004";
 // const featureName = "psar.x60.p0_004";
 // const featureName = "emaOCC.x240.p40.price";
 const featuresSplit = features.getByName([featureName]);

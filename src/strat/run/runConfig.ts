@@ -24,7 +24,7 @@ export const runConfig: RunConfig = {
   // PROB: 0.6,
   PROB: 0,
   XG: runConfigXGDef,
-  BARRIER_LABEL: "TWO",
+  BARRIER_LABEL: "FIVE",
 
   // XG_OBJECTIVE: "multi:softmax",
   // BARRIER_TYPE: "tripple",
@@ -40,7 +40,7 @@ export const runConfig: RunConfig = {
   // MAX_CLASS_IMBALANCE: 0.4
 
   XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "_5d"
+  BARRIER_TYPE: "_7d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
