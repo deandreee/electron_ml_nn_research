@@ -13,8 +13,8 @@ import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
 // const ranges = runUtils.genRanges_JJAS();
-const ranges = runUtils.genRanges_JJASON();
-// const ranges = runUtils.genRanges_FastMiniTest();
+// const ranges = runUtils.genRanges_JJASON();
+const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getValidation();
 
 // const featuresSplit = features.getRSI();
