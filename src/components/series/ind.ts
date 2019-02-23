@@ -231,6 +231,16 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
     });
   }
 
+  if (hasIndicator(coin, x => x.pctChange && x.pctChange._2d)) {
+    series.push({
+      ...base,
+      color: "green",
+      name: "pctChange_2d",
+      data: data(coin, x => x.pctChange && x.pctChange._2d),
+      ...grid2
+    });
+  }
+
   if (hasIndicator(coin, x => x.pctChange && x.pctChange._4d)) {
     series.push({
       ...base,

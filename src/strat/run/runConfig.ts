@@ -40,7 +40,7 @@ export const runConfig: RunConfig = {
   // MAX_CLASS_IMBALANCE: 0.4
 
   XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "_7d"
+  BARRIER_TYPE: "_1d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";

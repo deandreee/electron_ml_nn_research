@@ -14,5 +14,8 @@ export const predict = async (features: number[][], labels: number[]) => {
   const body = JSON.stringify({ features, labels });
   const resp = await fetch(`${root}/predict`, { method: "POST", body, headers });
   const json = await resp.json();
-  return json.predicted as number[];
+
+  const predicted = json.predicted as number[];
+  const r2 = json.r2 as number;
+  return { predicted, r2 };
 };
