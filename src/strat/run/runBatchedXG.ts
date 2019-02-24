@@ -58,9 +58,9 @@ const ranges = runUtils.genRanges_JJASON();
 // const featureName = "vixFix.x1440.b.days";
 // const featureName = "chandelierExit.x480.p5_2";
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
-const featureName = "emaOCC.x240.p10.days";
+// const featureName = "emaOCC.x1440.p30";
 // const featureName = "psar.x60.p0_004";
-// const featureName = "emaOCC.x240.p40.price";
+const featureName = "emaOCC.x240.p30.hrs";
 const featuresSplit = features.getByName([featureName]);
 
 // const featureName = "emaOCC.x240.p10.price";

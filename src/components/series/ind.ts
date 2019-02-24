@@ -222,43 +222,19 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   }
 
   if (hasIndicator(coin, x => x.pctChange && x.pctChange._1d)) {
-    series.push({
-      ...base,
-      color: "green",
-      name: "pctChange_1d",
-      data: data(coin, x => x.pctChange && x.pctChange._1d),
-      ...grid2
-    });
+    series.push(...redGreen(coin, "_1d"));
   }
 
   if (hasIndicator(coin, x => x.pctChange && x.pctChange._2d)) {
-    series.push({
-      ...base,
-      color: "green",
-      name: "pctChange_2d",
-      data: data(coin, x => x.pctChange && x.pctChange._2d),
-      ...grid2
-    });
+    series.push(...redGreen(coin, "_2d"));
   }
 
   if (hasIndicator(coin, x => x.pctChange && x.pctChange._4d)) {
-    series.push({
-      ...base,
-      color: "blue",
-      name: "pctChange_4d",
-      data: data(coin, x => x.pctChange && x.pctChange._4d),
-      ...grid2
-    });
+    series.push(...redGreen(coin, "_4d"));
   }
 
   if (hasIndicator(coin, x => x.pctChange && x.pctChange._7d)) {
-    series.push({
-      ...base,
-      color: "red",
-      name: "pctChange_7d",
-      data: data(coin, x => x.pctChange && x.pctChange._7d),
-      ...grid2
-    });
+    series.push(...redGreen(coin, "_7d"));
   }
 
   if (hasIndicator(coin, x => x.ind.rsi && x.ind.rsi.x60)) {
@@ -406,6 +382,25 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
 //   return value + value * pct;
 //   // return value;
 // };
+
+export const redGreen = (coin: CorrCandles, xd: string) => {
+  return [
+    {
+      ...base,
+      color: "green",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange[xd] > 1 ? x.pctChange[xd] : null]),
+      name: xd,
+      ...grid2
+    },
+    {
+      ...base,
+      color: "red",
+      data: coin.candlesActual.map(x => x && [x.start * 1000, x.pctChange[xd] < -1 ? x.pctChange[xd] : null]),
+      name: xd,
+      ...grid2
+    }
+  ];
+};
 
 const isReg = (p0: number) => {
   if (p0 === 0 || p0 === 1 || p0 === 2) {

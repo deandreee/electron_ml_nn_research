@@ -51,6 +51,8 @@ export interface Barriers {
 }
 
 export interface CandlePctChange {
+  [x: string]: number | Barriers;
+
   tripple?: number;
   double?: number;
   up?: number;
