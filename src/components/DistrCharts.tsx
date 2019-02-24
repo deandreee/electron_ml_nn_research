@@ -26,6 +26,11 @@ export class DistrCharts extends React.Component<Props> {
     const counts5d = distrCounter.getLine(_5d);
     const counts7d = distrCounter.getLine(_7d);
 
+    const serie = {
+      // type: "line"
+      type: "bar"
+    };
+
     const options = {
       backgroundColor: styles.colors.background,
       animation: false, // performance !!!
@@ -37,32 +42,24 @@ export class DistrCharts extends React.Component<Props> {
       },
       series: [
         {
+          ...serie,
           data: counts1d,
-          name: "_1d",
-          type: "bar",
-          large: true,
-          sampling: "average"
+          name: "_1d"
         },
         {
+          ...serie,
           data: counts2d,
-          name: "_2d",
-          type: "bar",
-          large: true,
-          sampling: "average"
+          name: "_2d"
         },
         {
+          ...serie,
           data: counts5d,
-          name: "_5d",
-          type: "bar",
-          large: true,
-          sampling: "average"
+          name: "_5d"
         },
         {
+          ...serie,
           data: counts7d,
-          name: "_7d",
-          type: "bar",
-          large: true,
-          sampling: "average"
+          name: "_7d"
         }
       ],
       legend: {
@@ -81,6 +78,22 @@ export class DistrCharts extends React.Component<Props> {
           fontFamily: styles.fontFamily,
           color: "#fff"
         }
+      },
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "cross",
+          label: { show: false },
+          animation: false,
+          lineStyle: {
+            color: "#376df4",
+            width: 2,
+            opacity: 1
+          }
+        }
+      },
+      axisPointer: {
+        link: { xAxisIndex: "all" } // sync tooltip/line between both grids
       }
     };
 

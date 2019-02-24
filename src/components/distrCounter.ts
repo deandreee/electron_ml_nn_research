@@ -16,7 +16,7 @@ export const getLine = (labels: number[]) => {
   const count = group(labels);
   const res = [];
   for (let x in count) {
-    res.push([parseInt(x), count[x]]);
+    res.push([parseFloat(x), count[x]]);
   }
   return res.sort((a, b) => a[0] - b[0]);
 };
