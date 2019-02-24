@@ -55,12 +55,20 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+// const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD";
+// const featureName = "emaOCC.vixFix.kst2";
+// const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
+
 // const featureName = "vixFix.x1440.b.days";
+// const featureName = "vixFix.x480.a.hrs";
 // const featureName = "chandelierExit.x480.p5_2";
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
 // const featureName = "emaOCC.x1440.p30";
 // const featureName = "psar.x60.p0_004";
 const featureName = "emaOCC.x240.p30.hrs";
+// const featureName = "emaOCC.x60.p30.hrs";
+// const featureName = "macd.x120.sig9.hrs";
+// const featureName = "stochKD.x120.p20";
 const featuresSplit = features.getByName([featureName]);
 
 // const featureName = "emaOCC.x240.p10.price";
@@ -145,7 +153,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   }));
 
   return {
-    coin: months["Dec"],
+    coin: months["JJASON"],
+    months,
     labelsPredicted,
     linRegs
   };

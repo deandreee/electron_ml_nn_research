@@ -2,7 +2,7 @@ import { Candle, PctChange } from "../types";
 import { FeatureSplit } from "../features";
 import { sumBy } from "lodash";
 
-const countDots = (s: string) => {
+export const countDots = (s: string) => {
   return sumBy(s, x => (x === "." ? 1 : 0));
 };
 
@@ -37,7 +37,8 @@ export const getShouldCalc = (featuresSplit: FeatureSplit[], name: string) => {
 
   for (let fs of featuresSplit) {
     const fnStr = fs.fn.toString();
-    if (countDots(fs.name) === 2 || fnStr === "(x, i, corrCandles) => fn(x, i, corrCandles, t, p)") {
+    // countDots(fs.name) === 2 || doesn't make too much sense anymore ...
+    if (fnStr === "(x, i, corrCandles) => fn(x, i, corrCandles, t, p)") {
       // need to go by name here, fn is generic
       const parts = fs.name.split(".");
       const ind = parts[0];

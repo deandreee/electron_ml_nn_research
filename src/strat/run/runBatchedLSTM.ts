@@ -60,6 +60,7 @@ export const runBatchedLSTM = async (): Promise<RunResult> => {
 
   return {
     coin: months.Jul,
+    months,
     labelsPredicted: [],
     linRegs
   };

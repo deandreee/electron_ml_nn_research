@@ -83,7 +83,15 @@ const getAllPart3 = () => {
 };
 
 export const getByName = (names: string[]) => {
-  return [...getAllPart1(), ...getAllPart2(), ...getAllPart3()].filter(x => names.indexOf(x.name) >= 0);
+  return [
+    ...getAllPart1(),
+    ...getAllPart2(),
+    ...getAllPart3(),
+    ...getCombo(),
+    ...getValidation(),
+    ...getValidationCombo(),
+    ...getValidationFive()
+  ].filter(x => names.indexOf(x.name) >= 0);
 };
 
 export {

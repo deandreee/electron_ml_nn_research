@@ -4,10 +4,12 @@ import { LinRegResult, Prediction } from "../strat/types";
 import { AppCharts } from "./AppCharts";
 import { DistrCharts } from "./DistrCharts";
 import { CorrCandles } from "../strat/corr/CorrCandles";
+import { CorrCandleMonths } from "../strat/run/queryCorrCandlesMonths";
 // import { AppCorr } from "./AppCorr";
 
 interface State {
   coin: CorrCandles;
+  months: CorrCandleMonths;
   linRegs: LinRegResult[];
   labelsPredicted: Prediction[];
 }
@@ -15,15 +17,17 @@ interface State {
 export class App extends React.Component {
   readonly state: State = {
     coin: null,
+    months: null,
     linRegs: [],
     labelsPredicted: []
   };
 
   async componentWillMount() {
-    const { coin, linRegs, labelsPredicted } = await run();
+    const { coin, months, linRegs, labelsPredicted } = await run();
 
     this.setState({
       coin,
+      months,
       linRegs,
       labelsPredicted
     });
@@ -39,7 +43,7 @@ export class App extends React.Component {
       <div style={this.style}>
         <AppCharts coin={this.state.coin} labelsPredicted={this.state.labelsPredicted} />
         {/* <AppCorr linRegs={this.state.linRegs} /> */}
-        <DistrCharts coin={this.state.coin} />
+        <DistrCharts months={this.state.months} />
       </div>
     );
   }

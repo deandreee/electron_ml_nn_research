@@ -44,6 +44,7 @@ export const runSVM = async (): Promise<RunResult> => {
 
   return {
     coin: trainMonth,
+    months: {},
     labelsPredicted: [],
     linRegs
   };

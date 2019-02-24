@@ -1,25 +1,26 @@
 import * as React from "react";
 import ReactEcharts from "echarts-for-react";
 import styles from "./styles";
-import { CorrCandles } from "../strat/corr/CorrCandles";
 import * as distrCounter from "./distrCounter";
+import { CorrCandleMonths } from "../strat/run/queryCorrCandlesMonths";
 
 interface Props {
-  coin: CorrCandles;
+  months: CorrCandleMonths;
 }
 
 export class DistrCharts extends React.Component<Props> {
   render() {
-    const { coin } = this.props;
+    const { months } = this.props;
 
-    if (!coin) {
+    if (!months) {
       return "loading...";
     }
 
-    const _1d = coin.candlesActual.map(x => x.pctChange._1d).sort();
-    const _2d = coin.candlesActual.map(x => x.pctChange._2d).sort();
-    const _5d = coin.candlesActual.map(x => x.pctChange._5d).sort();
-    const _7d = coin.candlesActual.map(x => x.pctChange._7d).sort();
+    const candlesActual = months["JJASON"].candlesActual;
+    const _1d = candlesActual.map(x => x.pctChange._1d).sort();
+    const _2d = candlesActual.map(x => x.pctChange._2d).sort();
+    const _5d = candlesActual.map(x => x.pctChange._5d).sort();
+    const _7d = candlesActual.map(x => x.pctChange._7d).sort();
 
     const counts1d = distrCounter.getLine(_1d);
     const counts2d = distrCounter.getLine(_2d);

@@ -72,6 +72,7 @@ export const runXG = async (): Promise<RunResult> => {
 
   return {
     coin: trainMonth,
+    months: {},
     labelsPredicted: [],
     linRegs
   };

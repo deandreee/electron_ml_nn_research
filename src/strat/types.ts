@@ -23,6 +23,7 @@ import { IndWilliamsR } from "./indicators/WilliamsR";
 import { IndPSAR } from "./indicators/PSAR";
 import { IndKalman } from "./indicators/Kalman";
 import { IndSMA } from "./indicators/SMA";
+import { CorrCandleMonths } from "./run/queryCorrCandlesMonths";
 
 export type Cb = (err: Error) => void;
 
@@ -341,6 +342,7 @@ export interface Prediction {
 
 export interface RunResult {
   coin: CorrCandles;
+  months: CorrCandleMonths;
   labelsPredicted: Prediction[];
   linRegs: LinRegResult[];
 }

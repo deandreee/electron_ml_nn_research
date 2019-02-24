@@ -70,7 +70,7 @@ export const getValidationCombo = (): FeatureSplit[] => {
     },
     {
       name: "vixFix.macd.kst",
-      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.macd.x120.sig9.histo, x.ind.kst.x60.p_sig3.kst]
+      fn: x => [x.ind.vixFix.x120.a, x.ind.macd.x120.sig9.histo, x.ind.kst.x60.p_sig3.kst]
     }
   ];
 };

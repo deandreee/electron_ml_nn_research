@@ -23,6 +23,7 @@ export const runIndProb = async (): Promise<RunResult> => {
 
   return {
     coin: months[ranges[0].name],
+    months: {},
     labelsPredicted: [],
     linRegs
   };

@@ -68,6 +68,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   return {
     coin: new CorrCandles({ name: "BTC", candles: [] }, [], [], new BatchConfig(0, 0)),
+    months: {},
     labelsPredicted: [],
     linRegs
   };

@@ -86,6 +86,7 @@ export const runXG_UI = async (): Promise<RunResult> => {
 
   return {
     coin: trainMonth,
+    months: {},
     labelsPredicted: [],
     linRegs
   };

@@ -134,6 +134,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
   return {
     coin: {} as any,
+    months: {},
     labelsPredicted: [],
     linRegs
   };

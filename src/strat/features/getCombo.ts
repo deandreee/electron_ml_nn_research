@@ -285,7 +285,7 @@ export const getCombo = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x120.a,
         x.ind.macd.x120.sig9.histo,
-        x.ind.vwap.x30.p40.den,
+        // x.ind.vwap.x30.p40.den,
         x.ind.t3Macd.x120.sig2_16.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo
       ]
@@ -297,7 +297,8 @@ export const getCombo = (): FeatureSplit[] => {
       fn: x => [
         x.ind.vixFix.x120.a,
         x.ind.macd.x120.sig9.histo,
-        x.ind.vwap.x30.p40.den,
+        // x.ind.vwap.x30.p40.den,  // replace, no longer x30
+        // x.ind.vwap.x60.p40.den,
         x.ind.t3Macd.x120.sig2_16.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.kst.x60.p_sig3.kst
