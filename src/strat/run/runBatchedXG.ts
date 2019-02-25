@@ -54,7 +54,7 @@ const ranges = runUtils.genRanges_JJASON();
 // const featuresSplit = features.getAllPart2();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
-// const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD";
 // const featureName = "emaOCC.vixFix.kst2";
 // const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
@@ -65,11 +65,11 @@ const ranges = runUtils.genRanges_JJASON();
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
 // const featureName = "emaOCC.x1440.p30";
 // const featureName = "psar.x60.p0_004";
-const featureName = "emaOCC.x240.p30.hrs";
+// const featureName = "emaOCC.x240.p30.hrs";
 // const featureName = "emaOCC.x60.p30.hrs";
 // const featureName = "macd.x120.sig9.hrs";
 // const featureName = "stochKD.x120.p20";
-const featuresSplit = features.getByName([featureName]);
+const featuresSplit = features.getByNameSingle([featureName]);
 
 // const featureName = "emaOCC.x240.p10.price";
 // const featuresSplit = [features.getEMAOCC_Price().find(x => x.name === featureName)];
@@ -147,13 +147,15 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.end(x.name);
   }
 
+  const mon = "Dec";
+  // const mon = "JJASON";
   const labelsPredicted: Prediction[] = featuresSplit.map(x => ({
     name: x.name,
-    values: predictions.Dec[x.name] || []
+    values: predictions[mon][x.name] || []
   }));
 
   return {
-    coin: months["JJASON"],
+    coin: months[mon],
     months,
     labelsPredicted,
     linRegs

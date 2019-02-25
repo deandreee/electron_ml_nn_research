@@ -12,6 +12,7 @@ interface State {
   months: CorrCandleMonths;
   linRegs: LinRegResult[];
   labelsPredicted: Prediction[];
+  err: Error;
 }
 
 export class App extends React.Component {
@@ -19,18 +20,23 @@ export class App extends React.Component {
     coin: null,
     months: null,
     linRegs: [],
-    labelsPredicted: []
+    labelsPredicted: [],
+    err: null
   };
 
   async componentWillMount() {
-    const { coin, months, linRegs, labelsPredicted } = await run();
+    try {
+      const { coin, months, linRegs, labelsPredicted } = await run();
 
-    this.setState({
-      coin,
-      months,
-      linRegs,
-      labelsPredicted
-    });
+      this.setState({
+        coin,
+        months,
+        linRegs,
+        labelsPredicted
+      });
+    } catch (err) {
+      this.setState({ err });
+    }
   }
 
   style = {
@@ -41,6 +47,14 @@ export class App extends React.Component {
   render() {
     return (
       <div style={this.style}>
+        {this.state.err && (
+          <div style={{ color: "red", fontWeight: "bold" }}>
+            <div>ERROR: ${this.state.err.message}</div>
+            <div>
+              <pre>${this.state.err.stack}</pre>
+            </div>
+          </div>
+        )}
         <AppCharts coin={this.state.coin} labelsPredicted={this.state.labelsPredicted} />
         {/* <AppCorr linRegs={this.state.linRegs} /> */}
         <DistrCharts months={this.state.months} />

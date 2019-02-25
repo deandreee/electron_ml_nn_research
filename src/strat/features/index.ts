@@ -94,6 +94,15 @@ export const getByName = (names: string[]) => {
   ].filter(x => names.indexOf(x.name) >= 0);
 };
 
+export const getByNameSingle = (names: string[]) => {
+  const res = getByName(names);
+  if (res.length === 0) {
+    throw new Error(`getByNameSingle: ${names[0]} not found`);
+  }
+
+  return [res[0]];
+};
+
 export {
   getSMA,
   FeatureSplit,

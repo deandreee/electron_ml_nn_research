@@ -49,6 +49,17 @@ export const runConfigXG = {
   iterations: 10
 };
 
+export const runConfigXG_LessFit_1 = {
+  idx: -999,
+  eta: 0.3,
+  gamma: 0,
+  max_depth: 3,
+  min_child_weight: 1,
+  subsample: 0.7,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
 // default
 // https://xgboost.readthedocs.io/en/latest/parameter.html
 // very very good for single ...
