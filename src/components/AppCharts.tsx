@@ -4,7 +4,7 @@ import ReactEcharts from "echarts-for-react";
 import { options } from "./options";
 // import * as chartUtils from "./chartUtils";
 import { getLegend } from "./getLegend";
-import { seriesInd, seriesPredicted } from "./series";
+import { seriesInd, seriesPredicted, seriesRLEpisodes } from "./series";
 // import { CorrChart } from "./CorrChart";
 import styles from "./styles";
 import { CorrCandles } from "../strat/corr/CorrCandles";
@@ -13,6 +13,7 @@ import { Prediction } from "../strat/types";
 interface Props {
   coin: CorrCandles;
   labelsPredicted: Prediction[];
+  rlEpisodes: number[][][];
 }
 
 interface State {
@@ -27,7 +28,7 @@ export class AppCharts extends React.Component<Props, State> {
   };
 
   render() {
-    const { coin, labelsPredicted } = this.props;
+    const { coin, labelsPredicted, rlEpisodes } = this.props;
 
     if (!coin) {
       return "loading...";
@@ -49,6 +50,7 @@ export class AppCharts extends React.Component<Props, State> {
 
     const seriesInd_ = seriesInd(currentProp, coin);
     const seriesPredicted_ = seriesPredicted(coin, labelsPredicted);
+    const seriesRLEpisodes_ = seriesRLEpisodes(coin, rlEpisodes);
 
     const legend = getLegend(coin, seriesInd_, seriesPredicted_);
     const optionsMod = {
@@ -60,7 +62,8 @@ export class AppCharts extends React.Component<Props, State> {
 
         // ...seriesTrades(currentProp, coins),
         // ...seriesSignals(currentProp, coins),
-        ...seriesPredicted_
+        ...seriesPredicted_,
+        ...seriesRLEpisodes_
       ]
     };
 

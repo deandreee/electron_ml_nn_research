@@ -345,6 +345,7 @@ export interface RunResult {
   months: CorrCandleMonths;
   labelsPredicted: Prediction[];
   linRegs: LinRegResult[];
+  rlEpisodes?: number[][][];
 }
 
 export interface LinRegResult {

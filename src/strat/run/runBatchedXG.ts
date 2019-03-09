@@ -147,7 +147,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     log.end(x.name);
   }
 
-  const mon = "Dec";
+  const mon = "Jul";
+  // const mon = "Dec";
   // const mon = "JJASON";
   const labelsPredicted: Prediction[] = featuresSplit.map(x => ({
     name: x.name,

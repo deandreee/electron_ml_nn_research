@@ -85,6 +85,10 @@ export const genRanges_FastMiniTest = () => {
   return [train(daterange.Jul), daterange.Aug];
 };
 
+export const genRanges_FastMiniTest2 = () => {
+  return [train(daterange.SepWeek)];
+};
+
 export const genRangesLast1_AugSep = () => {
   return [
     train(daterange.AugSep),

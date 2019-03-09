@@ -16,6 +16,11 @@ export class DistrCharts extends React.Component<Props> {
       return "loading...";
     }
 
+    if (!months["JJASON"]) {
+      // temp fix for RL
+      return null;
+    }
+
     const candlesActual = months["JJASON"].candlesActual;
     const _1d = candlesActual.map(x => x.pctChange._1d).sort();
     const _2d = candlesActual.map(x => x.pctChange._2d).sort();

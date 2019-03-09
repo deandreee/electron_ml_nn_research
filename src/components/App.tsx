@@ -13,6 +13,7 @@ interface State {
   linRegs: LinRegResult[];
   labelsPredicted: Prediction[];
   err: Error;
+  rlEpisodes: number[][][];
 }
 
 export class App extends React.Component {
@@ -21,18 +22,20 @@ export class App extends React.Component {
     months: null,
     linRegs: [],
     labelsPredicted: [],
-    err: null
+    err: null,
+    rlEpisodes: []
   };
 
   async componentWillMount() {
     try {
-      const { coin, months, linRegs, labelsPredicted } = await run();
+      const { coin, months, linRegs, labelsPredicted, rlEpisodes = [] } = await run();
 
       this.setState({
         coin,
         months,
         linRegs,
-        labelsPredicted
+        labelsPredicted,
+        rlEpisodes
       });
     } catch (err) {
       this.setState({ err });
@@ -55,7 +58,11 @@ export class App extends React.Component {
             </div>
           </div>
         )}
-        <AppCharts coin={this.state.coin} labelsPredicted={this.state.labelsPredicted} />
+        <AppCharts
+          coin={this.state.coin}
+          labelsPredicted={this.state.labelsPredicted}
+          rlEpisodes={this.state.rlEpisodes}
+        />
         {/* <AppCorr linRegs={this.state.linRegs} /> */}
         <DistrCharts months={this.state.months} />
       </div>

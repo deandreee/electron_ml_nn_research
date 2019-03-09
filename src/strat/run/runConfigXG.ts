@@ -60,6 +60,61 @@ export const runConfigXG_LessFit_1 = {
   colsample_bytree: 1
 };
 
+export const runConfigXG_LessFit_2 = {
+  idx: -999,
+  eta: 0.3,
+  gamma: 0,
+  max_depth: 6,
+  min_child_weight: 1,
+  subsample: 0.7,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
+export const runConfigXG_LessFit_3 = {
+  idx: -999,
+  eta: 0.3,
+  gamma: 0,
+  max_depth: 3,
+  min_child_weight: 1,
+  subsample: 0.5,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
+export const runConfigXG_LessFit_4 = {
+  idx: -999,
+  eta: 0.5,
+  gamma: 0,
+  max_depth: 3,
+  min_child_weight: 1,
+  subsample: 0.3,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
+export const runConfigXG_LessFit_5 = {
+  idx: -999,
+  eta: 0.5,
+  gamma: 0,
+  max_depth: 2,
+  min_child_weight: 1,
+  subsample: 0.3,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
+export const runConfigXG_LessFit_6 = {
+  idx: -999,
+  eta: 0.5,
+  gamma: 1,
+  max_depth: 3,
+  min_child_weight: 1,
+  subsample: 0.3,
+  iterations: 10,
+  colsample_bytree: 1
+};
+
 // default
 // https://xgboost.readthedocs.io/en/latest/parameter.html
 // very very good for single ...

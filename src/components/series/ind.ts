@@ -410,6 +410,10 @@ const isReg = (p0: number) => {
 };
 
 export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
+  if (predicted.length === 0) {
+    return [];
+  }
+
   // TODO: this is very crude reg check
   if (isReg(predicted[0].values[0])) {
     return flatten(
@@ -483,6 +487,19 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
       }
     ])
   );
+};
+
+export const seriesRLEpisodes = (coin: CorrCandles, rlEpisodes: number[][][]) => {
+  const timeStep = 14; // TODO: fix
+  return rlEpisodes.map((ep, epIdx) => {
+    return {
+      ...baseScatter,
+      color: "red",
+      data: ep.map((x, i) => [coin.candlesActual[timeStep + i].start * 1000, x[0]]),
+      name: `RL_EP_${epIdx}`,
+      ...grid2
+    };
+  });
 };
 
 // const seriesVolume = {

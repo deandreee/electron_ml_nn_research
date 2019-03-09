@@ -1,5 +1,5 @@
 import { BatchConfig } from "../corr/BatchConfig";
-import { RunConfigXG, runConfigXG_LessFit_1 } from "./runConfigXG";
+import { RunConfigXG, runConfigXG_LessFit_6 } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
@@ -24,7 +24,7 @@ export const runConfig: RunConfig = {
   // PROB: 0.6,
   PROB: 0,
   // XG: runConfigXGDef,
-  XG: runConfigXG_LessFit_1, // TODO: watch out for this !!!
+  XG: runConfigXG_LessFit_6, // TODO: watch out for this !!!
   BARRIER_LABEL: "FIVE",
 
   // XG_OBJECTIVE: "multi:softmax",
