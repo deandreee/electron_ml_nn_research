@@ -1,5 +1,5 @@
-// import * as XGBoost_ from "ml-xgboost";
-import * as XGPy from "./XGPy";
+import * as XGBoost_ from "ml-xgboost";
+// import * as XGPy from "./XGPy";
 import * as mlUtils from "./mlUtils";
 import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
@@ -51,13 +51,13 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   }
 
   // log.start("XGBoost.train");
-  // const XGBoost = await XGBoost_;
-  // const booster = new XGBoost(xgProps);
-  // booster.train(features, labels);
+  const XGBoost = await XGBoost_;
+  const booster = new XGBoost(xgProps);
+  booster.train(features, labels);
   // log.end("XGBoost.train");
 
   // log.start("XGPy.train");
-  const booster = await XGPy.train(features, labels, xgProps);
+  // const booster = await XGPy.train(features, labels, xgProps);
   // log.end("XGPy.train");
 
   return { booster, features, labels };
@@ -90,11 +90,12 @@ export const predict = async (
   // features = mlUtils.rescaleFeatures(features); // NOT NEEDED BECAUSE XG TREE
 
   // log.start("XGBoost.predict");
-  // const predicted = booster.predict(features);
+  const predicted = booster.predict(features);
+  const r2 = 0;
   // log.end("XGBoost.predict");
 
   // log.start("XGPy.predict");
-  const { predicted, r2 } = await XGPy.predict(features, labels);
+  // const { predicted, r2 } = await XGPy.predict(features, labels);
   // log.end("XGPy.predict");
 
   if (runConfig.XG_OBJECTIVE.endsWith(":logistic")) {
