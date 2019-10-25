@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "runtimeVersion": "8.11.3",
+      "runtimeVersion": "12.8.1",
       "name": "ELECTRON",
       "program": "${workspaceFolder}/dist/main.js",
       "cwd": "${workspaceRoot}",
@@ -18,7 +18,7 @@
     {
       "type": "node",
       "request": "launch",
-      "runtimeVersion": "8.11.3",
+      "runtimeVersion": "12.8.1",
       "name": "NODE",
       "program": "${workspaceFolder}/dist-be/go.js",
       "preLaunchTask": "tsc.be"
@@ -31,7 +31,7 @@
       "request": "launch",
       "name": "Jest Current",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "runtimeVersion": "8.11.3",
+      "runtimeVersion": "12.8.1",
       "args": ["${relativeFile}"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -44,7 +44,7 @@
       "request": "launch",
       "name": "Jest ALL",
       "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "runtimeVersion": "8.11.3",
+      "runtimeVersion": "12.8.1",
       "args": ["src"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
