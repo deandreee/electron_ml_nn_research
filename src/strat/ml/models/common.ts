@@ -1,6 +1,6 @@
 import * as tf from "@tensorflow/tfjs";
 import { TrainBatch } from "./splitFrames";
-import { ModelCompileConfig } from "@tensorflow/tfjs";
+import { ModelCompileArgs } from "@tensorflow/tfjs";
 import { countLabels } from "../mlUtils";
 import { round2 } from "../../utils";
 
@@ -64,7 +64,7 @@ export const formatInput3d = (trainBatches: TrainBatch[], batchSize: number, fea
 };
 
 // https://keras.io/optimizers/
-export const compileClassAdam = (): ModelCompileConfig => {
+export const compileClassAdam = (): ModelCompileArgs => {
   const lr = 0.001;
   const beta1 = 0.9;
   const beta2 = 0.999;
@@ -73,14 +73,14 @@ export const compileClassAdam = (): ModelCompileConfig => {
   // return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
 };
 
-export const compileClassSgd = (): ModelCompileConfig => {
+export const compileClassSgd = (): ModelCompileArgs => {
   const lr = 0.2;
   const optimizer = new tf.SGDOptimizer(lr);
   return { loss: "categoricalCrossentropy", optimizer, metrics: ["acc"] };
   // return { loss: "categoricalCrossentropy", optimizer: "adam", metrics: ["acc"] };
 };
 
-export const compileRegSgd = (): ModelCompileConfig => {
+export const compileRegSgd = (): ModelCompileArgs => {
   return { loss: "meanSquaredError", optimizer: "sgd" };
 };
 

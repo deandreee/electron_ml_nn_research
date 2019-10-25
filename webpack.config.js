@@ -83,8 +83,8 @@ module.exports = {
   externals: {
     bindings: `require("bindings")`, // fixes warnings during build
     react: "React",
-    "react-dom": "ReactDOM",
-    "better-sqlite3": `require("better-sqlite3")`
+    "react-dom": "ReactDOM"
+    // "better-sqlite3": `require("better-sqlite3")` not sure why this was here, looks like can live without
     // "ml-xgboost": `require("ml-xgboost")`
     // libsvm: `require("libsvm")`
   }

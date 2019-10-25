@@ -11,7 +11,10 @@ function createWindow() {
     frame: false,
     // titleBarStyle: "hiddenInset"
     backgroundColor: "#21202D",
-    icon: path.join(__dirname, "../assets/b.jpg")
+    icon: path.join(__dirname, "../assets/b.jpg"),
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   // and load the index.html of the app.

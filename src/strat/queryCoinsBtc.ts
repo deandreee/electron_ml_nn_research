@@ -1,9 +1,9 @@
-import * as Database from "better-sqlite3";
+import * as SQLite3 from "better-sqlite3";
 import { Candle, CoinList } from "./types";
 
 export const queryCoins = (from: Date, to: Date): CoinList => {
   // const dbBinance = new Database("../gekko-develop/history/binance_0.1.db");
-  const dbKraken = new Database("../gekko-develop/history/kraken_0.1.db");
+  const dbKraken = new SQLite3("../gekko-develop/history/kraken_0.1.db");
   // const dbBitfinex = new Database("../gekko-develop/history/bitfinex_0.1.db");
   // const dbPoloniex = new Database("../gekko-develop/history/poloniex_0.1.db");
   // const dbGdax = new Database("../gekko-develop/history/gdax_0.1.db");
@@ -50,13 +50,7 @@ export const queryCoins = (from: Date, to: Date): CoinList => {
   return coins;
 };
 
-const getCoin = (
-  db: Database,
-  tableName: string,
-  coinName: string,
-  from: Date,
-  to: Date
-) => {
+const getCoin = (db: SQLite3.Database, tableName: string, coinName: string, from: Date, to: Date) => {
   return getCoinPercentDrop(db, tableName, coinName, from, to);
 };
 
@@ -87,13 +81,7 @@ const getCoin = (
 //   return rows;
 // };
 
-const getCoinPercentDrop = (
-  db: Database,
-  tableName: string,
-  coinName: string,
-  from: Date,
-  to: Date
-) => {
+const getCoinPercentDrop = (db: SQLite3.Database, tableName: string, coinName: string, from: Date, to: Date) => {
   const rows = query(db, tableName, from, to);
   const max = Math.max(...rows.map(x => x.close));
   for (let i = 0; i < rows.length; i++) {
@@ -103,13 +91,11 @@ const getCoinPercentDrop = (
   return rows;
 };
 
-const query = (db: Database, table: string, from: Date, to: Date): Candle[] => {
+const query = (db: SQLite3.Database, table: string, from: Date, to: Date): Candle[] => {
   const fromTs = from.getTime() / 1000;
   const toTs = to.getTime() / 1000;
   const rows = db
-    .prepare(
-      `select * from ${table} where start >= ? and start <= ? order by start asc`
-    )
+    .prepare(`select * from ${table} where start >= ? and start <= ? order by start asc`)
     .all(fromTs, toTs);
 
   return rows as Candle[];
