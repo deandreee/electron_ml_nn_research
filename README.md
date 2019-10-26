@@ -9,7 +9,8 @@ Due to difficulties with Electron in combination with some specific dependencies
 git clone git@github.com:deandreee/electron_ml_nn_research.git
 # cd to repo
 cd electron_ml_nn_research
-# switch to specific node version
+# switch to specific node version (install nvm if don't already have)
+nvm install 12.8.1
 nvm use 12.8.1
 # install dependencies
 npm i

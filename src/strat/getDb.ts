@@ -1,4 +1,5 @@
 import * as SQLite3 from "better-sqlite3";
+import * as fs from "fs";
 import { Candle } from "./types";
 
 export enum DB {
@@ -10,10 +11,19 @@ export enum DB {
 
 const dbCache: { [name: string]: SQLite3.Database } = {};
 
+export const getDataDir = () => {
+  // personal local dataset
+  if (fs.existsSync("../gekko-develop")) {
+    return "../gekko-develop/history";
+  }
+  // else return demo data dir
+  return "./demo-data";
+};
+
 export const getDb = (db: DB) => {
   if (db === DB.KRAKEN) {
     if (!dbCache[DB.KRAKEN]) {
-      const db = new SQLite3("../gekko-develop/history/kraken_0.1.db");
+      const db = new SQLite3(`${getDataDir()}/kraken_0.1.db`);
       dbCache[DB.KRAKEN] = db;
     }
     return dbCache[DB.KRAKEN];
@@ -21,7 +31,7 @@ export const getDb = (db: DB) => {
 
   if (db === DB.BINANCE) {
     if (!dbCache[DB.BINANCE]) {
-      const db = new SQLite3("../gekko-develop/history/binance_0.1.db");
+      const db = new SQLite3(`${getDataDir()}/binance_0.1.db`);
       dbCache[DB.BINANCE] = db;
     }
     return dbCache[DB.BINANCE];
@@ -29,7 +39,7 @@ export const getDb = (db: DB) => {
 
   if (db === DB.BITFINEX) {
     if (!dbCache[DB.BITFINEX]) {
-      const db = new SQLite3("../gekko-develop/history/bitfinex_0.1.db");
+      const db = new SQLite3(`${getDataDir()}/bitfinex_0.1.db`);
       dbCache[DB.BITFINEX] = db;
     }
     return dbCache[DB.BITFINEX];
@@ -37,7 +47,7 @@ export const getDb = (db: DB) => {
 
   if (db === DB.POLONIEX) {
     if (!dbCache[DB.POLONIEX]) {
-      const db = new SQLite3("../gekko-develop/history/poloniex_0.1.db");
+      const db = new SQLite3(`${getDataDir()}/poloniex_0.1.db`);
       dbCache[DB.POLONIEX] = db;
     }
     return dbCache[DB.POLONIEX];

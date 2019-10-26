@@ -4,8 +4,6 @@ import * as regression from "regression";
 import { Candle, PctChange } from "./types";
 import { rescaleArrPlusMinus1 } from "./rescale";
 
-// const { spearson } = require("../../../gekko-develop/strategies/utils");
-
 type fnGetInd = (candle: Candle) => number;
 
 export const linregFX = (
@@ -54,9 +52,6 @@ export const linreg = (
   const s1 = new Series(xScaled);
   const s2 = new Series(yScaled);
   const corr = round2(s1.corr(s2));
-
-  // const corrPearson = spearson.correlation.pearson(indArr, pctChange);
-  // const corrSpearman = spearson.correlation.spearman(indArr, pctChange);
 
   console.log(`${coinName} \t\t ${name} \t\t ${corr}`);
   // console.log("\t -----------------------------------");
