@@ -1,4 +1,4 @@
-# electron_ml_nn_research
+# Electron ML/NN Research
 
 ## Install
 
@@ -27,3 +27,4 @@ It is heavily suggested to run this with VS Code to execute all the pre-build ta
 2. Go to Debug tab
 3. Choose `ELECTRON` or `NODE` mode
 4. Press F5
+5. You should see a chart after few seconds. If nothing happens, press Ctrl+Shift+I to open DevTools console and look for error. If there is message about "DevTools disconnected", press F5 and check console again.
