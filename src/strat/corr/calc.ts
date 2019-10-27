@@ -3,28 +3,10 @@ import { getCandlePctChange } from "../utils";
 import { CorrCandles } from "./CorrCandles";
 import { trippleBarrier } from "./barrier";
 import { RunConfig } from "../run/runConfig";
+
 // @ts-ignore
-const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils");
-
-// const {
-//   LRC,
-//   VixFix,
-//   MFI,
-//   ATR,
-//   CCI,
-//   PSAR_TI,
-//   PSARProps,
-//   ADX,
-//   SMA,
-//   LRCPred,
-//   StochKD
-// } = require("../../../gekko-develop/strategies/indicators");
-// const { ZerolagHATEMA, ZerolagMACD } = require("../../../gekko-develop/strategies/indicators/lizard");
-
-// const {
-//   InverseFisherTransform,
-//   InverseFisherTransformSmoothed
-// } = require("../../../gekko-develop/strategies/indicators/ninja");
+// const { XmBase, WaveManager, valueToOHLC } = require("../../../../gekko-develop/strategies/utils"); // external
+import { XmBase, WaveManager, valueToOHLC } from "../gekko/utils"; // inline
 
 // warmup = wait for first candle
 // skipstart = wait for ind to have enough

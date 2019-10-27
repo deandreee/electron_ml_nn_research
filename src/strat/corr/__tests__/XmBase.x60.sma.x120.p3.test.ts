@@ -1,6 +1,6 @@
 import * as waveUtils from "../waveUtils";
 import { createCandle } from "../testUtils";
-import { XmBase, SMA } from "../../indicators/gekko";
+import { XmBase, SMA } from "../../gekko";
 
 describe("XmBase x60 | sma x120 p3", () => {
   const candles = [

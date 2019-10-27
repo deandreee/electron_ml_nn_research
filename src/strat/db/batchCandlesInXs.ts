@@ -1,5 +1,5 @@
 import { Candle } from "../types";
-import { CandleBatcher2 } from "../indicators/gekko";
+import { CandleBatcher2 } from "../gekko";
 
 export const batchCandlesInXs = (candles: Candle[], batchSize: number) => {
   const batcher = new CandleBatcher2(batchSize);

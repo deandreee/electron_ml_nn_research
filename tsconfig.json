@@ -17,7 +17,8 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "files": ["./src/index.tsx"]

@@ -1,6 +1,6 @@
 import * as waveUtils from "../waveUtils";
 import { createCandle } from "../testUtils";
-import { WaveManagers } from "../../indicators/gekko";
+import { WaveManagers } from "../../gekko";
 
 const candles = [
   createCandle({ close: 0, start: 1, open: 1, high: 11, low: 11 }),

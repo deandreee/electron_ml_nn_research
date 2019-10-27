@@ -1,4 +1,4 @@
-import { WaveManager, WaveManagers, BatchWaveManager, BigCandles } from "../indicators/gekko";
+import { WaveManager, WaveManagers, BatchWaveManager, BigCandles } from "../gekko";
 import { Candle } from "../types";
 import { BatchConfig } from "./BatchConfig";
 

@@ -13,7 +13,8 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules/**/*"],
