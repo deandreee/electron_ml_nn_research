@@ -1,4 +1,4 @@
-# Electron ML/NN Research
+# Electron ML/NN Research for Crypto Trading
 
 ## Install
 

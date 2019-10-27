@@ -1,26 +1,31 @@
 {
   // See https://go.microsoft.com/fwlink/?LinkId=733558
   // for the documentation about the tasks.json format
-  "version": "0.1.0",
+  "version": "2.0.0",
   "tasks": [
     {
-      "taskName": "webpack",
+      "label": "webpack",
       "command": "webpack",
-      "isShellCommand": true,
+      "type": "shell",
       "args": [],
-      "showOutput": "always"
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      }
     },
     {
-      "taskName": "tsc",
-      "command": "tsc",
-      "isShellCommand": true,
-      "args": ["-p", "tsconfig.json"]
+      "label": "prelaunch_electron",
+      "command": "./init/prelaunch_electron.sh",
+      "type": "shell"
     },
     {
-      "taskName": "tsc.be",
-      "command": "tsc",
-      "isShellCommand": true,
-      "args": ["-p", "tsconfig.be.json"]
+      "label": "prelaunch_node",
+      "command": "./init/prelaunch_node.sh",
+      "type": "shell"
     }
   ]
 }

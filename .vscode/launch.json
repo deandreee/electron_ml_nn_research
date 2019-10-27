@@ -2,7 +2,7 @@
   // Use IntelliSense to learn about possible attributes.
   // Hover to view descriptions of existing attributes.
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
+  "version": "2.0.0",
   "configurations": [
     {
       "type": "node",
@@ -13,7 +13,8 @@
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       // "preLaunchTask": "webpack"
-      "preLaunchTask": "tsc"
+      // "preLaunchTask": "tsc"
+      "preLaunchTask": "prelaunch_electron"
     },
     {
       "type": "node",
@@ -21,9 +22,9 @@
       "runtimeVersion": "12.8.1",
       "name": "NODE",
       "program": "${workspaceFolder}/dist-be/go.js",
-      "preLaunchTask": "tsc.be"
+      "preLaunchTask": "prelaunch_node"
+      // "preLaunchTask": "tsc.be"
       // "args": ["--max-old-space-size=8192"]
-
       // "console": "integratedTerminal"
     },
     {

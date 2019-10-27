@@ -13,11 +13,11 @@ const dbCache: { [name: string]: SQLite3.Database } = {};
 
 export const getDataDir = () => {
   // personal local dataset
-  if (fs.existsSync("../gekko-develop")) {
+  if (fs.existsSync("../gekko-develop2")) {
     return "../gekko-develop/history";
   }
   // else return demo data dir
-  return "./demo-data";
+  return "./data_demo";
 };
 
 export const getDb = (db: DB) => {
