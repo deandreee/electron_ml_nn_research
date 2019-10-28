@@ -2,7 +2,7 @@ import * as React from "react";
 import ReactEcharts from "echarts-for-react";
 import styles from "./styles";
 import * as distrCounter from "./distrCounter";
-import { CorrCandleMonths } from "../strat/run/queryCorrCandlesMonths";
+import { CorrCandleMonths } from "../strat/db/queryCorrCandlesMonths";
 
 interface Props {
   months: CorrCandleMonths;

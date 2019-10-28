@@ -23,7 +23,7 @@ import { IndWilliamsR } from "./indicators/WilliamsR";
 import { IndPSAR } from "./indicators/PSAR";
 import { IndKalman } from "./indicators/Kalman";
 import { IndSMA } from "./indicators/SMA";
-import { CorrCandleMonths } from "./run/queryCorrCandlesMonths";
+import { CorrCandleMonths } from "./db/queryCorrCandlesMonths";
 
 export type Cb = (err: Error) => void;
 

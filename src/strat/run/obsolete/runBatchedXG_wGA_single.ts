@@ -1,5 +1,5 @@
 import { Coins, RunResult, LinRegResult } from "../../types";
-import { queryCorrCandlesMonthsBatched } from "../queryCorrCandlesMonths";
+import { queryCorrCandlesMonthsBatched } from "../../db/queryCorrCandlesMonths";
 // import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
 
 import * as mlXGClass from "../../ml/mlXGClass";

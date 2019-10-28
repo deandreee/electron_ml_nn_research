@@ -1,4 +1,4 @@
-import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
+import { CorrCandleMonths } from "../db/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { NumberMap } from "../ml/mlUtils";
 import { padEnd, minBy, maxBy, sumBy } from "lodash";

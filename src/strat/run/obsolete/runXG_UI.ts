@@ -1,5 +1,5 @@
 import { Coins, RunResult, LinRegResult } from "../../types";
-import { queryCorrCandlesMonths } from "../queryCorrCandlesMonths";
+import { queryCorrCandlesMonths } from "../../db/queryCorrCandlesMonths";
 import * as daterange from "../../daterange";
 import { round2 } from "../../utils";
 import * as log from "../../log";

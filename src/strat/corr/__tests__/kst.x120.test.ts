@@ -1,5 +1,5 @@
 import { Coins, Candle } from "../../types";
-import { queryCandlesBatched, calcIndicators } from "../../run/queryCorrCandlesMonths";
+import { queryCandlesBatched, calcIndicators } from "../../db/queryCorrCandlesMonths";
 import * as features from "../../features";
 import * as daterange from "../../daterange";
 import { CorrCandles } from "../../corr/CorrCandles";

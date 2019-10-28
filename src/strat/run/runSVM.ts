@@ -1,5 +1,5 @@
 import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
+import { queryCorrCandlesMonths } from "../db/queryCorrCandlesMonths";
 
 import * as csvLogPredictions from "../csvLogPredictions";
 import { round2 } from "../utils";

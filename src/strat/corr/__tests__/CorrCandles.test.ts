@@ -1,5 +1,5 @@
 import { Coins } from "../../types";
-import { queryCorrCandlesMonthsBatched } from "../../run/queryCorrCandlesMonths";
+import { queryCorrCandlesMonthsBatched } from "../../db/queryCorrCandlesMonths";
 import * as features from "../../features";
 import * as daterange from "../../daterange";
 import { BatchConfig } from "../../corr/BatchConfig";

@@ -1,4 +1,4 @@
-import { CorrCandleMonths } from "../run/queryCorrCandlesMonths";
+import { CorrCandleMonths } from "../db/queryCorrCandlesMonths";
 import { DateRange } from "../daterange";
 import { getInd, ps } from "../features/getChandelierExit";
 import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";

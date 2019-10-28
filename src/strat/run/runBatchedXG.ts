@@ -1,5 +1,5 @@
 import { Coins, RunResult, LinRegResult, Prediction } from "../types";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+import { queryCorrCandlesMonthsBatched } from "../db/queryCorrCandlesMonths";
 // import { queryCandlesBatched, calcIndicators } from "./queryCorrCandlesMonths";
 
 import * as log from "../log";

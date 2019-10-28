@@ -4,7 +4,7 @@ import { LinRegResult, Prediction } from "../strat/types";
 import { AppCharts } from "./AppCharts";
 import { DistrCharts } from "./DistrCharts";
 import { CorrCandles } from "../strat/corr/CorrCandles";
-import { CorrCandleMonths } from "../strat/run/queryCorrCandlesMonths";
+import { CorrCandleMonths } from "../strat/db/queryCorrCandlesMonths";
 // import { AppCorr } from "./AppCorr";
 
 interface State {

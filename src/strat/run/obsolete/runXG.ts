@@ -1,7 +1,7 @@
 import { padEnd } from "lodash";
 
 import { Coins, RunResult, LinRegResult } from "../../types";
-import { queryCorrCandlesMonths } from "../queryCorrCandlesMonths";
+import { queryCorrCandlesMonths } from "../../db/queryCorrCandlesMonths";
 import * as daterange from "../../daterange";
 
 import * as csvLog from "../../csvLog";
