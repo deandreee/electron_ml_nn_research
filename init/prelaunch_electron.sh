@@ -1,7 +1,10 @@
 [ -d node_modules ] && rm node_modules
 ln -s node_modules_electron node_modules
 
-./node_modules/typescript/bin/tsc -p tsconfig.json
+./node_modules/typescript/bin/tsc -p tsconfig.json || {
+    echo 'tsc failed!!!';
+    exit 1; 
+}
 
 # tsc doesn't copy .js even with allowJs, need to do this manually
 cp -r ./src/strat/gekko/indicators ./dist/strat/gekko/indicators
