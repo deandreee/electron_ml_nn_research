@@ -282,10 +282,10 @@ export const getCombo = (): FeatureSplit[] => {
 
     {
       name: "macd.vixFix.vwap.t3Macd.zerolagMACD",
+      // x.ind.vwap.x30.p40.den,
       fn: x => [
         x.ind.vixFix.x120.a,
         x.ind.macd.x120.sig9.histo,
-        // x.ind.vwap.x30.p40.den,
         x.ind.t3Macd.x120.sig2_16.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo
       ]
@@ -294,11 +294,12 @@ export const getCombo = (): FeatureSplit[] => {
     // 0.67 the very best so far on LBL ONE
     {
       name: "macd.vixFix.vwap.t3Macd.zerolagMACD.kst",
+      // x.ind.vwap.x30.p40.den,  // replace, no longer x30
+      // x.ind.vwap.x60.p40.den,
       fn: x => [
         x.ind.vixFix.x120.a,
         x.ind.macd.x120.sig9.histo,
-        // x.ind.vwap.x30.p40.den,  // replace, no longer x30
-        // x.ind.vwap.x60.p40.den,
+
         x.ind.t3Macd.x120.sig2_16.histo,
         x.ind.zerolagMACD.x480.sig2_16.histo,
         x.ind.kst.x60.p_sig3.kst

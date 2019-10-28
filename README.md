@@ -23,7 +23,7 @@ Overall data/function flow is like this:
 
 ## Features / Models
 
-Each file under `/src/strat/run` is separate runnable model:
+`/src/strat/run` is the launch panel. Each file under this dir is separate runnable model:
 
 1. `runBatchedXG.ts` => runs XGBoost model
 

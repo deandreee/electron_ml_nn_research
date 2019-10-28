@@ -1,9 +1,9 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
-import * as daterange from "../daterange";
 
 import * as log from "../log";
 
+// SWITCH:
 // import * as mlLSTM from "../ml/mlLSTMNeatapticClass";
 // import * as mlLSTM from "../ml/mlLSTMSynapticClass";
 import * as mlLSTM from "../ml/mlLSTMTF";
@@ -16,22 +16,10 @@ import { runConfig } from "./config/runConfig";
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
 
 export const runBatchedLSTM = async (): Promise<RunResult> => {
-  const ranges = [
-    // daterange.JunJulAugSep,
-    // daterange.Aug, // bad bad results, everything goes to single label
-    daterange.JunJul, // also good balance
+  const ranges = runUtils.genRanges_FastMiniTest();
 
-    daterange.Jun,
-    daterange.Jul, // more balanced
-
-    daterange.Aug,
-    daterange.Sep,
-    daterange.Oct,
-    daterange.Nov
-  ];
-
-  const featuresSplit = features.getCombo();
-  // const featuresSplit = features.getTest();
+  const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+  const featuresSplit = features.getByNameSingle([featureName]);
   // const featuresSplit = features.getVixFix();
   // const featuresSplit = features.getMFI();
 
