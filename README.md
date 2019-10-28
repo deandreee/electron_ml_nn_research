@@ -12,11 +12,7 @@ cd electron_ml_nn_research
 # switch to specific node version (install nvm if don't already have)
 nvm install 12.8.1
 nvm use 12.8.1
-# install dependencies
-npm i
-# rebuild better-sqlite3 for electron
-./node_modules/.bin/electron-rebuild
-# copy index.html and xgboost.wasm
+# init magic
 ./init/run.sh
 ```
 
