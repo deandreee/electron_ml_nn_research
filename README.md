@@ -54,6 +54,19 @@ Overall data/function flow is like this:
 
 - Modes: Node
 
+6. `runIndProb.ts` => calculates price direction (up/down/neutral) staticics, based on indicator+threshold (like `RSI < 20`) events.
+
+- Modes: Node
+
+7. `runSVM.ts` => runs SVM model
+
+- Modes: Electron / Node
+
+8. `runRL.ts` => runs RL model
+
+- Calls external Python RL service (not included un open source version)
+- Modes: Electron / Node
+
 ## Config
 
 ## Install
