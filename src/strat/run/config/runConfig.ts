@@ -27,10 +27,10 @@ export const runConfig: RunConfig = {
   XG: runConfigXG_LessFit_6, // TODO: watch out for this !!!
   BARRIER_LABEL: "FIVE",
 
-  // XG_OBJECTIVE: "multi:softmax",
-  // BARRIER_TYPE: "tripple",
-  // UNIQUE_LABELS: [0, 1, 2],
-  // MAX_CLASS_IMBALANCE: 0.65
+  XG_OBJECTIVE: "multi:softmax",
+  BARRIER_TYPE: "tripple",
+  UNIQUE_LABELS: [0, 1, 2],
+  MAX_CLASS_IMBALANCE: 0.6
 
   // XG_OBJECTIVE: "binary:logistic",
   // XG_OBJECTIVE: "reg:logistic",
@@ -40,8 +40,8 @@ export const runConfig: RunConfig = {
   // UNIQUE_LABELS: [0, 1],
   // MAX_CLASS_IMBALANCE: 0.4
 
-  XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "_1d"
+  // XG_OBJECTIVE: "reg:linear",
+  // BARRIER_TYPE: "_1d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
