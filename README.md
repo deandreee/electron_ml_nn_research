@@ -1,6 +1,6 @@
 # Electron ML/NN Research for Crypto Trading
 
-Core idea: try different models (XGBoost/LSTM/LinReg/SVM/etc) to predict Crypto price movements (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
+Core idea: try different models (XGBoost, LSTM, SVM, etc) to predict Crypto price movements (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
 
 This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast possible, everything else is secondary. Therefor, a lot of configuration is simply comment/uncomment lines in code.
 
@@ -23,14 +23,15 @@ Overall data/function flow is like this:
 
 ## Features / Models
 
-`/src/strat/run` is the launch panel. Each file under this dir is separate runnable model:
+`strat/run` is the launch panel. Each file under this dir is separate runnable model. `strat/run.ts` is the entry file where model is selected. To switch between models, uncomment the line in `strat/run.ts` like:
+`import { runBatchedXG as runn } from "./run/runBatchedXG";` (by uncommenting the line).
 
 1. `runBatchedXG.ts` => runs XGBoost model
 
-- Can switch between classification
-- Modes: `Electron` / `Node`
+- Can switch between classification and regression
+- Modes: Electron / Node
 
-2. `runBatchedLSTM.ts` => runs LSTM (TF/Keras) model
+2. `runBatchedLSTM.ts` => runs LSTM model
 
 - Switch between different LSTM libs
   - Tensorflow (`mlLSTMTF.ts`)
@@ -39,26 +40,21 @@ Overall data/function flow is like this:
 - For Tenforflow, has multiple switchable model config examples in `models/ml`, to switch, uncomment line in `mlLSTMTF.ts`, like:
   `import model from "./models/v5_VanillaClass";`
 
-- Modes: `Electron` / `Node`
+- Modes: Electron / Node
 
 3. `runBatchedXG_all.ts` => loops through all features defined in features/index.ts (getAllPart1/2/3) and calculates MSE/R2 for test data set.
 
-- Modes: `Node`
+- Modes: Node
 
 4. `runBatchedXG_wConfigGrid.ts` => takes grid of XGBoost params (eta, gamma, depth, etc) and loops through all of them, saving results in CSV.
 
-- Modes: `Node`
+- Modes: Node
 
 5. `runBatchedXG_wGA.ts` => takes single feature and tries to GA optimize XGBoost params.
 
-- Modes: `Node`
-
-To switch between, uncomment the line in `strat/run.ts`
-`import { runBatchedXG as runn } from "./run/runBatchedXG";`
+- Modes: Node
 
 ## Config
-
-## /run/models
 
 ## Install
 
