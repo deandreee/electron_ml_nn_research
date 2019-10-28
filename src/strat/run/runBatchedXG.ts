@@ -104,7 +104,7 @@ const fileName = `output/runBatchedXG/${getCoreName(featuresSplit)} [ train ${ra
 } ${runConfig.BARRIER_LABEL} ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const months = queryCorrCandlesMonthsBatched(runConfig, Coins.XRP, ranges, featuresSplit);
+  const months = queryCorrCandlesMonthsBatched(runConfig, Coins.BTC, ranges, featuresSplit);
 
   await logFileHeader(fileName, runConfig);
 
