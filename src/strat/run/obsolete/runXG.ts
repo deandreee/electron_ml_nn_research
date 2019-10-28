@@ -1,16 +1,17 @@
-import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
-import * as daterange from "../daterange";
-
-import * as csvLog from "../csvLog";
-import * as features from "../features";
-import { round2 } from "../utils";
-import * as log from "../log";
 import { padEnd } from "lodash";
 
+import { Coins, RunResult, LinRegResult } from "../../types";
+import { queryCorrCandlesMonths } from "../queryCorrCandlesMonths";
+import * as daterange from "../../daterange";
+
+import * as csvLog from "../../csvLog";
+import * as features from "../../features";
+import { round2 } from "../../utils";
+import * as log from "../../log";
+
 // @ts-ignore
-import * as mlXG from "../mlXG";
-import { runConfig } from "./config/runConfig";
+import * as mlXG from "../../mlXG";
+import { runConfig } from "../config/runConfig";
 
 export const runXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];

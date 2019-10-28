@@ -1,6 +1,5 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonths } from "./queryCorrCandlesMonths";
-import * as daterange from "../daterange";
 
 import * as csvLogPredictions from "../csvLogPredictions";
 import { round2 } from "../utils";
@@ -9,9 +8,11 @@ import { padEnd } from "lodash";
 
 import * as predict from "../ml/ml";
 import * as features from "../features";
+import * as runUtils from "./utils/runUtils";
 
 export const runSVM = async (): Promise<RunResult> => {
-  const ranges = [daterange.SepWeek];
+  const ranges = runUtils.genRanges_FastMiniTest();
+
   // const ranges = [daterange.Jun, daterange.Jul, daterange.Aug, daterange.Sep];
   const months = queryCorrCandlesMonths(Coins.BTC, ranges);
   const trainMonth = months[ranges[0].name];
