@@ -7,10 +7,11 @@ import * as log from "../log";
 // import * as mlLSTM from "../ml/mlLSTMNeatapticClass";
 // import * as mlLSTM from "../ml/mlLSTMSynapticClass";
 import * as mlLSTM from "../ml/mlLSTMTF";
+
 import * as features from "../features";
-import * as runUtils from "./runUtils";
+import * as runUtils from "./utils/runUtils";
 import { logConsole } from "../log/logResults";
-import { runConfig } from "./runConfig";
+import { runConfig } from "./config/runConfig";
 
 /*    THIS IS NOT WORKING TOO WELL, ALWAYS PREDICTS 1    */
 

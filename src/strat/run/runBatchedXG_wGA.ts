@@ -4,9 +4,9 @@ import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 import * as mlXGClass from "../ml/mlXGClass";
 // import * as mlXGClass from "../ml/mlXGClassProb";
 import * as features from "../features";
-import * as runUtils from "./runUtils";
-import { runConfig as runConfigBase } from "./runConfig";
-import { RunConfigXG } from "./runConfigXG";
+import * as runUtils from "./utils/runUtils";
+import { runConfig as runConfigBase } from "./config/runConfig";
+import { RunConfigXG } from "./config/runConfigXG";
 
 import { logConsole, logFile } from "../log/logResults";
 // import * as log from "../log";

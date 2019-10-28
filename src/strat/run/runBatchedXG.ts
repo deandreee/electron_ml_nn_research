@@ -6,17 +6,17 @@ import * as log from "../log";
 
 import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
-import * as runUtils from "./runUtils";
+import * as runUtils from "./utils/runUtils";
 import { logConsole, logFile, logFileHeader } from "../log/logResults";
-import { runConfig } from "./runConfig";
+import { runConfig } from "./config/runConfig";
 import { getCoreName } from "../features/FeatureSplit";
 
 // const ranges = runUtils.genRanges_TrainJunJul();
 // const ranges = runUtils.genRanges_JJAS();
 // const ranges = runUtils.genRanges_JJASON();
 const ranges = runUtils.genRanges_FastMiniTest();
-// const featuresSplit = features.getValidation();
 
+// const featuresSplit = features.getValidation();
 // const featuresSplit = features.getRSI();
 // const featuresSplit = features.getBBands();
 // const featuresSplit = features.getBBandsAndPrice(); // not working, name not bbands...

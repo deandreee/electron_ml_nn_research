@@ -1,7 +1,7 @@
 import { Coins, RunResult, LinRegResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
-import * as runUtils from "./runUtils";
-import { runConfig } from "./runConfig";
+import * as runUtils from "./utils/runUtils";
+import { runConfig } from "./config/runConfig";
 
 // import * as calcCrossoverProb from "../corr/calcCrossoverProb";
 import { calcProb } from "../evtProb/evtBBands";

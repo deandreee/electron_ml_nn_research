@@ -1,9 +1,9 @@
-import { CorrCandles } from "../corr/CorrCandles";
 import { minBy, maxBy, padEnd, meanBy, sumBy } from "lodash";
-import { round2 } from "../utils";
-import * as daterange from "../daterange";
-import { ClasifResults, RegResults } from "../ml/mlEvaluate";
-import { EvalResults } from "../ml/mlXGClass";
+import { CorrCandles } from "../../corr/CorrCandles";
+import { round2 } from "../../utils";
+import * as daterange from "../../daterange";
+import { ClasifResults, RegResults } from "../../ml/mlEvaluate";
+import { EvalResults } from "../../ml/mlXGClass";
 
 interface Predictions {
   [name: string]: PredictionMonth;

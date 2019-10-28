@@ -10,7 +10,7 @@ import { padEnd } from "lodash";
 
 // @ts-ignore
 import * as mlXG from "../mlXG";
-import { runConfig } from "./runConfig";
+import { runConfig } from "./config/runConfig";
 
 export const runXG = async (): Promise<RunResult> => {
   // const ranges = [daterange.SepWeek];

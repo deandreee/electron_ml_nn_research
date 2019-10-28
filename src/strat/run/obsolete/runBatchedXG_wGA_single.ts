@@ -1,21 +1,21 @@
-import { Coins, RunResult, LinRegResult } from "../types";
-import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
+import { Coins, RunResult, LinRegResult } from "../../types";
+import { queryCorrCandlesMonthsBatched } from "../queryCorrCandlesMonths";
 // import { calcIndicators, queryCandlesBatched } from "./queryCorrCandlesMonths";
 
-import * as mlXGClass from "../ml/mlXGClass";
-import * as features from "../features";
-import * as runUtils from "./runUtils";
-import { runConfig } from "./runConfig";
+import * as mlXGClass from "../../ml/mlXGClass";
+import * as features from "../../features";
+import * as runUtils from "../runUtils";
+import { runConfig } from "../runConfig";
 
-import { logConsole, logFile, logFileHeader } from "../log/logResults";
+import { logConsole, logFile, logFileHeader } from "../../log/logResults";
 // import * as log from "../log";
 
 import { sum } from "lodash";
-import { TimeFrame } from "../features/common";
+import { TimeFrame } from "../../features/common";
 
-import { gaConfig, userData, GAEntity } from "./ga/common";
-import { GACore } from "./ga/GACore";
-import * as GAOpts from "./ga/GAOpts";
+import { gaConfig, userData, GAEntity } from "../ga/common";
+import { GACore } from "../ga/GACore";
+import * as GAOpts from "../ga/GAOpts";
 
 // const gaOpts = GAOpts.MACD;
 // const t: TimeFrame = "x1440";

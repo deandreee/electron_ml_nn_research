@@ -1,5 +1,65 @@
 # Electron ML/NN Research for Crypto Trading
 
+Core idea: try different models (XGBoost/LSTM/LinReg/SVM/etc) to predict Crypto price movements (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
+
+This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast possible, everything else is secondary. Therefor, a lot of configuration is simply comment/uncomment lines in code.
+
+## Modes
+
+Has 2 modes - UI (Electron) and Console (Node).
+
+- UI (Electron) used for single runs when there is a need to inspect single chart visually, like looking at price and predicted direction (up/down/neutral).
+- Console (Node) used for long running loops, e.g. Grid Tests or Genetic Algo (GA) optimization.
+
+## Flow
+
+Overall data/function flow is like this:
+
+1. Query train+test data from SQLite DB
+2. Calculate features/indicators
+3. Train Model
+4. Test/Evaluate Model
+5. Display (chart/console) and save(csv) results depending if regression (MSE, R2) or classification (precision, recall, f-score)
+
+## Features / Models
+
+Each file under `/src/strat/run` is separate runnable model:
+
+1. `runBatchedXG.ts` => runs XGBoost model
+
+- Can switch between classification
+- Modes: `Electron` / `Node`
+
+2. `runBatchedLSTM.ts` => runs LSTM (TF/Keras) model
+
+- Switch between different LSTM libs
+  - Tensorflow (`mlLSTMTF.ts`)
+  - Synaptic (`mlLSTMSynapticClass.ts`)
+  - Neataptic (`mlLSTMNeatapticClass.ts`)
+- For Tenforflow, has multiple switchable model config examples in `models/ml`, to switch, uncomment line in `mlLSTMTF.ts`, like:
+  `import model from "./models/v5_VanillaClass";`
+
+- Modes: `Electron` / `Node`
+
+3. `runBatchedXG_all.ts` => loops through all features defined in features/index.ts (getAllPart1/2/3) and calculates MSE/R2 for test data set.
+
+- Modes: `Node`
+
+4. `runBatchedXG_wConfigGrid.ts` => takes grid of XGBoost params (eta, gamma, depth, etc) and loops through all of them, saving results in CSV.
+
+- Modes: `Node`
+
+5. `runBatchedXG_wGA.ts` => takes single feature and tries to GA optimize XGBoost params.
+
+- Modes: `Node`
+
+To switch between, uncomment the line in `strat/run.ts`
+`import { runBatchedXG as runn } from "./run/runBatchedXG";`
+
+## Config
+
+## /run/models
+
 ## Install
 
 There is some magic behind the scenes to make this runnable on both Electron and Node. See `Magic` section, if you are interested, what's going on.

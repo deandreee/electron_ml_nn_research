@@ -2,8 +2,8 @@ import { Coins, RunResult } from "../types";
 import { queryCorrCandlesMonthsBatched } from "./queryCorrCandlesMonths";
 
 import * as features from "../features";
-import * as runUtils from "./runUtils";
-import { runConfig } from "./runConfig";
+import * as runUtils from "./utils/runUtils";
+import { runConfig } from "./config/runConfig";
 import * as RLPy from "../ml/RLPy";
 import * as mlUtils from "../ml/mlUtils";
 import { mlGetLabels } from "../ml/mlGetLabels";

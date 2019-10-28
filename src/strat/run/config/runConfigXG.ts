@@ -1,4 +1,4 @@
-import * as GAOpts from "./ga/GAOpts";
+import * as GAOpts from "../ga/GAOpts";
 
 export interface RunConfigXG {
   [prop: string]: number;
@@ -130,9 +130,7 @@ export const runConfigXGDef = {
 };
 
 export const getName = (cfg: RunConfigXG) => {
-  return `${cfg.idx}::: eta ${cfg.eta} | gamma ${cfg.gamma} | dpt ${cfg.max_depth} | child ${
-    cfg.min_child_weight
-  } | sub ${cfg.subsample} | it ${cfg.iterations}`;
+  return `${cfg.idx}::: eta ${cfg.eta} | gamma ${cfg.gamma} | dpt ${cfg.max_depth} | child ${cfg.min_child_weight} | sub ${cfg.subsample} | it ${cfg.iterations}`;
 };
 
 // one of the best in GA tests

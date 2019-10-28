@@ -1,4 +1,4 @@
-import { BatchConfig } from "../corr/BatchConfig";
+import { BatchConfig } from "../../corr/BatchConfig";
 import { RunConfigXG, runConfigXG_LessFit_6 } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
