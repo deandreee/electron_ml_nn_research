@@ -1,4 +1,4 @@
-import { XmBase, VixFix as _VixFix, WaveManager } from "./gekko";
+import { XmBase, VixFix as _VixFix, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

@@ -1,4 +1,4 @@
-import { XmBase, PSAR_TI as _PSAR, PSARProps, WaveManager } from "./gekko";
+import { XmBase, PSAR_TI as _PSAR, PSARProps, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

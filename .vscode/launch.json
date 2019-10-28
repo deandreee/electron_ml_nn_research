@@ -21,7 +21,7 @@
       "request": "launch",
       "runtimeVersion": "12.8.1",
       "name": "NODE",
-      "program": "${workspaceFolder}/dist-be/go.js",
+      "program": "${workspaceFolder}/dist_be/go.js",
       "preLaunchTask": "prelaunch_node"
       // "preLaunchTask": "tsc.be"
       // "args": ["--max-old-space-size=8192"]

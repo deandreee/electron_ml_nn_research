@@ -1,4 +1,4 @@
-import { XmBase, KeltnerChannels as _KeltnerChannels, WaveManager } from "./gekko";
+import { XmBase, KeltnerChannels as _KeltnerChannels, WaveManager } from "../gekko";
 import { Candle, UpperLowerValue } from "../types";
 
 export interface IndKeltner {

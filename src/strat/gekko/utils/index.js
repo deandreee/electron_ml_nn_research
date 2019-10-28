@@ -25,9 +25,7 @@ const getCandlesPerBatchDay = batchSize => {
   const candlesPerDay = DAY_MINS / batchSize;
 
   if (!Number.isInteger(candlesPerDay)) {
-    throw new Error(
-      `getCandlesPerBatchDay: not round: ${DAY_MINS} / ${batchSize} = ${candlesPerDay}`
-    );
+    throw new Error(`getCandlesPerBatchDay: not round: ${DAY_MINS} / ${batchSize} = ${candlesPerDay}`);
   }
 
   return candlesPerDay;
@@ -58,9 +56,7 @@ const getCandlesPerPeriod = (period, batchSize) => {
   const candlesPerPeriod = mins / batchSize;
 
   if (!Number.isInteger(candlesPerPeriod)) {
-    throw new Error(
-      `getCandlesPerPeriod: not round: (period ${period}) ${mins} / ${batchSize} = ${candlesPerPeriod}`
-    );
+    throw new Error(`getCandlesPerPeriod: not round: (period ${period}) ${mins} / ${batchSize} = ${candlesPerPeriod}`);
   }
 
   return candlesPerPeriod;
@@ -97,5 +93,5 @@ module.exports = {
   makeid,
   timer,
   memorySizeOf,
-  getAssetIdx,
+  getAssetIdx
 };

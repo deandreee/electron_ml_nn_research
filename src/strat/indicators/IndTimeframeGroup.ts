@@ -1,4 +1,4 @@
-import { WaveManagers, WaveManager, BigCandles } from "./gekko";
+import { WaveManagers, WaveManager, BigCandles } from "../gekko";
 import { ShouldCalcTF } from "../corr/utils";
 
 export interface IndTimeframes<T> {

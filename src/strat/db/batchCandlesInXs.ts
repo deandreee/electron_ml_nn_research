@@ -10,7 +10,7 @@ export const batchCandlesInXs = (candles: Candle[], batchSize: number) => {
 
     // ask: could add partial last, but gekko removes it, so let's just keep like that
     if ((i + 1) % batchSize === 0) {
-      const bigCandle = batcher.check();
+      const bigCandle: any = batcher.check();
       bigCandles.push(bigCandle);
     }
   }

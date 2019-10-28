@@ -1,4 +1,4 @@
-import { XmBase, KST as _KST, WaveManager } from "./gekko";
+import { XmBase, KST as _KST, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

@@ -1,4 +1,4 @@
-import { XmBase, LRC as _LRC, WaveManager } from "./gekko";
+import { XmBase, LRC as _LRC, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

@@ -1,4 +1,4 @@
-import { XmBase, StochKD as _StochKD, WaveManager } from "./gekko";
+import { XmBase, StochKD as _StochKD, WaveManager } from "../gekko";
 import { Candle, IndSettings, StochKDValue } from "../types";
 import { mapObj } from "../utils";
 

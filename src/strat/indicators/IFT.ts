@@ -1,4 +1,4 @@
-import { XmBase, InverseFisherTransform as _IFT, WaveManager } from "./gekko";
+import { XmBase, InverseFisherTransform as _IFT, WaveManager } from "../gekko";
 import { Candle } from "../types";
 
 export interface IndIFT {

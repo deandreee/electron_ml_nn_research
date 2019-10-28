@@ -1,4 +1,4 @@
-import { XmBase, ZerolagT3 as _ZerolagT3, WaveManager } from "./gekko";
+import { XmBase, ZerolagT3 as _ZerolagT3, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

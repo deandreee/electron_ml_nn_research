@@ -1,4 +1,4 @@
-import { XmBase, BBands as _BBands, WaveManager } from "./gekko";
+import { XmBase, BBands as _BBands, WaveManager } from "../gekko";
 import { Candle, UpperLowerValue, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

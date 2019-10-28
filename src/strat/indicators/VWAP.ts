@@ -1,4 +1,4 @@
-import { XmBase, VWAP as _VWAP, WaveManager } from "./gekko";
+import { XmBase, VWAP as _VWAP, WaveManager } from "../gekko";
 import { Candle, IndSettings, VWAPValue } from "../types";
 import { mapObj } from "../utils";
 

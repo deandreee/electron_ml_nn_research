@@ -1,4 +1,4 @@
-import { XmBase, EMAOCC as _EMAOCC, WaveManager } from "./gekko";
+import { XmBase, EMAOCC as _EMAOCC, WaveManager } from "../gekko";
 import { Candle, IndSettings, OCCValue } from "../types";
 import { mapObj } from "../utils";
 

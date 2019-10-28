@@ -1,4 +1,4 @@
-import { XmBase, RSI as _RSI, WaveManager } from "./gekko";
+import { XmBase, RSI as _RSI, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

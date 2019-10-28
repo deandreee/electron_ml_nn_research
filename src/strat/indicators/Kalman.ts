@@ -1,4 +1,4 @@
-import { XmBase, Kalman as _Kalman, WaveManager } from "./gekko";
+import { XmBase, Kalman as _Kalman, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

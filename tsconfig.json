@@ -17,8 +17,8 @@
     "paths": {
       "*": ["node_modules/*"]
     },
-    "skipLibCheck": true,
-    "allowJs": true
+    "skipLibCheck": true
+    // "allowJs": true // this copies node_modules and doesn't copy js, useless for now
   },
   "include": ["src/**/*"],
   "files": ["./src/index.tsx"]

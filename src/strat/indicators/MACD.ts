@@ -1,4 +1,4 @@
-import { XmBase, MACD as _MACD, WaveManager } from "./gekko";
+import { XmBase, MACD as _MACD, WaveManager } from "../gekko";
 import { Candle, MACDValue, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

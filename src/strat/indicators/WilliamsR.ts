@@ -1,4 +1,4 @@
-import { XmBase, WilliamsR as _WilliamsR, WaveManager } from "./gekko";
+import { XmBase, WilliamsR as _WilliamsR, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

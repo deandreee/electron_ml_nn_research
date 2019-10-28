@@ -1,30 +1,20 @@
 import { Candle } from "../types";
-export { CandleBatcher2, XmBase, BatchWaveManager, valueToOHLC } from "./utils";
+// @ts-ignore
+export { CandleBatcher2, XmBase, WaveManager, BatchWaveManager, valueToOHLC } from "./utils";
 
-export {
-  SMA,
-  MACD,
-  RSI,
-  BBands,
-  MFI,
-  StochKD,
-  ADX,
-  ATR,
-  VixFix,
-  EMA,
-  LRC,
-  KeltnerChannels,
-  ChandelierExit,
-  KST,
-  WilliamsR,
-  PSAR_TI,
-  PSARProps,
-  Kalman,
-  EMAOCC
-} from "./indicators";
+// @ts-ignore
+export { SMA, MACD, RSI, BBands } from "./indicators";
+// @ts-ignore
+export { MFI, StochKD, ADX, ATR, VixFix } from "./indicators";
+// @ts-ignore
+export { EMA, LRC, KeltnerChannels, ChandelierExit, KST, WilliamsR } from "./indicators";
+// @ts-ignore
+export { PSAR_TI, PSARProps, Kalman, EMAOCC } from "./indicators";
 
+// @ts-ignore
 export { InverseFisherTransform, InverseFisherTransformSmoothed, T3MACD, ZerolagT3 } from "./indicators/ninja";
 
+// @ts-ignore
 export { VWAP, ZerolagMACD } from "./indicators/lizard";
 
 export interface WaveManager {

@@ -1,4 +1,4 @@
-import { XmBase, MFI as _MFI, WaveManager } from "./gekko";
+import { XmBase, MFI as _MFI, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

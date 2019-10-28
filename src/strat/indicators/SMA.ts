@@ -1,4 +1,4 @@
-import { XmBase, SMA as _SMA, WaveManager } from "./gekko";
+import { XmBase, SMA as _SMA, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

@@ -1,4 +1,4 @@
-import { XmBase, ATR as _ATR, WaveManager } from "./gekko";
+import { XmBase, ATR as _ATR, WaveManager } from "../gekko";
 import { Candle, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

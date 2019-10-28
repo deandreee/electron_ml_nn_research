@@ -1,4 +1,4 @@
-import { XmBase, T3MACD as _T3MACD, WaveManager } from "./gekko";
+import { XmBase, T3MACD as _T3MACD, WaveManager } from "../gekko";
 import { Candle, MACDValue, IndSettings } from "../types";
 import { mapObj } from "../utils";
 

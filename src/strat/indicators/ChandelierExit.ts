@@ -1,4 +1,4 @@
-import { XmBase, ChandelierExit as _ChandelierExit, WaveManager } from "./gekko";
+import { XmBase, ChandelierExit as _ChandelierExit, WaveManager } from "../gekko";
 import { Candle } from "../types";
 
 export interface ChandelierExitValue {

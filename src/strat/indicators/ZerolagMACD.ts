@@ -1,4 +1,4 @@
-import { XmBase, ZerolagMACD as _ZerolagMACD, WaveManager } from "./gekko";
+import { XmBase, ZerolagMACD as _ZerolagMACD, WaveManager } from "../gekko";
 import { Candle, MACDValue } from "../types";
 
 export interface IndZerolagMACD {

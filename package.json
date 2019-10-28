@@ -7,7 +7,7 @@
     "watch": "tsc -w",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "start": "npm run build && electron ./dist/main.js",
-    "start:be": "tsc -p tsconfig.be.json && node ./dist-be/go.js",
+    "start:be": "tsc -p tsconfig.be.json && node ./dist_be/go.js",
     "test": "jest"
   },
   "repository": "https://github.com/electron/electron-quick-start-typescript",
