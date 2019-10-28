@@ -63,7 +63,9 @@ const fileName = `output/runBatchedXG_wGA/${featureName}_[lbl=${runConfigBase.BA
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const ranges = runUtils.genRanges_JJASON();
+  // const ranges = runUtils.genRanges_JJASON();
+  const ranges = runUtils.genRanges_FastMiniTest();
+
   const months = queryCorrCandlesMonthsBatched(runConfigBase, coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

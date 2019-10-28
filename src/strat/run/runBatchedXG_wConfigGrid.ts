@@ -11,14 +11,14 @@ import * as runConfigXG from "./config/runConfigXG";
 import { logConsole, logFile } from "../log/logResults";
 import * as log from "../log";
 
-const featureName = "combo_single_each";
+const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+const feature = features.getByNameSingle([featureName])[0];
 const fileName = `output/runBatchedXG_wConfigGrid/${featureName}_[lbl=${runConfigBase.BARRIER_LABEL}].csv`;
 const coin = Coins.BTC;
 
 export const runBatchedXG = async (): Promise<RunResult> => {
-  const feature = features.getCombo().find(x => x.name === featureName);
-
-  const ranges = runUtils.genRanges_JJAS();
+  // const ranges = runUtils.genRanges_JJAS();
+  const ranges = runUtils.genRanges_FastMiniTest();
   const months = queryCorrCandlesMonthsBatched(runConfigBase, coin, ranges, [feature]);
   const trainMonth = months[ranges[0].name];
 

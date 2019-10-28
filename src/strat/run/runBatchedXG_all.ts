@@ -11,7 +11,8 @@ import { runConfig } from "./config/runConfig";
 import { CorrCandles } from "../corr/CorrCandles";
 import { BatchConfig } from "../corr/BatchConfig";
 
-const ranges = runUtils.genRanges_JJASON();
+// const ranges = runUtils.genRanges_JJASON();
+const ranges = runUtils.genRanges_FastMiniTest();
 const featureName: string = "ALL";
 // const featureName: string = "COMBO";
 const fileName = `output/runBatchedXG_all/${featureName} [ train ${ranges[0].name} ] [ lbl ${runConfig.BARRIER_TYPE} ${runConfig.BARRIER_LABEL} ] [ prob ${runConfig.PROB} ][ obj ${runConfig.XG_OBJECTIVE} ${runConfig.PRED_PROB} ].csv`;
