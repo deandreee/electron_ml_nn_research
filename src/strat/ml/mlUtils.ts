@@ -1,7 +1,7 @@
 import { round1 } from "../utils";
 import { rescale } from "../rescale";
 import { uniq } from "lodash";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export const logLabels = (uniqueLabels: number[], labels: number[]) => {
   for (let lbl of uniqueLabels) {

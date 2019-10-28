@@ -3,7 +3,7 @@ import { round2 } from "../utils";
 import { RegResults } from "../ml/mlEvaluate";
 import * as csvLog from "../csvLog";
 import { GAEntity } from "../run/ga/common";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export const logConsole = (rangeName: string, results: RegResults) => {
   console.log(

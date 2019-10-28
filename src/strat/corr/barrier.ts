@@ -1,6 +1,6 @@
 import { Candle } from "../types";
 import { getPctChange } from "../utils";
-import { RunConfig, BarrierLabel } from "../run/runConfig";
+import { RunConfig, BarrierLabel } from "../run/config/runConfig";
 
 export const trippleBarrier = (candles: Candle[], idxCurr: number, barrierCfg: BarrierConfig) => {
   for (let i = idxCurr + 1; i < idxCurr + 1 + barrierCfg.lookAhead; i++) {

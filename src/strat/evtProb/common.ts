@@ -4,7 +4,7 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { GetIndVal } from "../features/common";
 import * as percentile from "stats-percentile";
 import { round2 } from "../utils";
-import { BarrierLabel, RunConfig } from "../run/runConfig";
+import { BarrierLabel, RunConfig } from "../run/config/runConfig";
 import { getTrippleBarrierConfig } from "../corr/barrier";
 import { Candle } from "../types";
 

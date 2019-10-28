@@ -1,7 +1,7 @@
 import { Candle } from "../types";
-import { runConfigXGDef } from "../run/runConfigXG";
+import { runConfigXGDef } from "../run/config/runConfigXG";
 import { BatchConfig } from "./BatchConfig";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export type Partial<T> = { [P in keyof T]?: T[P] };
 

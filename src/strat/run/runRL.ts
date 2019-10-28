@@ -71,7 +71,7 @@ export const runRL = async (): Promise<RunResult> => {
   const trainMonth = months[ranges[0].name];
   let features = trainMonth.candlesActual.map(c => [c.open, c.close, c.high, c.low, c.volume]);
   features.forEach(mlUtils.sanityCheckRow);
-  let labels = mlGetLabels(trainMonth, runConfig);
+  let labels: any = mlGetLabels(trainMonth, runConfig);
 
   const { episodes } = await RLPy.rl(["open", "close", "high", "low", "volume"], features, labels);
 

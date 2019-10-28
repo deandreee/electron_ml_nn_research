@@ -4,8 +4,8 @@ import { queryCorrCandlesMonthsBatched } from "../queryCorrCandlesMonths";
 
 import * as mlXGClass from "../../ml/mlXGClass";
 import * as features from "../../features";
-import * as runUtils from "../runUtils";
-import { runConfig } from "../runConfig";
+import * as runUtils from "../utils/runUtils";
+import { runConfig } from "../config/runConfig";
 
 import { logConsole, logFile, logFileHeader } from "../../log/logResults";
 // import * as log from "../log";

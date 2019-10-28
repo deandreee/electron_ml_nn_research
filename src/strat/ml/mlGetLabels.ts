@@ -1,5 +1,5 @@
 import { CorrCandles } from "../corr/CorrCandles";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 import { round2 } from "../utils";
 
 export const mlGetLabels = (corrCandles: CorrCandles, runConfig: RunConfig) => {

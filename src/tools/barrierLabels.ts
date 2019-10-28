@@ -9,7 +9,7 @@ import { trippleBarrier } from "../strat/corr/barrier";
 import { binaryBarrierUp } from "../strat/corr/barrier";
 import { binaryBarrierDown } from "../strat/corr/barrier";
 // import { getTrippleBarrierConfig } from "../strat/corr/barrier";
-import { runConfig } from "../strat/run/runConfig";
+import { runConfig } from "../strat/run/config/runConfig";
 import { batchCandlesInXs } from "../strat/db/batchCandlesInXs";
 
 export const barrierLabels = () => {

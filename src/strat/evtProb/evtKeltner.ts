@@ -3,7 +3,7 @@ import { DateRange } from "../daterange";
 import { getInd, ps } from "../features/getKeltner";
 import { logTrippleBarrierStats, createProbsObj, formatTP, logProbs, TPB_LABELS, getLookAhead } from "./common";
 import { timeframes } from "../features/common";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 // almost identical to BBands ...
 

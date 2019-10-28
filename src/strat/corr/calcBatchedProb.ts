@@ -15,7 +15,7 @@ import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
 import * as waveUtils from "./waveUtils";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;

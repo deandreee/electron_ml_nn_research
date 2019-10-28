@@ -5,7 +5,7 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 // import * as log from "../log";
 
 export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {

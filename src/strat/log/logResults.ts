@@ -1,5 +1,5 @@
 import { GAEntity } from "../run/ga/common";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 import { EvalResults } from "../ml/mlXGClass";
 import * as logClassResults from "./logClassResults";
 import * as logRegResults from "./logRegResults";

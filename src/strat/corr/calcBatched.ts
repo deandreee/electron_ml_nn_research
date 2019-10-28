@@ -30,7 +30,7 @@ import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 import { getPctChange } from "../utils";
 
 // const { ADX } = require(`${GEKKO}/indicators`);

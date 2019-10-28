@@ -3,7 +3,7 @@ import { DateRange } from "../daterange";
 import { getInd, ps } from "../features/getEMAOCC";
 import { timeframes } from "../features/common";
 import { loop } from "./common";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export const calcProb = async (runConfig: RunConfig, months: CorrCandleMonths, ranges: DateRange[]) => {
   const corrCandles = months[ranges[0].name];

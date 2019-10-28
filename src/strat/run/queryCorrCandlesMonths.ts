@@ -9,7 +9,7 @@ import { batchCandlesInXs } from "../db/batchCandlesInXs";
 import * as calcBatchedProb from "../corr/calcBatchedProb";
 import { FeatureSplit } from "../features";
 import { BatchConfig } from "../corr/BatchConfig";
-import { RunConfig } from "./runConfig";
+import { RunConfig } from "./config/runConfig";
 
 export type CorrCandleMonths = { [range: string]: CorrCandles };
 export type CandleMonths = { [range: string]: CoinData };

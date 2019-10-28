@@ -14,7 +14,7 @@ import model from "./models/v5_VanillaClass";
 import * as log from "../log";
 import { getClassWeights } from "./models/common";
 import { MinMaxScaler } from "../features/MinMaxScaler";
-import { RunConfig } from "../run/runConfig";
+import { RunConfig } from "../run/config/runConfig";
 
 export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {

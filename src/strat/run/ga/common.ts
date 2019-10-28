@@ -1,5 +1,5 @@
 import * as Genetic from "@glavin001/genetic-js";
-import { RunConfigXG } from "../runConfigXG";
+import { RunConfigXG } from "../config/runConfigXG";
 
 export const takeRandom = (arr: GAProp[]) => {
   return arr[Math.floor(Math.random() * arr.length)];
