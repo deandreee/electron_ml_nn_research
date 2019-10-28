@@ -107,3 +107,7 @@ Native dependencies (C/C++) are the ones that cause problems. They need to be bu
 ## Data
 
 For quick demo purposes, I've included a small SQLite data sample (in `data_demo`) with BTC/ETH/XRP 1m candles from 2018-03-01 to 2018-09-01.
+
+## Platforms Compatability
+
+Should work on Unix like systems (OSX included). Haven't had time to test with too many though. Sorry Windows users, this requires custom ./init/run.sh.
