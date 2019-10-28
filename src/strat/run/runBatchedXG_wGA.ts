@@ -32,7 +32,7 @@ import { sum } from "lodash";
 // const featureName = "macd.vixFix.vwap.kst";
 // const featureName = "macd.vixFix.vwap.t3Macd";
 // const featureName = "macd.vixFix.vwap.emaOCC";
-// const featureName = "macd.vixFix.vwap.psar";
+// const featureName = "macd.vixFix.vwap.psar";\
 // const featureName = "macd.vixFix.vwap.zerolagMACD";
 // const featureName = "macd.vixFix.vwap.lrc";
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";

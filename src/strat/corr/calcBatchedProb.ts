@@ -10,12 +10,23 @@ import * as corrUtils from "./utils";
 import { EMAOCC } from "../indicators/EMAOCC";
 import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
-import { Keltner } from "../indicators/Keltner";
+// import { Keltner } from "../indicators/Keltner";
 import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
 import * as waveUtils from "./waveUtils";
 import { RunConfig } from "../run/config/runConfig";
+// @ts-ignore
+import { getShouldCalc } from "./utils";
+
+const SHOULD_CALC_ALL = {
+  x30: true,
+  x60: true,
+  x120: true,
+  x240: true,
+  x480: true,
+  x1440: true
+};
 
 export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featuresSplit: FeatureSplit[]) => {
   const candles = coin.candles;
@@ -23,17 +34,32 @@ export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featur
   const waveManagers = waveUtils.createManagers(runConfig.BATCH.batchSize);
 
   // @ts-ignore
-  const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers);
+  // const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers, getShouldCalc(featuresSplit, "emaOCC"), null);
+  const emaOCC = new IndTimeframeGroup(EMAOCC, waveManagers, SHOULD_CALC_ALL, null);
+
   // @ts-ignore
-  const vixFix = new IndTimeframeGroup(VixFix, waveManagers);
+  // const vixFix = new IndTimeframeGroup(VixFix, waveManagers, getShouldCalc(featuresSplit, "vixFix"), null);
+  const vixFix = new IndTimeframeGroup(VixFix, waveManagers, SHOULD_CALC_ALL, null);
+
   // @ts-ignore
-  const bbands = new IndTimeframeGroup(BBands, waveManagers);
+  // const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"), null);
+  const bbands = new IndTimeframeGroup(BBands, waveManagers, SHOULD_CALC_ALL, null);
+
   // @ts-ignore
-  const keltner = new IndTimeframeGroup(Keltner, waveManagers);
+  // const keltner = new IndTimeframeGroup(Keltner, waveManagers, getShouldCalc(featuresSplit, "keltner"), null);
+  // const keltner = new IndTimeframeGroup(Keltner, waveManagers, SHOULD_CALC_ALL, null);
+
   // @ts-ignore
-  const chandelierExit = new IndTimeframeGroup(ChandelierExit, waveManagers);
+  const chandelierExit = new IndTimeframeGroup(
+    ChandelierExit,
+    waveManagers,
+    // getShouldCalc(featuresSplit, "chandelierExit"),
+    SHOULD_CALC_ALL,
+    null
+  );
   // @ts-ignore
-  const kst = new IndTimeframeGroup(KST, waveManagers);
+  // const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"), null);
+  const kst = new IndTimeframeGroup(KST, waveManagers, SHOULD_CALC_ALL, null);
 
   for (let i = 0; i < candles.length; i++) {
     const candle = candles[i];
