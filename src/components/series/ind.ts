@@ -377,11 +377,11 @@ export const seriesInd = (currentProp: CandleProp, coin: CorrCandles) => {
   return series;
 };
 
-// const valueXpct = (value: number, pi: number) => {
-//   const pct = pi / 100;
-//   return value + value * pct;
-//   // return value;
-// };
+const valueXpct = (value: number, pct_full: number) => {
+  const pct = pct_full / 100;
+  return value + value * pct;
+  // return value;
+};
 
 export const redGreen = (coin: CorrCandles, xd: string) => {
   return [
@@ -416,29 +416,32 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
 
   // TODO: this is very crude reg check
   if (isReg(predicted[0].values[0])) {
+    // to reduce noise
+    const threshold = 1;
+
     return flatten(
       predicted.map((p, pi) => [
         {
           ...base,
           color: "green",
-          data: p.values.map((x, i) => [
-            coin.candlesActual[i].start * 1000,
-            // valueXpct(coin.candlesActual[i].close, x)
-            x > 1 ? x : null
-          ]),
-          name: `[P]${p.name}`,
-          ...grid2
+          data: p.values.map((x, i) => {
+            const predicted = valueXpct(coin.candlesActual[i].close, x);
+            const value = x > threshold ? predicted : null;
+            return [coin.candlesActual[i].start * 1000, value];
+          }),
+          name: `[P]${p.name}`
+          // ...grid2
         },
         {
           ...base,
           color: "red",
-          data: p.values.map((x, i) => [
-            coin.candlesActual[i].start * 1000,
-            // valueXpct(coin.candlesActual[i].close, x)
-            x < -1 ? x : null
-          ]),
-          name: `[P]${p.name}`,
-          ...grid2
+          data: p.values.map((x, i) => {
+            const predicted = valueXpct(coin.candlesActual[i].close, x);
+            const value = x < -threshold ? predicted : null;
+            return [coin.candlesActual[i].start * 1000, value];
+          }),
+          name: `[P]${p.name}`
+          // ...grid2
         }
       ])
     );
