@@ -88,7 +88,15 @@ export const minMax = (
   }
 };
 
+const logProbsHeader = () => {
+  console.log();
+  console.log();
+  console.log(padEnd("", 35), padEnd("% DOWN", 10), padEnd("% NEUTRAL", 10), padEnd("% UP", 10), padEnd("OVERALL", 10));
+};
+
 export const logProbs = (probs: Probs, timeframes: string[], ps: string[], threshold: number = 0.6) => {
+  logProbsHeader();
+
   for (let lbl of TPB_LABELS) {
     for (let t of timeframes) {
       for (let p of ps) {
@@ -105,11 +113,11 @@ export const logProbs = (probs: Probs, timeframes: string[], ps: string[], thres
         // const threshold = 0.6;
         if (p0 > threshold || p1 > threshold || p2 > threshold) {
           console.log(
-            padEnd(tp, 30),
-            padEnd(p0.toString(), 5),
-            padEnd(p1.toString(), 5),
-            padEnd(p2.toString(), 5),
-            padEnd(ovr, 5)
+            padEnd(tp, 35),
+            padEnd(p0.toString(), 10),
+            padEnd(p1.toString(), 10),
+            padEnd(p2.toString(), 10),
+            padEnd(ovr, 10)
           );
         }
       }

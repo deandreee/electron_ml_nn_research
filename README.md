@@ -181,3 +181,7 @@ Node mode:
 `runBatchedXG_wGA.ts`
 
 ![xg_ga_cls_THREE_node.png](imgs/xg_ga_cls_THREE_node.png)
+
+`runIndProb.ts`
+
+![evt_prob_bbands.png](imgs/evt_prob_bbands.png)

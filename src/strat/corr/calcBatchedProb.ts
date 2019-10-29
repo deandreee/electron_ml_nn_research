@@ -103,7 +103,7 @@ export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featur
     };
 
     if (i % 1000 === 0) {
-      console.log(pad(` checkpoint @ ${new Date(candle.start * 1000).toDateString()} `, 85, "."));
+      console.log(pad(` checkpoint @ ${new Date(candle.start * 1000).toDateString()} `, 75, "."));
     }
   }
 
