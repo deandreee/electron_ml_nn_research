@@ -150,5 +150,5 @@ Should work on Unix like systems (OSX included). Haven't had time to test with t
 
 ## Screenshots
 
-`runBatchedXG.ts` with regression and tripple barrier thresholds +/-5 in 5 day time window. Small subchart at the end is predicted price movement in %.
+`runBatchedXG.ts` with regression and tripple barrier thresholds +/-5 in 5 day time window. Small subchart at the bottom shows predicted price movement in %.
 ![xg_reg_1d_FIVE.png](imgs/xg_reg_1d_FIVE.png)
