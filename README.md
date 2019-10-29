@@ -39,7 +39,10 @@ Overall data/function flow is like this:
 2. Calculate features/indicators
 3. Train Model
 4. Test/Evaluate Model
-5. Display (chart/console) and save(csv) results depending if regression (MSE, R2) or classification (precision, recall, f-score)
+5. Display (chart/console) and save(csv) results:
+
+- MSE, R2 if regression
+- Precision, Recall, F-Score if classification
 
 ## Features / Models
 
@@ -53,7 +56,7 @@ Overall data/function flow is like this:
 
 2. `runBatchedLSTM.ts` => runs LSTM model
 
-- Switch between different LSTM libs
+- Can switch between different LSTM libs
   - Tensorflow (`mlLSTMTF.ts`)
   - Synaptic (`mlLSTMSynapticClass.ts`)
   - Neataptic (`mlLSTMNeatapticClass.ts`)
