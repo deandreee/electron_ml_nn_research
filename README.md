@@ -6,12 +6,12 @@ This is my personal testing ground, the goal here is to experiment, get results 
 
 ## Price Direction
 
-This is very important concept. A lot of tutorials try to predict price, but:
+This is a very important concept. A lot of tutorials try to predict price, but:
 
-- That's more diffucult
+- That's more difficult
 - As a trader, I don't really care
 
-I care more about direction, with certain threshold, like +3% after 1 day. But you need a way to define that. Throughout this project, I'm using Tripple Barrier labeling method from "Advances in Financial Machine Learning" by de Prado. In short, you define up/down threshold (+/- X%) and time window (1 day), and each point gets labeled by which threshold it hits first, or neutral, if it runs out of time window.
+I care more about direction, with a certain threshold, like +3% after 1 day. But you need a way to define that. Throughout this project, I'm using Tripple Barrier labeling method from "Advances in Financial Machine Learning" by de Prado. In short, you define up/down threshold (+/- X%) and time window (1 day), and each point gets labeled by which threshold it hits first, or neutral if it runs out of time window.
 
 Actually, once you get to Reinforcement Learning (RL), you realize you don't care about direction also, you care about actions and profits. But that's for another time.
 
