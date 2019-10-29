@@ -94,7 +94,7 @@ Overall data/function flow is like this:
 
 There are several configurable variables (through code). Availability depends on the Model used.
 
-1. daterange (train+test) => you can get predefined ones from runUtils like `runUtils.genRanges_FastMiniTest()`
+1. daterange (train+test) => you can get predefined ones from runUtils like `runUtils.genRanges_FastMiniTest()`. In `/data_temo` Ive only included just enough for `genRanges_FastMiniTest()`, so please use that.
 2. features => which features to use for prediction? Each feature can be an array of multiple indicators. When using Electron mode, you usually use a single feature and then inspect the result visually. In Node mode, it's about looping through multiple features and getting classification/regression results for each one.
 3. Barrier Type/Label => up/down thresholds and time window
 4. Model => mainly depends on which `/run` script you use but also sometimes provides additional switch inside, like in LSTM you can switch between 3 libs.
