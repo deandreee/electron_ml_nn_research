@@ -5,14 +5,28 @@ import * as csvLog from "../csvLog";
 import { GAEntity } from "../run/ga/common";
 import { RunConfig } from "../run/config/runConfig";
 
+export const logConsoleHeader = () => {
+  console.log(
+    padEnd("", 10),
+    padEnd("PRECIS", 6),
+    padEnd("RECALL", 6),
+    padEnd("FSCORE", 6),
+    padEnd("HITRAT", 6),
+    padEnd("BIGERR", 6),
+    padEnd("0_HIT", 10),
+    padEnd("1_HIT", 10),
+    padEnd("2_HIT", 10)
+  );
+};
+
 export const logConsole = (rangeName: string, results: ClasifResults) => {
   console.log(
     padEnd(rangeName, 10),
-    padEnd(round2(results.precisionTotal).toString(), 5),
-    padEnd(round2(results.recallTotal).toString(), 5),
-    padEnd(round2(results.fScore).toString(), 5),
-    padEnd(round2(results.hitRate).toString(), 5),
-    padEnd(round2(results.bigErrorsReverse).toString(), 5),
+    padEnd(round2(results.precisionTotal).toString(), 6),
+    padEnd(round2(results.recallTotal).toString(), 6),
+    padEnd(round2(results.fScore).toString(), 6),
+    padEnd(round2(results.hitRate).toString(), 6),
+    padEnd(round2(results.bigErrorsReverse).toString(), 6),
     padEnd(formatHitRate(results.zeroHitRate), 10),
     padEnd(formatHitRate(results.oneHitRate), 10),
     padEnd(formatHitRate(results.twoHitRate), 10)

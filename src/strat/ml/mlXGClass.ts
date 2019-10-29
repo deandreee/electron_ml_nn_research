@@ -5,7 +5,7 @@ import * as mlEvaluate from "./mlEvaluate";
 import { FnGetFeature } from "../features";
 import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
-import { RunConfig } from "../run/config/runConfig";
+import { RunConfig, isRegression } from "../run/config/runConfig";
 // import * as log from "../log";
 
 export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
@@ -25,7 +25,7 @@ export const train_ = async (runConfig: RunConfig, corrCandles: CorrCandles, fnG
   let testData = features.map((x, i) => ({ features: x, label: labels[i] }));
 
   // for now, too difficult to reasonably upsample
-  if (!runConfig.XG_OBJECTIVE.startsWith("reg:")) {
+  if (!isRegression(runConfig)) {
     testData = mlUtils.upsample(testData, runConfig);
   }
 
@@ -91,7 +91,7 @@ export const predict = async (
 
   // log.start("XGBoost.predict");
   const predicted = booster.predict(features);
-  const r2 = 0;
+
   // log.end("XGBoost.predict");
 
   // log.start("XGPy.predict");
@@ -110,7 +110,11 @@ export const predict = async (
   } else {
     // regression
     const regResults = mlEvaluate.evalReg(labels, predicted);
-    regResults.r2 = r2; // TODO: hack
+
+    // TODO: hack .. was this for Python?
+    // const r2 = 0;
+    // regResults.r2 = r2;
+
     return { booster, features, labels, predicted, results: { regResults } };
   }
 };

@@ -1,8 +1,16 @@
 import { GAEntity } from "../run/ga/common";
-import { RunConfig } from "../run/config/runConfig";
+import { RunConfig, isRegression } from "../run/config/runConfig";
 import { EvalResults } from "../ml/mlXGClass";
 import * as logClassResults from "./logClassResults";
 import * as logRegResults from "./logRegResults";
+
+export const logConsoleHeader = (runConfig: RunConfig) => {
+  if (isRegression(runConfig)) {
+    logRegResults.logConsoleHeader();
+  } else {
+    logClassResults.logConsoleHeader();
+  }
+};
 
 export const logConsole = (rangeName: string, results: EvalResults) => {
   const { clasifResults, regResults } = results;
@@ -33,7 +41,7 @@ export const logFile = async (
 };
 
 export const logFileHeader = async (fileName: string, runConfig: RunConfig) => {
-  if (runConfig.XG_OBJECTIVE.startsWith("reg:")) {
+  if (isRegression(runConfig)) {
     await logRegResults.logFileHeader(fileName);
   } else {
     await logClassResults.logFileHeader(fileName);

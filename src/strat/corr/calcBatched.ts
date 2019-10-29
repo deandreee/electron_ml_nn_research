@@ -30,7 +30,7 @@ import { shouldCalc, getShouldCalc } from "./utils";
 import { doubleBarrier } from "./barrier";
 import * as waveUtils from "./waveUtils";
 import { SMA } from "../indicators/SMA";
-import { RunConfig } from "../run/config/runConfig";
+import { RunConfig, isRegression } from "../run/config/runConfig";
 import { getPctChange } from "../utils";
 
 // const { ADX } = require(`${GEKKO}/indicators`);
@@ -174,11 +174,11 @@ export const corrCalcBatched = (runConfig: RunConfig, coin: CoinData, featuresSp
       tripple: runConfig.BARRIER_TYPE === "tripple" && trippleBarrier(candles, i, tbCfg),
       up: runConfig.BARRIER_TYPE === "up" && binaryBarrierUp(candles, i, tbCfg),
       down: runConfig.BARRIER_TYPE === "down" && binaryBarrierDown(candles, i, tbCfg),
-      _10d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 10].close, candles[i].close),
-      _7d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 7].close, candles[i].close),
-      _5d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 5].close, candles[i].close),
-      _2d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 2].close, candles[i].close),
-      _1d: runConfig.XG_OBJECTIVE.startsWith("reg:") && getPctChange(candles[i + 24 * 1].close, candles[i].close)
+      _10d: isRegression(runConfig) && getPctChange(candles[i + 24 * 10].close, candles[i].close),
+      _7d: isRegression(runConfig) && getPctChange(candles[i + 24 * 7].close, candles[i].close),
+      _5d: isRegression(runConfig) && getPctChange(candles[i + 24 * 5].close, candles[i].close),
+      _2d: isRegression(runConfig) && getPctChange(candles[i + 24 * 2].close, candles[i].close),
+      _1d: isRegression(runConfig) && getPctChange(candles[i + 24 * 1].close, candles[i].close)
     };
   }
 

@@ -7,7 +7,7 @@ import * as log from "../log";
 import * as mlXGClass from "../ml/mlXGClass";
 import * as features from "../features";
 import * as runUtils from "./utils/runUtils";
-import { logConsole, logFile, logFileHeader } from "../log/logResults";
+import { logConsole, logFile, logFileHeader, logConsoleHeader } from "../log/logResults";
 import { runConfig } from "./config/runConfig";
 import { getCoreName } from "../features/FeatureSplit";
 
@@ -123,7 +123,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
     const { booster } = await mlXG.train(runConfig, trainMonth, x.fn);
 
     const resultsForAvg: mlXGClass.EvalResults[] = [];
-
+    logConsoleHeader(runConfig);
     for (let range of ranges) {
       const corrCandles = months[range.name];
 

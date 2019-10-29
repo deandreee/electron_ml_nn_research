@@ -5,11 +5,15 @@ import * as csvLog from "../csvLog";
 import { GAEntity } from "../run/ga/common";
 import { RunConfig } from "../run/config/runConfig";
 
+export const logConsoleHeader = () => {
+  console.log(padEnd("", 10), padEnd("MSE", 8), padEnd("R2", 8));
+};
+
 export const logConsole = (rangeName: string, results: RegResults) => {
   console.log(
     padEnd(rangeName, 10),
-    padEnd(round2(results.mse).toString(), 5),
-    padEnd(round2(results.r2).toString(), 5)
+    padEnd(round2(results.mse).toString(), 8),
+    padEnd(round2(results.r2).toString(), 8)
   );
 };
 
