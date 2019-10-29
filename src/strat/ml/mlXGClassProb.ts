@@ -8,6 +8,8 @@ import { CorrCandles } from "../corr/CorrCandles";
 import { mlGetLabels } from "./mlGetLabels";
 import { RunConfig } from "../run/config/runConfig";
 
+// Classes, but with probabilities
+
 export const train = async (runConfig: RunConfig, corrCandles: CorrCandles, fnGetFeature: FnGetFeature) => {
   try {
     return await train_(runConfig, corrCandles, fnGetFeature);

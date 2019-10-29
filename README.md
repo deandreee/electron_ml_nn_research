@@ -1,8 +1,19 @@
 # Electron ML/NN Research for Crypto Trading
 
-Core idea: try different models (XGBoost, LSTM, SVM, etc) to predict Crypto price movements (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
+Core idea: try different models (XGBoost, LSTM, SVM, etc) to predict Crypto price direction (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
 
 This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast possible, everything else is secondary. Therefor, a lot of configuration is simply comment/uncomment lines in code.
+
+## Price Direction
+
+This is very important concept. A lot of tutorials try to predict price, but:
+
+- That's more diffucult
+- As a trader, I don't really care
+
+I care more about direction, with certain threshold, like +3% after 1 day. But you need a way to define that. Throughout this project, I'm using Tripple Barrier labeling method from "Advances in Financial Machine Learning" by de Prado. In short, you define up/down threshold (+/- X%) and time window (1 day), and each point gets labeled by which threshold it hits first, or neutral, if it runs out of time window.
+
+Actually, once you get to Reinforcement Learning (RL), you realize you don't care about direction also, you care about actions and profits. But that's for another time.
 
 ## Modes
 
@@ -28,7 +39,7 @@ Overall data/function flow is like this:
 
 1. `runBatchedXG.ts` => runs XGBoost model
 
-- Can switch between classification and regression
+- Can switch between classification and regression (through `/run/config/runConfig.ts` `XG_OBJECTIVE` prop)
 - Modes: Electron / Node
 
 2. `runBatchedLSTM.ts` => runs LSTM model
@@ -68,6 +79,19 @@ Overall data/function flow is like this:
 - Modes: Electron / Node
 
 ## Config
+
+There are several configurable variables (through code). Availability depends on Model used.
+
+1. daterange (train+test) => you can get predefined ones from runUtils like `runUtils.genRanges_FastMiniTest()`
+2. features => which features to use for prediction? Each feature can be array of multiple indicators. When using Electron mode, you usually use single feature and then inspect the result visually. In Node mode, it's about looping through multiple features and getting classification/regresstion results for each one.
+3. Barrier Type/Label => up/down thresholds and time window
+4. Model => mainly depents on which `/run` script you use, but also sometimes provides additional switch inside, like in LSTM you can switch between 3 libs.
+5. Model params
+6. GA/Grid => have arrays for each model params to search/loop/optimize through
+
+- XGBoost params are inside `/run/config/runConfig.ts`
+- LSTM params (and pre configured models) are inside `/ml/models`
+- SVM params are inside `/ml/mlSVM.ts`
 
 ## Install
 

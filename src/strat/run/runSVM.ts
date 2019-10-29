@@ -6,7 +6,7 @@ import { round2 } from "../utils";
 import * as log from "../log";
 import { padEnd } from "lodash";
 
-import * as predict from "../ml/ml";
+import * as predict from "../ml/mlSVM";
 import * as features from "../features";
 import * as runUtils from "./utils/runUtils";
 
