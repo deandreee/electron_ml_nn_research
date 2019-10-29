@@ -99,10 +99,12 @@ export const predict = async (
   // log.end("XGPy.predict");
 
   if (runConfig.XG_OBJECTIVE.endsWith(":logistic")) {
+    // classification
     const predictedRound = predicted.map((x: number) => (x > runConfig.PRED_PROB ? 1 : 0));
     const clasifResults = mlEvaluate.evalClasif(runConfig.UNIQUE_LABELS, labels, predictedRound);
     return { booster, features, labels, predicted: predictedRound, results: { clasifResults } };
   } else if (runConfig.XG_OBJECTIVE.startsWith("multi:")) {
+    // classification
     const clasifResults = mlEvaluate.evalClasif(runConfig.UNIQUE_LABELS, labels, predicted);
     return { booster, features, labels, predicted, results: { clasifResults } };
   } else {
