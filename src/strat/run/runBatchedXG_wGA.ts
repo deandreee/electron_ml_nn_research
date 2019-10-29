@@ -8,7 +8,7 @@ import * as runUtils from "./utils/runUtils";
 import { runConfig as runConfigBase } from "./config/runConfig";
 import { RunConfigXG } from "./config/runConfigXG";
 
-import { logConsole, logFile } from "../log/logResults";
+import { logConsole, logFile, logConsoleHeader } from "../log/logResults";
 // import * as log from "../log";
 
 import { gaConfig, userData, GAEntity } from "./ga/common";
@@ -72,6 +72,8 @@ export const runBatchedXG = async (): Promise<RunResult> => {
   const linRegs: LinRegResult[] = [];
   const predictions = runUtils.getPredictionsTemplate();
 
+  logConsoleHeader(runConfigBase);
+
   const fnFitness = async (gaEntity: GAEntity) => {
     // log.start(runConfigXG.getName(runConfig), true); // let's skip for now, too much noise
 
@@ -81,7 +83,6 @@ export const runBatchedXG = async (): Promise<RunResult> => {
 
     const fScores = [];
     const resultsForAvg = [];
-
     for (let range of ranges) {
       const corrCandles = months[range.name];
 
@@ -93,7 +94,7 @@ export const runBatchedXG = async (): Promise<RunResult> => {
         resultsForAvg.push(results);
       }
 
-      // logConsole(range.name, results); // let's skip for now, too much noise
+      logConsole(range.name, results); // let's skip for now, too much noise
       await logFile(fileName, runConfig, coin.toString(), range.name, feature.name, results);
     }
 

@@ -177,3 +177,7 @@ Node mode:
 `runBatchedXG_all.ts`
 
 ![xg_all_cls_THREE_node.png](imgs/xg_all_cls_THREE_node.png)
+
+`runBatchedXG_wGA.ts`
+
+![xg_ga_cls_THREE_node.png](imgs/xg_ga_cls_THREE_node.png)
