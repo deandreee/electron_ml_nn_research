@@ -1,13 +1,15 @@
 import { pad } from "lodash";
 import { round2 } from "./utils";
 
+const PAD_LENGTH = 90;
+
 export const line = (s: string) => {
-  console.log(pad(`  ${s} `, 100, "="));
+  console.log(pad(`  ${s} `, PAD_LENGTH, "="));
 };
 
 export const start = (name: string, noThrow?: boolean) => {
   time(name, noThrow);
-  console.log(pad(` RUNNING ${name} `, 100, "="));
+  console.log(pad(` RUNNING ${name} `, PAD_LENGTH, "="));
 };
 
 export const end = (name: string, noThrow?: boolean) => {
@@ -34,5 +36,5 @@ export const timeEnd = (name: string, noThrow?: boolean) => {
   const end = new Date().getTime();
 
   const elapsedSeconds = round2((end - start) / 1000);
-  console.log(pad(`  TIME ${name}:     [${elapsedSeconds}s]  `, 100, "="));
+  console.log(pad(`  TIME ${name}:     [${elapsedSeconds}s]  `, PAD_LENGTH, "="));
 };
