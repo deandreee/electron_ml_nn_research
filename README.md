@@ -150,7 +150,7 @@ Should work on Unix like systems (OSX included). Haven't had time to test with t
 
 ## Screenshots
 
-`runBatchedXG.ts` with regression predicting price 1 day forward. Small subchart at the bottom shows predicted price movement in %.
+`runBatchedXG.ts` with regression predicting price 1 day forward. Filtered by >+1% or <-1% to reduce noise.
 ![xg_reg_1d.png](imgs/xg_reg_1d.png)
 
 `runBatchedXG.ts` with classification predicting tripple barrier label with +/-3% up/down threshold (green = up, yellow = neutral, red = down)
