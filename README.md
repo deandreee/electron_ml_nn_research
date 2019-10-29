@@ -169,3 +169,7 @@ Electron mode:
 Node mode:
 
 ![xg_cls_THREE_node.png](imgs/xg_cls_THREE_node.png)
+
+`runBatchedXG_wConfigGrid.ts`
+
+![xg_grid_cls_THREE_node.png](imgs/xg_grid_cls_THREE_node.png)

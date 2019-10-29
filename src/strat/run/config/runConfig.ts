@@ -30,11 +30,11 @@ export const runConfig: RunConfig = {
   // XG: CFG.runConfigXGDef,
   XG: CFG.runConfigXG_LessFit_6, // TODO: watch out for this !!!
 
-  // BARRIER_LABEL: "THREE",
-  // XG_OBJECTIVE: "multi:softmax",
-  // BARRIER_TYPE: "tripple",
-  // UNIQUE_LABELS: [0, 1, 2],
-  // MAX_CLASS_IMBALANCE: 0.6
+  BARRIER_LABEL: "THREE",
+  XG_OBJECTIVE: "multi:softmax",
+  BARRIER_TYPE: "tripple",
+  UNIQUE_LABELS: [0, 1, 2],
+  MAX_CLASS_IMBALANCE: 0.6
 
   // BARRIER_LABEL: "THREE"
   // XG_OBJECTIVE: "multi:softmax",
@@ -46,9 +46,9 @@ export const runConfig: RunConfig = {
   // XG_OBJECTIVE: "reg:logistic",
   // PRED_PROB: 0.5
 
-  BARRIER_LABEL: "THREE", // I don't think reg even needs this, but breaks without
-  XG_OBJECTIVE: "reg:linear",
-  BARRIER_TYPE: "_1d"
+  // BARRIER_LABEL: "THREE", // I don't think reg even needs this, but breaks without
+  // XG_OBJECTIVE: "reg:linear",
+  // BARRIER_TYPE: "_1d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
