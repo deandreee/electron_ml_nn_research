@@ -2,7 +2,7 @@
 
 Core idea: try different models (XGBoost, LSTM, SVM, etc) to predict Crypto price direction (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
 
-This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast possible, everything else is secondary. Therefor, a lot of configuration is simply comment/uncomment lines in code.
+This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast as possible, everything else is secondary. Therefore, a lot of configuration is simply in form of comment/uncomment lines in code.
 
 ## Price Direction
 
