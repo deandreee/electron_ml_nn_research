@@ -2,6 +2,7 @@ import { BatchConfig } from "../../corr/BatchConfig";
 import { RunConfigXG } from "./runConfigXG";
 import * as CFG from "./runConfigXG";
 
+// is this needed in regression?
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
 // double/tripple if classification
@@ -28,13 +29,14 @@ export const runConfig: RunConfig = {
   PROB: 0,
   // XG: CFG.runConfigXGDef,
   XG: CFG.runConfigXG_LessFit_6, // TODO: watch out for this !!!
-  BARRIER_LABEL: "THREE",
 
-  XG_OBJECTIVE: "multi:softmax",
-  BARRIER_TYPE: "tripple",
-  UNIQUE_LABELS: [0, 1, 2],
-  MAX_CLASS_IMBALANCE: 0.6
+  // BARRIER_LABEL: "THREE"
+  // XG_OBJECTIVE: "multi:softmax",
+  // BARRIER_TYPE: "tripple",
+  // UNIQUE_LABELS: [0, 1, 2],
+  // MAX_CLASS_IMBALANCE: 0.6
 
+  // BARRIER_LABEL: "THREE"
   // XG_OBJECTIVE: "multi:softmax",
   // BARRIER_TYPE: "double",
   // UNIQUE_LABELS: [0, 1],
@@ -44,8 +46,9 @@ export const runConfig: RunConfig = {
   // XG_OBJECTIVE: "reg:logistic",
   // PRED_PROB: 0.5
 
-  // XG_OBJECTIVE: "reg:linear",
-  // BARRIER_TYPE: "_1d"
+  BARRIER_LABEL: "THREE", // I don't think reg even needs this, but breaks without
+  XG_OBJECTIVE: "reg:linear",
+  BARRIER_TYPE: "_1d"
 };
 
 // export const BARRIER_TYPE:BarrierType = "doubleBarrier";
