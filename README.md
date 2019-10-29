@@ -65,7 +65,7 @@ Overall data/function flow is like this:
 
 - Modes: Electron / Node
 
-3. `runBatchedXG_all.ts` => loops through all features defined in features/index.ts (getAllPart1/2/3) and calculates MSE/R2 for test data set.
+3. `runBatchedXG_all.ts` => loops through all features defined in features/index.ts (getAllPart1/2/3) and calculates prediction evaluation results (MSE, R2, FScore) for test data set.
 
 - Modes: Node
 
@@ -173,3 +173,7 @@ Node mode:
 `runBatchedXG_wConfigGrid.ts`
 
 ![xg_grid_cls_THREE_node.png](imgs/xg_grid_cls_THREE_node.png)
+
+`runBatchedXG_all.ts`
+
+![xg_all_cls_THREE_node.png](imgs/xg_all_cls_THREE_node.png)
