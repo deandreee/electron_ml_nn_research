@@ -54,9 +54,9 @@ const ranges = runUtils.genRanges_FastMiniTest();
 // const featuresSplit = features.getAllPart2();
 // const featuresSplit = features.getRSI_HistoryHrs();
 
-const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
+// const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD";
-// const featureName = "emaOCC.vixFix.kst2";
+const featureName = "emaOCC.vixFix.kst2";
 // const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
 
 // const featureName = "vixFix.x1440.b.days";

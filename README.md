@@ -147,3 +147,8 @@ For quick demo purposes, I've included a small SQLite data sample (in `data_demo
 ## Platforms Compatability
 
 Should work on Unix like systems (OSX included). Haven't had time to test with too many though. Sorry Windows users, this requires custom ./init/run.sh.
+
+## Screenshots
+
+`runBatchedXG.ts` with regression and tripple barrier thresholds +/-5 in 5 day time window. Small subchart at the end is predicted price movement in %.
+![xg_reg_1d_FIVE.png](imgs/xg_reg_1d_FIVE.png)

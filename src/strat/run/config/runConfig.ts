@@ -3,6 +3,8 @@ import { RunConfigXG, runConfigXG_LessFit_6 } from "./runConfigXG";
 
 export type BarrierLabel = "PT_FIVE" | "ONE" | "TWO" | "THREE" | "FIVE";
 
+// double/tripple if classification
+// _Xd if regression
 export type BarrierType = "_1d" | "_2d" | "_5d" | "_7d" | "_10d" | "double" | "tripple" | "up" | "down";
 
 export type XGObjective = "multi:softmax" | "reg:logistic" | "reg:linear" | "binary:logistic";
@@ -25,20 +27,21 @@ export const runConfig: RunConfig = {
   PROB: 0,
   // XG: runConfigXGDef,
   XG: runConfigXG_LessFit_6, // TODO: watch out for this !!!
-  BARRIER_LABEL: "FIVE",
+  BARRIER_LABEL: "THREE",
 
-  XG_OBJECTIVE: "multi:softmax",
-  BARRIER_TYPE: "tripple",
-  UNIQUE_LABELS: [0, 1, 2],
-  MAX_CLASS_IMBALANCE: 0.6
+  // XG_OBJECTIVE: "multi:softmax",
+  // BARRIER_TYPE: "tripple",
+  // UNIQUE_LABELS: [0, 1, 2],
+  // MAX_CLASS_IMBALANCE: 0.6
 
   // XG_OBJECTIVE: "binary:logistic",
   // XG_OBJECTIVE: "reg:logistic",
   // PRED_PROB: 0.5
 
-  // BARRIER_TYPE: "tripple",
-  // UNIQUE_LABELS: [0, 1],
-  // MAX_CLASS_IMBALANCE: 0.4
+  XG_OBJECTIVE: "multi:softmax",
+  BARRIER_TYPE: "double",
+  UNIQUE_LABELS: [0, 1],
+  MAX_CLASS_IMBALANCE: 0.4
 
   // XG_OBJECTIVE: "reg:linear",
   // BARRIER_TYPE: "_1d"
