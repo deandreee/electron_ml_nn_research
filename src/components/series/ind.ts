@@ -444,23 +444,24 @@ export const seriesPredicted = (coin: CorrCandles, predicted: Prediction[]) => {
     );
   }
 
-  // TODO: binary
-  if (1 + 1 === 2) {
-    return flatten(
-      predicted.map((p, pi) => [
-        {
-          ...base,
-          color: "green",
-          data: p.values.map((x, i) => [
-            coin.candlesActual[i].start * 1000,
-            x === 1 ? coin.candlesActual[i].close : null
-          ]),
-          name: `[P]${p.name}`,
-          symbolSize: 5
-        }
-      ])
-    );
-  }
+  // TODO: binary / double barrier
+  // disable for now, we need tripple more often
+  // if (1 + 1 === 2) {
+  //   return flatten(
+  //     predicted.map((p, pi) => [
+  //       {
+  //         ...base,
+  //         color: "green",
+  //         data: p.values.map((x, i) => [
+  //           coin.candlesActual[i].start * 1000,
+  //           x === 1 ? coin.candlesActual[i].close : null
+  //         ]),
+  //         name: `[P]${p.name}`,
+  //         symbolSize: 5
+  //       }
+  //     ])
+  //   );
+  // }
 
   return flatten(
     predicted.map((p, pi) => [

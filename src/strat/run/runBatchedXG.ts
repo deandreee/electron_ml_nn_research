@@ -56,11 +56,11 @@ const ranges = runUtils.genRanges_FastMiniTest();
 
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD.kst";
 // const featureName = "macd.vixFix.vwap.t3Macd.zerolagMACD";
-const featureName = "emaOCC.vixFix.kst2";
+// const featureName = "emaOCC.vixFix.kst2";
 // const featureName = "emaOCC.vixFix.kst2.lrc.mfi.chandelierExit.t3Macd.bbands.rsi";
 
 // const featureName = "vixFix.x1440.b.days";
-// const featureName = "vixFix.x480.a.hrs";
+const featureName = "vixFix.x480.a.hrs";
 // const featureName = "chandelierExit.x480.p5_2";
 // const featureName = "kst.x1440.p_sig3_roc5_smaroc_5.price";
 // const featureName = "emaOCC.x1440.p30";
