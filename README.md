@@ -150,38 +150,44 @@ Should work on Unix like systems (OSX included). Haven't had time to test with t
 
 ## Screenshots
 
-`runBatchedXG.ts` with regression predicting price 1 day forward. Filtered by >+1% or <-1% to reduce noise.
+Below are some screenshots demonstrating features/models in action.
 
-Electron mode:
+### runBatchedXG.ts
+
+Regression predicting price 1 day forward. Filtered by >+1% or <-1% to reduce noise.
+
+**Electron mode**:
 
 ![xg_reg_1d_electron.png](imgs/xg_reg_1d_electron.png)
 
-Node mode:
+**Node mode**:
 
 ![xg_reg_1d_node.png](imgs/xg_reg_1d_node.png)
 
-`runBatchedXG.ts` with classification predicting tripple barrier label with +/-3% up/down threshold (green = up, yellow = neutral, red = down)
+### runBatchedXG.ts
 
-Electron mode:
+Classification predicting tripple barrier label with +/-3% up/down threshold (green = up, yellow = neutral, red = down)
+
+**Electron mode**:
 
 ![xg_cls_THREE_electron.png](imgs/xg_cls_THREE_electron.png)
 
-Node mode:
+**Node mode**:
 
 ![xg_cls_THREE_node.png](imgs/xg_cls_THREE_node.png)
 
-`runBatchedXG_wConfigGrid.ts`
+### runBatchedXG_wConfigGrid.ts
 
 ![xg_grid_cls_THREE_node.png](imgs/xg_grid_cls_THREE_node.png)
 
-`runBatchedXG_all.ts`
+### runBatchedXG_all.ts
 
 ![xg_all_cls_THREE_node.png](imgs/xg_all_cls_THREE_node.png)
 
-`runBatchedXG_wGA.ts`
+### runBatchedXG_wGA.ts
 
 ![xg_ga_cls_THREE_node.png](imgs/xg_ga_cls_THREE_node.png)
 
-`runIndProb.ts`
+### runIndProb.ts
 
 ![evt_prob_bbands.png](imgs/evt_prob_bbands.png)
