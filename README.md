@@ -2,7 +2,7 @@
 
 Core idea: try different models (XGBoost, LSTM, SVM, etc) to predict Crypto price direction (not the price itself!) based on features (usually technical indicators, like SMA, RSI, etc).
 
-This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast as possible, everything else is secondary. Therefore, a lot of configuration is simply in form of comment/uncomment lines in code.
+This is my personal testing ground, the goal here is to experiment, get results and evaluate ideas as fast as possible, everything else is secondary. Therefore, a lot of configuration is simply in the form of comment/uncomment lines in code.
 
 ## Price Direction
 
@@ -11,16 +11,16 @@ This is a very important concept. A lot of tutorials try to predict price, but:
 - That's more difficult
 - As a trader, I don't really care
 
-I care more about direction, with a certain threshold, like +3% after 1 day. But you need a way to define that. Throughout this project, I'm using Tripple Barrier labeling method from "Advances in Financial Machine Learning" by de Prado. In short, you define up/down threshold (+/- X%) and time window (1 day), and each point gets labeled by
+I care more about direction, with a certain threshold, like +3% after 1 day. But you need a way to define that. Throughout this project, I'm using the Triple Barrier labeling method from "Advances in Financial Machine Learning" by de Prado. In short, you define up/down threshold (+/- X%) and time window (1 day), and each point gets labeled by
 which threshold it hits first, or neutral if it runs out of time window.
 
-For example, here is tripple labeled BTC price from 2018-07-01 to 2018-08-01.
+For example, here is triple labeled BTC price from 2018-07-01 to 2018-08-01.
 
 - green = up
 - yellow = neutral
 - red = down
 
-![tripple_barrier.png](imgs/tripple_barrier.png)
+![triple_barrier.png](imgs/triple_barrier.png)
 
 Actually, once you get to Reinforcement Learning (RL), you realize you don't care about direction also, you care about actions and profits. But that's for another time.
 
@@ -28,8 +28,8 @@ Actually, once you get to Reinforcement Learning (RL), you realize you don't car
 
 Has 2 modes - UI (Electron) and Console (Node).
 
-- UI (Electron) used for single runs when there is a need to inspect single chart visually, like looking at price and predicted direction (up/down/neutral).
-- Console (Node) used for long running loops, e.g. Grid Tests or Genetic Algo (GA) optimization.
+- UI (Electron) used for single runs when there is a need to inspect a single chart visually, like looking at the price and predicted direction (up/down/neutral).
+- Console (Node) used for long running-loops, e.g. Grid Tests or Genetic Algo (GA) optimization.
 
 ## Flow
 
@@ -46,7 +46,7 @@ Overall data/function flow is like this:
 
 ## Features / Models
 
-`strat/run` is the launch panel. Each file under this dir is separate runnable model. `strat/run.ts` is the entry file where model is selected. To switch between models, uncomment the line in `strat/run.ts` like:
+`strat/run` is the launch panel. Each file under this dir is a separate runnable model. `strat/run.ts` is the entry file where a model is selected. To switch between models, uncomment the line in `strat/run.ts` like:
 `import { runBatchedXG as runn } from "./run/runBatchedXG";` (by uncommenting the line).
 
 1. `runBatchedXG.ts` => runs XGBoost model
@@ -69,11 +69,11 @@ Overall data/function flow is like this:
 
 - Modes: Node
 
-4. `runBatchedXG_wConfigGrid.ts` => takes grid of XGBoost params (eta, gamma, depth, etc) and loops through all of them, saving results in CSV.
+4. `runBatchedXG_wConfigGrid.ts` => takes a grid of XGBoost params (eta, gamma, depth, etc) and loops through all of them, saving results in CSV.
 
 - Modes: Node
 
-5. `runBatchedXG_wGA.ts` => takes single feature and tries to GA optimize XGBoost params.
+5. `runBatchedXG_wGA.ts` => takes a single feature and tries to GA optimize XGBoost params.
 
 - Modes: Node
 
@@ -87,14 +87,14 @@ Overall data/function flow is like this:
 
 8. `runRL.ts` => runs RL model
 
-- Calls external Python RL service (not included un open source version)
+- Calls external Python RL service (not included un open-source version)
 - Modes: Electron / Node
 
 ## Config
 
 There are several configurable variables (through code). Availability depends on the Model used.
 
-1. daterange (train+test) => you can get predefined ones from runUtils like `runUtils.genRanges_FastMiniTest()`. In `/data_temo` Ive only included just enough for `genRanges_FastMiniTest()`, so please use that.
+1. date range (train+test) => you can get predefined ones from runUtils like `runUtils.genRanges_FastMiniTest()`. In `/data_temo` I've only included just enough for `genRanges_FastMiniTest()`, so please use that.
 2. features => which features to use for prediction? Each feature can be an array of multiple indicators. When using Electron mode, you usually use a single feature and then inspect the result visually. In Node mode, it's about looping through multiple features and getting classification/regression results for each one.
 3. Barrier Type/Label => up/down thresholds and time window
 4. Model => mainly depends on which `/run` script you use but also sometimes provides additional switch inside, like in LSTM you can switch between 3 libs.
@@ -102,7 +102,7 @@ There are several configurable variables (through code). Availability depends on
 6. GA/Grid => have arrays for each model params to search/loop/optimize through
 
 - XGBoost params are inside `/run/config/runConfig.ts`
-- LSTM params (and pre configured models) are inside `/ml/models`
+- LSTM params (and pre-configured models) are inside `/ml/models`
 - SVM params are inside `/ml/mlSVM.ts`
 
 ## Install
@@ -129,8 +129,8 @@ It is heavily suggested to run this with VS Code to execute all the pre-launch/b
 2. Go to Debug tab
 3. Choose `ELECTRON` or `NODE` mode
 4. Press F5
-   1. In `ELECTRON` mode, you should see a chart after few seconds. If nothing happens, press Ctrl+Shift+I to open DevTools console and look for error. If there is message about "DevTools disconnected", press F5 and check console again.
-   2. In `NODE` mode, you should see some output in console.
+   1. In `ELECTRON` mode, you should see a chart after a few seconds. If nothing happens, press Ctrl+Shift+I to open DevTools console and look for an error. If there is a message about "DevTools disconnected", press F5 and check console again.
+   2. In `NODE` mode, you should see some output in the console.
 
 ## Magic
 
@@ -146,7 +146,7 @@ For quick demo purposes, I've included a small SQLite data sample (in `data_demo
 
 ## Platforms Compatability
 
-Should work on Unix like systems (OSX included). Haven't had time to test with too many though. Sorry Windows users, this requires custom ./init/run.sh.
+Should work on Unix like systems (OSX included). I haven't had time to test with too many though. Sorry Windows users, this requires custom ./init/run.sh.
 
 ## Screenshots
 
@@ -166,7 +166,7 @@ Regression predicting price 1 day forward. Filtered by >+1% or <-1% to reduce no
 
 ### runBatchedXG.ts
 
-Classification predicting tripple barrier label with +/-3% up/down threshold (green = up, yellow = neutral, red = down)
+Classification predicting triple barrier label with +/-3% up/down threshold (green = up, yellow = neutral, red = down)
 
 **Electron mode**:
 
