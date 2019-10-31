@@ -111,7 +111,7 @@ There is some magic behind the scenes to make this runnable on both Electron and
 
 ```bash
 # Clone this repo
-git clone git@github.com:deandreee/electron_ml_nn_research.git
+git clone https://github.com/deandreee/electron_ml_nn_research.git
 # cd to repo
 cd electron_ml_nn_research
 # switch to specific node version (install nvm if don't already have)
