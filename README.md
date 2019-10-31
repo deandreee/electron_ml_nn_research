@@ -140,6 +140,14 @@ I wanted the code to be runnable from both Electron and Node quickly, without a 
 
 Native dependencies (C/C++) are the ones that cause problems. They need to be built for a specific Node version. And even though I have synced this project so that they both use the same Node version (12.8.1.), `NODE_MODULES_VERSION` is still not the same, therefore we need to install dependencies separately for both of them. `./init/run.sh` is configured to do that for you. First, it installs dependencies for Node, moves them to `node_modules_node`, then rebuilds for Electron and moves that to `node_modules_electron`. When you run the code, VS Code pre-launch tasks are configured to switch `node_modules` symlink to the right one.
 
+## Troubleshooting
+
+Few issues you might run into:
+
+1. When running Electron:
+   `libprotobuf FATAL google/protobuf/stubs/common.cc:61] This program requires version X ...`
+   Solution: There might be multiple `libprotobuf` versions installed, you need to reinstall the one it's asking for. Example [here](https://gist.github.com/ryujaehun/991f5f1e8c1485dea72646877707f497)
+
 ## Data
 
 For quick demo purposes, I've included a small SQLite data sample (in `data_demo`) with BTC/ETH/XRP 1m candles from 2018-03-01 to 2018-09-01.
