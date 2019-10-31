@@ -77,7 +77,7 @@ Overall data/function flow is like this:
 
 - Modes: Node
 
-6. `runIndProb.ts` => calculates price direction (up/down/neutral) staticics, based on indicator+threshold (like `RSI < 20`) events.
+6. `runIndProb.ts` => calculates price direction (up/down/neutral) statistics, based on indicator+threshold (like `RSI < 20`) events.
 
 - Modes: Node
 
