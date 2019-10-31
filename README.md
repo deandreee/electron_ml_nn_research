@@ -117,7 +117,7 @@ cd electron_ml_nn_research
 # switch to specific node version (install nvm if don't already have)
 nvm install 12.8.1
 nvm use 12.8.1
-# magic init script
+# magic init script, check ##Magic for details
 ./init/run.sh
 ```
 
