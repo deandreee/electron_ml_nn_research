@@ -47,7 +47,7 @@ Overall data/function flow is like this:
 ## Features / Models
 
 `strat/run` is the launch panel. Each file under this dir is a separate runnable model. `strat/run.ts` is the entry file where a model is selected. To switch between models, uncomment the line in `strat/run.ts` like:
-`import { runBatchedXG as runn } from "./run/runBatchedXG";` (by uncommenting the line).
+`import { runBatchedXG as runn } from "./run/runBatchedXG";`
 
 1. `runBatchedXG.ts` => runs XGBoost model
 
