@@ -10,8 +10,8 @@ import * as corrUtils from "./utils";
 import { EMAOCC } from "../indicators/EMAOCC";
 import { VixFix } from "../indicators/VixFix";
 import { BBands } from "../indicators/BBands";
-// import { Keltner } from "../indicators/Keltner";
-import { ChandelierExit } from "../indicators/ChandelierExit";
+import { Keltner } from "../indicators/Keltner";
+// import { ChandelierExit } from "../indicators/ChandelierExit";
 import { KST } from "../indicators/KST";
 import { FeatureSplit } from "../features";
 import * as waveUtils from "./waveUtils";
@@ -45,18 +45,16 @@ export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featur
   // const bbands = new IndTimeframeGroup(BBands, waveManagers, getShouldCalc(featuresSplit, "bbands"), null);
   const bbands = new IndTimeframeGroup(BBands, waveManagers, SHOULD_CALC_ALL, null);
 
-  // @ts-ignore
   // const keltner = new IndTimeframeGroup(Keltner, waveManagers, getShouldCalc(featuresSplit, "keltner"), null);
-  // const keltner = new IndTimeframeGroup(Keltner, waveManagers, SHOULD_CALC_ALL, null);
+  const keltner = new IndTimeframeGroup(Keltner, waveManagers, SHOULD_CALC_ALL, null);
 
-  // @ts-ignore
-  const chandelierExit = new IndTimeframeGroup(
-    ChandelierExit,
-    waveManagers,
-    // getShouldCalc(featuresSplit, "chandelierExit"),
-    SHOULD_CALC_ALL,
-    null
-  );
+  // const chandelierExit = new IndTimeframeGroup(
+  //   ChandelierExit,
+  //   waveManagers,
+  //   // getShouldCalc(featuresSplit, "chandelierExit"),
+  //   SHOULD_CALC_ALL,
+  //   null
+  // );
   // @ts-ignore
   // const kst = new IndTimeframeGroup(KST, waveManagers, getShouldCalc(featuresSplit, "kst"), null);
   const kst = new IndTimeframeGroup(KST, waveManagers, SHOULD_CALC_ALL, null);
@@ -78,10 +76,10 @@ export const corrCalcBatchedProb = (runConfig: RunConfig, coin: CoinData, featur
     }
 
     candle.ind = {
-      // emaOCC: emaOCC.update(bigCandles),
-      // vixFix: vixFix.update(bigCandles),
+      emaOCC: emaOCC.update(bigCandles),
+      vixFix: vixFix.update(bigCandles),
       bbands: bbands.update(bigCandles),
-      // keltner: keltner.update(bigCandles),
+      keltner: keltner.update(bigCandles),
       // chandelierExit: chandelierExit.update(bigCandles), // too slow, skip for now
       kst: kst.update(bigCandles)
     };
