@@ -1,4 +1,4 @@
-const BollingerBands = require("technicalindicators").BollingerBands;
+const BollingerBands = require("lessertechnicalindicators").BollingerBands;
 const IndBase = require("./IndBase");
 
 // this one seems by far the best, the other ones have weird results
@@ -16,7 +16,7 @@ class Indicator extends IndBase {
     this.bbands = new BollingerBands({
       values: [],
       period: this.settings.TimePeriod,
-      stdDev: this.settings.NbDevDn,
+      stdDev: this.settings.NbDevDn
     });
   }
 

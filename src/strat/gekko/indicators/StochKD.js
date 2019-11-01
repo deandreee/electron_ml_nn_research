@@ -1,4 +1,4 @@
-const Stochastic = require("technicalindicators").Stochastic;
+const Stochastic = require("lessertechnicalindicators").Stochastic;
 const IndBase = require("./IndBase");
 
 // https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
@@ -29,7 +29,7 @@ class StochKD extends IndBase {
       signalPeriod,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
 
     this.result = null;
@@ -39,7 +39,7 @@ class StochKD extends IndBase {
     this.result = this.stochastic.nextValue({
       high: candle.high,
       low: candle.low,
-      close: candle.close,
+      close: candle.close
     });
 
     return this.result;

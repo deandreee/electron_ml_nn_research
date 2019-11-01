@@ -14,7 +14,7 @@
 //   d:number;
 // };
 
-const StochasticRSI = require("technicalindicators").StochasticRSI;
+const StochasticRSI = require("lessertechnicalindicators").StochasticRSI;
 const IndBase = require("./IndBase");
 
 class StochRSI extends IndBase {
@@ -27,7 +27,7 @@ class StochRSI extends IndBase {
       period,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
 
     this.result = null;
@@ -37,7 +37,7 @@ class StochRSI extends IndBase {
     this.result = this.stochRSI.nextValue({
       high: candle.high,
       low: candle.low,
-      close: candle.close,
+      close: candle.close
     });
 
     return this.result;

@@ -1,4 +1,4 @@
-const EMA = require("technicalindicators").EMA;
+const EMA = require("lessertechnicalindicators").EMA;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -11,7 +11,7 @@ class Indicator extends IndBase {
     }
     this.ind = new EMA({
       period,
-      values: [],
+      values: []
     });
   }
 

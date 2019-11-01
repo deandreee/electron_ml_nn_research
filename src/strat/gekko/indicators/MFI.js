@@ -1,5 +1,5 @@
 // required indicators
-const MFI = require("technicalindicators").MFI;
+const MFI = require("lessertechnicalindicators").MFI;
 const IndBase = require("./IndBase");
 
 class MFI_ extends IndBase {
@@ -15,7 +15,7 @@ class MFI_ extends IndBase {
       close: candle.close,
       high: candle.high,
       low: candle.low,
-      volume: candle.volume,
+      volume: candle.volume
     });
     return this.result;
   }

@@ -1,4 +1,4 @@
-const ForceIndex = require("technicalindicators").ForceIndex;
+const ForceIndex = require("lessertechnicalindicators").ForceIndex;
 const IndBase = require("./IndBase");
 
 // doesn't seem too useful
@@ -14,14 +14,14 @@ class Indicator extends IndBase {
     this.ind = new ForceIndex({
       period: this.settings.period || 1,
       close: [],
-      volume: [],
+      volume: []
     });
   }
 
   updateCore(candle) {
     this.result = this.ind.nextValue({
       close: candle.close,
-      volume: candle.volume,
+      volume: candle.volume
     });
     return this.result;
   }

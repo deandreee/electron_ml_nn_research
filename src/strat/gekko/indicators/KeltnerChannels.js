@@ -1,4 +1,4 @@
-const KeltnerChannels = require("technicalindicators").KeltnerChannels;
+const KeltnerChannels = require("lessertechnicalindicators").KeltnerChannels;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -15,7 +15,7 @@ class Indicator extends IndBase {
       multiplier: this.settings.multiplier || 1,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
   }
 
@@ -23,7 +23,7 @@ class Indicator extends IndBase {
     this.result = this.ind.nextValue({
       low: candle.low,
       high: candle.high,
-      close: candle.close,
+      close: candle.close
     });
     return this.result;
   }

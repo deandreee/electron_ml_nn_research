@@ -1,4 +1,4 @@
-const ADL = require("technicalindicators").ADL;
+const ADL = require("lessertechnicalindicators").ADL;
 const IndBase = require("./IndBase");
 
 // Accumulation Distribution Line (ADL)
@@ -17,7 +17,7 @@ class Indicator extends IndBase {
       high: [],
       low: [],
       close: [],
-      volume: [],
+      volume: []
     });
   }
 
@@ -27,7 +27,7 @@ class Indicator extends IndBase {
       low: candle.low,
       high: candle.high,
       close: candle.close,
-      volume: candle.volume,
+      volume: candle.volume
     });
     return this.result;
   }

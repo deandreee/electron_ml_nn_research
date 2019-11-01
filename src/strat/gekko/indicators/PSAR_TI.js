@@ -1,6 +1,6 @@
 // anandanand84/technicalindicators lib wrapper
 // @link http://en.wikipedia.org/wiki/Exponential_moving_average#Exponential_moving_average
-const PSAR = require("technicalindicators").PSAR;
+const PSAR = require("lessertechnicalindicators").PSAR;
 const IndBase = require("./IndBase");
 
 class PSAR_ extends IndBase {
@@ -15,7 +15,7 @@ class PSAR_ extends IndBase {
       step,
       max,
       high: [],
-      low: [],
+      low: []
     });
   }
 
@@ -25,7 +25,7 @@ class PSAR_ extends IndBase {
       // step: this.step,
       // max: this.max,
       low: candle.low,
-      high: candle.high,
+      high: candle.high
     });
 
     // this is so so bad, that lib doesn't even have it's typings right
@@ -62,7 +62,7 @@ class PSAR_ extends IndBase {
     return {
       result,
       trend: this.trend,
-      trendLength: this.trendLength,
+      trendLength: this.trendLength
     };
   }
 
@@ -71,7 +71,7 @@ class PSAR_ extends IndBase {
     return {
       result,
       trend: this.trend,
-      trendLength: this.trendLength,
+      trendLength: this.trendLength
     };
   }
 }

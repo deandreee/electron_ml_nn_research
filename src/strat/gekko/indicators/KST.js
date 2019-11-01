@@ -1,4 +1,4 @@
-const KST = require("technicalindicators").KST;
+const KST = require("lessertechnicalindicators").KST;
 const IndBase = require("./IndBase");
 
 // know sure thing
@@ -20,7 +20,7 @@ class Indicator extends IndBase {
       SMAROCPer3: this.settings.SMAROCPer3 || 10,
       SMAROCPer4: this.settings.SMAROCPer4 || 15,
       signalPeriod: this.settings.signalPeriod || 3,
-      values: [],
+      values: []
     });
   }
 

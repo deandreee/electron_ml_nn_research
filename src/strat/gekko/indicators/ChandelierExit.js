@@ -1,4 +1,4 @@
-const ChandelierExit = require("technicalindicators").ChandelierExit;
+const ChandelierExit = require("lessertechnicalindicators").ChandelierExit;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -13,7 +13,7 @@ class Indicator extends IndBase {
       multiplier: this.settings.multiplier || 3,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
   }
 
@@ -22,7 +22,7 @@ class Indicator extends IndBase {
     const val = this.ti.nextValue({
       low: candle.low,
       high: candle.high,
-      close: candle.close,
+      close: candle.close
     });
     this.result = val || {};
     return this.result;

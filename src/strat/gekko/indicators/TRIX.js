@@ -1,4 +1,4 @@
-const TRIX = require("technicalindicators").TRIX;
+const TRIX = require("lessertechnicalindicators").TRIX;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -9,7 +9,7 @@ class Indicator extends IndBase {
 
     this.ind = new TRIX({
       period: this.settings.period || 18,
-      values: [],
+      values: []
     });
   }
 

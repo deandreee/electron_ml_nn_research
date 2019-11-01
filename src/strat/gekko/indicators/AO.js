@@ -1,4 +1,4 @@
-const AwesomeOscillator = require("technicalindicators").AwesomeOscillator;
+const AwesomeOscillator = require("lessertechnicalindicators").AwesomeOscillator;
 const IndBase = require("./IndBase");
 
 // seems broken
@@ -15,14 +15,14 @@ class Indicator extends IndBase {
       fastPeriod: this.settings.fastPeriod || 5,
       slowPeriod: this.settings.slowPeriod || 34,
       high: [],
-      low: [],
+      low: []
     });
   }
 
   updateCore(candle) {
     this.result = this.ind.nextValue({
       low: candle.low,
-      high: candle.high,
+      high: candle.high
     });
     return this.result;
   }

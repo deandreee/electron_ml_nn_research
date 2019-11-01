@@ -1,4 +1,4 @@
-const VolumeProfile = require("technicalindicators").VolumeProfile;
+const VolumeProfile = require("lessertechnicalindicators").VolumeProfile;
 const IndBase = require("./IndBase");
 
 // Next value not supported for volume profile
@@ -17,7 +17,7 @@ class Indicator extends IndBase {
       low: [],
       open: [],
       close: [],
-      volume: [],
+      volume: []
     });
   }
 
@@ -27,7 +27,7 @@ class Indicator extends IndBase {
       low: candle.low,
       open: candle.open,
       close: candle.close,
-      volume: candle.volume,
+      volume: candle.volume
     });
     return this.result;
   }

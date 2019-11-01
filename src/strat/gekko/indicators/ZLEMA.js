@@ -1,5 +1,5 @@
 // made by me ... and NOT REALLY WORKING, this is slower than HMA, so ...
-const EMA = require("technicalindicators").EMA;
+const EMA = require("lessertechnicalindicators").EMA;
 
 class ZLEMA {
   constructor(period) {
@@ -15,7 +15,7 @@ class ZLEMA {
     const dataMinusLag = this.candleHistory.slice(-this.period + lag);
     const val = EMA.calculate({
       period: this.period,
-      values: [...data, ...dataMinusLag].map(x => x.close),
+      values: [...data, ...dataMinusLag].map(x => x.close)
     });
 
     const result = val.slice(-1)[0];

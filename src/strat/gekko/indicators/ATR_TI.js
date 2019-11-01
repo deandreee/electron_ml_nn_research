@@ -1,4 +1,4 @@
-const ATR = require("technicalindicators").ATR;
+const ATR = require("lessertechnicalindicators").ATR;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -16,7 +16,7 @@ class Indicator extends IndBase {
       period,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
   }
 
@@ -24,7 +24,7 @@ class Indicator extends IndBase {
     this.result = this.ind.nextValue({
       high: candle.high,
       low: candle.low,
-      close: candle.close,
+      close: candle.close
     });
     return this.result;
   }

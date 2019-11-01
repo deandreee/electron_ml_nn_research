@@ -1,4 +1,4 @@
-const WilliamsR = require("technicalindicators").WilliamsR;
+const WilliamsR = require("lessertechnicalindicators").WilliamsR;
 const IndBase = require("./IndBase");
 
 class Indicator extends IndBase {
@@ -12,7 +12,7 @@ class Indicator extends IndBase {
       period: this.settings.period || 20,
       high: [],
       low: [],
-      close: [],
+      close: []
     });
   }
 
@@ -20,7 +20,7 @@ class Indicator extends IndBase {
     this.result = this.ind.nextValue({
       low: candle.low,
       high: candle.high,
-      close: candle.close,
+      close: candle.close
     });
     return this.result;
   }
