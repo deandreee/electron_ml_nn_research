@@ -69,7 +69,7 @@
     "ms": "^2.1.1",
     "mtproto-storage-fs": "^0.3.1",
     "neataptic": "^1.4.7",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "pandas-js": "^0.2.4",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
