@@ -62,7 +62,7 @@
     "libsvm-js": "^0.2.1",
     "limdu": "^0.9.4",
     "lodash": "^4.17.10",
-    "lodash-es": "^4.17.10",
+    "lodash-es": "^4.17.21",
     "mathjs": "^5.4.0",
     "ml-xgboost": "^1.1.2",
     "moment": "^2.22.2",
