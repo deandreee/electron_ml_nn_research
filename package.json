@@ -65,7 +65,7 @@
     "lodash-es": "^4.17.10",
     "mathjs": "^5.4.0",
     "ml-xgboost": "^1.1.2",
-    "moment": "^2.22.2",
+    "moment": "^2.29.2",
     "ms": "^2.1.1",
     "mtproto-storage-fs": "^0.3.1",
     "neataptic": "^1.4.7",
